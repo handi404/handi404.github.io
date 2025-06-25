@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="来聊聊 Javadoc。这可是 Java 生态中非常基础且重要的一个工具。 1. 核心概念 (What &amp; Why):  What: Javadoc 是 Oracle 提供的一个工具，它能从 Java 源代码中提取特殊格式的注释，并生成一套结构化的 HTML API 文档。你可以把它想象成一个“代码说明书自动生成器”。 Why: API 清晰化: 为其他开发者（或者未来的你）提供清晰的类、">
+    <meta name="description" content="来聊聊 Javadoc。这可是 Java 生态中非常基础且重要的一个工具。 1. 核心概念 (What &amp; Why):  What: Javadoc 是 Oracle 提供的一个工具，它能从 Java 源代码中提取特殊格式的注释，并生成一套结构化的 HTML API 文档。你可以把它想象成一个“代码说明书自动生成器”。 Why:  API 清晰化: 为其他开发者（或者未来的你）提供清晰的类">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Javadoc">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/%E5%9F%BA%E7%A1%80/Javadoc/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="来聊聊 Javadoc。这可是 Java 生态中非常基础且重要的一个工具。 1. 核心概念 (What &amp; Why):  What: Javadoc 是 Oracle 提供的一个工具，它能从 Java 源代码中提取特殊格式的注释，并生成一套结构化的 HTML API 文档。你可以把它想象成一个“代码说明书自动生成器”。 Why: API 清晰化: 为其他开发者（或者未来的你）提供清晰的类、">
+<meta property="og:description" content="来聊聊 Javadoc。这可是 Java 生态中非常基础且重要的一个工具。 1. 核心概念 (What &amp; Why):  What: Javadoc 是 Oracle 提供的一个工具，它能从 Java 源代码中提取特殊格式的注释，并生成一套结构化的 HTML API 文档。你可以把它想象成一个“代码说明书自动生成器”。 Why:  API 清晰化: 为其他开发者（或者未来的你）提供清晰的类">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.731Z">
 <meta property="article:modified_time" content="2025-06-25T02:27:07.217Z">
@@ -304,7 +304,8 @@
 <p><strong>1. 核心概念 (What &amp; Why):</strong></p>
 <ul>
 <li><strong>What:</strong> Javadoc 是 Oracle 提供的一个工具，它能从 Java 源代码中提取特殊格式的注释，并生成一套结构化的 HTML API 文档。你可以把它想象成一个“代码说明书自动生成器”。</li>
-<li><strong>Why:</strong><ul>
+<li><strong>Why:</strong>
+<ul>
 <li><strong>API 清晰化:</strong> 为其他开发者（或者未来的你）提供清晰的类、方法、字段的使用说明。</li>
 <li><strong>可维护性:</strong> 良好的文档能极大提高代码的可读性和可维护性。</li>
 <li><strong>团队协作:</strong> 促进团队成员间的理解和协作，减少沟通成本。</li>
@@ -316,13 +317,15 @@
 <p><strong>2. 基本用法与语法 (How):</strong></p>
 <p>Javadoc 注释块以 <code>/**</code> 开头，以 <code>*/</code> 结尾，并且通常放在类、接口、方法、构造器或字段声明之前。</p>
 <ul>
-<li><p><strong>基本结构:</strong></p>
+<li>
+<p><strong>基本结构:</strong></p>
 <ol>
 <li><strong>概要描述 (Summary Sentence):</strong> 注释的第一句话，非常重要。它会被提取到 API 概览页中。通常以句号 <code>.</code> 结束。</li>
 <li><strong>详细描述:</strong> 在概要描述之后，可以有更详细的说明，支持 HTML 标签。</li>
 </ol>
 </li>
-<li><p><strong>常用 Javadoc 标签 (Block Tags):</strong> 这些标签以 <code>@</code> 开头，并且通常独占一行。</p>
+<li>
+<p><strong>常用 Javadoc 标签 (Block Tags):</strong> 这些标签以 <code>@</code> 开头，并且通常独占一行。</p>
 </li>
 </ul>
 <table>
@@ -333,7 +336,8 @@
 <th>适用范围</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>@param</code></td>
 <td>描述方法或构造器的参数。格式：<code>@param &lt;参数名&gt; &lt;描述&gt;</code></td>
 <td>方法、构造器</td>
@@ -385,10 +389,11 @@
 </tr>
 <tr>
 <td><code>@serialData</code></td>
-<td>描述 <code>writeObject</code> 和 <code>readObject</code> 方法写入&#x2F;读取的数据序列。</td>
+<td>描述 <code>writeObject</code> 和 <code>readObject</code> 方法写入/读取的数据序列。</td>
 <td>方法</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ul>
 <li><strong>常用行内标签 (Inline Tags):</strong> 这些标签以 <code>&#123;@</code> 开头，以 <code>&#125;</code> 结尾，可以直接嵌入到描述文本中。</li>
 </ul>
@@ -399,7 +404,8 @@
 <th>描述</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><code>&#123;@code &#125;</code></td>
 <td>将文本标记为代码，不进行 HTML 转义，通常以等宽字体显示。例如：<code>&#123;@code int count = 0;&#125;</code></td>
 </tr>
@@ -435,46 +441,62 @@
 <td><code>&#123;@index&#125;</code> (Java 9+)</td>
 <td>在生成文档中创建一个索引条目。例如 <code>&#123;@index പ്രധാന പദം&#125;</code></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <ul>
 <li><strong>示例:</strong></li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.util;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 这是一个字符串工具类，提供各种字符串操作的静态方法。</span><br><span class="hljs-comment"> * &lt;p&gt;</span><br><span class="hljs-comment"> * 这个类是线程安全的，所有方法都可以被并发调用。</span><br><span class="hljs-comment"> * &lt;/p&gt;</span><br><span class="hljs-comment"> *</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@author</span> YourName</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@version</span> 1.2</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 1.0</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StringUtils</span> &#123;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 默认的空字符串。</span><br><span class="hljs-comment">     * 其值为 &#123;<span class="hljs-doctag">@value</span>&#125;。</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">EMPTY_STRING</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;</span>;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 私有构造函数，防止实例化。</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">StringUtils</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 工具类不应该被实例化</span><br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 检查给定的字符串是否为空或 null。</span><br><span class="hljs-comment">     * &lt;p&gt;</span><br><span class="hljs-comment">     * 空的定义是：</span><br><span class="hljs-comment">     * &lt;ul&gt;</span><br><span class="hljs-comment">     *   &lt;li&gt;null&lt;/li&gt;</span><br><span class="hljs-comment">     *   &lt;li&gt;空字符串 (&#123;<span class="hljs-doctag">@code</span> &quot;&quot;&#125;)&lt;/li&gt;</span><br><span class="hljs-comment">     * &lt;/ul&gt;</span><br><span class="hljs-comment">     * &lt;/p&gt;</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> str 要检查的字符串</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 如果字符串为 null 或空，则返回 &#123;<span class="hljs-doctag">@code</span> true&#125;，否则返回 &#123;<span class="hljs-doctag">@code</span> false&#125;。</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@see</span> #isNotEmpty(String)</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isEmpty</span><span class="hljs-params">(String str)</span> &#123;<br>        <span class="hljs-keyword">return</span> str == <span class="hljs-literal">null</span> || str.isEmpty();<br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 将给定的字符串重复指定次数。</span><br><span class="hljs-comment">     *</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> str 要重复的字符串，不能为 null。</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> times 重复的次数，必须为非负数。</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> 重复后的新字符串。如果 &#123;<span class="hljs-doctag">@code</span> times&#125; 为 0，则返回 &#123;<span class="hljs-doctag">@link</span> #EMPTY_STRING&#125;。</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> IllegalArgumentException 如果 &#123;<span class="hljs-doctag">@code</span> times&#125; 为负数。</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@throws</span> NullPointerException 如果 &#123;<span class="hljs-doctag">@code</span> str&#125; 为 null (从 Java 15 开始，&#123;<span class="hljs-doctag">@link</span> String#repeat(int)&#125; 方法行为)。</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@deprecated</span> 从版本 1.1 开始，推荐使用 Java 11+ 内置的 &#123;<span class="hljs-doctag">@link</span> String#repeat(int)&#125; 方法。</span><br><span class="hljs-comment">     *             例如：&#123;<span class="hljs-doctag">@code</span> &quot;abc&quot;.repeat(3)&#125;</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Deprecated(since = &quot;1.1&quot;, forRemoval = true)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">repeat</span><span class="hljs-params">(String str, <span class="hljs-type">int</span> times)</span> &#123;<br>        <span class="hljs-keyword">if</span> (str == <span class="hljs-literal">null</span>) &#123; <span class="hljs-comment">// 遵循 String.repeat 的行为</span><br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NullPointerException</span>(<span class="hljs-string">&quot;Input string cannot be null&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (times &lt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Repeat times cannot be negative: &quot;</span> + times);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (times == <span class="hljs-number">0</span> || str.isEmpty()) &#123;<br>            <span class="hljs-keyword">return</span> EMPTY_STRING;<br>        &#125;<br>        <span class="hljs-comment">// Java 11+ has String.repeat(int)</span><br>        <span class="hljs-comment">// For older versions, you might use StringBuilder</span><br>        <span class="hljs-type">StringBuilder</span> <span class="hljs-variable">sb</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(str.length() * times);<br>        <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; times; i++) &#123;<br>            sb.append(str);<br>        &#125;<br>        <span class="hljs-keyword">return</span> sb.toString();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <ul>
-<li><strong>生成 Javadoc:</strong><br>通过 JDK 自带的 <code>javadoc</code> 命令行工具：<br><code>javadoc [options] [packagenames] [sourcefiles] [@files]</code><br>例如：<code>javadoc -d docs -author -version com.example.util.StringUtils</code><br>这会在 <code>docs</code> 目录下生成 HTML 文档，并包含作者和版本信息。</li>
+<li><strong>生成 Javadoc:</strong><br>
+通过 JDK 自带的 <code>javadoc</code> 命令行工具：<br>
+<code>javadoc [options] [packagenames] [sourcefiles] [@files]</code><br>
+例如：<code>javadoc -d docs -author -version com.example.util.StringUtils</code><br>
+这会在 <code>docs</code> 目录下生成 HTML 文档，并包含作者和版本信息。</li>
 </ul>
 <p><strong>3. 进阶技巧与最佳实践 (Best Practice):</strong></p>
 <ul>
-<li><p><strong>为谁写文档：</strong> 始终想着你的文档是给谁看的（API 使用者、团队成员）。</p>
+<li>
+<p><strong>为谁写文档：</strong> 始终想着你的文档是给谁看的（API 使用者、团队成员）。</p>
 </li>
-<li><p><strong>公共 API 优先：</strong> <code>public</code> 和 <code>protected</code> 成员是文档的重点。<code>private</code> 方法通常不需要详尽的 Javadoc，除非其逻辑特别复杂。</p>
+<li>
+<p><strong>公共 API 优先：</strong> <code>public</code> 和 <code>protected</code> 成员是文档的重点。<code>private</code> 方法通常不需要详尽的 Javadoc，除非其逻辑特别复杂。</p>
 </li>
-<li><p><strong>清晰的概要描述：</strong> 第一句话至关重要，要简洁明了地概括功能。</p>
+<li>
+<p><strong>清晰的概要描述：</strong> 第一句话至关重要，要简洁明了地概括功能。</p>
 </li>
-<li><p><strong>动词开头：</strong> 方法的概要描述通常以动词开头，例如 “Checks if…”，”Returns the…”。</p>
+<li>
+<p><strong>动词开头：</strong> 方法的概要描述通常以动词开头，例如 “Checks if…”，“Returns the…”。</p>
 </li>
-<li><p><strong>说明前置条件、后置条件、副作用：</strong></p>
+<li>
+<p><strong>说明前置条件、后置条件、副作用：</strong></p>
 <ul>
 <li>前置条件：方法正确执行需要满足的条件（如参数不能为 null）。</li>
 <li>后置条件：方法成功执行后对象的状态或返回值。</li>
 <li>副作用：方法执行对系统状态产生的任何其他影响。</li>
 </ul>
 </li>
-<li><p><strong><code>@param</code>, <code>@return</code>, <code>@throws</code> 完整性：</strong> 每个参数、返回值（非 <code>void</code>）、声明的检查型异常都应该有对应的 Javadoc 标签和描述。运行时异常（<code>RuntimeException</code> 及其子类）也可以酌情记录，特别是那些用户需要注意的。</p>
+<li>
+<p><strong><code>@param</code>, <code>@return</code>, <code>@throws</code> 完整性：</strong> 每个参数、返回值（非 <code>void</code>）、声明的检查型异常都应该有对应的 Javadoc 标签和描述。运行时异常（<code>RuntimeException</code> 及其子类）也可以酌情记录，特别是那些用户需要注意的。</p>
 </li>
-<li><p><strong><code>@deprecated</code> 的正确使用：</strong> 当标记一个元素为 <code>@deprecated</code> 时，务必使用 <code>&#123;@link&#125;</code> 或 <code>@see</code> 指明新的、推荐的替代方案，并解释废弃的原因。 Java 9+ 增加了 <code>@Deprecated(since=&quot;version&quot;, forRemoval=true)</code> 注解，可以更清晰地表达废弃状态。</p>
+<li>
+<p><strong><code>@deprecated</code> 的正确使用：</strong> 当标记一个元素为 <code>@deprecated</code> 时，务必使用 <code>&#123;@link&#125;</code> 或 <code>@see</code> 指明新的、推荐的替代方案，并解释废弃的原因。 Java 9+ 增加了 <code>@Deprecated(since=&quot;version&quot;, forRemoval=true)</code> 注解，可以更清晰地表达废弃状态。</p>
 </li>
-<li><p><strong>善用 <code>&#123;@code&#125;</code> 和 <code>&#123;@link&#125;</code>：</strong> <code>&#123;@code&#125;</code> 用于代码片段或关键字，<code>&#123;@link&#125;</code> 用于创建到其他 API 的链接，增强可读性和导航性。</p>
+<li>
+<p><strong>善用 <code>&#123;@code&#125;</code> 和 <code>&#123;@link&#125;</code>：</strong> <code>&#123;@code&#125;</code> 用于代码片段或关键字，<code>&#123;@link&#125;</code> 用于创建到其他 API 的链接，增强可读性和导航性。</p>
 </li>
-<li><p><strong>避免冗余：</strong> 不要简单地重复方法名或参数名。解释它们的 <em>含义</em>、<em>目的</em> 和 <em>约束</em>。</p>
+<li>
+<p><strong>避免冗余：</strong> 不要简单地重复方法名或参数名。解释它们的 <em>含义</em>、<em>目的</em> 和 <em>约束</em>。</p>
 </li>
-<li><p><strong>保持文档与代码同步：</strong> 代码变更时，务必更新相关的 Javadoc。过时的文档比没有文档更糟糕。</p>
+<li>
+<p><strong>保持文档与代码同步：</strong> 代码变更时，务必更新相关的 Javadoc。过时的文档比没有文档更糟糕。</p>
 </li>
-<li><p><strong>包文档 (<code>package-info.java</code>):</strong> 为包编写 Javadoc，可以创建一个名为 <code>package-info.java</code> 的文件，并在其中编写包级别的 Javadoc 注释。这对于描述整个包的功能和设计非常有用。</p>
+<li>
+<p><strong>包文档 (<code>package-info.java</code>):</strong> 为包编写 Javadoc，可以创建一个名为 <code>package-info.java</code> 的文件，并在其中编写包级别的 Javadoc 注释。这对于描述整个包的功能和设计非常有用。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * com.example.util 包包含各种通用的工具类。</span><br><span class="hljs-comment"> * &lt;p&gt;</span><br><span class="hljs-comment"> * 主要提供字符串处理、日期时间转换等功能。</span><br><span class="hljs-comment"> * &lt;/p&gt;</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@since</span> 1.0</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">package</span> com.example.util;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>模块文档 (<code>module-info.java</code>) (Java 9+):</strong> 模块声明也可以有 Javadoc 注释，用于描述模块的功能、依赖关系等。</p>
+<li>
+<p><strong>模块文档 (<code>module-info.java</code>) (Java 9+):</strong> 模块声明也可以有 Javadoc 注释，用于描述模块的功能、依赖关系等。</p>
 </li>
 </ul>
 <p><strong>4. 最新发展与趋势 (Latest):</strong></p>
@@ -485,9 +507,12 @@
 <li><strong>模块化 Javadoc (Java 9+):</strong> 支持为 Java 模块（JPMS）生成文档。<code>module-info.java</code> 文件也可以包含 Javadoc 注释。</li>
 <li><strong><code>&#123;@summary&#125;</code> 标签 (Java 10+):</strong> 允许你显式指定某段文本作为摘要，而不是默认使用第一句话。这在第一句话不适合作为独立摘要时很有用。</li>
 <li><strong><code>&#123;@index&#125;</code> 标签 (Java 9+):</strong> 允许你在文档中创建自定义的索引条目，方便用户查找特定术语或概念。</li>
-<li><strong>构建工具集成：</strong><ul>
-<li><strong>Maven:</strong> 使用 <code>maven-javadoc-plugin</code> 插件，可以轻松集成到 Maven 构建生命周期中。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-javadoc-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.6.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <span class="hljs-comment">&lt;!-- 使用最新稳定版 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">executions</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">execution</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>attach-javadocs<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">goals</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">goal</span>&gt;</span>jar<span class="hljs-tag">&lt;/<span class="hljs-name">goal</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">goals</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">execution</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">executions</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">doclint</span>&gt;</span>all,-missing<span class="hljs-tag">&lt;/<span class="hljs-name">doclint</span>&gt;</span> <span class="hljs-comment">&lt;!-- 开启所有 DocLint 检查，但忽略缺失注释的警告 --&gt;</span><br>        <span class="hljs-comment">&lt;!-- 其他配置 --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br></code></pre></td></tr></table></figure></li>
-<li><strong>Gradle:</strong> 使用标准的 <code>javadoc</code> 任务。<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gradle">javadoc &#123;<br>    <span class="hljs-keyword">options</span>.addStringOption(<span class="hljs-string">&#x27;Xdoclint:all,-missing&#x27;</span>, <span class="hljs-string">&#x27;-quiet&#x27;</span>)<br>    <span class="hljs-comment">// 其他配置</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><strong>构建工具集成：</strong>
+<ul>
+<li><strong>Maven:</strong> 使用 <code>maven-javadoc-plugin</code> 插件，可以轻松集成到 Maven 构建生命周期中。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-javadoc-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.6.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <span class="hljs-comment">&lt;!-- 使用最新稳定版 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">executions</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">execution</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">id</span>&gt;</span>attach-javadocs<span class="hljs-tag">&lt;/<span class="hljs-name">id</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">goals</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">goal</span>&gt;</span>jar<span class="hljs-tag">&lt;/<span class="hljs-name">goal</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">goals</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">execution</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">executions</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">doclint</span>&gt;</span>all,-missing<span class="hljs-tag">&lt;/<span class="hljs-name">doclint</span>&gt;</span> <span class="hljs-comment">&lt;!-- 开启所有 DocLint 检查，但忽略缺失注释的警告 --&gt;</span><br>        <span class="hljs-comment">&lt;!-- 其他配置 --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>Gradle:</strong> 使用标准的 <code>javadoc</code> 任务。<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs gradle">javadoc &#123;<br>    <span class="hljs-keyword">options</span>.addStringOption(<span class="hljs-string">&#x27;Xdoclint:all,-missing&#x27;</span>, <span class="hljs-string">&#x27;-quiet&#x27;</span>)<br>    <span class="hljs-comment">// 其他配置</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 <li><strong>Markdown 支持 (通过第三方 Doclet):</strong> 虽然标准 Javadoc 语法类似 HTML，但社区中有一些第三方 Doclet（如 <code>doclet-markdown</code>）允许你使用 Markdown 语法编写 Javadoc 注释，然后生成 HTML 文档。这对于习惯 Markdown 的开发者来说更方便。</li>
@@ -498,7 +523,7 @@
 <li><strong>内部代码理解:</strong> 即使是不对外发布的项目，良好的 Javadoc 也能帮助团队成员快速理解代码逻辑和接口约定。</li>
 <li><strong>代码质量检查:</strong> 一些静态分析工具可以检查 Javadoc 的完整性和规范性。</li>
 <li><strong>自定义 Doclet:</strong> Javadoc 的强大之处在于其可扩展性。你可以编写自定义的 Doclet 来改变输出格式（如生成 PDF、XML、JSON Schema）或执行自定义的文档处理逻辑。</li>
-<li><strong>作为“活文档”:</strong> 当 Javadoc 与代码同步更新并集成到 CI&#x2F;CD 流程中时，它就成为了一种“活文档”，始终反映代码的最新状态。</li>
+<li><strong>作为“活文档”:</strong> 当 Javadoc 与代码同步更新并集成到 CI/CD 流程中时，它就成为了一种“活文档”，始终反映代码的最新状态。</li>
 </ul>
 <p>总而言之，Javadoc 是 Java 开发中不可或缺的一环。编写高质量的 Javadoc 注释，不仅是对他人负责，更是对自己代码负责的表现。它能显著提升代码的生命周期价值。记住，好的代码会说话，而好的 Javadoc 能让代码说得更清楚！</p>
 

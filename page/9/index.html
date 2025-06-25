@@ -245,7 +245,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/5.%E5%90%AF%E7%94%A8%20H2%20%E6%95%B0%E6%8D%AE%E5%BA%93/" target="_self">
         <div>
-          启用 H2 databasesecurityFilterChain 中	配置 URL 模式匹配，允许特定 url 无需 Auth	禁用 csrf	配置 headers ，启用 frame 目前为止，我们有一个内存中身份验证现在我们需要配置 H2 数据库，以便我们可以将现在在内存中管理的信息移动到数据库中。 添加依赖：  H2 Database Spring Data JPA  1234567891
+          启用 H2 database securityFilterChain 中 配置 URL 模式匹配，允许特定 url 无需 Auth 禁用 csrf 配置 headers ，启用 frame 目前为止，我们有一个内存中身份验证 现在我们需要配置 H2 数据库，以便我们可以将现在在内存中管理的信息移动到数据库中。 添加依赖：  H2 Database Spring Data JPA  12345678
         </div>
       </a>
 
@@ -278,7 +278,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/4.%E5%9F%BA%E4%BA%8E%E8%A7%92%E8%89%B2%E7%9A%84%E6%8E%88%E6%9D%83/" target="_self">
         <div>
-          任何用户都可以访问 &#x2F;hello 这个端点，所以我可以使用 user1 或 admin。在你的应用程序中会有这样的场景，比如如果你正在构建一个复杂的生产创建应用程序，通常有一个功能，你想根据分配给用户的规则来控制对应用程序不同部分的访问。 例如，你可能只希望允许管理员删除任何数据或更新任何内容，而普通用户只能查看数据。这通常是借助注解来实现的，以便于管理，而 Spring 使它变得非常简
+          任何用户都可以访问 /hello 这个端点，所以我可以使用 user1 或 admin。 在你的应用程序中会有这样的场景，比如如果你正在构建一个复杂的生产创建应用程序，通常有一个功能，你想根据分配给用户的规则来控制对应用程序不同部分的访问。 例如，你可能只希望允许管理员删除任何数据或更新任何内容，而普通用户只能查看数据。 这通常是借助注解来实现的，以便于管理，而 Spring 使它变得非常简单。
         </div>
       </a>
 
@@ -311,7 +311,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/3.%E5%86%85%E5%AD%98%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81/" target="_self">
         <div>
-          现在一个用户可能不够用，您的安全要求会很复杂，比如将来您可能需要有规则，所以基本上基于分配给用户的不同角色，用户应该能够访问并在系统中执行不同的操作。而且可能有不同的用户需要跟踪。 但我们只有一个应编码的 user, 所以将取消基本身份验证。我们将讨论一种称为 InMemory Authentication(内存身份验证).看到我们将用户详细信息存储在数据库中，UserDetailsService
+          现在一个用户可能不够用，您的安全要求会很复杂，比如将来您可能需要有规则，所以基本上基于分配给用户的不同角色，用户应该能够访问并在系统中执行不同的操作。而且可能有不同的用户需要跟踪。 但我们只有一个应编码的 user, 所以将取消基本身份验证。 我们将讨论一种称为 InMemory Authentication(内存身份验证).  看到我们将用户详细信息存储在数据库中，UserDetailsServ
         </div>
       </a>
 
@@ -344,7 +344,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/2.Basic%20Auth%E5%92%8C%E7%BC%96%E5%86%99SecurityFilterChain/" target="_self">
         <div>
-          编写SecurityFilterChain如果你使用的是 REST API，那么表单就不适合你了。所以在 REST API 中你没有界面，通常会使用 Postman 之类的工具。 所以还有一种不同于基于表单的身份验证的用户身份验证方法，它被称为 Basic Authentication (基本身份验证)。顾名思义，basic 就是借助用户名和密码对用户进行身份验证的基本方法 配置 spring b
+          编写SecurityFilterChain 如果你使用的是 REST API，那么表单就不适合你了。所以在 REST API 中你没有界面，通常会使用 Postman 之类的工具。 所以还有一种不同于基于表单的身份验证的用户身份验证方法，它被称为 Basic Authentication (基本身份验证)。 顾名思义，basic 就是借助用户名和密码对用户进行身份验证的基本方法 配置 spring
         </div>
       </a>
 
@@ -377,7 +377,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/1.%E5%85%A5%E9%97%A8%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A1%A8%E5%8D%95%E7%9A%84%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81/" target="_self">
         <div>
-          Spring Security 入门创建项目https://start.spring.io/依赖项：Spring Web 创建一个简单的 controller： 12345678@RestControllerpublic class GreetingController &#123;    @GetMapping(&quot;/hello&quot;)    public String hello
+          Spring Security 入门 创建项目 https://start.spring.io/ 依赖项：Spring Web 创建一个简单的 controller： 12345678@RestControllerpublic class GreetingController &#123;    @GetMapping(&quot;/hello&quot;)    public String he
         </div>
       </a>
 
@@ -410,7 +410,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/%E5%88%B7%E6%96%B0%E4%BB%A4%E7%89%8C%EF%BC%88refresh%20token%EF%BC%89/" target="_self">
         <div>
-          刷新令牌授权类型或授权流程中，我们可以观察到的共同点是，当我们从授权服务器请求令牌时，服务器将使用 access_token 和 refresh_token 进行响应。访问令牌通常是短暂的，会在一定时间后过期。在一定时间限制之后，我们需要要求授权服务器向我们发送新的访问令牌，而无需要求用户再次登录。刷新令牌将帮助我们生成新的访问令牌。简而言之刷新令牌允许应用程序从授权服务器请求新的访问令牌，而无需
+          刷新令牌 授权类型或授权流程中，我们可以观察到的共同点是，当我们从授权服务器请求令牌时，服务器将使用 access_token 和 refresh_token 进行响应。访问令牌通常是短暂的，会在一定时间后过期。在一定时间限制之后，我们需要要求授权服务器向我们发送新的访问令牌，而无需要求用户再次登录。刷新令牌将帮助我们生成新的访问令牌。简而言之刷新令牌允许应用程序从授权服务器请求新的访问令牌，而无
         </div>
       </a>
 
@@ -443,7 +443,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/Spring%20Boot%203%20Keycloak%20OAuth%202/" target="_self">
         <div>
-          简介 讨论什么是 OAuth 2 以及如何使用 Spring Security 在 Spring Boot 应用程序中实现 OAuth 2 功能。 我们还将研究如何实现或通过不同类型的应用程序的模式，例如使用 spring MVC 开发的服务器端渲染应用程序，使用 angular 等框架开发的单页应用程序。 还将了解如何实现机器对机器的授权，例如在微服务的情况下，我们将使用 keycloak 作为
+          简介  讨论什么是 OAuth 2 以及如何使用 Spring Security 在 Spring Boot 应用程序中实现 OAuth 2 功能。 我们还将研究如何实现或通过不同类型的应用程序的模式，例如使用 spring MVC 开发的服务器端渲染应用程序，使用 angular 等框架开发的单页应用程序。 还将了解如何实现机器对机器的授权，例如在微服务的情况下，我们将使用 keycloak 作
         </div>
       </a>
 
@@ -476,7 +476,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/PKCE%20%E6%8E%88%E6%9D%83%E4%BB%A3%E7%A0%81%E6%B5%81%E6%BC%94%E7%A4%BA/" target="_self">
         <div>
-          以下是一个简化的 PKCE 授权代码流的分步演示，使用 伪代码 和 HTTP 请求示例，展示 PKCE 的核心流程：  1. 生成 Code Verifier 和 Challenge123456# 生成 code_verifier（随机 64 位字符串，Base64 安全字符）code_verifier = &quot;w2bXx59qE8Kp7LzSfT3rA1vYyZ4uI6oO0jGkHlN
+          以下是一个简化的 PKCE 授权代码流的分步演示，使用 伪代码 和 HTTP 请求示例，展示 PKCE 的核心流程：  1. 生成 Code Verifier 和 Challenge 123456# 生成 code_verifier（随机 64 位字符串，Base64 安全字符）code_verifier = &quot;w2bXx59qE8Kp7LzSfT3rA1vYyZ4uI6oO0jGkHl
         </div>
       </a>
 
@@ -509,7 +509,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/OAuth%202.0%20%E6%A0%B8%E5%BF%83%E6%9C%AF%E8%AF%AD/" target="_self">
         <div>
-          OAuth 2.0 核心术语速览：  角色与组件    资源所有者（Resource Owner）：用户（如微信账号持有者）。   客户端（Client）：第三方应用（如用微信登录的 App）。   授权服务器（Authorization Server）：颁发令牌的服务器（如微信登录授权页）。还将验证访问令牌是否有效，市场上有许多可用于授权服务器的选项: Optionsin Market： AWS
+          OAuth 2.0 核心术语速览：   角色与组件  资源所有者（Resource Owner）：用户（如微信账号持有者）。 客户端（Client）：第三方应用（如用微信登录的 App）。 授权服务器（Authorization Server）：颁发令牌的服务器（如微信登录授权页）。还将验证访问令牌是否有效，市场上有许多可用于授权服务器的选项:  Optionsin Market：  AWS Co
         </div>
       </a>
 
@@ -542,7 +542,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/Keycloak%20%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%90%AF%E5%8A%A8/" target="_self">
         <div>
-          Keycloak介绍Keycloak是一个开源的身份认证和授权管理系统，它提供了一系列的功能，包括单点登录（SSO）、身份验证、社交登录、用户管理、角色管理、权限管理等等。Keycloak可以被集成到各种应用程序中，包括Web应用程序、移动应用程序和服务。它支持OpenID Connect、OAuth 2.0、SAML 2.0标准协议，拥有简单易用的管理控制台，并提供对LDAP、Active Di
+          Keycloak介绍 Keycloak是一个开源的身份认证和授权管理系统，它提供了一系列的功能，包括单点登录（SSO）、身份验证、社交登录、用户管理、角色管理、权限管理等等。Keycloak可以被集成到各种应用程序中，包括Web应用程序、移动应用程序和服务。它支持OpenID Connect、OAuth 2.0、SAML 2.0标准协议，拥有简单易用的管理控制台，并提供对LDAP、Active D
         </div>
       </a>
 

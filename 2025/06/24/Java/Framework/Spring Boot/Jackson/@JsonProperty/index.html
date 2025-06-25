@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Jackson 库中的 @JsonProperty 注解。这是在 Spring Boot (乃至任何使用 Jackson 进行 JSON 处理的 Java 应用) 中非常核心且常用的一个注解。  1. @JsonProperty 是什么？@JsonProperty 是 Jackson 库提供的一个注解，它的核心作用是自定义 Java 对象属性与 JSON 字段之间的映射关系。 简单来说，当你需要：">
+    <meta name="description" content="Jackson 库中的 @JsonProperty 注解。这是在 Spring Boot (乃至任何使用 Jackson 进行 JSON 处理的 Java 应用) 中非常核心且常用的一个注解。  1. @JsonProperty 是什么？ @JsonProperty 是 Jackson 库提供的一个注解，它的核心作用是自定义 Java 对象属性与 JSON 字段之间的映射关系。 简单来说，当你需要">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Jackson/@JsonProperty/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="Jackson 库中的 @JsonProperty 注解。这是在 Spring Boot (乃至任何使用 Jackson 进行 JSON 处理的 Java 应用) 中非常核心且常用的一个注解。  1. @JsonProperty 是什么？@JsonProperty 是 Jackson 库提供的一个注解，它的核心作用是自定义 Java 对象属性与 JSON 字段之间的映射关系。 简单来说，当你需要：">
+<meta property="og:description" content="Jackson 库中的 @JsonProperty 注解。这是在 Spring Boot (乃至任何使用 Jackson 进行 JSON 处理的 Java 应用) 中非常核心且常用的一个注解。  1. @JsonProperty 是什么？ @JsonProperty 是 Jackson 库提供的一个注解，它的核心作用是自定义 Java 对象属性与 JSON 字段之间的映射关系。 简单来说，当你需要">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.174Z">
 <meta property="article:modified_time" content="2025-06-09T01:18:53.995Z">
@@ -302,7 +302,8 @@
                 
                 <p>Jackson 库中的 <code>@JsonProperty</code> 注解。这是在 Spring Boot (乃至任何使用 Jackson 进行 JSON 处理的 Java 应用) 中非常核心且常用的一个注解。</p>
 <hr>
-<h3 id="1-JsonProperty-是什么？"><a href="#1-JsonProperty-是什么？" class="headerlink" title="1. @JsonProperty 是什么？"></a>1. <code>@JsonProperty</code> 是什么？</h3><p><code>@JsonProperty</code> 是 Jackson 库提供的一个注解，它的核心作用是<strong>自定义 Java 对象属性与 JSON 字段之间的映射关系</strong>。</p>
+<h3 id="1-JsonProperty-是什么？">1. <code>@JsonProperty</code> 是什么？</h3>
+<p><code>@JsonProperty</code> 是 Jackson 库提供的一个注解，它的核心作用是<strong>自定义 Java 对象属性与 JSON 字段之间的映射关系</strong>。</p>
 <p>简单来说，当你需要：</p>
 <ul>
 <li>Java 对象的属性名和 JSON 中的字段名不一致时；</li>
@@ -313,64 +314,77 @@
 </ul>
 <p><code>@JsonProperty</code> 就能派上用场。它可以标记在<strong>字段</strong>、<strong>getter 方法</strong>或<strong>setter 方法</strong>上。</p>
 <hr>
-<h3 id="2-为什么需要-JsonProperty？"><a href="#2-为什么需要-JsonProperty？" class="headerlink" title="2. 为什么需要 @JsonProperty？"></a>2. 为什么需要 <code>@JsonProperty</code>？</h3><ol>
-<li><p><strong>命名规范差异</strong>：</p>
+<h3 id="2-为什么需要-JsonProperty？">2. 为什么需要 <code>@JsonProperty</code>？</h3>
+<ol>
+<li>
+<p><strong>命名规范差异</strong>：</p>
 <ul>
 <li>Java 通常使用驼峰命名法（camelCase），例如 <code>firstName</code>。</li>
 <li>JSON API 可能使用下划线命名法（snake_case），例如 <code>first_name</code>，或者其他任意自定义名称。</li>
 <li><code>@JsonProperty(&quot;first_name&quot;)</code> 就能轻松桥接 <code>firstName</code> 和 <code>first_name</code>。</li>
 </ul>
 </li>
-<li><p><strong>避免歧义与控制可见性</strong>：</p>
+<li>
+<p><strong>避免歧义与控制可见性</strong>：</p>
 <ul>
-<li>有时 getter&#x2F;setter 的名称可能与期望的 JSON 字段名有出入。</li>
+<li>有时 getter/setter 的名称可能与期望的 JSON 字段名有出入。</li>
 <li>你可能只想让某个字段参与序列化（对外暴露）而不参与反序列化（不接受外部传入），反之亦然。</li>
 </ul>
 </li>
-<li><p><strong>处理特殊字符或 Java 关键字</strong>：</p>
+<li>
+<p><strong>处理特殊字符或 Java 关键字</strong>：</p>
 <ul>
 <li>如果 JSON 字段名是 Java 的关键字 (如 <code>class</code>) 或包含非法字符 (如 <code>user-id</code>)，你不能直接用作 Java 属性名。<code>@JsonProperty(&quot;user-id&quot;)</code> 可以解决这个问题。</li>
 </ul>
 </li>
-<li><p><strong>增强代码可读性和明确性</strong>：</p>
+<li>
+<p><strong>增强代码可读性和明确性</strong>：</p>
 <ul>
 <li>即使 Java 属性名和 JSON 字段名一致，显式使用 <code>@JsonProperty</code> 也能让映射关系更加清晰。</li>
 </ul>
 </li>
 </ol>
 <hr>
-<h3 id="3-JsonProperty-如何工作？"><a href="#3-JsonProperty-如何工作？" class="headerlink" title="3. @JsonProperty 如何工作？"></a>3. <code>@JsonProperty</code> 如何工作？</h3><p>Jackson 的核心组件 <code>ObjectMapper</code> 在进行序列化和反序列化时，会扫描 Java 对象中的注解。</p>
+<h3 id="3-JsonProperty-如何工作？">3. <code>@JsonProperty</code> 如何工作？</h3>
+<p>Jackson 的核心组件 <code>ObjectMapper</code> 在进行序列化和反序列化时，会扫描 Java 对象中的注解。</p>
 <ul>
 <li><strong>序列化（Java -&gt; JSON）</strong>：当 <code>ObjectMapper</code> 序列化一个对象时，如果遇到一个被 <code>@JsonProperty</code> 注解的字段或 getter 方法，它会使用注解中指定的名字作为 JSON 输出的键名。</li>
 <li><strong>反序列化（JSON -&gt; Java）</strong>：当 <code>ObjectMapper</code> 反序列化 JSON 字符串时，它会查找 JSON 中的键名，并尝试匹配 Java 对象中被 <code>@JsonProperty</code> 注解（且注解值与 JSON 键名相同）的字段或 setter 方法，然后将对应的值赋给该属性。</li>
 </ul>
 <p><strong>作用位置优先级</strong>：</p>
 <ul>
-<li>如果字段、getter 和 setter 都被注解，通常以更具体的方法注解（getter&#x2F;setter）为准，但具体行为可能受 Jackson 版本和配置影响。一般建议只在一个地方注解以保持清晰。</li>
+<li>如果字段、getter 和 setter 都被注解，通常以更具体的方法注解（getter/setter）为准，但具体行为可能受 Jackson 版本和配置影响。一般建议只在一个地方注解以保持清晰。</li>
 <li><strong>最佳实践</strong>：通常注解在字段上是最简洁的。如果需要更细致的控制（比如只读或只写），可以注解在 getter 或 setter 上。</li>
 </ul>
 <hr>
-<h3 id="4-核心属性与常见用法"><a href="#4-核心属性与常见用法" class="headerlink" title="4. 核心属性与常见用法"></a>4. 核心属性与常见用法</h3><p><code>@JsonProperty</code> 注解本身可以接受一些参数来进一步定制行为：</p>
+<h3 id="4-核心属性与常见用法">4. 核心属性与常见用法</h3>
+<p><code>@JsonProperty</code> 注解本身可以接受一些参数来进一步定制行为：</p>
 <ul>
-<li><p><strong><code>value</code> (默认属性)</strong>: 指定 JSON 中的字段名。</p>
+<li>
+<p><strong><code>value</code> (默认属性)</strong>: 指定 JSON 中的字段名。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-meta">@JsonProperty(&quot;user_name&quot;)</span> <span class="hljs-comment">// JSON 字段将是 &quot;user_name&quot;</span><br>    <span class="hljs-keyword">private</span> String userName;<br><br>    <span class="hljs-meta">@JsonProperty(&quot;age_in_years&quot;)</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> age;<br><br>    <span class="hljs-comment">// 构造函数、getter 和 setter</span><br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>access</code></strong>: 控制属性的访问权限，有以下几种模式：</p>
+<li>
+<p><strong><code>access</code></strong>: 控制属性的访问权限，有以下几种模式：</p>
 <ul>
 <li><code>JsonProperty.Access.AUTO</code> (默认): Jackson 自动判断。</li>
-<li><code>JsonProperty.Access.READ_ONLY</code>: 属性仅在序列化时包含（Java -&gt; JSON）。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> &#123;<br>    <span class="hljs-meta">@JsonProperty(access = JsonProperty.Access.READ_ONLY)</span><br>    <span class="hljs-keyword">private</span> String internalId; <span class="hljs-comment">// 比如内部ID，只向外展示，不接受外部传入</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
-<li><code>JsonProperty.Access.WRITE_ONLY</code>: 属性仅在反序列化时接受（JSON -&gt; Java）。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Credentials</span> &#123;<br>    <span class="hljs-meta">@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)</span><br>    <span class="hljs-keyword">private</span> String password; <span class="hljs-comment">// 比如密码，只接受传入，序列化时不暴露</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><code>JsonProperty.Access.READ_ONLY</code>: 属性仅在序列化时包含（Java -&gt; JSON）。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> &#123;<br>    <span class="hljs-meta">@JsonProperty(access = JsonProperty.Access.READ_ONLY)</span><br>    <span class="hljs-keyword">private</span> String internalId; <span class="hljs-comment">// 比如内部ID，只向外展示，不接受外部传入</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><code>JsonProperty.Access.WRITE_ONLY</code>: 属性仅在反序列化时接受（JSON -&gt; Java）。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Credentials</span> &#123;<br>    <span class="hljs-meta">@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)</span><br>    <span class="hljs-keyword">private</span> String password; <span class="hljs-comment">// 比如密码，只接受传入，序列化时不暴露</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 <li><code>JsonProperty.Access.READ_WRITE</code>: 属性在序列化和反序列化时都包含。</li>
 </ul>
 </li>
-<li><p><strong><code>required</code> (boolean, 默认为 <code>false</code>)</strong>:</p>
+<li>
+<p><strong><code>required</code> (boolean, 默认为 <code>false</code>)</strong>:</p>
 <ul>
 <li>当设置为 <code>true</code> 时，表示在<strong>反序列化</strong>过程中，如果 JSON 数据中<strong>缺少</strong>这个字段，Jackson 会抛出异常（通常是 <code>MismatchedInputException</code> 或类似的）。</li>
 <li><strong>注意</strong>：此属性主要在与构造函数参数（配合 <code>@JsonCreator</code>）一起使用时效果最明显。对于普通字段，其行为可能受到 Jackson 全局配置 <code>DeserializationFeature.FAIL_ON_MISSING_CREATOR_PROPERTIES</code> 的影响。对于非构造函数注入的字段，通常建议使用 Bean Validation API (如 <code>@NotNull</code>) 来进行更通用的校验。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.fasterxml.jackson.annotation.JsonCreator;<br><span class="hljs-keyword">import</span> com.fasterxml.jackson.annotation.JsonProperty;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Order</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String orderId;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String itemName;<br><br>    <span class="hljs-meta">@JsonCreator</span> <span class="hljs-comment">// 标记构造函数用于反序列化</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Order</span><span class="hljs-params">(</span><br><span class="hljs-params">            <span class="hljs-meta">@JsonProperty(value = &quot;order_id&quot;, required = true)</span> String orderId,</span><br><span class="hljs-params">            <span class="hljs-meta">@JsonProperty(value = &quot;item_name&quot;, required = true)</span> String itemName)</span> &#123;<br>        <span class="hljs-built_in">this</span>.orderId = orderId;<br>        <span class="hljs-built_in">this</span>.itemName = itemName;<br>    &#125;<br>    <span class="hljs-comment">// getters</span><br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>defaultValue</code> (String)</strong>:</p>
+<li>
+<p><strong><code>defaultValue</code> (String)</strong>:</p>
 <ul>
 <li>为反序列化时<strong>缺失</strong>的属性提供一个<strong>字符串形式的默认值</strong>。Jackson 会尝试将这个字符串转换为属性的实际类型。</li>
 <li>这对于基本类型和它们的包装类很有用，但对于复杂对象类型，通常不适用。</li>
@@ -380,31 +394,37 @@
 <li><strong>注意</strong>：<code>defaultValue</code> 的行为和 <code>null</code> 值的处理有关。如果 JSON 中显式地将字段设为 <code>null</code>，<code>defaultValue</code> 可能不会生效，这取决于具体的 Jackson 配置（如 <code>MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES</code>）。</li>
 </ul>
 </li>
-<li><p><strong><code>index</code> (int, 默认为 <code>-1</code>)</strong>:</p>
+<li>
+<p><strong><code>index</code> (int, 默认为 <code>-1</code>)</strong>:</p>
 <ul>
 <li>用于指定属性在序列化输出 JSON 时的顺序。具有较小 <code>index</code> 值的属性会先输出。</li>
 <li>如果多个属性有相同的 <code>index</code>，或未指定 <code>index</code>，则它们的相对顺序可能按字母顺序或声明顺序（取决于 Jackson 配置 <code>MapperFeature.SORT_PROPERTIES_ALPHABETICALLY</code>）。</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Report</span> &#123;<br>    <span class="hljs-meta">@JsonProperty(index = 1)</span><br>    <span class="hljs-keyword">private</span> String title;<br><br>    <span class="hljs-meta">@JsonProperty(index = 3)</span><br>    <span class="hljs-keyword">private</span> String content;<br><br>    <span class="hljs-meta">@JsonProperty(index = 2)</span><br>    <span class="hljs-keyword">private</span> String author;<br>&#125;<br><span class="hljs-comment">// 输出 JSON 顺序可能为: title, author, content</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Report</span> &#123;<br>    <span class="hljs-meta">@JsonProperty(index = 1)</span><br>    <span class="hljs-keyword">private</span> String title;<br><br>    <span class="hljs-meta">@JsonProperty(index = 3)</span><br>    <span class="hljs-keyword">private</span> String content;<br><br>    <span class="hljs-meta">@JsonProperty(index = 2)</span><br>    <span class="hljs-keyword">private</span> String author;<br>&#125;<br><span class="hljs-comment">// 输出 JSON 顺序可能为: title, author, content</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 <hr>
-<h3 id="5-最新进展与-Spring-Boot-3-x"><a href="#5-最新进展与-Spring-Boot-3-x" class="headerlink" title="5. 最新进展与 Spring Boot 3.x"></a>5. 最新进展与 Spring Boot 3.x</h3><ul>
+<h3 id="5-最新进展与-Spring-Boot-3-x">5. 最新进展与 Spring Boot 3.x</h3>
+<ul>
 <li><strong>Jackson 依然是 Spring Boot 的默认 JSON 库</strong>：Spring Boot 3.x 默认集成了 Jackson 2.14+ (具体版本随 Spring Boot 版本更新)。<code>@JsonProperty</code> 的核心功能和用法保持稳定和向后兼容。</li>
-<li><strong>对 Java Records 的良好支持</strong>：Java 14+ 引入的 Records 非常适合用作不可变的 DTOs。Jackson 对 Records 有很好的原生支持。当使用 Records 时，构造函数参数通常会自动映射到 JSON 字段。如果需要自定义名称或行为，<code>@JsonProperty</code> 同样可以注解在 Record 组件（本质上是字段和构造函数参数）上。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">UserRecord</span><span class="hljs-params">(</span><br><span class="hljs-params">    @JsonProperty(&quot;user_id&quot;)</span> Long id,<br>    String username,<br>    <span class="hljs-meta">@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)</span> String password<br>) &#123;&#125;<br></code></pre></td></tr></table></figure></li>
-<li><strong>GraalVM Native Image 兼容性</strong>：Spring Boot 3.x 强调对 GraalVM Native Image 的支持，以实现更快的启动速度和更低的内存占用。Jackson 及其注解（包括 <code>@JsonProperty</code>）通常能与 Native Image 良好协作。Spring Boot AOT (Ahead-Of-Time) 处理会生成必要的反射配置，确保 Jackson 在 Native Image 环境中正确工作。对于非常复杂的自定义序列化&#x2F;反序列化逻辑，可能需要额外的 <code>@RegisterReflectionForBinding</code> 或编程方式注册 hints。</li>
+<li><strong>对 Java Records 的良好支持</strong>：Java 14+ 引入的 Records 非常适合用作不可变的 DTOs。Jackson 对 Records 有很好的原生支持。当使用 Records 时，构造函数参数通常会自动映射到 JSON 字段。如果需要自定义名称或行为，<code>@JsonProperty</code> 同样可以注解在 Record 组件（本质上是字段和构造函数参数）上。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">UserRecord</span><span class="hljs-params">(</span><br><span class="hljs-params">    @JsonProperty(&quot;user_id&quot;)</span> Long id,<br>    String username,<br>    <span class="hljs-meta">@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)</span> String password<br>) &#123;&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>GraalVM Native Image 兼容性</strong>：Spring Boot 3.x 强调对 GraalVM Native Image 的支持，以实现更快的启动速度和更低的内存占用。Jackson 及其注解（包括 <code>@JsonProperty</code>）通常能与 Native Image 良好协作。Spring Boot AOT (Ahead-Of-Time) 处理会生成必要的反射配置，确保 Jackson 在 Native Image 环境中正确工作。对于非常复杂的自定义序列化/反序列化逻辑，可能需要额外的 <code>@RegisterReflectionForBinding</code> 或编程方式注册 hints。</li>
 <li><strong>模块化与可扩展性</strong>：Jackson 本身是高度模块化的（例如 <code>jackson-datatype-jsr310</code> 处理 Java 8 时间 API）。Spring Boot 会自动检测并配置这些模块。<code>@JsonProperty</code> 是核心 <code>jackson-annotations</code> 模块的一部分，始终可用。</li>
 </ul>
 <hr>
-<h3 id="6-扩展与应用"><a href="#6-扩展与应用" class="headerlink" title="6. 扩展与应用"></a>6. 扩展与应用</h3><ul>
+<h3 id="6-扩展与应用">6. 扩展与应用</h3>
+<ul>
 <li><strong>DTO (Data Transfer Object) 设计</strong>：<code>@JsonProperty</code> 在设计 API 的请求体和响应体 DTO 时至关重要，它确保了前后端数据格式的正确转换。</li>
-<li><strong>与 <code>@JsonIgnore</code>, <code>@JsonInclude</code>, <code>@JsonFormat</code>, <code>@JsonView</code> 等注解协同工作</strong>：<ul>
+<li><strong>与 <code>@JsonIgnore</code>, <code>@JsonInclude</code>, <code>@JsonFormat</code>, <code>@JsonView</code> 等注解协同工作</strong>：
+<ul>
 <li><code>@JsonIgnore</code>：完全忽略某个属性。</li>
 <li><code>@JsonInclude(JsonInclude.Include.NON_NULL)</code>：只在属性值不为 <code>null</code> 时序列化。</li>
 <li><code>@JsonFormat</code>：格式化日期、数字等。</li>
 <li><code>@JsonView</code>：定义属性在不同视图下的可见性。</li>
 </ul>
 </li>
-<li><strong>自定义 <code>ObjectMapper</code> 配置</strong>：在 Spring Boot 中，你可以通过 <code>application.properties</code> &#x2F; <code>application.yml</code> 或自定义 <code>Jackson2ObjectMapperBuilderCustomizer</code> Bean 来全局配置 <code>ObjectMapper</code> 的行为（例如，命名策略 <code>PropertyNamingStrategies.SNAKE_CASE</code> 可以全局将驼峰转下划线，从而减少对 <code>@JsonProperty</code> 的依赖，但 <code>@JsonProperty</code> 仍可用于覆盖全局策略或处理特殊情况）。<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># application.yml</span><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">jackson:</span><br>    <span class="hljs-attr">property-naming-strategy:</span> <span class="hljs-string">SNAKE_CASE</span> <span class="hljs-comment"># 全局使用下划线命名</span><br>    <span class="hljs-comment"># serialization:</span><br>    <span class="hljs-comment">#   indent-output: true # 格式化输出JSON</span><br></code></pre></td></tr></table></figure>
+<li><strong>自定义 <code>ObjectMapper</code> 配置</strong>：在 Spring Boot 中，你可以通过 <code>application.properties</code> / <code>application.yml</code> 或自定义 <code>Jackson2ObjectMapperBuilderCustomizer</code> Bean 来全局配置 <code>ObjectMapper</code> 的行为（例如，命名策略 <code>PropertyNamingStrategies.SNAKE_CASE</code> 可以全局将驼峰转下划线，从而减少对 <code>@JsonProperty</code> 的依赖，但 <code>@JsonProperty</code> 仍可用于覆盖全局策略或处理特殊情况）。<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># application.yml</span><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">jackson:</span><br>    <span class="hljs-attr">property-naming-strategy:</span> <span class="hljs-string">SNAKE_CASE</span> <span class="hljs-comment"># 全局使用下划线命名</span><br>    <span class="hljs-comment"># serialization:</span><br>    <span class="hljs-comment">#   indent-output: true # 格式化输出JSON</span><br></code></pre></td></tr></table></figure>
 即使设置了全局策略，<code>@JsonProperty(&quot;custom_name&quot;)</code> 依然会覆盖这个全局策略。</li>
 </ul>
 <hr>

@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="MyBatis-Plus (MP) 是 MyBatis 生态中非常重要且流行的增强工具，值得我们重点全面深入地讲解。它极大地简化了基于 MyBatis 的开发，特别是对于 CRUD 操作和复杂条件的构建。 我将按照以下结构来为你详细阐述 MyBatis-Plus：  MyBatis-Plus 核心理念与优势回顾 (为什么选择 MP) 快速上手与 Spring Boot 集成 依赖引入 (mybat">
+    <meta name="description" content="MyBatis-Plus (MP) 是 MyBatis 生态中非常重要且流行的增强工具，值得我们重点全面深入地讲解。它极大地简化了基于 MyBatis 的开发，特别是对于 CRUD 操作和复杂条件的构建。 我将按照以下结构来为你详细阐述 MyBatis-Plus：  MyBatis-Plus 核心理念与优势回顾 (为什么选择 MP) 快速上手与 Spring Boot 集成  依赖引入 (myba">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/MyBatis-Plus%20(MP)/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="MyBatis-Plus (MP) 是 MyBatis 生态中非常重要且流行的增强工具，值得我们重点全面深入地讲解。它极大地简化了基于 MyBatis 的开发，特别是对于 CRUD 操作和复杂条件的构建。 我将按照以下结构来为你详细阐述 MyBatis-Plus：  MyBatis-Plus 核心理念与优势回顾 (为什么选择 MP) 快速上手与 Spring Boot 集成 依赖引入 (mybat">
+<meta property="og:description" content="MyBatis-Plus (MP) 是 MyBatis 生态中非常重要且流行的增强工具，值得我们重点全面深入地讲解。它极大地简化了基于 MyBatis 的开发，特别是对于 CRUD 操作和复杂条件的构建。 我将按照以下结构来为你详细阐述 MyBatis-Plus：  MyBatis-Plus 核心理念与优势回顾 (为什么选择 MP) 快速上手与 Spring Boot 集成  依赖引入 (myba">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.099Z">
 <meta property="article:modified_time" content="2025-06-16T07:32:16.201Z">
@@ -230,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          528 字
+          524 字
         
       </span>
     
@@ -304,14 +304,17 @@
 <p>我将按照以下结构来为你详细阐述 MyBatis-Plus：</p>
 <ol>
 <li><strong>MyBatis-Plus 核心理念与优势回顾</strong> (为什么选择 MP)</li>
-<li><strong>快速上手与 Spring Boot 集成</strong><ul>
+<li><strong>快速上手与 Spring Boot 集成</strong>
+<ul>
 <li>依赖引入 (<code>mybatis-plus-boot-starter</code>)</li>
 <li>核心配置 (<code>application.yml</code>)</li>
 <li>与 MyBatis 原生配置的协同</li>
 </ul>
 </li>
-<li><strong>核心功能详解</strong><ul>
-<li><strong>通用 CRUD (BaseMapper &amp; IService)</strong><ul>
+<li><strong>核心功能详解</strong>
+<ul>
+<li><strong>通用 CRUD (BaseMapper &amp; IService)</strong>
+<ul>
 <li><code>insert</code>, <code>deleteById</code>, <code>deleteByMap</code>, <code>deleteBatchIds</code>, <code>delete(Wrapper)</code></li>
 <li><code>updateById</code>, <code>update(entity, wrapper)</code></li>
 <li><code>selectById</code>, <code>selectBatchIds</code>, <code>selectByMap</code></li>
@@ -323,14 +326,16 @@
 <li><code>selectPage(page, wrapper)</code>, <code>selectMapsPage(page, wrapper)</code></li>
 </ul>
 </li>
-<li><strong>强大的条件构造器 (Wrapper)</strong><ul>
-<li><code>QueryWrapper</code> &#x2F; <code>LambdaQueryWrapper</code>: 构建查询条件</li>
-<li><code>UpdateWrapper</code> &#x2F; <code>LambdaUpdateWrapper</code>: 构建更新条件</li>
+<li><strong>强大的条件构造器 (Wrapper)</strong>
+<ul>
+<li><code>QueryWrapper</code> / <code>LambdaQueryWrapper</code>: 构建查询条件</li>
+<li><code>UpdateWrapper</code> / <code>LambdaUpdateWrapper</code>: 构建更新条件</li>
 <li>常用方法：<code>eq</code>, <code>ne</code>, <code>gt</code>, <code>ge</code>, <code>lt</code>, <code>le</code>, <code>like</code>, <code>notLike</code>, <code>likeLeft</code>, <code>likeRight</code>, <code>in</code>, <code>notIn</code>, <code>isNull</code>, <code>isNotNull</code>, <code>orderBy</code>, <code>groupBy</code>, <code>having</code>, <code>or</code>, <code>and</code>, <code>apply</code>, <code>last</code>, <code>exists</code>, <code>notExists</code>, <code>between</code>, <code>notBetween</code>, <code>select</code> (指定查询字段), <code>set</code> (用于 <code>UpdateWrapper</code>)</li>
 <li>LambdaQueryWrapper 的优势 (类型安全，重构友好)</li>
 </ul>
 </li>
-<li><strong>实体类注解详解</strong><ul>
+<li><strong>实体类注解详解</strong>
+<ul>
 <li><code>@TableName</code>: 表名映射</li>
 <li><code>@TableId</code>: 主键策略 (<code>IdType.AUTO</code>, <code>ASSIGN_ID</code> (雪花), <code>ASSIGN_UUID</code>, <code>INPUT</code>, <code>NONE</code>)</li>
 <li><code>@TableField</code>: 字段映射 (<code>value</code>, <code>exist</code>, <code>select</code>, <code>fill</code>, <code>numericScale</code>)</li>
@@ -339,47 +344,56 @@
 <li><code>@EnumValue</code>: 枚举处理</li>
 </ul>
 </li>
-<li><strong>主键策略</strong><ul>
+<li><strong>主键策略</strong>
+<ul>
 <li>全局配置与局部注解配置</li>
 <li>雪花算法 (Snowflake) 详解与配置</li>
 </ul>
 </li>
-<li><strong>自动填充字段 (MetaObjectHandler)</strong><ul>
+<li><strong>自动填充字段 (MetaObjectHandler)</strong>
+<ul>
 <li>实现 <code>MetaObjectHandler</code> 接口</li>
 <li>配置 <code>insertFill</code> 和 <code>updateFill</code></li>
 </ul>
 </li>
-<li><strong>分页插件 (PaginationInnerInterceptor)</strong><ul>
+<li><strong>分页插件 (PaginationInnerInterceptor)</strong>
+<ul>
 <li>配置与使用</li>
 <li><code>IPage</code> 和 <code>Page</code> 对象</li>
 </ul>
 </li>
-<li><strong>乐观锁插件 (OptimisticLockerInnerInterceptor)</strong><ul>
+<li><strong>乐观锁插件 (OptimisticLockerInnerInterceptor)</strong>
+<ul>
 <li>配置与使用 (<code>@Version</code> 注解)</li>
 </ul>
 </li>
-<li><strong>逻辑删除</strong><ul>
+<li><strong>逻辑删除</strong>
+<ul>
 <li>全局配置与 <code>@TableLogic</code> 注解</li>
 <li>如何自定义逻辑删除值</li>
 </ul>
 </li>
-<li><strong>性能分析插件 (IllegalSqlInnerInterceptor &#x2F; BlockAttackInnerInterceptor)</strong><ul>
-<li>用于开发和测试阶段，防止全表更新&#x2F;删除</li>
+<li><strong>性能分析插件 (IllegalSqlInnerInterceptor / BlockAttackInnerInterceptor)</strong>
+<ul>
+<li>用于开发和测试阶段，防止全表更新/删除</li>
 </ul>
 </li>
-<li><strong>多租户插件 (TenantLineInnerInterceptor)</strong><ul>
+<li><strong>多租户插件 (TenantLineInnerInterceptor)</strong>
+<ul>
 <li>基本原理与配置</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)</strong><ul>
+<li><strong>MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)</strong>
+<ul>
 <li>依赖与配置</li>
 <li>生成 Entity, Mapper, Service, Controller</li>
 <li>自定义模板与策略</li>
 </ul>
 </li>
-<li><strong>进阶使用与技巧</strong><ul>
+<li><strong>进阶使用与技巧</strong>
+<ul>
 <li>自定义 SQL 与 MP 通用方法结合</li>
 <li><code>IService</code> 的常用方法与自定义扩展</li>
 <li>ActiveRecord 模式 (可选，非主流)</li>

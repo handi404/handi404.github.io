@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Spring AI 基本架构和核心概念一、Spring AI 概述Spring AI 是 Spring 团队在 2023 年推出的框架，专门用于简化 AI 应用开发。它遵循 Spring 的设计哲学：简化复杂性、提供抽象层、支持多种实现。 二、核心架构设计2.1 分层架构1234567应用层 (Application Layer)    ↓抽象层 (Abstraction Layer) - Spr">
+    <meta name="description" content="Spring AI 基本架构和核心概念 一、Spring AI 概述 Spring AI 是 Spring 团队在 2023 年推出的框架，专门用于简化 AI 应用开发。它遵循 Spring 的设计哲学：简化复杂性、提供抽象层、支持多种实现。 二、核心架构设计 2.1 分层架构 1234567应用层 (Application Layer)    ↓抽象层 (Abstraction Layer) -">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20AI/%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84%E5%92%8C%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="Spring AI 基本架构和核心概念一、Spring AI 概述Spring AI 是 Spring 团队在 2023 年推出的框架，专门用于简化 AI 应用开发。它遵循 Spring 的设计哲学：简化复杂性、提供抽象层、支持多种实现。 二、核心架构设计2.1 分层架构1234567应用层 (Application Layer)    ↓抽象层 (Abstraction Layer) - Spr">
+<meta property="og:description" content="Spring AI 基本架构和核心概念 一、Spring AI 概述 Spring AI 是 Spring 团队在 2023 年推出的框架，专门用于简化 AI 应用开发。它遵循 Spring 的设计哲学：简化复杂性、提供抽象层、支持多种实现。 二、核心架构设计 2.1 分层架构 1234567应用层 (Application Layer)    ↓抽象层 (Abstraction Layer) -">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:26.920Z">
 <meta property="article:modified_time" content="2025-05-25T09:23:26.421Z">
@@ -230,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          901 字
+          900 字
         
       </span>
     
@@ -300,25 +300,30 @@
             
               <div class="markdown-body">
                 
-                <h1 id="Spring-AI-基本架构和核心概念"><a href="#Spring-AI-基本架构和核心概念" class="headerlink" title="Spring AI 基本架构和核心概念"></a>Spring AI 基本架构和核心概念</h1><h2 id="一、Spring-AI-概述"><a href="#一、Spring-AI-概述" class="headerlink" title="一、Spring AI 概述"></a>一、Spring AI 概述</h2><p>Spring AI 是 Spring 团队在 2023 年推出的框架，专门用于简化 AI 应用开发。它遵循 Spring 的设计哲学：<strong>简化复杂性、提供抽象层、支持多种实现</strong>。</p>
-<h2 id="二、核心架构设计"><a href="#二、核心架构设计" class="headerlink" title="二、核心架构设计"></a>二、核心架构设计</h2><h3 id="2-1-分层架构"><a href="#2-1-分层架构" class="headerlink" title="2.1 分层架构"></a>2.1 分层架构</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs scss">应用层 (Application Layer)<br>    ↓<br>抽象层 (Abstraction Layer) - Spring AI Core<br>    ↓<br>适配器层 (Adapter Layer) - 各种 AI 服务实现<br>    ↓<br>AI 服务层 (AI Services) - OpenAI、Azure、Ollama 等<br></code></pre></td></tr></table></figure>
-
-<h3 id="2-2-核心模块划分"><a href="#2-2-核心模块划分" class="headerlink" title="2.2 核心模块划分"></a>2.2 核心模块划分</h3><p><strong>spring-ai-core</strong>: 核心抽象和接口 <strong>spring-ai-spring-boot-autoconfigure</strong>: 自动配置 <strong>spring-ai-openai</strong>: OpenAI 集成 <strong>spring-ai-azure-openai</strong>: Azure OpenAI 集成 <strong>spring-ai-ollama</strong>: 本地模型支持 <strong>spring-ai-vectordbs</strong>: 向量数据库集成</p>
-<h2 id="三、核心概念详解"><a href="#三、核心概念详解" class="headerlink" title="三、核心概念详解"></a>三、核心概念详解</h2><h3 id="3-1-ChatClient-对话客户端"><a href="#3-1-ChatClient-对话客户端" class="headerlink" title="3.1 ChatClient - 对话客户端"></a>3.1 ChatClient - 对话客户端</h3><p>这是最核心的抽象，统一了所有 AI 模型的对话接口：</p>
+                <h1>Spring AI 基本架构和核心概念</h1>
+<h2 id="一、Spring-AI-概述">一、Spring AI 概述</h2>
+<p>Spring AI 是 Spring 团队在 2023 年推出的框架，专门用于简化 AI 应用开发。它遵循 Spring 的设计哲学：<strong>简化复杂性、提供抽象层、支持多种实现</strong>。</p>
+<h2 id="二、核心架构设计">二、核心架构设计</h2>
+<h3 id="2-1-分层架构">2.1 分层架构</h3>
+<figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs scss">应用层 (Application Layer)<br>    ↓<br>抽象层 (Abstraction Layer) - Spring AI Core<br>    ↓<br>适配器层 (Adapter Layer) - 各种 AI 服务实现<br>    ↓<br>AI 服务层 (AI Services) - OpenAI、Azure、Ollama 等<br></code></pre></td></tr></table></figure>
+<h3 id="2-2-核心模块划分">2.2 核心模块划分</h3>
+<p><strong>spring-ai-core</strong>: 核心抽象和接口 <strong>spring-ai-spring-boot-autoconfigure</strong>: 自动配置 <strong>spring-ai-openai</strong>: OpenAI 集成 <strong>spring-ai-azure-openai</strong>: Azure OpenAI 集成 <strong>spring-ai-ollama</strong>: 本地模型支持 <strong>spring-ai-vectordbs</strong>: 向量数据库集成</p>
+<h2 id="三、核心概念详解">三、核心概念详解</h2>
+<h3 id="3-1-ChatClient-对话客户端">3.1 ChatClient - 对话客户端</h3>
+<p>这是最核心的抽象，统一了所有 AI 模型的对话接口：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 基本用法</span><br><span class="hljs-type">ChatResponse</span> <span class="hljs-variable">response</span> <span class="hljs-operator">=</span> chatClient.call(<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompt</span>(<span class="hljs-string">&quot;解释什么是 Spring AI&quot;</span>)<br>);<br><br><span class="hljs-comment">// 流式响应</span><br>Flux&lt;ChatResponse&gt; stream = chatClient.stream(<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompt</span>(<span class="hljs-string">&quot;写一首关于春天的诗&quot;</span>)<br>);<br></code></pre></td></tr></table></figure>
-
 <p><strong>设计优势</strong>：</p>
 <ul>
 <li>统一接口，切换模型只需改配置</li>
 <li>支持同步和异步调用</li>
 <li>内置重试和错误处理</li>
 </ul>
-<h3 id="3-2-Prompt-Template-提示词模板"><a href="#3-2-Prompt-Template-提示词模板" class="headerlink" title="3.2 Prompt Template - 提示词模板"></a>3.2 Prompt Template - 提示词模板</h3><p>类似于 Spring 的 JdbcTemplate，提供模板化的提示词构建：</p>
+<h3 id="3-2-Prompt-Template-提示词模板">3.2 Prompt Template - 提示词模板</h3>
+<p>类似于 Spring 的 JdbcTemplate，提供模板化的提示词构建：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TranslationService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">PromptTemplate</span> <span class="hljs-variable">promptTemplate</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PromptTemplate</span>(<br>        <span class="hljs-string">&quot;将以下&#123;sourceLanguage&#125;文本翻译成&#123;targetLanguage&#125;：&#123;text&#125;&quot;</span><br>    );<br>    <br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">translate</span><span class="hljs-params">(String text, String from, String to)</span> &#123;<br>        Map&lt;String, Object&gt; variables = Map.of(<br>            <span class="hljs-string">&quot;sourceLanguage&quot;</span>, from,<br>            <span class="hljs-string">&quot;targetLanguage&quot;</span>, to,<br>            <span class="hljs-string">&quot;text&quot;</span>, text<br>        );<br>        <br>        <span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> promptTemplate.create(variables);<br>        <span class="hljs-keyword">return</span> chatClient.call(prompt).getResult().getOutput().getContent();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="3-3-VectorStore-向量存储抽象"><a href="#3-3-VectorStore-向量存储抽象" class="headerlink" title="3.3 VectorStore - 向量存储抽象"></a>3.3 VectorStore - 向量存储抽象</h3><p>为 RAG 应用提供统一的向量数据库接口：</p>
+<h3 id="3-3-VectorStore-向量存储抽象">3.3 VectorStore - 向量存储抽象</h3>
+<p>为 RAG 应用提供统一的向量数据库接口：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">VectorStore</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(List&lt;Document&gt; documents)</span>;<br>    List&lt;Document&gt; <span class="hljs-title function_">similaritySearch</span><span class="hljs-params">(String query)</span>;<br>    List&lt;Document&gt; <span class="hljs-title function_">similaritySearch</span><span class="hljs-params">(SearchRequest request)</span>;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(List&lt;String&gt; idList)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p><strong>支持的向量数据库</strong>：</p>
 <ul>
 <li>Chroma</li>
@@ -327,41 +332,50 @@
 <li>Redis</li>
 <li>PostgreSQL (pgvector)</li>
 </ul>
-<h3 id="3-4-Document-文档抽象"><a href="#3-4-Document-文档抽象" class="headerlink" title="3.4 Document - 文档抽象"></a>3.4 Document - 文档抽象</h3><p>标准化的文档表示，包含内容和元数据：</p>
+<h3 id="3-4-Document-文档抽象">3.4 Document - 文档抽象</h3>
+<p>标准化的文档表示，包含内容和元数据：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Document</span> &#123;<br>    <span class="hljs-keyword">private</span> String content;          <span class="hljs-comment">// 文档内容</span><br>    <span class="hljs-keyword">private</span> Map&lt;String, Object&gt; metadata;  <span class="hljs-comment">// 元数据</span><br>    <span class="hljs-keyword">private</span> List&lt;Double&gt; embedding;  <span class="hljs-comment">// 向量表示</span><br>    <br>    <span class="hljs-comment">// 构造和访问方法</span><br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="3-5-EmbeddingClient-嵌入向量客户端"><a href="#3-5-EmbeddingClient-嵌入向量客户端" class="headerlink" title="3.5 EmbeddingClient - 嵌入向量客户端"></a>3.5 EmbeddingClient - 嵌入向量客户端</h3><p>专门处理文本向量化：</p>
+<h3 id="3-5-EmbeddingClient-嵌入向量客户端">3.5 EmbeddingClient - 嵌入向量客户端</h3>
+<p>专门处理文本向量化：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DocumentService</span> &#123;<br>    <br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> EmbeddingClient embeddingClient;<br>    <br>    <span class="hljs-keyword">public</span> List&lt;Double&gt; <span class="hljs-title function_">getEmbedding</span><span class="hljs-params">(String text)</span> &#123;<br>        <span class="hljs-type">EmbeddingResponse</span> <span class="hljs-variable">response</span> <span class="hljs-operator">=</span> embeddingClient.embedForResponse(<br>            List.of(text)<br>        );<br>        <span class="hljs-keyword">return</span> response.getResults().get(<span class="hljs-number">0</span>).getOutput();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h2 id="四、设计模式和原则"><a href="#四、设计模式和原则" class="headerlink" title="四、设计模式和原则"></a>四、设计模式和原则</h2><h3 id="4-1-策略模式"><a href="#4-1-策略模式" class="headerlink" title="4.1 策略模式"></a>4.1 策略模式</h3><p>不同的 AI 服务提供商通过策略模式实现：</p>
+<h2 id="四、设计模式和原则">四、设计模式和原则</h2>
+<h3 id="4-1-策略模式">4.1 策略模式</h3>
+<p>不同的 AI 服务提供商通过策略模式实现：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 可以无缝切换</span><br><span class="hljs-type">ChatClient</span> <span class="hljs-variable">openAiClient</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">OpenAiChatClient</span>();<br><span class="hljs-type">ChatClient</span> <span class="hljs-variable">azureClient</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AzureOpenAiChatClient</span>();<br><span class="hljs-type">ChatClient</span> <span class="hljs-variable">ollamaClient</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">OllamaChatClient</span>();<br></code></pre></td></tr></table></figure>
-
-<h3 id="4-2-模板方法模式"><a href="#4-2-模板方法模式" class="headerlink" title="4.2 模板方法模式"></a>4.2 模板方法模式</h3><p>PromptTemplate 使用模板方法模式，标准化提示词构建流程。</p>
-<h3 id="4-3-观察者模式"><a href="#4-3-观察者模式" class="headerlink" title="4.3 观察者模式"></a>4.3 观察者模式</h3><p>支持回调和监听器，用于监控 AI 调用：</p>
+<h3 id="4-2-模板方法模式">4.2 模板方法模式</h3>
+<p>PromptTemplate 使用模板方法模式，标准化提示词构建流程。</p>
+<h3 id="4-3-观察者模式">4.3 观察者模式</h3>
+<p>支持回调和监听器，用于监控 AI 调用：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java">chatClient.call(prompt, <br>    ChatOptions.builder()<br>        .withResponseCallback(response -&gt; &#123;<br>            <span class="hljs-comment">// 处理响应回调</span><br>        &#125;)<br>        .build()<br>);<br></code></pre></td></tr></table></figure>
-
-<h2 id="五、关键特性"><a href="#五、关键特性" class="headerlink" title="五、关键特性"></a>五、关键特性</h2><h3 id="5-1-自动配置"><a href="#5-1-自动配置" class="headerlink" title="5.1 自动配置"></a>5.1 自动配置</h3><p>利用 Spring Boot 的自动配置机制：</p>
+<h2 id="五、关键特性">五、关键特性</h2>
+<h3 id="5-1-自动配置">5.1 自动配置</h3>
+<p>利用 Spring Boot 的自动配置机制：</p>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># application.properties</span><br><span class="hljs-attr">spring.ai.openai.api-key</span>=<span class="hljs-string">your-api-key</span><br><span class="hljs-attr">spring.ai.openai.base-url</span>=<span class="hljs-string">https://api.openai.com</span><br><span class="hljs-attr">spring.ai.vectorstore.chroma.initialize-schema</span>=<span class="hljs-string">true</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="5-2-类型安全"><a href="#5-2-类型安全" class="headerlink" title="5.2 类型安全"></a>5.2 类型安全</h3><p>通过泛型和强类型确保编译时安全：</p>
+<h3 id="5-2-类型安全">5.2 类型安全</h3>
+<p>通过泛型和强类型确保编译时安全：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TypedChatService</span> &#123;<br>    <br>    <span class="hljs-keyword">public</span> &lt;T&gt; T <span class="hljs-title function_">callWithType</span><span class="hljs-params">(String prompt, Class&lt;T&gt; responseType)</span> &#123;<br>        <span class="hljs-comment">// 类型安全的响应处理</span><br>        <span class="hljs-keyword">return</span> chatClient.call(prompt, responseType);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="5-3-可观测性"><a href="#5-3-可观测性" class="headerlink" title="5.3 可观测性"></a>5.3 可观测性</h3><p>集成 Spring Boot Actuator，提供监控指标：</p>
+<h3 id="5-3-可观测性">5.3 可观测性</h3>
+<p>集成 Spring Boot Actuator，提供监控指标：</p>
 <ul>
 <li>AI 调用次数</li>
 <li>响应时间</li>
-<li>成功&#x2F;失败率</li>
+<li>成功/失败率</li>
 <li>Token 使用量</li>
 </ul>
-<h2 id="六、架构优势"><a href="#六、架构优势" class="headerlink" title="六、架构优势"></a>六、架构优势</h2><h3 id="6-1-厂商中立"><a href="#6-1-厂商中立" class="headerlink" title="6.1 厂商中立"></a>6.1 厂商中立</h3><p>通过抽象层隔离具体实现，避免厂商锁定。</p>
-<h3 id="6-2-Spring-生态集成"><a href="#6-2-Spring-生态集成" class="headerlink" title="6.2 Spring 生态集成"></a>6.2 Spring 生态集成</h3><p>无缝集成 Spring Security、Spring Boot、Spring Cloud 等。</p>
-<h3 id="6-3-企业级特性"><a href="#6-3-企业级特性" class="headerlink" title="6.3 企业级特性"></a>6.3 企业级特性</h3><ul>
+<h2 id="六、架构优势">六、架构优势</h2>
+<h3 id="6-1-厂商中立">6.1 厂商中立</h3>
+<p>通过抽象层隔离具体实现，避免厂商锁定。</p>
+<h3 id="6-2-Spring-生态集成">6.2 Spring 生态集成</h3>
+<p>无缝集成 Spring Security、Spring Boot、Spring Cloud 等。</p>
+<h3 id="6-3-企业级特性">6.3 企业级特性</h3>
+<ul>
 <li>连接池管理</li>
 <li>重试机制</li>
 <li>熔断器支持</li>
 <li>缓存集成</li>
 </ul>
-<h3 id="6-4-扩展性"><a href="#6-4-扩展性" class="headerlink" title="6.4 扩展性"></a>6.4 扩展性</h3><p>清晰的接口设计，便于添加新的 AI 服务提供商。</p>
+<h3 id="6-4-扩展性">6.4 扩展性</h3>
+<p>清晰的接口设计，便于添加新的 AI 服务提供商。</p>
 <p>这个架构设计体现了 Spring 框架一贯的设计理念：<strong>简化复杂性的同时保持灵活性和扩展性</strong>。通过这种设计，开发者可以专注于业务逻辑，而不必关心底层 AI 服务的复杂性。</p>
 
                 

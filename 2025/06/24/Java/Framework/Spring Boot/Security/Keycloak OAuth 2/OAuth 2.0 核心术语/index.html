@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="OAuth 2.0 核心术语速览：  角色与组件    资源所有者（Resource Owner）：用户（如微信账号持有者）。   客户端（Client）：第三方应用（如用微信登录的 App）。   授权服务器（Authorization Server）：颁发令牌的服务器（如微信登录授权页）。还将验证访问令牌是否有效，市场上有许多可用于授权服务器的选项: Optionsin Market： AWS">
+    <meta name="description" content="OAuth 2.0 核心术语速览：   角色与组件  资源所有者（Resource Owner）：用户（如微信账号持有者）。 客户端（Client）：第三方应用（如用微信登录的 App）。 授权服务器（Authorization Server）：颁发令牌的服务器（如微信登录授权页）。还将验证访问令牌是否有效，市场上有许多可用于授权服务器的选项:  Optionsin Market：  AWS Co">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/OAuth%202.0%20%E6%A0%B8%E5%BF%83%E6%9C%AF%E8%AF%AD/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="OAuth 2.0 核心术语速览：  角色与组件    资源所有者（Resource Owner）：用户（如微信账号持有者）。   客户端（Client）：第三方应用（如用微信登录的 App）。   授权服务器（Authorization Server）：颁发令牌的服务器（如微信登录授权页）。还将验证访问令牌是否有效，市场上有许多可用于授权服务器的选项: Optionsin Market： AWS">
+<meta property="og:description" content="OAuth 2.0 核心术语速览：   角色与组件  资源所有者（Resource Owner）：用户（如微信账号持有者）。 客户端（Client）：第三方应用（如用微信登录的 App）。 授权服务器（Authorization Server）：颁发令牌的服务器（如微信登录授权页）。还将验证访问令牌是否有效，市场上有许多可用于授权服务器的选项:  Optionsin Market：  AWS Co">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.268Z">
 <meta property="article:modified_time" content="2025-03-17T11:45:36.316Z">
@@ -230,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          480 字
+          478 字
         
       </span>
     
@@ -241,7 +241,7 @@
         
         
         
-          5 分钟
+          4 分钟
         
       </span>
     
@@ -302,12 +302,15 @@
                 
                 <p><strong>OAuth 2.0 核心术语速览</strong>：</p>
 <ol>
-<li><p><strong>角色与组件</strong>  </p>
+<li>
+<p><strong>角色与组件</strong></p>
 <ul>
-<li><strong>资源所有者（Resource Owner）</strong>：用户（如微信账号持有者）。  </li>
-<li><strong>客户端（Client）</strong>：第三方应用（如用微信登录的 App）。  </li>
-<li><strong>授权服务器（Authorization Server）</strong>：颁发令牌的服务器（如微信登录授权页）。还将验证访问令牌是否有效，市场上有许多可用于授权服务器的选项:<ul>
-<li>Optionsin Market：<ul>
+<li><strong>资源所有者（Resource Owner）</strong>：用户（如微信账号持有者）。</li>
+<li><strong>客户端（Client）</strong>：第三方应用（如用微信登录的 App）。</li>
+<li><strong>授权服务器（Authorization Server）</strong>：颁发令牌的服务器（如微信登录授权页）。还将验证访问令牌是否有效，市场上有许多可用于授权服务器的选项:
+<ul>
+<li>Optionsin Market：
+<ul>
 <li>AWS Cognito</li>
 <li>Microsoft Azure AD</li>
 <li>Google ldentity Platform</li>
@@ -322,27 +325,30 @@
 <li><strong>资源服务器（Resource Server）</strong>：存储用户资源的服务器（如微信存储用户头像的服务器）。</li>
 </ul>
 </li>
-<li><p><strong>令牌与凭证</strong>  </p>
+<li>
+<p><strong>令牌与凭证</strong></p>
 <ul>
-<li><strong>访问令牌（Access Token）</strong>：客户端访问资源的“钥匙”，有时效性。  </li>
-<li><strong>刷新令牌（Refresh Token）</strong>：用于刷新过期的访问令牌（更安全）。  </li>
+<li><strong>访问令牌（Access Token）</strong>：客户端访问资源的“钥匙”，有时效性。</li>
+<li><strong>刷新令牌（Refresh Token）</strong>：用于刷新过期的访问令牌（更安全）。</li>
 <li><strong>授权码（Authorization Code）</strong>：临时凭证，客户端用它换取访问令牌（防中间人攻击）。</li>
 </ul>
 </li>
-<li><p><strong>授权流程类型（Grant Types）</strong>  </p>
+<li>
+<p><strong>授权流程类型（Grant Types）</strong></p>
 <ul>
-<li><strong>授权码模式（Authorization Code）</strong>：Web 应用常用，通过授权码中转令牌（最安全）。  </li>
-<li><strong>隐式模式（Implicit）</strong>：直接返回令牌（如单页应用），安全性较低，已逐渐被淘汰。  </li>
-<li><strong>密码模式（Resource Owner Password Credentials）</strong>：用户直接提供账号密码给客户端（高风险，仅信任场景使用）。  </li>
-<li><strong>客户端凭证模式（Client Credentials）</strong>：服务端间互信认证（如内部 API 调用）。  </li>
-<li><strong>PKCE（Proof Key for Code Exchange）</strong>：增强授权码模式，防止移动&#x2F;SPA 应用授权码劫持。</li>
+<li><strong>授权码模式（Authorization Code）</strong>：Web 应用常用，通过授权码中转令牌（最安全）。</li>
+<li><strong>隐式模式（Implicit）</strong>：直接返回令牌（如单页应用），安全性较低，已逐渐被淘汰。</li>
+<li><strong>密码模式（Resource Owner Password Credentials）</strong>：用户直接提供账号密码给客户端（高风险，仅信任场景使用）。</li>
+<li><strong>客户端凭证模式（Client Credentials）</strong>：服务端间互信认证（如内部 API 调用）。</li>
+<li><strong>PKCE（Proof Key for Code Exchange）</strong>：增强授权码模式，防止移动/SPA 应用授权码劫持。</li>
 </ul>
 </li>
-<li><p><strong>其他关键术语</strong>  </p>
+<li>
+<p><strong>其他关键术语</strong></p>
 <ul>
-<li><strong>Scope（权限范围）</strong>：用户授权给客户端的权限粒度（如仅读取头像）。  </li>
-<li><strong>Redirect URI（回调地址）</strong>：授权后跳转的 URL（防钓鱼攻击）。  </li>
-<li><strong>Client ID&#x2F;Secret</strong>：客户端的身份凭证（类似 App 的账号密码）。</li>
+<li><strong>Scope（权限范围）</strong>：用户授权给客户端的权限粒度（如仅读取头像）。</li>
+<li><strong>Redirect URI（回调地址）</strong>：授权后跳转的 URL（防钓鱼攻击）。</li>
+<li><strong>Client ID/Secret</strong>：客户端的身份凭证（类似 App 的账号密码）。</li>
 </ul>
 </li>
 </ol>

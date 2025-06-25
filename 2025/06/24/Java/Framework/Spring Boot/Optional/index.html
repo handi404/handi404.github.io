@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Optional 是 Java 8 引入的一个容器类，位于 java.util 包中，其主要作用是避免直接使用 null，从而减少 NullPointerException 的风险，并使代码在表达“可能不存在值”的场景时更加明确和优雅。下面我们详细介绍 Optional 的作用、常见使用方式以及 .isPresent() 方法的具体用途。  1. Optional 是什么？ 定义：Optional">
+    <meta name="description" content="Optional 是 Java 8 引入的一个容器类，位于 java.util 包中，其主要作用是避免直接使用 null，从而减少 NullPointerException 的风险，并使代码在表达“可能不存在值”的场景时更加明确和优雅。下面我们详细介绍 Optional 的作用、常见使用方式以及 .isPresent() 方法的具体用途。  1. Optional 是什么？   定义：Option">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Optional/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="Optional 是 Java 8 引入的一个容器类，位于 java.util 包中，其主要作用是避免直接使用 null，从而减少 NullPointerException 的风险，并使代码在表达“可能不存在值”的场景时更加明确和优雅。下面我们详细介绍 Optional 的作用、常见使用方式以及 .isPresent() 方法的具体用途。  1. Optional 是什么？ 定义：Optional">
+<meta property="og:description" content="Optional 是 Java 8 引入的一个容器类，位于 java.util 包中，其主要作用是避免直接使用 null，从而减少 NullPointerException 的风险，并使代码在表达“可能不存在值”的场景时更加明确和优雅。下面我们详细介绍 Optional 的作用、常见使用方式以及 .isPresent() 方法的具体用途。  1. Optional 是什么？   定义：Option">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:26.970Z">
 <meta property="article:modified_time" content="2025-03-10T12:12:58.589Z">
@@ -302,118 +302,179 @@
                 
                 <p>Optional 是 Java 8 引入的一个容器类，位于 <code>java.util</code> 包中，其主要作用是避免直接使用 null，从而减少 NullPointerException 的风险，并使代码在表达“可能不存在值”的场景时更加明确和优雅。下面我们详细介绍 Optional 的作用、常见使用方式以及 .isPresent() 方法的具体用途。</p>
 <hr>
-<h2 id="1-Optional-是什么？"><a href="#1-Optional-是什么？" class="headerlink" title="1. Optional 是什么？"></a>1. Optional 是什么？</h2><ul>
-<li><p><strong>定义</strong>：<code>Optional&lt;T&gt;</code> 是一个封装可能为<code>null</code>的值的容器类。它明确表示一个值“可能存在”或“不存在”，强制调用方显式处理空值情况。</p>
+<h2 id="1-Optional-是什么？">1. Optional 是什么？</h2>
+<ul>
+<li>
+<p><strong>定义</strong>：<code>Optional&lt;T&gt;</code> 是一个封装可能为<code>null</code>的值的容器类。它明确表示一个值“可能存在”或“不存在”，强制调用方显式处理空值情况。</p>
 </li>
-<li><p><strong>设计目的</strong>：减少代码中对<code>null</code>的检查，提供更安全的链式操作。</p>
+<li>
+<p><strong>设计目的</strong>：减少代码中对<code>null</code>的检查，提供更安全的链式操作。</p>
 </li>
 </ul>
 <hr>
-<h2 id="2-Optional-的主要作用"><a href="#2-Optional-的主要作用" class="headerlink" title="2. Optional 的主要作用"></a>2. Optional 的主要作用</h2><ul>
+<h2 id="2-Optional-的主要作用">2. Optional 的主要作用</h2>
+<ul>
 <li><strong>明确空值语义</strong>：方法返回<code>Optional</code>时，明确告知调用者结果可能为空。</li>
 <li><strong>避免NPE</strong>：通过链式方法（如<code>map</code>、<code>orElse</code>）替代直接的<code>null</code>检查。</li>
 <li><strong>函数式处理</strong>：支持函数式编程风格，如<code>ifPresent</code>、<code>filter</code>等。</li>
 </ul>
 <hr>
-<h2 id="3-Optional-的常见使用方式"><a href="#3-Optional-的常见使用方式" class="headerlink" title="3. Optional 的常见使用方式"></a>3. Optional 的常见使用方式</h2><h3 id="3-1-创建-Optional-实例"><a href="#3-1-创建-Optional-实例" class="headerlink" title="3.1 创建 Optional 实例"></a>3.1 创建 Optional 实例</h3><ul>
-<li><p><strong>Optional.of(value)</strong><br>  当确定 value 不是 null 时，可以使用该方法。如果 value 为 null，则会抛出 NullPointerException。</p>
+<h2 id="3-Optional-的常见使用方式">3. Optional 的常见使用方式</h2>
+<h3 id="3-1-创建-Optional-实例">3.1 创建 Optional 实例</h3>
+<ul>
+<li>
+<p><strong>Optional.of(value)</strong><br>
+当确定 value 不是 null 时，可以使用该方法。如果 value 为 null，则会抛出 NullPointerException。</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Optional&lt;String&gt; opt = Optional.of(<span class="hljs-string">&quot;Java&quot;</span>);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>Optional.ofNullable(value)</strong><br>  无论 value 是否为 null，都可以安全地创建 Optional。如果 value 为 null，则创建一个空的 Optional。</p>
+<li>
+<p><strong>Optional.ofNullable(value)</strong><br>
+无论 value 是否为 null，都可以安全地创建 Optional。如果 value 为 null，则创建一个空的 Optional。</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Optional&lt;String&gt; optNullable = Optional.ofNullable(possibleNullValue);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>Optional.empty()</strong><br>  显式创建一个空的 Optional 对象。</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Optional&lt;String&gt; emptyOpt = Optional.empty();<br></code></pre></td></tr></table></figure></li>
+<li>
+<p><strong>Optional.empty()</strong><br>
+显式创建一个空的 Optional 对象。</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Optional&lt;String&gt; emptyOpt = Optional.empty();<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
-<h3 id="3-2-获取-Optional-中的值"><a href="#3-2-获取-Optional-中的值" class="headerlink" title="3.2 获取 Optional 中的值"></a>3.2 获取 Optional 中的值</h3><ul>
-<li><p><strong>get()</strong><br>  如果值存在，返回值；如果值不存在，则会抛出 NoSuchElementException。因此，在使用 get() 前通常需要先判断。</p>
+<h3 id="3-2-获取-Optional-中的值">3.2 获取 Optional 中的值</h3>
+<ul>
+<li>
+<p><strong>get()</strong><br>
+如果值存在，返回值；如果值不存在，则会抛出 NoSuchElementException。因此，在使用 get() 前通常需要先判断。</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (opt.isPresent()) &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> opt.get();<br>    System.out.println(value);<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>orElse(T other)</strong><br>  如果存在值，则返回该值；否则返回一个默认值。</p>
+<li>
+<p><strong>orElse(T other)</strong><br>
+如果存在值，则返回该值；否则返回一个默认值。</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> opt.orElse(<span class="hljs-string">&quot;Default Value&quot;</span>);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>orElseGet(Supplier<code>&lt;? extends T&gt;</code> other)</strong><br>  如果存在值，则返回该值；否则通过提供的 Supplier 获取一个默认值。</p>
+<li>
+<p><strong>orElseGet(Supplier<code>&lt;? extends T&gt;</code> other)</strong><br>
+如果存在值，则返回该值；否则通过提供的 Supplier 获取一个默认值。</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> opt.orElseGet(() -&gt; <span class="hljs-string">&quot;Default from Supplier&quot;</span>);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>orElseThrow() &#x2F; orElseThrow(Supplier<code>&lt;? extends X&gt;</code> exceptionSupplier)</strong><br>  如果存在值，则返回该值；否则抛出异常。</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> opt.orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Value not present&quot;</span>));<br></code></pre></td></tr></table></figure></li>
+<li>
+<p><strong>orElseThrow() / orElseThrow(Supplier<code>&lt;? extends X&gt;</code> exceptionSupplier)</strong><br>
+如果存在值，则返回该值；否则抛出异常。</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> opt.orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Value not present&quot;</span>));<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
-<h3 id="3-3-其他常用方法"><a href="#3-3-其他常用方法" class="headerlink" title="3.3 其他常用方法"></a>3.3 其他常用方法</h3><ul>
-<li><p><strong>ifPresent(Consumer<code>&lt;? super T&gt;</code> action)</strong><br>  如果值存在，则执行给定的 Consumer 操作。</p>
+<h3 id="3-3-其他常用方法">3.3 其他常用方法</h3>
+<ul>
+<li>
+<p><strong>ifPresent(Consumer<code>&lt;? super T&gt;</code> action)</strong><br>
+如果值存在，则执行给定的 Consumer 操作。</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">opt.ifPresent(value -&gt; System.out.println(<span class="hljs-string">&quot;Value is: &quot;</span> + value));<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>map(Function<code>&lt;? super T, ? extends U&gt;</code> mapper)</strong><br>  如果值存在，应用映射函数后返回一个 Optional 包装后的结果，否则返回一个空的 Optional。</p>
+<li>
+<p><strong>map(Function<code>&lt;? super T, ? extends U&gt;</code> mapper)</strong><br>
+如果值存在，应用映射函数后返回一个 Optional 包装后的结果，否则返回一个空的 Optional。</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Optional&lt;Integer&gt; lengthOpt = opt.map(String::length);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>flatMap(Function<code>&lt;? super T, Optional&gt;</code> mapper)</strong><br>  类似于 map，不过映射函数返回的是 Optional，本身不会再包裹一层 Optional。</p>
+<li>
+<p><strong>flatMap(Function<code>&lt;? super T, Optional&gt;</code> mapper)</strong><br>
+类似于 map，不过映射函数返回的是 Optional，本身不会再包裹一层 Optional。</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Optional&lt;String&gt; upperOpt = opt.flatMap(value -&gt; Optional.of(value.toUpperCase()));<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>filter(Predicate<code>&lt;? super T&gt;</code> predicate)</strong><br>  如果值存在且满足断言条件，则返回包含该值的 Optional，否则返回一个空的 Optional。</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Optional&lt;String&gt; longStringOpt = opt.filter(value -&gt; value.length() &gt; <span class="hljs-number">3</span>);<br></code></pre></td></tr></table></figure></li>
+<li>
+<p><strong>filter(Predicate<code>&lt;? super T&gt;</code> predicate)</strong><br>
+如果值存在且满足断言条件，则返回包含该值的 Optional，否则返回一个空的 Optional。</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">Optional&lt;String&gt; longStringOpt = opt.filter(value -&gt; value.length() &gt; <span class="hljs-number">3</span>);<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 <hr>
-<h2 id="4-isPresent-方法的作用"><a href="#4-isPresent-方法的作用" class="headerlink" title="4. .isPresent() 方法的作用"></a>4. .isPresent() 方法的作用</h2><ul>
-<li><p><strong>判断值是否存在</strong>：<code>isPresent()</code> 方法用于检查 Optional 中是否包含非空值。如果存在，返回 true；否则返回 false。</p>
+<h2 id="4-isPresent-方法的作用">4. .isPresent() 方法的作用</h2>
+<ul>
+<li>
+<p><strong>判断值是否存在</strong>：<code>isPresent()</code> 方法用于检查 Optional 中是否包含非空值。如果存在，返回 true；否则返回 false。</p>
 </li>
-<li><p><strong>与 get() 搭配使用</strong>：在调用 <code>get()</code> 方法之前，可以先用 <code>isPresent()</code> 进行判断，确保不会因为 Optional 为空而抛出异常。</p>
+<li>
+<p><strong>与 get() 搭配使用</strong>：在调用 <code>get()</code> 方法之前，可以先用 <code>isPresent()</code> 进行判断，确保不会因为 Optional 为空而抛出异常。</p>
 </li>
-<li><p><strong>示例</strong>：</p>
+<li>
+<p><strong>示例</strong>：</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">Optional&lt;String&gt; opt = Optional.ofNullable(getValue());<br><span class="hljs-keyword">if</span> (opt.isPresent()) &#123;<br>    System.out.println(<span class="hljs-string">&quot;Optional 中的值为：&quot;</span> + opt.get());<br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    System.out.println(<span class="hljs-string">&quot;Optional 为空&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>注意事项</strong>：虽然 <code>isPresent()</code> 能帮助判断是否有值，但在很多场景下可以直接使用 <code>ifPresent()</code> 方法来处理值存在时的逻辑，避免手动调用 <code>get()</code>，从而让代码更具函数式风格和更安全。</p>
+<li>
+<p><strong>注意事项</strong>：虽然 <code>isPresent()</code> 能帮助判断是否有值，但在很多场景下可以直接使用 <code>ifPresent()</code> 方法来处理值存在时的逻辑，避免手动调用 <code>get()</code>，从而让代码更具函数式风格和更安全。</p>
 </li>
 </ul>
 <hr>
-<h2 id="5-Optional-的最佳实践"><a href="#5-Optional-的最佳实践" class="headerlink" title="5. Optional 的最佳实践"></a>5. Optional 的最佳实践</h2><ul>
+<h2 id="5-Optional-的最佳实践">5. Optional 的最佳实践</h2>
+<ul>
 <li><strong>尽量避免直接调用 get()</strong>：在使用 Optional 时，优先考虑使用 orElse、orElseGet、ifPresent 等方法处理值的存在与否，避免手动调用 get()。</li>
 <li><strong>不要在字段上使用 Optional</strong>：Optional 主要用于方法返回值，不建议将其作为类的字段，这样可能导致不必要的开销和复杂性。</li>
 <li><strong>保持链式调用</strong>：Optional 提供了丰富的链式操作方法，利用这些方法可以写出更加简洁、易读的代码。</li>
 <li><strong>表达明确的 API 意图</strong>：返回 Optional 的方法可以明确告知调用者值可能不存在，这对于 API 的设计和使用都有积极作用。</li>
 </ul>
 <hr>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>Java 中的 Optional 类作为一个容器，用于封装可能为 null 的值，从而显式地处理缺失数据的问题。它不仅可以减少传统的 null 检查，还支持一系列函数式操作方法，使得代码更加简洁、清晰。其中，.isPresent() 方法主要用于判断 Optional 中是否存在值，通常与 .get() 或 ifPresent() 搭配使用。总之，Optional 提倡一种更安全和表达力更强的编码风格，在现代 Java 开发中具有重要作用。</p>
+<h2 id="总结">总结</h2>
+<p>Java 中的 Optional 类作为一个容器，用于封装可能为 null 的值，从而显式地处理缺失数据的问题。它不仅可以减少传统的 null 检查，还支持一系列函数式操作方法，使得代码更加简洁、清晰。其中，.isPresent() 方法主要用于判断 Optional 中是否存在值，通常与 .get() 或 ifPresent() 搭配使用。总之，Optional 提倡一种更安全和表达力更强的编码风格，在现代 Java 开发中具有重要作用。</p>
 <hr>
-<h2 id="在repository层与service层交互的使用"><a href="#在repository层与service层交互的使用" class="headerlink" title="在repository层与service层交互的使用"></a>在repository层与service层交互的使用</h2><p>在实际开发中，尤其是使用 Spring Data JPA 等框架时，repository 层常常通过 Optional 来表示查询结果可能为空，而 service 层则负责对这些 Optional 进行业务逻辑处理。下面详细介绍两层如何协作使用 Optional。</p>
+<h2 id="在repository层与service层交互的使用">在repository层与service层交互的使用</h2>
+<p>在实际开发中，尤其是使用 Spring Data JPA 等框架时，repository 层常常通过 Optional 来表示查询结果可能为空，而 service 层则负责对这些 Optional 进行业务逻辑处理。下面详细介绍两层如何协作使用 Optional。</p>
 <hr>
-<h2 id="1-Repository-层中使用-Optional"><a href="#1-Repository-层中使用-Optional" class="headerlink" title="1. Repository 层中使用 Optional"></a>1. Repository 层中使用 Optional</h2><h3 id="a-数据查询返回-Optional"><a href="#a-数据查询返回-Optional" class="headerlink" title="a. 数据查询返回 Optional"></a>a. 数据查询返回 Optional</h3><ul>
+<h2 id="1-Repository-层中使用-Optional">1. Repository 层中使用 Optional</h2>
+<h3 id="a-数据查询返回-Optional">a. 数据查询返回 Optional</h3>
+<ul>
 <li><strong>目的</strong>：在 repository 层（如 Spring Data JPA 的 Repository 接口）中，使用 Optional 表示数据查询结果可能为空。这种设计使得 API 调用者明确知道：返回的对象可能不存在，从而需要进行相应的处理。</li>
-<li><strong>常见方法</strong>：<ul>
-<li><p><code>findById(ID id)</code>：通常返回 <code>Optional&lt;T&gt;</code>，例如：</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;User, Long&gt; &#123;<br>    <span class="hljs-comment">// 根据ID查询返回 Optional&lt;User&gt;</span><br>    Optional&lt;User&gt; <span class="hljs-title function_">findById</span><span class="hljs-params">(Long id)</span>;<br><br>    <span class="hljs-comment">// 自定义查询方法，同样返回 Optional</span><br>    Optional&lt;User&gt; <span class="hljs-title function_">findByEmail</span><span class="hljs-params">(String email)</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><strong>常见方法</strong>：
+<ul>
+<li>
+<p><code>findById(ID id)</code>：通常返回 <code>Optional&lt;T&gt;</code>，例如：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;User, Long&gt; &#123;<br>    <span class="hljs-comment">// 根据ID查询返回 Optional&lt;User&gt;</span><br>    Optional&lt;User&gt; <span class="hljs-title function_">findById</span><span class="hljs-params">(Long id)</span>;<br><br>    <span class="hljs-comment">// 自定义查询方法，同样返回 Optional</span><br>    Optional&lt;User&gt; <span class="hljs-title function_">findByEmail</span><span class="hljs-params">(String email)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 </ul>
-<h3 id="b-好处"><a href="#b-好处" class="headerlink" title="b. 好处"></a>b. 好处</h3><ul>
+<h3 id="b-好处">b. 好处</h3>
+<ul>
 <li><strong>避免 null 检查</strong>：调用者不必手动判断 null，而是通过 Optional 提供的方法（如 orElse、orElseThrow）来处理缺失值。</li>
 <li><strong>表达意图</strong>：明确告诉使用者，该方法可能找不到对应的数据，迫使使用者考虑“数据不存在”的场景。</li>
 </ul>
 <hr>
-<h2 id="2-Service-层中处理-Optional"><a href="#2-Service-层中处理-Optional" class="headerlink" title="2. Service 层中处理 Optional"></a>2. Service 层中处理 Optional</h2><h3 id="a-业务逻辑中的处理"><a href="#a-业务逻辑中的处理" class="headerlink" title="a. 业务逻辑中的处理"></a>a. 业务逻辑中的处理</h3><p>在 service 层，我们通常会调用 repository 层的方法，得到一个 Optional 对象，然后根据业务需求做如下处理：</p>
+<h2 id="2-Service-层中处理-Optional">2. Service 层中处理 Optional</h2>
+<h3 id="a-业务逻辑中的处理">a. 业务逻辑中的处理</h3>
+<p>在 service 层，我们通常会调用 repository 层的方法，得到一个 Optional 对象，然后根据业务需求做如下处理：</p>
 <ul>
-<li><p><strong>存在时直接处理</strong><br>  使用 <code>ifPresent</code> 或 <code>map</code>、<code>flatMap</code> 进行链式操作：</p>
+<li>
+<p><strong>存在时直接处理</strong><br>
+使用 <code>ifPresent</code> 或 <code>map</code>、<code>flatMap</code> 进行链式操作：</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processUserByEmail</span><span class="hljs-params">(String email)</span> &#123;<br>    userRepository.findByEmail(email)<br>        .ifPresent(user -&gt; &#123;<br>            <span class="hljs-comment">// 处理存在的用户逻辑</span><br>            System.out.println(<span class="hljs-string">&quot;Found user: &quot;</span> + user.getName());<br>        &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>不存在时抛出异常</strong><br>  业务上可能要求数据必须存在，此时可以使用 <code>orElseThrow</code>：</p>
+<li>
+<p><strong>不存在时抛出异常</strong><br>
+业务上可能要求数据必须存在，此时可以使用 <code>orElseThrow</code>：</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> User <span class="hljs-title function_">findUserByEmail</span><span class="hljs-params">(String email)</span> &#123;<br>    <span class="hljs-keyword">return</span> userRepository.findByEmail(email)<br>        .orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">NotFoundException</span>(<span class="hljs-string">&quot;User with email &quot;</span> + email + <span class="hljs-string">&quot; not found&quot;</span>));<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>返回默认值</strong><br>  当数据缺失时，可以提供默认值：</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> User <span class="hljs-title function_">getUserOrDefault</span><span class="hljs-params">(Long id)</span> &#123;<br>    <span class="hljs-keyword">return</span> userRepository.findById(id)<br>        .orElse(<span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-string">&quot;default&quot;</span>, <span class="hljs-string">&quot;default@example.com&quot;</span>));<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>
+<p><strong>返回默认值</strong><br>
+当数据缺失时，可以提供默认值：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> User <span class="hljs-title function_">getUserOrDefault</span><span class="hljs-params">(Long id)</span> &#123;<br>    <span class="hljs-keyword">return</span> userRepository.findById(id)<br>        .orElse(<span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-string">&quot;default&quot;</span>, <span class="hljs-string">&quot;default@example.com&quot;</span>));<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
-<h3 id="b-避免滥用-isPresent-和-get"><a href="#b-避免滥用-isPresent-和-get" class="headerlink" title="b. 避免滥用 .isPresent() 和 .get()"></a>b. 避免滥用 .isPresent() 和 .get()</h3><ul>
+<h3 id="b-避免滥用-isPresent-和-get">b. 避免滥用 .isPresent() 和 .get()</h3>
+<ul>
 <li><strong>推荐模式</strong>：尽量使用 Optional 提供的链式 API，如 <code>orElseThrow</code>、<code>ifPresent</code> 等，而不是先调用 <code>.isPresent()</code> 再调用 <code>.get()</code>。这样能让代码更简洁、减少出错机会。</li>
-<li><strong>示例对比</strong>：<ul>
-<li><p><strong>不推荐</strong>：</p>
+<li><strong>示例对比</strong>：
+<ul>
+<li>
+<p><strong>不推荐</strong>：</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java">Optional&lt;User&gt; optionalUser = userRepository.findById(id);<br><span class="hljs-keyword">if</span> (optionalUser.isPresent()) &#123;<br>    <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> optionalUser.get();<br>    <span class="hljs-comment">// 处理 user</span><br>&#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-comment">// 处理找不到的情况</span><br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>推荐</strong>：</p>
-  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userRepository.findById(id)<br>    .orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">NotFoundException</span>(<span class="hljs-string">&quot;User not found&quot;</span>));<br><span class="hljs-comment">// 处理 user</span><br></code></pre></td></tr></table></figure></li>
+<li>
+<p><strong>推荐</strong>：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userRepository.findById(id)<br>    .orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">NotFoundException</span>(<span class="hljs-string">&quot;User not found&quot;</span>));<br><span class="hljs-comment">// 处理 user</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 </ul>
 <hr>
-<h2 id="3-实际场景中的交互示例"><a href="#3-实际场景中的交互示例" class="headerlink" title="3. 实际场景中的交互示例"></a>3. 实际场景中的交互示例</h2><p>假设我们在一个用户管理系统中，通过 UserRepository 查询用户，然后在 UserService 中处理查询结果：</p>
+<h2 id="3-实际场景中的交互示例">3. 实际场景中的交互示例</h2>
+<p>假设我们在一个用户管理系统中，通过 UserRepository 查询用户，然后在 UserService 中处理查询结果：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Repository 层：接口方法返回 Optional&lt;User&gt;</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;User, Long&gt; &#123;<br>    Optional&lt;User&gt; <span class="hljs-title function_">findByEmail</span><span class="hljs-params">(String email)</span>;<br>&#125;<br><br><span class="hljs-comment">// Service 层：调用 repository 方法，并处理 Optional 返回值</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserRepository userRepository;<br><br>    <span class="hljs-comment">// 构造注入</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">UserService</span><span class="hljs-params">(UserRepository userRepository)</span> &#123;<br>        <span class="hljs-built_in">this</span>.userRepository = userRepository;<br>    &#125;<br><br>    <span class="hljs-comment">// 根据邮箱查询用户，如果不存在则抛出异常</span><br>    <span class="hljs-keyword">public</span> User <span class="hljs-title function_">getUserByEmail</span><span class="hljs-params">(String email)</span> &#123;<br>        <span class="hljs-keyword">return</span> userRepository.findByEmail(email)<br>            .orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">NotFoundException</span>(<span class="hljs-string">&quot;User with email &quot;</span> + email + <span class="hljs-string">&quot; not found&quot;</span>));<br>    &#125;<br><br>    <span class="hljs-comment">// 更新用户信息（仅当用户存在时更新）</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateUserName</span><span class="hljs-params">(String email, String newName)</span> &#123;<br>        userRepository.findByEmail(email)<br>            .ifPresent(user -&gt; &#123;<br>                user.setName(newName);<br>                userRepository.save(user);<br>            &#125;);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>在上面的例子中：</p>
 <ul>
 <li><code>findByEmail</code> 返回 Optional，让 service 层可以通过链式调用决定后续逻辑。</li>
@@ -421,7 +482,8 @@
 <li><code>ifPresent</code> 用于可选操作，仅在数据存在时执行更新操作。</li>
 </ul>
 <hr>
-<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><ul>
+<h2 id="4-总结">4. 总结</h2>
+<ul>
 <li><strong>Repository 层</strong>：使用 Optional 明确表达数据可能为空的情况，提高 API 的可读性和健壮性。</li>
 <li><strong>Service 层</strong>：利用 Optional 的链式 API（如 orElseThrow、ifPresent 等），编写更加简洁、明确的业务逻辑，避免繁琐的 null 检查。</li>
 <li><strong>最佳实践</strong>：在 service 层尽量避免直接调用 isPresent() 和 get()，而应采用 orElse、orElseGet 或 ifPresent 等方法，使代码具备更好的可读性和安全性。</li>
@@ -429,25 +491,29 @@
 <p>通过这种方式，repository 和 service 层之间的交互不仅能够提高代码质量，还能减少因 null 值引发的潜在问题，从而让整体应用更加健壮和易于维护。</p>
 <p>在 repository 层返回 Optional 是一种常见且推荐的做法，但并非所有场景下都适用。下面详细说明其优缺点和适用场景：</p>
 <hr>
-<h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<h3 id="优点">优点</h3>
+<ul>
 <li><strong>明确表达“可能不存在”</strong>：当查询方法返回单个实体时，用 Optional 能够清晰地表明该方法的结果可能为空，从而迫使调用者显式处理这种情况，减少了 NullPointerException 的风险。</li>
 <li><strong>链式操作与函数式编程</strong>：Optional 提供了一系列便捷的方法（如 orElse、ifPresent 等），可以简化业务层的逻辑处理。</li>
 <li><strong>API 语义明确</strong>：方法签名中明确返回 Optional，能让调用者一目了然地知道数据可能不存在，提升了代码的可读性和维护性。</li>
 </ul>
 <hr>
-<h3 id="缺点与注意事项"><a href="#缺点与注意事项" class="headerlink" title="缺点与注意事项"></a>缺点与注意事项</h3><ul>
+<h3 id="缺点与注意事项">缺点与注意事项</h3>
+<ul>
 <li><strong>过度包装可能导致冗余</strong>：对于返回集合或列表的查询，通常直接返回空集合比包装 Optional 更合适；Optional 更多适用于单个对象的情况。</li>
-<li><strong>使用不当可能增加复杂度</strong>：如果每个查询都使用 Optional，可能会在业务逻辑中频繁解包（如过度调用 isPresent&#x2F;get 或嵌套 Optional），反而使代码变得冗长。</li>
+<li><strong>使用不当可能增加复杂度</strong>：如果每个查询都使用 Optional，可能会在业务逻辑中频繁解包（如过度调用 isPresent/get 或嵌套 Optional），反而使代码变得冗长。</li>
 <li><strong>方法参数中不建议使用 Optional</strong>：Optional 应主要用于返回值，而不是作为方法参数，以避免滥用。</li>
 </ul>
 <hr>
-<h3 id="实际建议"><a href="#实际建议" class="headerlink" title="实际建议"></a>实际建议</h3><ul>
+<h3 id="实际建议">实际建议</h3>
+<ul>
 <li><strong>单个对象的查询</strong>：对于返回单个实体的方法（例如 findById、findByEmail），建议使用 Optional。这样可以明确表达“找不到数据”的语义，并鼓励调用者使用 orElseThrow、orElse 等方法进行处理。</li>
 <li><strong>集合类型的查询</strong>：对于返回多个实体的方法，建议直接返回空集合，而不是 Optional<code>&lt;List&gt;</code>，因为空集合已经足够表达“没有结果”的含义。</li>
 <li><strong>平衡清晰度与简洁性</strong>：Optional 能提升 API 的自文档性，但也要注意避免过度链式调用或解包，确保业务逻辑清晰可读。</li>
 </ul>
 <hr>
-<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>总体来说，对于 repository 层返回单个结果的查询，使用 Optional 是一种比较好的实践，因为它能够显式表达数据可能不存在，并引导调用者正确处理空值情况。但在返回集合数据或其他场景中，则应根据实际情况决定是否使用 Optional。关键在于根据不同的业务场景选择最合适的返回类型，从而既保证代码的健壮性，又保持代码简洁和易读。</p>
+<h3 id="总结-2">总结</h3>
+<p>总体来说，对于 repository 层返回单个结果的查询，使用 Optional 是一种比较好的实践，因为它能够显式表达数据可能不存在，并引导调用者正确处理空值情况。但在返回集合数据或其他场景中，则应根据实际情况决定是否使用 Optional。关键在于根据不同的业务场景选择最合适的返回类型，从而既保证代码的健壮性，又保持代码简洁和易读。</p>
 
                 
               </div>

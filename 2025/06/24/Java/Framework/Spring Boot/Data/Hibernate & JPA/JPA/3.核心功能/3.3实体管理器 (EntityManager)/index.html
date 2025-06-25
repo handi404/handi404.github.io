@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="好的，我们来深入探讨 JPA 的核心接口——实体管理器 (EntityManager)，以及与之密切相关的实体生命周期状态和一级缓存（持久化上下文）。理解这部分内容对于掌握 JPA 的工作机制和编写高效的持久化代码至关重要。  3.3 实体管理器 (EntityManager)EntityManager 是应用程序与 JPA 持久化层交互的主要接口。它负责管理实体的生命周期、执行数据库操作、以及与">
+    <meta name="description" content="好的，我们来深入探讨 JPA 的核心接口——实体管理器 (EntityManager)，以及与之密切相关的实体生命周期状态和一级缓存（持久化上下文）。理解这部分内容对于掌握 JPA 的工作机制和编写高效的持久化代码至关重要。  3.3 实体管理器 (EntityManager) EntityManager 是应用程序与 JPA 持久化层交互的主要接口。它负责管理实体的生命周期、执行数据库操作、以及">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.3%E5%AE%9E%E4%BD%93%E7%AE%A1%E7%90%86%E5%99%A8%20(EntityManager)/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="好的，我们来深入探讨 JPA 的核心接口——实体管理器 (EntityManager)，以及与之密切相关的实体生命周期状态和一级缓存（持久化上下文）。理解这部分内容对于掌握 JPA 的工作机制和编写高效的持久化代码至关重要。  3.3 实体管理器 (EntityManager)EntityManager 是应用程序与 JPA 持久化层交互的主要接口。它负责管理实体的生命周期、执行数据库操作、以及与">
+<meta property="og:description" content="好的，我们来深入探讨 JPA 的核心接口——实体管理器 (EntityManager)，以及与之密切相关的实体生命周期状态和一级缓存（持久化上下文）。理解这部分内容对于掌握 JPA 的工作机制和编写高效的持久化代码至关重要。  3.3 实体管理器 (EntityManager) EntityManager 是应用程序与 JPA 持久化层交互的主要接口。它负责管理实体的生命周期、执行数据库操作、以及">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.046Z">
 <meta property="article:modified_time" content="2025-06-16T08:35:55.012Z">
@@ -302,26 +302,33 @@
                 
                 <p>好的，我们来深入探讨 JPA 的核心接口——<strong>实体管理器 (EntityManager)</strong>，以及与之密切相关的实体生命周期状态和一级缓存（持久化上下文）。理解这部分内容对于掌握 JPA 的工作机制和编写高效的持久化代码至关重要。</p>
 <hr>
-<h4 id="3-3-实体管理器-EntityManager"><a href="#3-3-实体管理器-EntityManager" class="headerlink" title="3.3 实体管理器 (EntityManager)"></a>3.3 实体管理器 (EntityManager)</h4><p><code>EntityManager</code> 是应用程序与 JPA 持久化层交互的主要接口。它负责管理实体的生命周期、执行数据库操作、以及与持久化上下文（一级缓存）进行交互。</p>
+<h4 id="3-3-实体管理器-EntityManager">3.3 实体管理器 (EntityManager)</h4>
+<p><code>EntityManager</code> 是应用程序与 JPA 持久化层交互的主要接口。它负责管理实体的生命周期、执行数据库操作、以及与持久化上下文（一级缓存）进行交互。</p>
 <p><strong>获取 EntityManager:</strong></p>
 <ul>
-<li><strong>在 Java EE &#x2F; Jakarta EE 环境中</strong>: 通常通过 <code>@PersistenceContext</code> 注解进行依赖注入。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Stateless</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyServiceBean</span> &#123;<br>    <span class="hljs-meta">@PersistenceContext(unitName = &quot;myPersistenceUnit&quot;)</span> <span class="hljs-comment">// 注入容器管理的 EntityManager</span><br>    <span class="hljs-keyword">private</span> EntityManager em;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
-<li><strong>在 Java SE 环境或 Spring 中 (非 Spring Data JPA Repository 场景)</strong>:<ul>
-<li>通过 <code>EntityManagerFactory</code> 创建：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">EntityManagerFactory</span> <span class="hljs-variable">emf</span> <span class="hljs-operator">=</span> Persistence.createEntityManagerFactory(<span class="hljs-string">&quot;myPersistenceUnit&quot;</span>);<br><span class="hljs-type">EntityManager</span> <span class="hljs-variable">em</span> <span class="hljs-operator">=</span> emf.createEntityManager(); <span class="hljs-comment">// 应用管理的 EntityManager</span><br><span class="hljs-comment">// ... 操作 em ...</span><br>em.close();<br>emf.close();<br></code></pre></td></tr></table></figure></li>
-<li>在 Spring 中，如果配置了 JPA，可以直接注入 <code>EntityManager</code> (通常是线程安全的代理)。Spring Data JPA 的 Repository 内部会使用 <code>EntityManager</code>。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Repository</span> <span class="hljs-comment">// 或 @Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCustomJpaDao</span> &#123;<br>    <span class="hljs-meta">@PersistenceContext</span> <span class="hljs-comment">// 或 @Autowired (取决于配置)</span><br>    <span class="hljs-keyword">private</span> EntityManager entityManager;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><strong>在 Java EE / Jakarta EE 环境中</strong>: 通常通过 <code>@PersistenceContext</code> 注解进行依赖注入。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Stateless</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyServiceBean</span> &#123;<br>    <span class="hljs-meta">@PersistenceContext(unitName = &quot;myPersistenceUnit&quot;)</span> <span class="hljs-comment">// 注入容器管理的 EntityManager</span><br>    <span class="hljs-keyword">private</span> EntityManager em;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>在 Java SE 环境或 Spring 中 (非 Spring Data JPA Repository 场景)</strong>:
+<ul>
+<li>通过 <code>EntityManagerFactory</code> 创建：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">EntityManagerFactory</span> <span class="hljs-variable">emf</span> <span class="hljs-operator">=</span> Persistence.createEntityManagerFactory(<span class="hljs-string">&quot;myPersistenceUnit&quot;</span>);<br><span class="hljs-type">EntityManager</span> <span class="hljs-variable">em</span> <span class="hljs-operator">=</span> emf.createEntityManager(); <span class="hljs-comment">// 应用管理的 EntityManager</span><br><span class="hljs-comment">// ... 操作 em ...</span><br>em.close();<br>emf.close();<br></code></pre></td></tr></table></figure>
+</li>
+<li>在 Spring 中，如果配置了 JPA，可以直接注入 <code>EntityManager</code> (通常是线程安全的代理)。Spring Data JPA 的 Repository 内部会使用 <code>EntityManager</code>。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Repository</span> <span class="hljs-comment">// 或 @Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCustomJpaDao</span> &#123;<br>    <span class="hljs-meta">@PersistenceContext</span> <span class="hljs-comment">// 或 @Autowired (取决于配置)</span><br>    <span class="hljs-keyword">private</span> EntityManager entityManager;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 </ul>
 <p><strong>EntityManager 的类型：</strong></p>
 <ol>
-<li><strong>容器管理的 EntityManager (Container-Managed EntityManager)</strong>:<ul>
-<li>由 Java EE&#x2F;Jakarta EE 容器 (如应用服务器) 或 Spring 容器创建和管理其生命周期。</li>
+<li><strong>容器管理的 EntityManager (Container-Managed EntityManager)</strong>:
+<ul>
+<li>由 Java EE/Jakarta EE 容器 (如应用服务器) 或 Spring 容器创建和管理其生命周期。</li>
 <li>通常通过依赖注入 (<code>@PersistenceContext</code>) 获取。</li>
 <li>其生命周期与事务绑定 (JTA 事务或 Spring 管理的事务)。同一个事务中获取的 <code>EntityManager</code> 通常是同一个底层实例或共享同一个持久化上下文。</li>
 <li>开发者不需要手动关闭它。</li>
 </ul>
 </li>
-<li><strong>应用管理的 EntityManager (Application-Managed EntityManager)</strong>:<ul>
+<li><strong>应用管理的 EntityManager (Application-Managed EntityManager)</strong>:
+<ul>
 <li>由应用程序代码通过 <code>EntityManagerFactory.createEntityManager()</code> 显式创建和关闭。</li>
 <li>开发者需要负责其生命周期管理，包括在不再需要时调用 <code>em.close()</code>。</li>
 <li>通常用于 Java SE 环境或需要更细粒度控制 <code>EntityManager</code> 生命周期的场景。</li>
@@ -329,12 +336,15 @@
 </li>
 </ol>
 <p>在 Spring Boot + Spring Data JPA 的环境中，你通常会与<strong>容器管理的 <code>EntityManager</code></strong> 打交道，尽管大部分时候你可能直接使用 Spring Data JPA Repository 而不直接操作 <code>EntityManager</code>。</p>
-<h5 id="3-3-1-实体生命周期状态-Entity-Lifecycle-States"><a href="#3-3-1-实体生命周期状态-Entity-Lifecycle-States" class="headerlink" title="3.3.1 实体生命周期状态 (Entity Lifecycle States)"></a>3.3.1 实体生命周期状态 (Entity Lifecycle States)</h5><p>JPA 实体在其生命周期中可以处于以下四种主要状态：</p>
+<h5 id="3-3-1-实体生命周期状态-Entity-Lifecycle-States">3.3.1 实体生命周期状态 (Entity Lifecycle States)</h5>
+<p>JPA 实体在其生命周期中可以处于以下四种主要状态：</p>
 <ol>
-<li><p><strong>New (新建 &#x2F; 瞬时 &#x2F; Transient)</strong>:</p>
+<li>
+<p><strong>New (新建 / 瞬时 / Transient)</strong>:</p>
 <ul>
 <li><strong>定义</strong>: 一个新创建的实体对象，尚未与任何持久化上下文关联，数据库中也没有对应的记录。</li>
-<li><strong>特点</strong>:<ul>
+<li><strong>特点</strong>:
+<ul>
 <li>没有持久化标识 (ID 通常为 <code>null</code>，除非手动设置了且非数据库生成)。</li>
 <li>对它的修改不会被 JPA 自动同步到数据库。</li>
 <li>如果应用不再引用它，它会被垃圾回收器回收。</li>
@@ -343,16 +353,19 @@
 <li><strong>如何进入此状态</strong>: 通过 <code>new</code> 关键字创建实体对象时，例如 <code>User user = new User();</code>。</li>
 </ul>
 </li>
-<li><p><strong>Managed (托管 &#x2F; 持久化)</strong>:</p>
+<li>
+<p><strong>Managed (托管 / 持久化)</strong>:</p>
 <ul>
 <li><strong>定义</strong>: 实体对象已经与一个活动的持久化上下文关联，并且其状态由 <code>EntityManager</code> 跟踪。数据库中通常有（或将要有）对应的记录。</li>
-<li><strong>特点</strong>:<ul>
+<li><strong>特点</strong>:
+<ul>
 <li>拥有持久化标识 (ID)。</li>
 <li><strong>对 Managed 状态实体的任何修改 (在其 setter 方法被调用后，且在事务提交前) 会被 JPA 自动检测到，并在事务提交时自动同步到数据库 (无需显式调用 <code>update</code> 方法，这称为“自动脏检查” Automatic Dirty Checking)。</strong></li>
 <li>由 <code>EntityManager.find()</code>, <code>getReference()</code>, <code>persist()</code> 操作后，或 JPQL 查询返回的实体都处于 Managed 状态。</li>
 </ul>
 </li>
-<li><strong>如何进入此状态</strong>:<ul>
+<li><strong>如何进入此状态</strong>:
+<ul>
 <li>调用 <code>entityManager.persist(entity)</code> (将 New 状态的实体变为 Managed)。</li>
 <li>调用 <code>entityManager.merge(entity)</code> (如果实体是 Detached，会返回一个新的 Managed 实例；如果是 New，则行为类似 <code>persist</code>)。</li>
 <li>通过 <code>entityManager.find(EntityClass.class, id)</code> 或 <code>entityManager.getReference(EntityClass.class, id)</code> 从数据库加载实体。</li>
@@ -361,16 +374,19 @@
 </li>
 </ul>
 </li>
-<li><p><strong>Detached (游离 &#x2F; 离线)</strong>:</p>
+<li>
+<p><strong>Detached (游离 / 离线)</strong>:</p>
 <ul>
 <li><strong>定义</strong>: 实体对象曾经处于 Managed 状态，但其关联的持久化上下文已经关闭，或者实体被显式地从持久化上下文中分离。</li>
-<li><strong>特点</strong>:<ul>
+<li><strong>特点</strong>:
+<ul>
 <li>拥有持久化标识 (ID)。</li>
 <li>对它的修改不会被 JPA 自动同步到数据库。</li>
 <li>可以被传递到应用的其他层 (如表现层)，或者序列化后传输。</li>
 </ul>
 </li>
-<li><strong>如何进入此状态</strong>:<ul>
+<li><strong>如何进入此状态</strong>:
+<ul>
 <li>当包含该实体的持久化上下文 (通常由 <code>EntityManager</code> 代表) 关闭时。</li>
 <li>调用 <code>entityManager.detach(entity)</code> 将特定实体从上下文中分离。</li>
 <li>调用 <code>entityManager.clear()</code> 清空整个持久化上下文，所有托管实体变为 Detached。</li>
@@ -379,16 +395,19 @@
 </li>
 </ul>
 </li>
-<li><p><strong>Removed (已删除)</strong>:</p>
+<li>
+<p><strong>Removed (已删除)</strong>:</p>
 <ul>
 <li><strong>定义</strong>: 实体对象已经与持久化上下文关联，并且被标记为待删除。</li>
-<li><strong>特点</strong>:<ul>
+<li><strong>特点</strong>:
+<ul>
 <li>拥有持久化标识 (ID)。</li>
 <li>在事务提交时，数据库中对应的记录将被删除。</li>
 <li>一旦事务提交，实体将不再被管理。</li>
 </ul>
 </li>
-<li><strong>如何进入此状态</strong>:<ul>
+<li><strong>如何进入此状态</strong>:
+<ul>
 <li>对一个 Managed 状态的实体调用 <code>entityManager.remove(entity)</code>。</li>
 </ul>
 </li>
@@ -397,13 +416,15 @@
 </ol>
 <p><strong>状态转换图 (简化)：</strong></p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs stylus">        new <span class="hljs-built_in">Entity</span>()<br>             │<br>             ▼<br>┌──────────New───────────┐<br>│                         │<br>│ entityManager<span class="hljs-selector-class">.persist</span>() │ entityManager<span class="hljs-selector-class">.merge</span>() (<span class="hljs-keyword">if</span> new)<br>│                         │<br>▼                         ▼<br>┌────────Managed─────────┐  entityManager<span class="hljs-selector-class">.remove</span>()  ┌────────Removed────────┐<br>│ (In Persistence Context)│─────────────────────────►│ (Scheduled <span class="hljs-keyword">for</span> Deletion)│<br>│  - <span class="hljs-built_in">find</span>(), <span class="hljs-built_in">getReference</span>() │                         │                         │<br>│  - JPQL query results   │                         └─────────────────────────┘<br>└──────────┬───────────┘<br>           │ entityManager<span class="hljs-selector-class">.detach</span>()<br>           │ entityManager<span class="hljs-selector-class">.clear</span>()<br>           │ entityManager<span class="hljs-selector-class">.close</span>()<br>           │ Serialization/Deserialization<br>           ▼<br>┌────────Detached────────┐<br>│ (ID exists, No Context) │<br>│                         │ entityManager<span class="hljs-selector-class">.merge</span>()<br>└──────────┬───────────┘<br>           └────────────────► (Becomes Managed again)<br></code></pre></td></tr></table></figure>
-
-<h5 id="3-3-2-EntityManager-常用操作"><a href="#3-3-2-EntityManager-常用操作" class="headerlink" title="3.3.2 EntityManager 常用操作"></a>3.3.2 EntityManager 常用操作</h5><p>以下是 <code>EntityManager</code> 接口中一些最常用的方法：</p>
+<h5 id="3-3-2-EntityManager-常用操作">3.3.2 EntityManager 常用操作</h5>
+<p>以下是 <code>EntityManager</code> 接口中一些最常用的方法：</p>
 <ul>
-<li><p><strong><code>persist(Object entity)</code></strong>:</p>
+<li>
+<p><strong><code>persist(Object entity)</code></strong>:</p>
 <ul>
 <li><strong>作用</strong>: 将一个 New (新建) 状态的实体对象转换为 Managed (托管) 状态，并将其纳入当前持久化上下文的管理。</li>
-<li><strong>行为</strong>:<ul>
+<li><strong>行为</strong>:
+<ul>
 <li>如果实体的主键是数据库生成的 (如 <code>GenerationType.IDENTITY</code>)，<code>persist</code> 操作会导致立即执行 <code>INSERT</code> SQL 以获取主键。</li>
 <li>如果主键是应用生成的 (如 UUID 或雪花算法在 <code>persist</code> 前已设置)，<code>INSERT</code> SQL 可能会延迟到事务提交 (flush) 时执行。</li>
 <li>如果对一个已经是 Managed 或 Removed 状态的实体调用 <code>persist</code>，通常会抛出 <code>EntityExistsException</code> 或行为未定义。</li>
@@ -413,18 +434,22 @@
 <li><strong>注意</strong>: <code>persist</code> 操作并不保证立即将数据写入数据库，它只是将实体置于持久化上下文的管理之下，实际的 SQL <code>INSERT</code> 可能延迟到事务提交或显式 <code>flush</code> 时。</li>
 </ul>
 </li>
-<li><p><strong><code>merge(T entity)</code></strong>:</p>
+<li>
+<p><strong><code>merge(T entity)</code></strong>:</p>
 <ul>
 <li><strong>作用</strong>: 将一个 Detached (游离) 状态的实体对象或一个 New 状态的实体对象的<strong>状态</strong>合并到当前持久化上下文中。</li>
-<li><strong>行为</strong>:<ul>
-<li><strong>如果传入的 <code>entity</code> 是 Detached 状态 (有 ID 但不在当前上下文中)</strong>:<ol>
+<li><strong>行为</strong>:
+<ul>
+<li><strong>如果传入的 <code>entity</code> 是 Detached 状态 (有 ID 但不在当前上下文中)</strong>:
+<ol>
 <li><code>EntityManager</code> 会根据 <code>entity</code> 的 ID 尝试从持久化上下文或数据库中加载一个对应的 Managed 实例 <code>managedEntity</code>。</li>
 <li>如果找到了 <code>managedEntity</code>，则将传入 <code>entity</code> 的属性值<strong>复制</strong>到 <code>managedEntity</code> 上。</li>
 <li>如果没找到（数据库中也没有），则创建一个新的 Managed 实例，并将传入 <code>entity</code> 的属性值复制过去（行为类似 <code>persist</code>）。</li>
 <li><strong>返回的是那个 Managed 实例 (<code>managedEntity</code>)</strong>，而不是传入的 <code>entity</code> 对象。传入的 <code>entity</code> 对象本身<strong>仍然是 Detached</strong> 状态。后续操作应针对返回的 Managed 实例。</li>
 </ol>
 </li>
-<li><strong>如果传入的 <code>entity</code> 是 New 状态 (无 ID 或 ID 在数据库中不存在)</strong>:<br>行为类似于 <code>persist</code>，会创建一个新的 Managed 实例，并返回它。</li>
+<li><strong>如果传入的 <code>entity</code> 是 New 状态 (无 ID 或 ID 在数据库中不存在)</strong>:<br>
+行为类似于 <code>persist</code>，会创建一个新的 Managed 实例，并返回它。</li>
 <li><strong>如果传入的 <code>entity</code> 已经是 Managed 状态</strong>: <code>merge</code> 通常不会做任何事情，直接返回该 Managed 实例。</li>
 </ul>
 </li>
@@ -432,10 +457,12 @@
 <li><strong>用途</strong>: 常用于更新从表现层传递过来的、已修改的 Detached 实体。</li>
 </ul>
 </li>
-<li><p><strong><code>remove(Object entity)</code></strong>:</p>
+<li>
+<p><strong><code>remove(Object entity)</code></strong>:</p>
 <ul>
 <li><strong>作用</strong>: 将一个 Managed (托管) 状态的实体对象转换为 Removed (已删除) 状态。</li>
-<li><strong>行为</strong>:<ul>
+<li><strong>行为</strong>:
+<ul>
 <li>实体被标记为待删除。实际的 <code>DELETE</code> SQL 语句通常在事务提交 (flush) 时执行。</li>
 <li>如果对一个 New 或 Detached 状态的实体调用 <code>remove</code>，会抛出 <code>IllegalArgumentException</code>。</li>
 <li>如果配置了级联删除 (<code>CascadeType.REMOVE</code> 或 <code>ALL</code>)，关联的实体也会被级联删除。</li>
@@ -443,10 +470,12 @@
 </li>
 </ul>
 </li>
-<li><p><strong><code>find(Class&lt;T&gt; entityClass, Object primaryKey)</code></strong>:</p>
+<li>
+<p><strong><code>find(Class&lt;T&gt; entityClass, Object primaryKey)</code></strong>:</p>
 <ul>
 <li><strong>作用</strong>: 根据主键从数据库中查找并加载一个实体对象。</li>
-<li><strong>行为</strong>:<ol>
+<li><strong>行为</strong>:
+<ol>
 <li>首先检查当前持久化上下文 (一级缓存) 中是否存在具有该主键的实体。如果存在且是 Managed 状态，则直接返回该缓存的实例，<strong>不访问数据库</strong>。</li>
 <li>如果缓存中不存在，则向数据库发送 <code>SELECT</code> SQL 查询。</li>
 <li>如果数据库中找到记录，则创建一个新的实体对象，填充数据，将其置于 Managed 状态，并放入持久化上下文，然后返回该对象。</li>
@@ -456,10 +485,12 @@
 <li><strong>返回值</strong>: Managed 状态的实体对象，或 <code>null</code>。</li>
 </ul>
 </li>
-<li><p><strong><code>getReference(Class&lt;T&gt; entityClass, Object primaryKey)</code></strong>:</p>
+<li>
+<p><strong><code>getReference(Class&lt;T&gt; entityClass, Object primaryKey)</code></strong>:</p>
 <ul>
 <li><strong>作用</strong>: 获取一个实体的<strong>引用 (代理对象)</strong>，而不立即从数据库加载其数据。</li>
-<li><strong>行为</strong>:<ol>
+<li><strong>行为</strong>:
+<ol>
 <li>如果持久化上下文中已存在具有该主键的 Managed 实体，则直接返回该实例。</li>
 <li>如果不存在，<code>getReference</code> <strong>可能不会立即访问数据库</strong>。它会返回一个该实体类型的<strong>代理 (Proxy)</strong> 对象，该代理对象只包含了主键 ID。</li>
 <li>只有当第一次访问该代理对象的<strong>非主键属性</strong>时，JPA 提供者才会真正执行 SQL 从数据库加载数据来初始化这个代理。</li>
@@ -467,38 +498,45 @@
 </ol>
 </li>
 <li><strong>返回值</strong>: 一个实体引用 (可能是代理对象)，处于 Managed 状态。</li>
-<li><strong>用途</strong>:<ul>
+<li><strong>用途</strong>:
+<ul>
 <li>建立关联关系时，如果只需要一个实体的引用而不需要其完整数据 (例如，<code>order.setCustomer(entityManager.getReference(Customer.class, customerId))</code>)，可以避免不必要的数据库查询。</li>
 <li>用于懒加载的场景。</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p><strong><code>flush()</code></strong>:</p>
+<li>
+<p><strong><code>flush()</code></strong>:</p>
 <ul>
 <li><strong>作用</strong>: 将当前持久化上下文中所有 Managed 状态实体的变更 (包括 <code>persist</code> 的新实体、修改的属性、<code>remove</code> 的实体) <strong>同步到底层数据库</strong>，即执行相应的 <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> SQL 语句。</li>
-<li><strong>行为</strong>:<ul>
+<li><strong>行为</strong>:
+<ul>
 <li>它<strong>不会提交事务</strong>，事务仍然是活动的。</li>
 <li>通常，JPA 提供者会在事务提交前自动调用 <code>flush</code> (称为隐式 flush)。</li>
-<li>显式调用 <code>flush()</code> 的场景：<ul>
-<li>在执行 JPQL&#x2F;Native <code>UPDATE</code> 或 <code>DELETE</code> 查询之前，确保所有内存中的变更已写入数据库，这样查询才能基于最新数据。</li>
+<li>显式调用 <code>flush()</code> 的场景：
+<ul>
+<li>在执行 JPQL/Native <code>UPDATE</code> 或 <code>DELETE</code> 查询之前，确保所有内存中的变更已写入数据库，这样查询才能基于最新数据。</li>
 <li>当需要获取数据库生成的值 (如触发器生成的列值) 但又不希望立即提交事务时。</li>
 <li>在某些特定测试场景下。</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>FlushModeType</strong>: 可以配置 <code>EntityManager</code> 或查询的刷新模式：<ul>
+<li><strong>FlushModeType</strong>: 可以配置 <code>EntityManager</code> 或查询的刷新模式：
+<ul>
 <li><code>AUTO</code> (默认): 在事务提交前，以及在某些查询执行前 (如果查询可能依赖于未刷新的数据)，可能会自动 flush。</li>
 <li><code>COMMIT</code>: 只在事务提交时 flush。</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p><strong><code>refresh(Object entity)</code></strong>:</p>
+<li>
+<p><strong><code>refresh(Object entity)</code></strong>:</p>
 <ul>
 <li><strong>作用</strong>: 用数据库中最新的数据<strong>覆盖</strong>一个 Managed 状态的实体对象在内存中的状态。</li>
-<li><strong>行为</strong>:<ul>
+<li><strong>行为</strong>:
+<ul>
 <li>向数据库发送 <code>SELECT</code> SQL 查询以获取该实体的最新数据。</li>
 <li>实体在持久化上下文中的任何未 <code>flush</code> 的变更都将被<strong>丢弃</strong>。</li>
 <li>如果实体配置了级联刷新 (<code>CascadeType.REFRESH</code>)，关联实体也会被刷新。</li>
@@ -507,33 +545,38 @@
 <li><strong>用途</strong>: 当你怀疑内存中的实体状态可能与数据库不一致 (例如，由于其他事务的修改，或数据库触发器的操作)，并且希望获取最新状态时。</li>
 </ul>
 </li>
-<li><p><strong><code>clear()</code></strong>:</p>
+<li>
+<p><strong><code>clear()</code></strong>:</p>
 <ul>
 <li><strong>作用</strong>: <strong>清空</strong>整个持久化上下文。</li>
 <li><strong>行为</strong>: 所有当前 Managed 状态的实体都将变为 Detached 状态。一级缓存被完全清除。</li>
 <li><strong>用途</strong>: 在处理大量实体并希望释放内存时，或者在特定测试场景下需要确保后续查询直接命中数据库时。<strong>谨慎使用</strong>，因为它会丢失所有未 <code>flush</code> 的变更。</li>
 </ul>
 </li>
-<li><p><strong><code>detach(Object entity)</code></strong>:</p>
+<li>
+<p><strong><code>detach(Object entity)</code></strong>:</p>
 <ul>
 <li><strong>作用</strong>: 将指定的 Managed 状态实体从当前持久化上下文中<strong>分离</strong>，使其变为 Detached 状态。</li>
 <li><strong>行为</strong>: 该实体不再受 <code>EntityManager</code> 管理，对其的修改不会自动同步到数据库。</li>
 <li><strong>用途</strong>: 当你希望暂时将实体移出 JPA 管理，稍后再通过 <code>merge</code> 合并回来时，或者希望对象在持久化上下文关闭后仍能存在。</li>
 </ul>
 </li>
-<li><p><strong><code>contains(Object entity)</code></strong>:</p>
+<li>
+<p><strong><code>contains(Object entity)</code></strong>:</p>
 <ul>
 <li><strong>作用</strong>: 检查指定的实体对象当前是否处于 Managed 状态 (即是否在当前持久化上下文中)。</li>
 </ul>
 </li>
-<li><p><strong><code>close()</code></strong>: (主要用于应用管理的 EntityManager)</p>
+<li>
+<p><strong><code>close()</code></strong>: (主要用于应用管理的 EntityManager)</p>
 <ul>
 <li><strong>作用</strong>: 关闭 <code>EntityManager</code>，释放其占用的资源，并使其关联的持久化上下文失效。所有 Managed 实体变为 Detached。</li>
 <li><strong>注意</strong>: 对于容器管理的 <code>EntityManager</code>，通常不需要手动调用 <code>close()</code>。</li>
 </ul>
 </li>
 </ul>
-<h5 id="3-3-3-一级缓存-Persistence-Context-Cache-First-Level-Cache"><a href="#3-3-3-一级缓存-Persistence-Context-Cache-First-Level-Cache" class="headerlink" title="3.3.3 一级缓存 (Persistence Context Cache &#x2F; First-Level Cache)"></a>3.3.3 一级缓存 (Persistence Context Cache &#x2F; First-Level Cache)</h5><p><strong>什么是持久化上下文 (Persistence Context)？</strong></p>
+<h5 id="3-3-3-一级缓存-Persistence-Context-Cache-First-Level-Cache">3.3.3 一级缓存 (Persistence Context Cache / First-Level Cache)</h5>
+<p><strong>什么是持久化上下文 (Persistence Context)？</strong></p>
 <ul>
 <li>持久化上下文是 <code>EntityManager</code> 用来管理实体对象的一个<strong>运行时环境</strong>。它本质上是一个<strong>内存中的缓存</strong>，存储了所有当前处于 Managed 状态的实体对象。</li>
 <li>每个 <code>EntityManager</code> 实例都有其自己独立的持久化上下文。</li>
@@ -541,27 +584,32 @@
 </ul>
 <p><strong>一级缓存的作用和特性：</strong></p>
 <ol>
-<li><strong>缓存实体</strong>:<ul>
+<li><strong>缓存实体</strong>:
+<ul>
 <li>当通过 <code>find()</code> 加载实体，或 <code>persist()</code> 一个新实体，或 <code>merge()</code> 一个实体后，该实体（的 Managed 版本）会被放入一级缓存。</li>
 <li>缓存的键通常是 <code>(实体类型, 主键ID)</code>。</li>
 </ul>
 </li>
-<li><strong>保证实体唯一性 (Identity)</strong>:<ul>
+<li><strong>保证实体唯一性 (Identity)</strong>:
+<ul>
 <li>在同一个持久化上下文（同一个 <code>EntityManager</code> 实例，同一个事务）中，对于数据库中的同一条记录，通过 <code>find()</code> 或 JPQL 查询多次获取，<strong>总是返回内存中同一个 Java 对象实例</strong>。</li>
 <li>这有助于避免数据不一致，并允许使用 <code>==</code> 运算符来比较两个从同一上下文获取的实体是否指向数据库中的同一行。</li>
 </ul>
 </li>
-<li><strong>减少数据库访问</strong>:<ul>
+<li><strong>减少数据库访问</strong>:
+<ul>
 <li>当调用 <code>find(EntityClass.class, id)</code> 时，如果一级缓存中已存在该 ID 的实体，则直接从缓存返回，<strong>不会执行 SQL 查询</strong>。这可以显著提高性能。</li>
 </ul>
 </li>
-<li><strong>自动脏检查 (Automatic Dirty Checking)</strong>:<ul>
+<li><strong>自动脏检查 (Automatic Dirty Checking)</strong>:
+<ul>
 <li>当一个实体处于 Managed 状态时，JPA 会在它首次被加载到持久化上下文时，保存其原始状态的一个快照。</li>
 <li>在事务提交前 (或显式调用 <code>flush()</code> 时)，JPA 会比较当前 Managed 实体的状态与其快照。如果发现任何持久化属性发生了变化，JPA 会自动生成并执行相应的 <code>UPDATE</code> SQL 语句将变更同步到数据库。</li>
 <li><strong>这意味着你不需要手动调用 <code>update</code> 或 <code>save</code> 方法来更新一个已加载的 (Managed) 实体的属性。只要修改了实体的 setter 方法，并在事务内，变更就会在事务提交时自动持久化。</strong></li>
 </ul>
 </li>
-<li><strong>延迟 SQL 执行 (Write-Behind)</strong>:<ul>
+<li><strong>延迟 SQL 执行 (Write-Behind)</strong>:
+<ul>
 <li>对于 <code>persist()</code>, <code>merge()</code> (更新部分), <code>remove()</code> 操作，JPA 通常不会立即执行相应的 <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> SQL。</li>
 <li>它会将这些操作的 SQL 语句“排队”起来，直到持久化上下文被 <code>flush</code> (通常在事务提交时隐式发生，或显式调用 <code>entityManager.flush()</code>) 时，才批量地将这些 SQL 发送到数据库执行。</li>
 <li>这有助于进行 SQL 优化 (如 JDBC batching) 并减少数据库交互次数。</li>

@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Lombok 中的 @Builder 注解（注意：并非 @Build）用于简化对象的构造过程，通过自动生成 Builder 模式代码，使得创建对象变得更直观和可读，尤其适用于构造参数较多或者部分参数为可选的场景。  为什么使用 @Builder？ 提高可读性  当类中包含多个参数时，直接使用构造方法可能会让代码难以理解，容易发生参数顺序混乱的问题。使用 Builder 模式，可以通过链式调用明确指">
+    <meta name="description" content="Lombok 中的 @Builder 注解（注意：并非 @Build）用于简化对象的构造过程，通过自动生成 Builder 模式代码，使得创建对象变得更直观和可读，尤其适用于构造参数较多或者部分参数为可选的场景。  为什么使用 @Builder？   提高可读性 当类中包含多个参数时，直接使用构造方法可能会让代码难以理解，容易发生参数顺序混乱的问题。使用 Builder 模式，可以通过链式调用明确">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Lombok/@Builder/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="Lombok 中的 @Builder 注解（注意：并非 @Build）用于简化对象的构造过程，通过自动生成 Builder 模式代码，使得创建对象变得更直观和可读，尤其适用于构造参数较多或者部分参数为可选的场景。  为什么使用 @Builder？ 提高可读性  当类中包含多个参数时，直接使用构造方法可能会让代码难以理解，容易发生参数顺序混乱的问题。使用 Builder 模式，可以通过链式调用明确指">
+<meta property="og:description" content="Lombok 中的 @Builder 注解（注意：并非 @Build）用于简化对象的构造过程，通过自动生成 Builder 模式代码，使得创建对象变得更直观和可读，尤其适用于构造参数较多或者部分参数为可选的场景。  为什么使用 @Builder？   提高可读性 当类中包含多个参数时，直接使用构造方法可能会让代码难以理解，容易发生参数顺序混乱的问题。使用 Builder 模式，可以通过链式调用明确">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.203Z">
 <meta property="article:modified_time" content="2025-03-08T03:06:36.146Z">
@@ -302,87 +302,136 @@
                 
                 <p>Lombok 中的 <strong>@Builder</strong> 注解（注意：并非 @Build）用于简化对象的构造过程，通过自动生成 Builder 模式代码，使得创建对象变得更直观和可读，尤其适用于构造参数较多或者部分参数为可选的场景。</p>
 <hr>
-<h3 id="为什么使用-Builder？"><a href="#为什么使用-Builder？" class="headerlink" title="为什么使用 @Builder？"></a>为什么使用 @Builder？</h3><ul>
-<li><p><strong>提高可读性</strong><br>  当类中包含多个参数时，直接使用构造方法可能会让代码难以理解，容易发生参数顺序混乱的问题。使用 Builder 模式，可以通过链式调用明确指定每个参数的含义。</p>
+<h3 id="为什么使用-Builder？">为什么使用 @Builder？</h3>
+<ul>
+<li>
+<p><strong>提高可读性</strong><br>
+当类中包含多个参数时，直接使用构造方法可能会让代码难以理解，容易发生参数顺序混乱的问题。使用 Builder 模式，可以通过链式调用明确指定每个参数的含义。</p>
 </li>
-<li><p><strong>减少代码冗余</strong><br>  Lombok 自动生成 Builder 类和相关方法，无需手动编写大量模板代码，减少了出错的可能性，并使代码更简洁。</p>
+<li>
+<p><strong>减少代码冗余</strong><br>
+Lombok 自动生成 Builder 类和相关方法，无需手动编写大量模板代码，减少了出错的可能性，并使代码更简洁。</p>
 </li>
-<li><p><strong>便于扩展和维护</strong><br>  如果未来需要增加或者修改属性，只需更新类定义，Builder 模式能更容易地适应这些变化，而不需要重构所有使用构造方法的代码。</p>
-</li>
-</ul>
-<hr>
-<h3 id="Builder-的作用"><a href="#Builder-的作用" class="headerlink" title="@Builder 的作用"></a>@Builder 的作用</h3><ul>
-<li><p><strong>自动生成 Builder 类</strong><br>  当你在一个类或者构造方法上使用 @Builder 注解时，Lombok 会生成一个嵌套的静态 Builder 类。这个 Builder 类包含与目标类属性对应的设置方法，并最终提供一个 <code>build()</code> 方法来构造目标对象。</p>
-</li>
-<li><p><strong>提供链式调用 API</strong><br>  生成的 Builder 类允许你通过链式调用逐个设置属性值，从而使得代码更加直观、清晰，避免了传统构造方法中参数顺序容易出错的问题。</p>
-</li>
-<li><p><strong>适用于不可变对象</strong><br>  对于需要创建不可变对象的类，通过 @Builder 注解，可以在构造对象时只通过 Builder 完成所有属性的赋值，然后生成一个不可变对象。</p>
+<li>
+<p><strong>便于扩展和维护</strong><br>
+如果未来需要增加或者修改属性，只需更新类定义，Builder 模式能更容易地适应这些变化，而不需要重构所有使用构造方法的代码。</p>
 </li>
 </ul>
 <hr>
-<h3 id="如何使用-Builder"><a href="#如何使用-Builder" class="headerlink" title="如何使用 @Builder"></a>如何使用 @Builder</h3><ol>
-<li><p><strong>在类上使用 @Builder</strong><br> 直接在类上添加 @Builder 注解，Lombok 会自动为该类生成 Builder 代码。</p>
+<h3 id="Builder-的作用">@Builder 的作用</h3>
+<ul>
+<li>
+<p><strong>自动生成 Builder 类</strong><br>
+当你在一个类或者构造方法上使用 @Builder 注解时，Lombok 会生成一个嵌套的静态 Builder 类。这个 Builder 类包含与目标类属性对应的设置方法，并最终提供一个 <code>build()</code> 方法来构造目标对象。</p>
+</li>
+<li>
+<p><strong>提供链式调用 API</strong><br>
+生成的 Builder 类允许你通过链式调用逐个设置属性值，从而使得代码更加直观、清晰，避免了传统构造方法中参数顺序容易出错的问题。</p>
+</li>
+<li>
+<p><strong>适用于不可变对象</strong><br>
+对于需要创建不可变对象的类，通过 @Builder 注解，可以在构造对象时只通过 Builder 完成所有属性的赋值，然后生成一个不可变对象。</p>
+</li>
+</ul>
+<hr>
+<h3 id="如何使用-Builder">如何使用 @Builder</h3>
+<ol>
+<li>
+<p><strong>在类上使用 @Builder</strong><br>
+直接在类上添加 @Builder 注解，Lombok 会自动为该类生成 Builder 代码。</p>
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Builder;<br><br><span class="hljs-meta">@Builder</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> age;<br>    <span class="hljs-keyword">private</span> String email;<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>调用生成的 Builder 方法</strong><br> Lombok 会为 User 类生成一个静态的 <code>builder()</code> 方法，以及一个内部的 <code>UserBuilder</code> 类。使用时可以这样调用：</p>
+<li>
+<p><strong>调用生成的 Builder 方法</strong><br>
+Lombok 会为 User 类生成一个静态的 <code>builder()</code> 方法，以及一个内部的 <code>UserBuilder</code> 类。使用时可以这样调用：</p>
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Main</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> User.builder()<br>                        .name(<span class="hljs-string">&quot;张三&quot;</span>)<br>                        .age(<span class="hljs-number">25</span>)<br>                        .email(<span class="hljs-string">&quot;zhangsan@example.com&quot;</span>)<br>                        .build();<br>        System.out.println(user);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>在构造方法或静态方法上使用 @Builder</strong><br> 如果你只想为某个构造方法或静态方法生成 Builder，也可以直接在这些方法上使用 @Builder 注解。例如：</p>
+<li>
+<p><strong>在构造方法或静态方法上使用 @Builder</strong><br>
+如果你只想为某个构造方法或静态方法生成 Builder，也可以直接在这些方法上使用 @Builder 注解。例如：</p>
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> &#123;<br>    <span class="hljs-keyword">private</span> String id;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">double</span> price;<br><br>    <span class="hljs-meta">@Builder</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Product</span><span class="hljs-params">(String id, String name, <span class="hljs-type">double</span> price)</span> &#123;<br>        <span class="hljs-built_in">this</span>.id = id;<br>        <span class="hljs-built_in">this</span>.name = name;<br>        <span class="hljs-built_in">this</span>.price = price;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>高级特性：@Singular</strong><br> 如果类中包含集合属性，可以结合 <strong>@Singular</strong> 注解使用，这样 Builder 会提供添加单个元素的方法，同时也能设置整个集合。</p>
+<li>
+<p><strong>高级特性：@Singular</strong><br>
+如果类中包含集合属性，可以结合 <strong>@Singular</strong> 注解使用，这样 Builder 会提供添加单个元素的方法，同时也能设置整个集合。</p>
  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Builder;<br><span class="hljs-keyword">import</span> lombok.Singular;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@Builder</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Order</span> &#123;<br>    <span class="hljs-keyword">private</span> String orderId;<br>    <span class="hljs-meta">@Singular</span><br>    <span class="hljs-keyword">private</span> List&lt;String&gt; items;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p> 使用示例：</p>
- <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Order</span> <span class="hljs-variable">order</span> <span class="hljs-operator">=</span> Order.builder()<br>                   .orderId(<span class="hljs-string">&quot;ORD123&quot;</span>)<br>                   .item(<span class="hljs-string">&quot;Item1&quot;</span>)<br>                   .item(<span class="hljs-string">&quot;Item2&quot;</span>)<br>                   .build();<br></code></pre></td></tr></table></figure></li>
+<p>使用示例：</p>
+ <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Order</span> <span class="hljs-variable">order</span> <span class="hljs-operator">=</span> Order.builder()<br>                   .orderId(<span class="hljs-string">&quot;ORD123&quot;</span>)<br>                   .item(<span class="hljs-string">&quot;Item1&quot;</span>)<br>                   .item(<span class="hljs-string">&quot;Item2&quot;</span>)<br>                   .build();<br></code></pre></td></tr></table></figure>
+</li>
 </ol>
 <hr>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<h3 id="总结">总结</h3>
+<ul>
 <li><strong>目的</strong>：@Builder 主要用于实现 Builder 模式，解决构造函数参数较多时的可读性和维护性问题。</li>
 <li><strong>作用</strong>：自动生成一个内部 Builder 类和链式调用方法，通过 <code>build()</code> 方法构造目标对象。</li>
 <li><strong>使用场景</strong>：适用于需要灵活、清晰地创建对象，特别是当对象有许多属性（其中部分可能为可选项）时。</li>
 <li><strong>使用方法</strong>：在类或构造方法上添加 @Builder 注解，然后通过生成的 <code>builder()</code> 方法来构造对象。</li>
 </ul>
 <p>使用 Lombok 的 @Builder，不仅能让代码更优雅，还能大幅度减少手动编写重复代码的工作量，从而提高开发效率。</p>
-<h1 id="具体使用"><a href="#具体使用" class="headerlink" title="具体使用"></a>具体使用</h1><p>在分层架构中，经常需要在领域对象（例如数据库实体）和数据传输对象（DTO）之间转换，以确保数据在不同层之间传递时既安全又符合业务需求。利用 Lombok 的 @Builder 注解，可以简化这种转换过程，使代码更清晰、易读和易维护。下面详细说明这种转换的目的、优势以及如何使用 @Builder 实现转换。</p>
+<h1>具体使用</h1>
+<p>在分层架构中，经常需要在领域对象（例如数据库实体）和数据传输对象（DTO）之间转换，以确保数据在不同层之间传递时既安全又符合业务需求。利用 Lombok 的 @Builder 注解，可以简化这种转换过程，使代码更清晰、易读和易维护。下面详细说明这种转换的目的、优势以及如何使用 @Builder 实现转换。</p>
 <hr>
-<h2 id="1-转换的目的与意义"><a href="#1-转换的目的与意义" class="headerlink" title="1. 转换的目的与意义"></a>1. 转换的目的与意义</h2><ul>
-<li><p><strong>解耦数据结构</strong><br>  领域对象（Entity）通常反映数据库结构，可能包含敏感或内部信息；而 DTO 只保留需要暴露给客户端或跨层传输的部分数据。转换有助于分离关注点，防止数据库细节泄露到外部。</p>
+<h2 id="1-转换的目的与意义">1. 转换的目的与意义</h2>
+<ul>
+<li>
+<p><strong>解耦数据结构</strong><br>
+领域对象（Entity）通常反映数据库结构，可能包含敏感或内部信息；而 DTO 只保留需要暴露给客户端或跨层传输的部分数据。转换有助于分离关注点，防止数据库细节泄露到外部。</p>
 </li>
-<li><p><strong>提高安全性</strong><br>  通过转换，可以过滤掉不必要甚至敏感的字段，例如密码、内部标识符等，保证数据传输的安全。</p>
+<li>
+<p><strong>提高安全性</strong><br>
+通过转换，可以过滤掉不必要甚至敏感的字段，例如密码、内部标识符等，保证数据传输的安全。</p>
 </li>
-<li><p><strong>便于数据格式转换</strong><br>  DTO 中的字段可能与实体的字段类型或命名不完全一致。转换过程中可以进行必要的格式处理或数据校验，使得数据更符合业务或接口要求。</p>
+<li>
+<p><strong>便于数据格式转换</strong><br>
+DTO 中的字段可能与实体的字段类型或命名不完全一致。转换过程中可以进行必要的格式处理或数据校验，使得数据更符合业务或接口要求。</p>
 </li>
 </ul>
 <hr>
-<h2 id="2-Lombok-Builder-在转换中的优势"><a href="#2-Lombok-Builder-在转换中的优势" class="headerlink" title="2. Lombok @Builder 在转换中的优势"></a>2. Lombok @Builder 在转换中的优势</h2><ul>
-<li><p><strong>代码简洁</strong><br>  Lombok 的 @Builder 自动生成 Builder 类，利用链式调用创建对象，无需手写冗长的构造函数或 setter 调用。</p>
+<h2 id="2-Lombok-Builder-在转换中的优势">2. Lombok @Builder 在转换中的优势</h2>
+<ul>
+<li>
+<p><strong>代码简洁</strong><br>
+Lombok 的 @Builder 自动生成 Builder 类，利用链式调用创建对象，无需手写冗长的构造函数或 setter 调用。</p>
 </li>
-<li><p><strong>清晰的字段映射</strong><br>  在转换方法中，通过 Builder 模式可以逐一对应各个字段，代码直观且易于维护。例如：</p>
+<li>
+<p><strong>清晰的字段映射</strong><br>
+在转换方法中，通过 Builder 模式可以逐一对应各个字段，代码直观且易于维护。例如：</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> UserDTO <span class="hljs-title function_">fromEntity</span><span class="hljs-params">(UserEntity entity)</span> &#123;<br>    <span class="hljs-keyword">return</span> UserDTO.builder()<br>                  .id(entity.getId())<br>                  .username(entity.getUsername())<br>                  .email(entity.getEmail())<br>                  .build();<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>支持不可变对象</strong><br>  利用 Builder 模式，可以构造出不可变对象（通过省略 setter），保证数据在传输过程中不被意外修改。</p>
+<li>
+<p><strong>支持不可变对象</strong><br>
+利用 Builder 模式，可以构造出不可变对象（通过省略 setter），保证数据在传输过程中不被意外修改。</p>
 </li>
 </ul>
 <hr>
-<h2 id="3-实战示例"><a href="#3-实战示例" class="headerlink" title="3. 实战示例"></a>3. 实战示例</h2><p>假设我们有一个用户实体类 <code>UserEntity</code> 和一个对应的 DTO 类 <code>UserDTO</code>，可以如下实现对象之间的转换：</p>
-<h3 id="实体类定义"><a href="#实体类定义" class="headerlink" title="实体类定义"></a>实体类定义</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Builder;<br><span class="hljs-keyword">import</span> lombok.Data;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Builder</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserEntity</span> &#123;<br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String email;<br>    <span class="hljs-keyword">private</span> String password; <span class="hljs-comment">// 数据库中可能存在敏感信息</span><br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="DTO-类定义"><a href="#DTO-类定义" class="headerlink" title="DTO 类定义"></a>DTO 类定义</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Builder;<br><span class="hljs-keyword">import</span> lombok.Data;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Builder</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserDTO</span> &#123;<br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String email;<br>    <br>    <span class="hljs-comment">// 转换方法：将 UserEntity 转换为 UserDTO</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> UserDTO <span class="hljs-title function_">fromEntity</span><span class="hljs-params">(UserEntity entity)</span> &#123;<br>        <span class="hljs-keyword">return</span> UserDTO.builder()<br>                      .id(entity.getId())<br>                      .username(entity.getUsername())<br>                      .email(entity.getEmail())<br>                      .build();<br>    &#125;<br>    <br>    <span class="hljs-comment">// 如有需要，也可以增加转换为实体的方法，但注意处理敏感字段</span><br>    <span class="hljs-keyword">public</span> UserEntity <span class="hljs-title function_">toEntity</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> UserEntity.builder()<br>                         .id(<span class="hljs-built_in">this</span>.id)<br>                         .username(<span class="hljs-built_in">this</span>.username)<br>                         .email(<span class="hljs-built_in">this</span>.email)<br>                         <span class="hljs-comment">// password 需要单独处理或由业务逻辑赋值</span><br>                         .build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="使用示例"><a href="#使用示例" class="headerlink" title="使用示例"></a>使用示例</h3><p>在业务逻辑层，调用转换方法即可实现对象间的数据传递：</p>
+<h2 id="3-实战示例">3. 实战示例</h2>
+<p>假设我们有一个用户实体类 <code>UserEntity</code> 和一个对应的 DTO 类 <code>UserDTO</code>，可以如下实现对象之间的转换：</p>
+<h3 id="实体类定义">实体类定义</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Builder;<br><span class="hljs-keyword">import</span> lombok.Data;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Builder</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserEntity</span> &#123;<br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String email;<br>    <span class="hljs-keyword">private</span> String password; <span class="hljs-comment">// 数据库中可能存在敏感信息</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="DTO-类定义">DTO 类定义</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Builder;<br><span class="hljs-keyword">import</span> lombok.Data;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Builder</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserDTO</span> &#123;<br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String email;<br>    <br>    <span class="hljs-comment">// 转换方法：将 UserEntity 转换为 UserDTO</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> UserDTO <span class="hljs-title function_">fromEntity</span><span class="hljs-params">(UserEntity entity)</span> &#123;<br>        <span class="hljs-keyword">return</span> UserDTO.builder()<br>                      .id(entity.getId())<br>                      .username(entity.getUsername())<br>                      .email(entity.getEmail())<br>                      .build();<br>    &#125;<br>    <br>    <span class="hljs-comment">// 如有需要，也可以增加转换为实体的方法，但注意处理敏感字段</span><br>    <span class="hljs-keyword">public</span> UserEntity <span class="hljs-title function_">toEntity</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> UserEntity.builder()<br>                         .id(<span class="hljs-built_in">this</span>.id)<br>                         .username(<span class="hljs-built_in">this</span>.username)<br>                         .email(<span class="hljs-built_in">this</span>.email)<br>                         <span class="hljs-comment">// password 需要单独处理或由业务逻辑赋值</span><br>                         .build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="使用示例">使用示例</h3>
+<p>在业务逻辑层，调用转换方法即可实现对象间的数据传递：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-keyword">public</span> UserDTO <span class="hljs-title function_">getUserDTOById</span><span class="hljs-params">(Long id)</span> &#123;<br>        <span class="hljs-comment">// 假设通过某种方式获得了 UserEntity 对象</span><br>        <span class="hljs-type">UserEntity</span> <span class="hljs-variable">entity</span> <span class="hljs-operator">=</span> userRepository.findById(id);<br>        <br>        <span class="hljs-comment">// 利用转换方法，将实体转换为 DTO</span><br>        <span class="hljs-keyword">return</span> UserDTO.fromEntity(entity);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h2 id="4-其他考虑因素"><a href="#4-其他考虑因素" class="headerlink" title="4. 其他考虑因素"></a>4. 其他考虑因素</h2><ul>
-<li><p><strong>字段映射逻辑</strong><br>  如果 DTO 与实体字段不完全一致（如命名、类型、格式），在转换方法中可以加入转换逻辑，例如日期格式转换、枚举映射等。</p>
+<h2 id="4-其他考虑因素">4. 其他考虑因素</h2>
+<ul>
+<li>
+<p><strong>字段映射逻辑</strong><br>
+如果 DTO 与实体字段不完全一致（如命名、类型、格式），在转换方法中可以加入转换逻辑，例如日期格式转换、枚举映射等。</p>
 </li>
-<li><p><strong>自动化映射工具</strong><br>  除了手写转换方法，项目中也可以考虑使用 MapStruct 这类自动映射工具，它可以根据配置自动生成转换代码。但对于简单转换场景，利用 Lombok 的 @Builder 足以满足需求。</p>
+<li>
+<p><strong>自动化映射工具</strong><br>
+除了手写转换方法，项目中也可以考虑使用 MapStruct 这类自动映射工具，它可以根据配置自动生成转换代码。但对于简单转换场景，利用 Lombok 的 @Builder 足以满足需求。</p>
 </li>
-<li><p><strong>扩展性</strong><br>  当实体或 DTO 结构发生变化时，只需更新转换方法中的映射逻辑，借助 Builder 模式，代码修改局部且易于理解，降低维护成本。</p>
+<li>
+<p><strong>扩展性</strong><br>
+当实体或 DTO 结构发生变化时，只需更新转换方法中的映射逻辑，借助 Builder 模式，代码修改局部且易于理解，降低维护成本。</p>
 </li>
 </ul>
 <hr>
-<h2 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h2><p>利用 Lombok 的 @Builder 注解进行对象与 DTO 之间的转换，可以带来以下好处：</p>
+<h2 id="5-总结">5. 总结</h2>
+<p>利用 Lombok 的 @Builder 注解进行对象与 DTO 之间的转换，可以带来以下好处：</p>
 <ul>
 <li><strong>代码简洁且可读性高</strong>：利用链式调用明确映射关系，避免参数混淆。</li>
 <li><strong>易于维护与扩展</strong>：转换逻辑集中在静态方法中，当数据结构发生变化时，可迅速做出调整。</li>

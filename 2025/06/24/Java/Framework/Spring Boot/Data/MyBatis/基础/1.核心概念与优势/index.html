@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1. MyBatis 核心概念与优势是什么？ MyBatis 最初叫 iBATIS (由 Clinton Begin 在 2002 年创建，后捐给 Apache，2010 年从 Apache 迁移到 Google Code 并改名为 MyBatis，现在托管在 GitHub)。 MyBatis 是一个半自动的 ORM (Object-Relational Mapping) 框架。说它“半自动”是因">
+    <meta name="description" content="1. MyBatis 核心概念与优势 是什么？ MyBatis 最初叫 iBATIS (由 Clinton Begin 在 2002 年创建，后捐给 Apache，2010 年从 Apache 迁移到 Google Code 并改名为 MyBatis，现在托管在 GitHub)。 MyBatis 是一个半自动的 ORM (Object-Relational Mapping) 框架。说它“半自动”是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/%E5%9F%BA%E7%A1%80/1.%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E4%BC%98%E5%8A%BF/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="1. MyBatis 核心概念与优势是什么？ MyBatis 最初叫 iBATIS (由 Clinton Begin 在 2002 年创建，后捐给 Apache，2010 年从 Apache 迁移到 Google Code 并改名为 MyBatis，现在托管在 GitHub)。 MyBatis 是一个半自动的 ORM (Object-Relational Mapping) 框架。说它“半自动”是因">
+<meta property="og:description" content="1. MyBatis 核心概念与优势 是什么？ MyBatis 最初叫 iBATIS (由 Clinton Begin 在 2002 年创建，后捐给 Apache，2010 年从 Apache 迁移到 Google Code 并改名为 MyBatis，现在托管在 GitHub)。 MyBatis 是一个半自动的 ORM (Object-Relational Mapping) 框架。说它“半自动”是">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.118Z">
 <meta property="article:modified_time" content="2025-06-16T07:01:41.115Z">
@@ -230,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          588 字
+          586 字
         
       </span>
     
@@ -300,12 +300,13 @@
             
               <div class="markdown-body">
                 
-                <h3 id="1-MyBatis-核心概念与优势"><a href="#1-MyBatis-核心概念与优势" class="headerlink" title="1. MyBatis 核心概念与优势"></a>1. MyBatis 核心概念与优势</h3><p><strong>是什么？</strong></p>
+                <h3 id="1-MyBatis-核心概念与优势">1. MyBatis 核心概念与优势</h3>
+<p><strong>是什么？</strong></p>
 <p>MyBatis 最初叫 iBATIS (由 Clinton Begin 在 2002 年创建，后捐给 Apache，2010 年从 Apache 迁移到 Google Code 并改名为 MyBatis，现在托管在 GitHub)。</p>
 <p>MyBatis 是一个<strong>半自动的 ORM (Object-Relational Mapping) 框架</strong>。说它“半自动”是因为：</p>
 <ul>
 <li><strong>ORM 部分</strong>：它能将数据库表的行数据映射成 Java 对象 (POJO)，也能将 Java 对象映射成数据库操作的参数。</li>
-<li><strong>非完全自动部分</strong>：它不负责自动生成 SQL 语句 (像 Hibernate&#x2F;JPA 那样)。<strong>开发者需要自己编写 SQL 语句</strong>，MyBatis 负责执行这些 SQL，并将参数传入、结果集映射到对象。</li>
+<li><strong>非完全自动部分</strong>：它不负责自动生成 SQL 语句 (像 Hibernate/JPA 那样)。<strong>开发者需要自己编写 SQL 语句</strong>，MyBatis 负责执行这些 SQL，并将参数传入、结果集映射到对象。</li>
 </ul>
 <p><strong>核心理念：</strong></p>
 <ul>
@@ -320,7 +321,7 @@
 <li><strong>学习成本低</strong>：相比 JPA 这类规范驱动的框架，MyBatis 更加轻量级，概念也更直接。</li>
 <li><strong>性能优秀</strong>：由于 SQL 由开发者控制，可以针对性地进行优化。MyBatis 本身执行 SQL 的开销也比较小。</li>
 <li><strong>解耦性好</strong>：将 SQL 从 Java 代码中分离出来。</li>
-<li><strong>与 Spring&#x2F;Spring Boot 集成良好</strong>：通过 <code>mybatis-spring</code> 和 <code>mybatis-spring-boot-starter</code> 可以非常方便地集成。</li>
+<li><strong>与 Spring/Spring Boot 集成良好</strong>：通过 <code>mybatis-spring</code> 和 <code>mybatis-spring-boot-starter</code> 可以非常方便地集成。</li>
 </ol>
 <p><strong>劣势 (或需要注意的地方)：</strong></p>
 <ol>

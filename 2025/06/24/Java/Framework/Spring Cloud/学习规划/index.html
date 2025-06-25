@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="了解 Spring Boot 基础后，进入 Spring Cloud 学习是一个非常合适的进阶步骤，下面是一个从入门到精通的学习规划，帮助你逐步掌握 Spring Cloud。 阶段 1：基础入门 复习 Spring Boot 基础：  确保你掌握了 Spring Boot 的基本概念和功能，如自动配置、Spring Boot Starter、Spring Boot Actuator、RESTfu">
+    <meta name="description" content="了解 Spring Boot 基础后，进入 Spring Cloud 学习是一个非常合适的进阶步骤，下面是一个从入门到精通的学习规划，帮助你逐步掌握 Spring Cloud。 阶段 1：基础入门   复习 Spring Boot 基础：  确保你掌握了 Spring Boot 的基本概念和功能，如自动配置、Spring Boot Starter、Spring Boot Actuator、REST">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Cloud/%E5%AD%A6%E4%B9%A0%E8%A7%84%E5%88%92/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="了解 Spring Boot 基础后，进入 Spring Cloud 学习是一个非常合适的进阶步骤，下面是一个从入门到精通的学习规划，帮助你逐步掌握 Spring Cloud。 阶段 1：基础入门 复习 Spring Boot 基础：  确保你掌握了 Spring Boot 的基本概念和功能，如自动配置、Spring Boot Starter、Spring Boot Actuator、RESTfu">
+<meta property="og:description" content="了解 Spring Boot 基础后，进入 Spring Cloud 学习是一个非常合适的进阶步骤，下面是一个从入门到精通的学习规划，帮助你逐步掌握 Spring Cloud。 阶段 1：基础入门   复习 Spring Boot 基础：  确保你掌握了 Spring Boot 的基本概念和功能，如自动配置、Spring Boot Starter、Spring Boot Actuator、REST">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.377Z">
 <meta property="article:modified_time" content="2025-02-22T02:20:52.243Z">
@@ -301,132 +301,158 @@
               <div class="markdown-body">
                 
                 <p>了解 Spring Boot 基础后，进入 <strong>Spring Cloud</strong> 学习是一个非常合适的进阶步骤，下面是一个从入门到精通的学习规划，帮助你逐步掌握 Spring Cloud。</p>
-<h3 id="阶段-1：基础入门"><a href="#阶段-1：基础入门" class="headerlink" title="阶段 1：基础入门"></a><strong>阶段 1：基础入门</strong></h3><ol>
-<li><p><strong>复习 Spring Boot 基础</strong>：</p>
+<h3 id="阶段-1：基础入门"><strong>阶段 1：基础入门</strong></h3>
+<ol>
+<li>
+<p><strong>复习 Spring Boot 基础</strong>：</p>
 <ul>
 <li>确保你掌握了 Spring Boot 的基本概念和功能，如自动配置、Spring Boot Starter、Spring Boot Actuator、RESTful API 等。</li>
 <li>了解如何创建、配置和部署 Spring Boot 应用。</li>
 </ul>
 </li>
-<li><p><strong>了解微服务架构</strong>：</p>
+<li>
+<p><strong>了解微服务架构</strong>：</p>
 <ul>
 <li>学习微服务的基本概念：什么是微服务、为什么要使用微服务、微服务与单体架构的区别。</li>
 <li>了解微服务的特点：独立部署、服务自治、跨平台兼容等。</li>
 </ul>
 </li>
-<li><p><strong>Spring Cloud 概述</strong>：</p>
+<li>
+<p><strong>Spring Cloud 概述</strong>：</p>
 <ul>
 <li>学习 Spring Cloud 的整体架构和目标，了解它是如何与 Spring Boot 配合的。</li>
 <li>了解 Spring Cloud 的基本组成模块，如服务注册与发现、配置管理、负载均衡、断路器等。</li>
 </ul>
 </li>
 </ol>
-<h3 id="阶段-2：核心模块学习"><a href="#阶段-2：核心模块学习" class="headerlink" title="阶段 2：核心模块学习"></a><strong>阶段 2：核心模块学习</strong></h3><ol start="4">
-<li><p><strong>服务注册与发现（Eureka）</strong>：</p>
+<h3 id="阶段-2：核心模块学习"><strong>阶段 2：核心模块学习</strong></h3>
+<ol start="4">
+<li>
+<p><strong>服务注册与发现（Eureka）</strong>：</p>
 <ul>
 <li>学习如何使用 <strong>Eureka</strong> 实现服务注册与发现。</li>
 <li>搭建一个简单的微服务应用，使用 Eureka 注册和发现服务。</li>
 <li>了解 Eureka Server 和 Eureka Client 的工作原理。</li>
 </ul>
 </li>
-<li><p><strong>负载均衡（Ribbon + Spring Cloud LoadBalancer）</strong>：</p>
+<li>
+<p><strong>负载均衡（Ribbon + Spring Cloud LoadBalancer）</strong>：</p>
 <ul>
 <li>学习 <strong>Ribbon</strong> 或 <strong>Spring Cloud LoadBalancer</strong>，理解客户端负载均衡的概念。</li>
 <li>在微服务之间进行负载均衡，学习如何配置和使用它们。</li>
 </ul>
 </li>
-<li><p><strong>断路器（Hystrix 或 Resilience4J）</strong>：</p>
+<li>
+<p><strong>断路器（Hystrix 或 Resilience4J）</strong>：</p>
 <ul>
 <li>学习 <strong>Hystrix</strong> 或 <strong>Resilience4J</strong>，理解断路器模式。</li>
 <li>了解如何保护微服务免受故障传播，提升系统的稳定性。</li>
 <li>实现断路器和回退逻辑，模拟故障并测试系统容错能力。</li>
 </ul>
 </li>
-<li><p><strong>配置管理（Spring Cloud Config）</strong>：</p>
+<li>
+<p><strong>配置管理（Spring Cloud Config）</strong>：</p>
 <ul>
 <li>学习如何使用 <strong>Spring Cloud Config</strong> 实现集中化的配置管理。</li>
 <li>配置多个服务的属性文件，动态加载配置，并了解如何使用 Git 或其他配置源。</li>
 <li>配置刷新、版本控制和敏感数据的管理。</li>
 </ul>
 </li>
-<li><p><strong>API 网关（Spring Cloud Gateway）</strong>：</p>
+<li>
+<p><strong>API 网关（Spring Cloud Gateway）</strong>：</p>
 <ul>
 <li>学习如何使用 <strong>Spring Cloud Gateway</strong> 实现 API 网关功能。</li>
 <li>配置路由、过滤器、负载均衡和限流策略。</li>
 </ul>
 </li>
 </ol>
-<h3 id="阶段-3：进阶应用"><a href="#阶段-3：进阶应用" class="headerlink" title="阶段 3：进阶应用"></a><strong>阶段 3：进阶应用</strong></h3><ol start="9">
-<li><p><strong>分布式追踪（Spring Cloud Sleuth + Zipkin）</strong>：</p>
+<h3 id="阶段-3：进阶应用"><strong>阶段 3：进阶应用</strong></h3>
+<ol start="9">
+<li>
+<p><strong>分布式追踪（Spring Cloud Sleuth + Zipkin）</strong>：</p>
 <ul>
 <li>学习如何使用 <strong>Spring Cloud Sleuth</strong> 实现分布式追踪。</li>
 <li>配置和使用 <strong>Zipkin</strong> 进行追踪，查看请求在各微服务之间的流转路径。</li>
 </ul>
 </li>
-<li><p><strong>消息驱动微服务（Spring Cloud Stream）</strong>：</p>
+<li>
+<p><strong>消息驱动微服务（Spring Cloud Stream）</strong>：</p>
 <ul>
 <li>学习如何使用 <strong>Spring Cloud Stream</strong> 构建基于消息的微服务架构。</li>
 <li>了解消息队列（如 Kafka、RabbitMQ）与 Spring Cloud Stream 的集成。</li>
 </ul>
 </li>
-<li><p><strong>安全性（Spring Cloud Security）</strong>：</p>
+<li>
+<p><strong>安全性（Spring Cloud Security）</strong>：</p>
 <ul>
 <li>学习如何为微服务应用添加安全性，如认证和授权。</li>
 <li>使用 <strong>Spring Security</strong> 保护 RESTful 服务，并学习如何在分布式系统中实现 OAuth2 和 JWT。</li>
 </ul>
 </li>
 </ol>
-<h3 id="阶段-4：部署与运维"><a href="#阶段-4：部署与运维" class="headerlink" title="阶段 4：部署与运维"></a><strong>阶段 4：部署与运维</strong></h3><ol start="12">
-<li><p><strong>服务的容器化与 Kubernetes</strong>：</p>
+<h3 id="阶段-4：部署与运维"><strong>阶段 4：部署与运维</strong></h3>
+<ol start="12">
+<li>
+<p><strong>服务的容器化与 Kubernetes</strong>：</p>
 <ul>
 <li>学习如何将微服务应用容器化，使用 <strong>Docker</strong> 构建容器镜像。</li>
 <li>掌握如何使用 <strong>Kubernetes</strong> 进行微服务的部署、编排和管理。</li>
 </ul>
 </li>
-<li><p><strong>配置与监控（Spring Boot Actuator + Prometheus + Grafana）</strong>：</p>
+<li>
+<p><strong>配置与监控（Spring Boot Actuator + Prometheus + Grafana）</strong>：</p>
 <ul>
 <li>学习如何通过 <strong>Spring Boot Actuator</strong> 收集应用健康检查、指标等信息。</li>
 <li>配置 <strong>Prometheus</strong> 和 <strong>Grafana</strong> 进行系统监控与可视化。</li>
 </ul>
 </li>
-<li><p><strong>CI&#x2F;CD 实践</strong>：</p>
+<li>
+<p><strong>CI/CD 实践</strong>：</p>
 <ul>
-<li>学习如何使用 <strong>Jenkins</strong> 或 <strong>GitLab CI</strong> 等工具构建持续集成和持续部署（CI&#x2F;CD）流程。</li>
+<li>学习如何使用 <strong>Jenkins</strong> 或 <strong>GitLab CI</strong> 等工具构建持续集成和持续部署（CI/CD）流程。</li>
 <li>集成自动化测试，确保微服务应用质量。</li>
 </ul>
 </li>
 </ol>
-<h3 id="阶段-5：性能优化与高级主题"><a href="#阶段-5：性能优化与高级主题" class="headerlink" title="阶段 5：性能优化与高级主题"></a><strong>阶段 5：性能优化与高级主题</strong></h3><ol start="15">
-<li><p><strong>微服务间的通信（Feign + Ribbon）</strong>：</p>
+<h3 id="阶段-5：性能优化与高级主题"><strong>阶段 5：性能优化与高级主题</strong></h3>
+<ol start="15">
+<li>
+<p><strong>微服务间的通信（Feign + Ribbon）</strong>：</p>
 <ul>
 <li>深入学习 <strong>Feign</strong>，了解如何使用声明式 HTTP 客户端来简化微服务间的通信。</li>
 <li>学习如何结合 Ribbon 实现负载均衡的服务调用。</li>
 </ul>
 </li>
-<li><p><strong>事件驱动架构（Spring Cloud Bus）</strong>：</p>
+<li>
+<p><strong>事件驱动架构（Spring Cloud Bus）</strong>：</p>
 <ul>
 <li>学习如何通过 <strong>Spring Cloud Bus</strong> 实现分布式系统中事件的传递与处理。</li>
 <li>探索事件驱动的架构模式，适用于微服务之间的异步通信。</li>
 </ul>
 </li>
-<li><p><strong>优化和故障恢复</strong>：</p>
+<li>
+<p><strong>优化和故障恢复</strong>：</p>
 <ul>
 <li>了解 Spring Cloud 中的性能优化策略，如缓存、数据库连接池的配置等。</li>
 <li>探讨微服务架构中的故障恢复策略，如重试、熔断等。</li>
 </ul>
 </li>
 </ol>
-<h3 id="学习资源："><a href="#学习资源：" class="headerlink" title="学习资源："></a>学习资源：</h3><ul>
-<li>官方文档：<ul>
+<h3 id="学习资源：">学习资源：</h3>
+<ul>
+<li>官方文档：
+<ul>
 <li><a target="_blank" rel="noopener" href="https://spring.io/projects/spring-cloud">Spring Cloud 官方文档</a></li>
 <li><a target="_blank" rel="noopener" href="https://spring.io/projects/spring-boot">Spring Boot 官方文档</a></li>
 </ul>
 </li>
-<li>在线课程：<ul>
+<li>在线课程：
+<ul>
 <li>许多平台（如 Udemy、Coursera、Pluralsight 等）有关于 Spring Cloud 和微服务的课程。</li>
 </ul>
 </li>
-<li>书籍：<ul>
+<li>书籍：
+<ul>
 <li>《Spring Microservices in Action》</li>
 <li>《Cloud Native Java》</li>
 </ul>

@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="详解 Spring Data JPA 的核心功能。这是 Spring Data JPA 最具魅力和生产力的部分，它极大地简化了数据访问层的开发。  3. Spring Data JPA 核心功能详解3.1 Repository 接口Spring Data JPA 的核心是 Repository 抽象。你只需要定义一个接口，并让它继承 Spring Data JPA 提供的特定 Repository">
+    <meta name="description" content="详解 Spring Data JPA 的核心功能。这是 Spring Data JPA 最具魅力和生产力的部分，它极大地简化了数据访问层的开发。  3. Spring Data JPA 核心功能详解 3.1 Repository 接口 Spring Data JPA 的核心是 Repository 抽象。你只需要定义一个接口，并让它继承 Spring Data JPA 提供的特定 Reposito">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.1Repository%20%E6%8E%A5%E5%8F%A3/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="详解 Spring Data JPA 的核心功能。这是 Spring Data JPA 最具魅力和生产力的部分，它极大地简化了数据访问层的开发。  3. Spring Data JPA 核心功能详解3.1 Repository 接口Spring Data JPA 的核心是 Repository 抽象。你只需要定义一个接口，并让它继承 Spring Data JPA 提供的特定 Repository">
+<meta property="og:description" content="详解 Spring Data JPA 的核心功能。这是 Spring Data JPA 最具魅力和生产力的部分，它极大地简化了数据访问层的开发。  3. Spring Data JPA 核心功能详解 3.1 Repository 接口 Spring Data JPA 的核心是 Repository 抽象。你只需要定义一个接口，并让它继承 Spring Data JPA 提供的特定 Reposito">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.042Z">
 <meta property="article:modified_time" content="2025-06-22T01:58:39.634Z">
@@ -302,11 +302,14 @@
                 
                 <p>详解 Spring Data JPA 的核心功能。这是 Spring Data JPA 最具魅力和生产力的部分，它极大地简化了数据访问层的开发。</p>
 <hr>
-<h3 id="3-Spring-Data-JPA-核心功能详解"><a href="#3-Spring-Data-JPA-核心功能详解" class="headerlink" title="3. Spring Data JPA 核心功能详解"></a>3. Spring Data JPA 核心功能详解</h3><h4 id="3-1-Repository-接口"><a href="#3-1-Repository-接口" class="headerlink" title="3.1 Repository 接口"></a>3.1 Repository 接口</h4><p>Spring Data JPA 的核心是 <strong>Repository 抽象</strong>。你只需要定义一个接口，并让它继承 Spring Data JPA 提供的特定 Repository 接口 (如 <code>JpaRepository</code>)，Spring Data JPA 就会在运行时自动为这个接口生成代理实现类，从而提供丰富的数据库操作能力。</p>
+<h3 id="3-Spring-Data-JPA-核心功能详解">3. Spring Data JPA 核心功能详解</h3>
+<h4 id="3-1-Repository-接口">3.1 Repository 接口</h4>
+<p>Spring Data JPA 的核心是 <strong>Repository 抽象</strong>。你只需要定义一个接口，并让它继承 Spring Data JPA 提供的特定 Repository 接口 (如 <code>JpaRepository</code>)，Spring Data JPA 就会在运行时自动为这个接口生成代理实现类，从而提供丰富的数据库操作能力。</p>
 <p><strong>Repository 接口层级：</strong></p>
 <p>Spring Data JPA 的 Repository 接口有一个继承体系：</p>
 <ol>
-<li><p><strong><code>Repository&lt;T, ID&gt;</code></strong>:</p>
+<li>
+<p><strong><code>Repository&lt;T, ID&gt;</code></strong>:</p>
 <ul>
 <li>最顶层的标记接口。表明该接口是一个 Repository。</li>
 <li><code>T</code>: Repository 管理的实体类型。</li>
@@ -314,21 +317,24 @@
 <li>它本身不提供任何方法，但允许 Spring Data 识别并创建代理。</li>
 </ul>
 </li>
-<li><p><strong><code>CrudRepository&lt;T, ID&gt;</code></strong>:</p>
+<li>
+<p><strong><code>CrudRepository&lt;T, ID&gt;</code></strong>:</p>
 <ul>
 <li>继承自 <code>Repository</code>。</li>
 <li>提供了非常基础的 CRUD (Create, Read, Update, Delete) 操作方法。</li>
 <li>例如：<code>save(S entity)</code>, <code>saveAll(Iterable&lt;S&gt; entities)</code>, <code>findById(ID id)</code>, <code>existsById(ID id)</code>, <code>findAll()</code>, <code>findAllById(Iterable&lt;ID&gt; ids)</code>, <code>count()</code>, <code>deleteById(ID id)</code>, <code>delete(T entity)</code>, <code>deleteAllById(Iterable&lt;? extends ID&gt; ids)</code>, <code>deleteAll(Iterable&lt;? extends T&gt; entities)</code>, <code>deleteAll()</code>。</li>
 </ul>
 </li>
-<li><p><strong><code>PagingAndSortingRepository&lt;T, ID&gt;</code></strong>:</p>
+<li>
+<p><strong><code>PagingAndSortingRepository&lt;T, ID&gt;</code></strong>:</p>
 <ul>
 <li>继承自 <code>CrudRepository</code>。</li>
 <li>在 CRUD 的基础上，增加了<strong>分页 (Pagination)</strong> 和 <strong>排序 (Sorting)</strong> 的功能。</li>
 <li>例如：<code>findAll(Sort sort)</code>, <code>findAll(Pageable pageable)</code>。</li>
 </ul>
 </li>
-<li><p><strong><code>JpaRepository&lt;T, ID&gt;</code></strong>:</p>
+<li>
+<p><strong><code>JpaRepository&lt;T, ID&gt;</code></strong>:</p>
 <ul>
 <li>继承自 <code>PagingAndSortingRepository</code>。</li>
 <li>这是<strong>最常用</strong>的接口，专门为 JPA 设计，提供了更多 JPA 特有的功能。</li>
@@ -345,14 +351,15 @@
 <li>接口继承 <code>JpaRepository&lt;EntityType, IdType&gt;</code>。</li>
 <li>Spring Boot 会自动扫描 <code>@Repository</code> 注解的接口 (或者继承了 Spring Data Repository 接口且位于 <code>@EnableJpaRepositories</code> 指定包下的接口)，并为其创建代理实现。在 Spring Boot 中，如果你的 Repository 接口与主应用类在同一个包或其子包下，通常不需要显式配置 <code>@EnableJpaRepositories</code>。</li>
 </ul>
-<h4 id="基本-CRUD-操作-自动生成实现-："><a href="#基本-CRUD-操作-自动生成实现-：" class="headerlink" title="基本 CRUD 操作 (自动生成实现)："></a><strong>基本 CRUD 操作 (自动生成实现)：</strong></h4><p>一旦你定义了继承 <code>JpaRepository</code> 的接口，你就可以直接注入并使用它提供的 CRUD 方法，无需编写任何实现代码。</p>
+<h4 id="基本-CRUD-操作-自动生成实现-："><strong>基本 CRUD 操作 (自动生成实现)：</strong></h4>
+<p>一旦你定义了继承 <code>JpaRepository</code> 的接口，你就可以直接注入并使用它提供的 CRUD 方法，无需编写任何实现代码。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> UserRepository userRepository;<br><br>    <span class="hljs-meta">@Transactional</span><br>    <span class="hljs-keyword">public</span> User <span class="hljs-title function_">createUser</span><span class="hljs-params">(User user)</span> &#123;<br>        <span class="hljs-keyword">return</span> userRepository.save(user); <span class="hljs-comment">// 保存实体 (插入或更新)</span><br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Optional&lt;User&gt; <span class="hljs-title function_">getUserById</span><span class="hljs-params">(Long id)</span> &#123;<br>        <span class="hljs-keyword">return</span> userRepository.findById(id); <span class="hljs-comment">// 根据ID查找，返回 Optional&lt;User&gt;</span><br>    &#125;<br><br>    <span class="hljs-keyword">public</span> List&lt;User&gt; <span class="hljs-title function_">getAllUsers</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> userRepository.findAll(); <span class="hljs-comment">// 查询所有用户</span><br>    &#125;<br><br>    <span class="hljs-meta">@Transactional</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteUser</span><span class="hljs-params">(Long id)</span> &#123;<br>        userRepository.deleteById(id); <span class="hljs-comment">// 根据ID删除</span><br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">long</span> <span class="hljs-title function_">countUsers</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> userRepository.count(); <span class="hljs-comment">// 统计用户总数</span><br>    &#125;<br><br>    <span class="hljs-comment">// save() 方法：</span><br>    <span class="hljs-comment">// - 如果实体是新的 (主键为 null 或不存在于持久化上下文)，则执行 INSERT。</span><br>    <span class="hljs-comment">// - 如果实体已存在 (主键非 null 且在持久化上下文中)，则执行 UPDATE。</span><br>    <span class="hljs-comment">// - 返回持久化后的实体 (可能包含生成的主键或更新的时间戳)。</span><br><br>    <span class="hljs-comment">// findById() 返回 Optional&lt;T&gt;:</span><br>    <span class="hljs-comment">// 这是 Java 8 引入的特性，用于优雅地处理可能为 null 的结果，避免空指针异常。</span><br>    <span class="hljs-comment">// 你可以使用 .isPresent(), .orElse(), .orElseThrow() 等方法处理 Optional。</span><br>&#125;<br></code></pre></td></tr></table></figure>
-
-<p><strong>查询方法派生 (Query Derivation &#x2F; Derived Queries)：</strong></p>
+<p><strong>查询方法派生 (Query Derivation / Derived Queries)：</strong></p>
 <p>这是 Spring Data JPA 一个非常强大且便捷的特性。你可以<strong>根据特定的方法命名约定，在 Repository 接口中定义查询方法，Spring Data JPA 会自动解析方法名并为你生成相应的 JPQL 查询并执行。</strong></p>
 <p><strong>命名约定规则：</strong></p>
 <ul>
-<li><strong>前缀</strong>: <code>find...By</code>, <code>read...By</code>, <code>query...By</code>, <code>count...By</code>, <code>get...By</code>, <code>exists...By</code>, <code>delete...By</code>, <code>remove...By</code>。<ul>
+<li><strong>前缀</strong>: <code>find...By</code>, <code>read...By</code>, <code>query...By</code>, <code>count...By</code>, <code>get...By</code>, <code>exists...By</code>, <code>delete...By</code>, <code>remove...By</code>。
+<ul>
 <li><code>find</code>, <code>read</code>, <code>query</code>, <code>get</code>: 通常用于返回单个或多个实体。</li>
 <li><code>count</code>: 用于返回符合条件的记录数 (通常返回 <code>long</code> 或 <code>int</code>)。</li>
 <li><code>exists</code>: 用于判断是否存在符合条件的记录 (返回 <code>boolean</code>)。</li>
@@ -360,15 +367,16 @@
 </ul>
 </li>
 <li><strong>属性名</strong>: 方法名中紧跟在 <code>By</code> 之后的部分是实体的属性名 (驼峰命名)。</li>
-<li><strong>条件关键字</strong>: 可以使用一系列关键字来连接属性和条件，例如：<ul>
+<li><strong>条件关键字</strong>: 可以使用一系列关键字来连接属性和条件，例如：
+<ul>
 <li><code>And</code>: <code>findByLastnameAndFirstname</code> -&gt; <code>WHERE lastname = ? AND firstname = ?</code></li>
 <li><code>Or</code>: <code>findByLastnameOrFirstname</code> -&gt; <code>WHERE lastname = ? OR firstname = ?</code></li>
-<li><code>Is</code>, <code>Equals</code>: <code>findByFirstnameIs</code>, <code>findByFirstnameEquals</code> -&gt; <code>WHERE firstname = ?</code> (通常 <code>Is</code> &#x2F; <code>Equals</code> 可以省略)</li>
+<li><code>Is</code>, <code>Equals</code>: <code>findByFirstnameIs</code>, <code>findByFirstnameEquals</code> -&gt; <code>WHERE firstname = ?</code> (通常 <code>Is</code> / <code>Equals</code> 可以省略)</li>
 <li><code>Between</code>: <code>findByStartDateBetween</code> -&gt; <code>WHERE startDate BETWEEN ? AND ?</code> (需要两个参数)</li>
 <li><code>LessThan</code>, <code>LessThanEqual</code>, <code>GreaterThan</code>, <code>GreaterThanEqual</code>: <code>findByAgeLessThan</code> -&gt; <code>WHERE age &lt; ?</code></li>
 <li><code>IsNull</code>, <code>IsNotNull</code> (或 <code>NotNull</code>): <code>findByAddressIsNull</code> -&gt; <code>WHERE address IS NULL</code> (不需要参数)</li>
 <li><code>Like</code>, <code>NotLike</code>: <code>findByNameLike</code> -&gt; <code>WHERE name LIKE ?</code> (参数需要自己加 <code>%</code>)</li>
-<li><code>StartingWith</code>, <code>EndingWith</code>, <code>Containing</code>: <code>findByNameStartingWith</code> -&gt; <code>WHERE name LIKE &#39;?%&#39;</code> (自动加 <code>%</code>)</li>
+<li><code>StartingWith</code>, <code>EndingWith</code>, <code>Containing</code>: <code>findByNameStartingWith</code> -&gt; <code>WHERE name LIKE '?%'</code> (自动加 <code>%</code>)</li>
 <li><code>OrderBy</code>: <code>findByLastnameOrderByFirstnameAsc</code> -&gt; <code>WHERE lastname = ? ORDER BY firstname ASC</code></li>
 <li><code>Not</code>: <code>findByNameNot</code> -&gt; <code>WHERE name &lt;&gt; ?</code></li>
 <li><code>In</code>, <code>NotIn</code>: <code>findByAgeIn(Collection&lt;Integer&gt; ages)</code> -&gt; <code>WHERE age IN (...)</code></li>
@@ -377,7 +385,8 @@
 </ul>
 </li>
 <li><strong>嵌套属性</strong>: 可以通过 <code>_</code> 或直接驼峰连接来访问关联实体的属性，例如 <code>findByAddress_ZipCode(String zipCode)</code> 或 <code>findByAddressZipCode(String zipCode)</code> (如果 <code>User</code> 有一个 <code>Address</code> 类型的 <code>address</code> 属性，<code>Address</code> 有 <code>zipCode</code> 属性)。</li>
-<li><strong>返回类型</strong>:<ul>
+<li><strong>返回类型</strong>:
+<ul>
 <li>单个实体: <code>User findByEmail(String email);</code></li>
 <li><code>Optional&lt;User&gt;</code>: <code>Optional&lt;User&gt; findByUsername(String username);</code> (推荐，更安全)</li>
 <li>集合: <code>List&lt;User&gt; findByStatus(String status);</code>, <code>Collection&lt;User&gt; ...</code>, <code>Set&lt;User&gt; ...</code></li>
@@ -388,7 +397,8 @@
 <li><code>boolean</code>: <code>boolean existsByEmail(String email);</code></li>
 </ul>
 </li>
-<li><strong>限制结果集</strong>:<ul>
+<li><strong>限制结果集</strong>:
+<ul>
 <li><code>findFirst...By...</code> 或 <code>findTop...By...</code>: 返回第一个匹配的实体。</li>
 <li><code>findFirstN...By...</code> 或 <code>findTopN...By...</code>: 返回前 N 个匹配的实体 (如 <code>findTop5ByOrderByAgeDesc()</code>)。</li>
 </ul>
@@ -397,22 +407,26 @@
 <p><strong>派生查询示例 (<code>UserRepository.java</code>)</strong>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;User, Long&gt; &#123;<br><br>    <span class="hljs-comment">// 根据用户名查找用户</span><br>    Optional&lt;User&gt; <span class="hljs-title function_">findByUsername</span><span class="hljs-params">(String username)</span>;<br><br>    <span class="hljs-comment">// 根据邮箱查找用户 (忽略大小写)</span><br>    User <span class="hljs-title function_">findByEmailIgnoreCase</span><span class="hljs-params">(String email)</span>;<br><br>    <span class="hljs-comment">// 根据状态查找用户列表，并按创建日期降序排序</span><br>    List&lt;User&gt; <span class="hljs-title function_">findByStatusOrderByDateCreatedDesc</span><span class="hljs-params">(String status)</span>;<br><br>    <span class="hljs-comment">// 查找年龄大于指定值的用户数量</span><br>    <span class="hljs-type">long</span> <span class="hljs-title function_">countByAgeGreaterThan</span><span class="hljs-params">(<span class="hljs-type">int</span> age)</span>;<br><br>    <span class="hljs-comment">// 查找用户名包含指定关键字的用户 (参数需要手动加 %)</span><br>    List&lt;User&gt; <span class="hljs-title function_">findByUsernameLike</span><span class="hljs-params">(String usernameKeyword)</span>;<br><br>    <span class="hljs-comment">// 查找用户名以指定前缀开头的用户</span><br>    List&lt;User&gt; <span class="hljs-title function_">findByUsernameStartingWith</span><span class="hljs-params">(String prefix)</span>;<br><br>    <span class="hljs-comment">// 查找ID在指定集合中的用户</span><br>    List&lt;User&gt; <span class="hljs-title function_">findByIdIn</span><span class="hljs-params">(Collection&lt;Long&gt; ids)</span>;<br><br>    <span class="hljs-comment">// 查找创建日期在某个范围内的用户</span><br>    List&lt;User&gt; <span class="hljs-title function_">findByDateCreatedBetween</span><span class="hljs-params">(LocalDateTime startDate, LocalDateTime endDate)</span>;<br><br>    <span class="hljs-comment">// 查找前10个活跃用户，按最后更新时间降序</span><br>    List&lt;User&gt; <span class="hljs-title function_">findTop10ByStatusOrderByLastUpdatedDesc</span><span class="hljs-params">(String status)</span>;<br><br>    <span class="hljs-comment">// 检查是否存在指定邮箱的用户</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">existsByEmail</span><span class="hljs-params">(String email)</span>;<br><br>    <span class="hljs-comment">// 删除所有状态为 PENDING 的用户 (需要 @Modifying 和事务)</span><br>    <span class="hljs-comment">// @Modifying</span><br>    <span class="hljs-comment">// @Transactional</span><br>    <span class="hljs-comment">// void deleteByStatus(String status);</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p>Spring Data JPA 会在启动时解析这些方法名，如果无法正确解析（例如，方法名不符合约定，或者属性名不存在），应用会启动失败并报错，这有助于早期发现问题。</p>
-<h4 id="Query-注解-使用-JPQL-或原生-SQL-定义查询"><a href="#Query-注解-使用-JPQL-或原生-SQL-定义查询" class="headerlink" title="@Query 注解: 使用 JPQL 或原生 SQL 定义查询"></a><strong><code>@Query</code> 注解: 使用 JPQL 或原生 SQL 定义查询</strong></h4><p>当派生查询无法满足复杂的查询需求，或者你希望对查询有更精细的控制时，可以使用 <code>@Query</code> 注解直接编写 JPQL 或原生 SQL。</p>
+<h4 id="Query-注解-使用-JPQL-或原生-SQL-定义查询"><strong><code>@Query</code> 注解: 使用 JPQL 或原生 SQL 定义查询</strong></h4>
+<p>当派生查询无法满足复杂的查询需求，或者你希望对查询有更精细的控制时，可以使用 <code>@Query</code> 注解直接编写 JPQL 或原生 SQL。</p>
 <ul>
-<li><p><strong>JPQL (Java Persistence Query Language)</strong>:</p>
+<li>
+<p><strong>JPQL (Java Persistence Query Language)</strong>:</p>
 <ul>
 <li>面向对象的查询语言，操作的是实体和属性。</li>
 <li>更具可移植性。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.data.jpa.repository.Query;<br><span class="hljs-keyword">import</span> org.springframework.data.repository.query.Param;<br><span class="hljs-comment">// ...</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;User, Long&gt; &#123;<br><br>    <span class="hljs-comment">// 使用 JPQL 查询，?1, ?2 代表参数位置</span><br>    <span class="hljs-meta">@Query(&quot;SELECT u FROM User u WHERE u.status = ?1 AND u.email LIKE %?2%&quot;)</span><br>    List&lt;User&gt; <span class="hljs-title function_">findUsersByStatusAndEmailKeyword</span><span class="hljs-params">(String status, String emailKeyword)</span>;<br><br>    <span class="hljs-comment">// 使用命名参数 (:paramName)，更易读，推荐</span><br>    <span class="hljs-meta">@Query(&quot;SELECT u FROM User u WHERE u.username = :uname OR u.email = :uemail&quot;)</span><br>    Optional&lt;User&gt; <span class="hljs-title function_">findByUsernameOrEmail</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;uname&quot;)</span> String username, <span class="hljs-meta">@Param(&quot;uemail&quot;)</span> String email)</span>;<br><br>    <span class="hljs-comment">// JPQL 中的 JOIN FETCH 用于解决 N+1 问题 (后面会详述)</span><br>    <span class="hljs-meta">@Query(&quot;SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.roles WHERE u.id = :id&quot;)</span><br>    Optional&lt;User&gt; <span class="hljs-title function_">findByIdWithRoles</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;id&quot;)</span> Long id)</span>;<br><br>    <span class="hljs-comment">// JPQL 支持构造函数表达式，将查询结果直接映射到 DTO</span><br>    <span class="hljs-meta">@Query(&quot;SELECT new com.example.yourproject.dto.UserSummaryDTO(u.id, u.username, u.email) FROM User u WHERE u.status = :status&quot;)</span><br>    List&lt;UserSummaryDTO&gt; <span class="hljs-title function_">findUserSummariesByStatus</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;status&quot;)</span> String status)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>原生 SQL (Native Query)</strong>:</p>
+<li>
+<p><strong>原生 SQL (Native Query)</strong>:</p>
 <ul>
 <li>当你需要使用特定数据库的函数、特性，或者 JPQL 难以表达的复杂 SQL 时使用。</li>
 <li>需要设置 <code>nativeQuery = true</code>。</li>
-<li><strong>结果映射</strong>:<ul>
+<li><strong>结果映射</strong>:
+<ul>
 <li>如果查询返回的列能自动映射到实体属性，JPA 可以尝试自动映射。</li>
-<li>对于复杂映射或非实体结果，可能需要使用 <code>@SqlResultSetMapping</code> 或投影接口&#x2F;类。</li>
+<li>对于复杂映射或非实体结果，可能需要使用 <code>@SqlResultSetMapping</code> 或投影接口/类。</li>
 </ul>
 </li>
 </ul>
@@ -421,32 +435,37 @@
 <ul>
 <li>失去了数据库无关性。</li>
 <li>参数占位符与 JPQL 不同，通常是 <code>:paramName</code> 或 <code>?</code> (位置)。</li>
-<li>分页和排序参数 (<code>Pageable</code>, <code>Sort</code>) 在原生 SQL 中可能需要手动处理，除非 Spring Data JPA 针对特定数据库方言做了特殊支持 (如自动添加 <code>LIMIT</code> &#x2F; <code>OFFSET</code> 或 <code>ROWNUM</code>)。通常，如果使用 <code>Pageable</code>，Spring Data JPA 会尝试包装原生 SQL 来实现分页，但这可能不总是高效或可行。</li>
+<li>分页和排序参数 (<code>Pageable</code>, <code>Sort</code>) 在原生 SQL 中可能需要手动处理，除非 Spring Data JPA 针对特定数据库方言做了特殊支持 (如自动添加 <code>LIMIT</code> / <code>OFFSET</code> 或 <code>ROWNUM</code>)。通常，如果使用 <code>Pageable</code>，Spring Data JPA 会尝试包装原生 SQL 来实现分页，但这可能不总是高效或可行。</li>
 </ul>
 </li>
 </ul>
-<h4 id="Modifying-注解-用于更新和删除操作"><a href="#Modifying-注解-用于更新和删除操作" class="headerlink" title="@Modifying 注解: 用于更新和删除操作"></a><strong><code>@Modifying</code> 注解: 用于更新和删除操作</strong></h4><p>对于执行 <code>UPDATE</code> 或 <code>DELETE</code> 操作的 <code>@Query</code> (无论是 JPQL 还是原生 SQL)，<strong>必须添加 <code>@Modifying</code> 注解</strong>，并通常需要与 <code>@Transactional</code> 配合使用。</p>
+<h4 id="Modifying-注解-用于更新和删除操作"><strong><code>@Modifying</code> 注解: 用于更新和删除操作</strong></h4>
+<p>对于执行 <code>UPDATE</code> 或 <code>DELETE</code> 操作的 <code>@Query</code> (无论是 JPQL 还是原生 SQL)，<strong>必须添加 <code>@Modifying</code> 注解</strong>，并通常需要与 <code>@Transactional</code> 配合使用。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.data.jpa.repository.Modifying;<br><span class="hljs-keyword">import</span> org.springframework.transaction.annotation.Transactional; <span class="hljs-comment">// 导入 Spring 的事务注解</span><br><span class="hljs-comment">// ...</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;User, Long&gt; &#123;<br><br>    <span class="hljs-meta">@Modifying</span> <span class="hljs-comment">// 标记这是一个修改查询 (UPDATE/DELETE)</span><br>    <span class="hljs-meta">@Transactional</span> <span class="hljs-comment">// 修改操作通常需要在事务中执行</span><br>    <span class="hljs-meta">@Query(&quot;UPDATE User u SET u.status = :newStatus WHERE u.username = :username&quot;)</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">updateUserStatusByUsername</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;username&quot;)</span> String username, <span class="hljs-meta">@Param(&quot;newStatus&quot;)</span> String newStatus)</span>;<br><br>    <span class="hljs-meta">@Modifying</span><br>    <span class="hljs-meta">@Transactional</span><br>    <span class="hljs-meta">@Query(&quot;DELETE FROM User u WHERE u.lastUpdated &lt; :cutoffDate AND u.status = &#x27;INACTIVE&#x27;&quot;)</span><br>    <span class="hljs-type">int</span> <span class="hljs-title function_">deleteInactiveUsersBefore</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;cutoffDate&quot;)</span> LocalDateTime cutoffDate)</span>;<br><br>    <span class="hljs-comment">// 派生删除方法也需要 @Modifying 和 @Transactional</span><br>    <span class="hljs-meta">@Modifying</span><br>    <span class="hljs-meta">@Transactional</span><br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">deleteByStatus</span><span class="hljs-params">(String status)</span>; <span class="hljs-comment">// 假设之前定义的派生删除方法</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>返回值</strong>: <code>@Modifying</code> 查询通常返回 <code>int</code>，表示受影响的行数，或者 <code>void</code>。</li>
 <li><strong>事务</strong>: 修改操作改变数据库状态，必须在事务中执行。<code>@Transactional</code> 注解确保了这一点。如果 Service 层调用此方法时已经有事务，则会加入现有事务。</li>
-<li><strong>持久化上下文的同步</strong>: <code>@Modifying</code> 查询执行后，持久化上下文 (一级缓存) 中的实体可能与数据库中的状态不一致。<ul>
+<li><strong>持久化上下文的同步</strong>: <code>@Modifying</code> 查询执行后，持久化上下文 (一级缓存) 中的实体可能与数据库中的状态不一致。
+<ul>
 <li>为了避免这种情况，可以在 <code>@Query</code> 注解中设置 <code>clearAutomatically = true</code> (或 <code>@Modifying(clearAutomatically = true)</code>)，这会在查询执行后清空持久化上下文。这样后续的查询会直接从数据库加载最新数据。</li>
 <li>或者，如果只想刷新特定实体，可以在 Service 层手动调用 <code>entityManager.refresh(entity)</code>。</li>
 </ul>
 </li>
 </ul>
 <p><strong><code>@Param(&quot;name&quot;)</code> 注解: 命名参数</strong></p>
-<p>在 <code>@Query</code> 注解中使用 JPQL 或原生 SQL 时，如果查询包含参数，建议使用命名参数 (<code>:paramName</code>) 而不是位置参数 (<code>?1</code>, <code>?2</code>)，因为命名参数更易读且不易出错。<br>对应的 Repository 方法参数需要使用 <code>@Param(&quot;paramName&quot;)</code> 注解来将方法参数与查询中的命名参数关联起来。</p>
+<p>在 <code>@Query</code> 注解中使用 JPQL 或原生 SQL 时，如果查询包含参数，建议使用命名参数 (<code>:paramName</code>) 而不是位置参数 (<code>?1</code>, <code>?2</code>)，因为命名参数更易读且不易出错。<br>
+对应的 Repository 方法参数需要使用 <code>@Param(&quot;paramName&quot;)</code> 注解来将方法参数与查询中的命名参数关联起来。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Query(&quot;SELECT u FROM User u WHERE u.age &gt; :minAge AND u.status = :userStatus&quot;)</span><br>List&lt;User&gt; <span class="hljs-title function_">findUsersOlderThanWithStatus</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;minAge&quot;)</span> <span class="hljs-type">int</span> age, <span class="hljs-meta">@Param(&quot;userStatus&quot;)</span> String status)</span>;<br></code></pre></td></tr></table></figure>
-
-<h4 id="分页与排序-Pageable-Sort"><a href="#分页与排序-Pageable-Sort" class="headerlink" title="分页与排序 (Pageable, Sort)"></a><strong>分页与排序 (<code>Pageable</code>, <code>Sort</code>)</strong></h4><p>Spring Data JPA 提供了对分页和排序的强大支持，通过 <code>Pageable</code> 和 <code>Sort</code> 接口。</p>
+<h4 id="分页与排序-Pageable-Sort"><strong>分页与排序 (<code>Pageable</code>, <code>Sort</code>)</strong></h4>
+<p>Spring Data JPA 提供了对分页和排序的强大支持，通过 <code>Pageable</code> 和 <code>Sort</code> 接口。</p>
 <ul>
-<li><p><strong><code>org.springframework.data.domain.Sort</code></strong>:</p>
+<li>
+<p><strong><code>org.springframework.data.domain.Sort</code></strong>:</p>
 <ul>
 <li>用于定义排序规则。</li>
 <li>可以按单个或多个属性排序，指定升序 (<code>ASC</code>) 或降序 (<code>DESC</code>)。</li>
-<li>创建方式：<ul>
+<li>创建方式：
+<ul>
 <li><code>Sort.by(&quot;propertyName&quot;)</code> (默认升序)</li>
 <li><code>Sort.by(Sort.Direction.DESC, &quot;propertyName&quot;)</code></li>
 <li><code>Sort.by(Sort.Order.asc(&quot;prop1&quot;), Sort.Order.desc(&quot;prop2&quot;))</code></li>
@@ -455,11 +474,13 @@
 </li>
 </ul>
 </li>
-<li><p><strong><code>org.springframework.data.domain.Pageable</code></strong>:</p>
+<li>
+<p><strong><code>org.springframework.data.domain.Pageable</code></strong>:</p>
 <ul>
 <li>封装了分页请求信息，包括页码 (从 0 开始)、每页大小、以及可选的排序信息。</li>
 <li>通常作为 Repository 方法的最后一个参数。</li>
-<li>创建方式：<ul>
+<li>创建方式：
+<ul>
 <li><code>PageRequest.of(int page, int size)</code> (无排序)</li>
 <li><code>PageRequest.of(int page, int size, Sort sort)</code></li>
 <li><code>PageRequest.of(int page, int size, Sort.Direction direction, String... properties)</code></li>
@@ -467,25 +488,29 @@
 </li>
 </ul>
 </li>
-<li><p><strong><code>org.springframework.data.domain.Page&lt;T&gt;</code></strong>:</p>
+<li>
+<p><strong><code>org.springframework.data.domain.Page&lt;T&gt;</code></strong>:</p>
 <ul>
 <li>分页查询的结果对象，继承自 <code>Slice&lt;T&gt;</code>。</li>
-<li>包含了当前页的数据列表 (<code>getContent()</code>)、总记录数 (<code>getTotalElements()</code>)、总页数 (<code>getTotalPages()</code>)、当前页码 (<code>getNumber()</code>)、每页大小 (<code>getSize()</code>)、是否有上一页&#x2F;下一页等丰富信息。</li>
+<li>包含了当前页的数据列表 (<code>getContent()</code>)、总记录数 (<code>getTotalElements()</code>)、总页数 (<code>getTotalPages()</code>)、当前页码 (<code>getNumber()</code>)、每页大小 (<code>getSize()</code>)、是否有上一页/下一页等丰富信息。</li>
 </ul>
 </li>
 </ul>
 <p><strong>在 Repository 方法中使用 <code>Pageable</code> 和 <code>Sort</code>:</strong></p>
 <ol>
-<li><p><strong>派生查询中的分页与排序</strong>:</p>
+<li>
+<p><strong>派生查询中的分页与排序</strong>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;User, Long&gt; &#123;<br>    <span class="hljs-comment">// 根据状态查询，并按用户名排序</span><br>    List&lt;User&gt; <span class="hljs-title function_">findByStatus</span><span class="hljs-params">(String status, Sort sort)</span>;<br><br>    <span class="hljs-comment">// 根据年龄大于某值进行分页查询 (排序信息在 Pageable 对象中)</span><br>    Page&lt;User&gt; <span class="hljs-title function_">findByAgeGreaterThan</span><span class="hljs-params">(<span class="hljs-type">int</span> age, Pageable pageable)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><strong>调用示例</strong>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Sort sort = Sort.by(Sort.Direction.ASC, &quot;username&quot;).and(Sort.by(Sort.Direction.DESC, &quot;dateCreated&quot;));</span><br><span class="hljs-comment">// List&lt;User&gt; users = userRepository.findByStatus(&quot;ACTIVE&quot;, sort);</span><br><br><span class="hljs-type">Pageable</span> <span class="hljs-variable">pageRequest</span> <span class="hljs-operator">=</span> PageRequest.of(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>, Sort.by(<span class="hljs-string">&quot;lastUpdated&quot;</span>).descending()); <span class="hljs-comment">// 第1页，每页10条，按更新时间降序</span><br>Page&lt;User&gt; userPage = userRepository.findByAgeGreaterThan(<span class="hljs-number">18</span>, pageRequest);<br><br><span class="hljs-comment">// List&lt;User&gt; currentPageContent = userPage.getContent();</span><br><span class="hljs-comment">// long totalUsers = userPage.getTotalElements();</span><br><span class="hljs-comment">// int totalPages = userPage.getTotalPages();</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>@Query</code> 中的分页与排序</strong>:</p>
+<li>
+<p><strong><code>@Query</code> 中的分页与排序</strong>:</p>
 <ul>
 <li>当 <code>@Query</code> 方法的参数包含 <code>Pageable</code> 时，Spring Data JPA 会自动处理分页。</li>
 <li>它会执行两条查询：一条是带有分页条件的数据查询，另一条是 <code>COUNT</code> 查询 (用于获取总记录数)。</li>
-<li><strong>JPQL 中的排序</strong>:<ul>
+<li><strong>JPQL 中的排序</strong>:
+<ul>
 <li>如果 <code>Pageable</code> 对象中包含了 <code>Sort</code> 信息，并且你的 JPQL 查询<strong>没有</strong> <code>ORDER BY</code> 子句，Spring Data JPA 会自动将 <code>Sort</code> 信息追加到 JPQL 的 <code>ORDER BY</code> 子句中。</li>
 <li>如果 JPQL 查询中<strong>已经有</strong> <code>ORDER BY</code> 子句，则 <code>Pageable</code> 中的 <code>Sort</code> 信息会被<strong>忽略</strong>。</li>
 <li>如果 JPQL 查询很复杂，包含 <code>GROUP BY</code> 或 <code>DISTINCT</code>，自动追加 <code>Sort</code> 可能不总是有效或正确，此时建议在 JPQL 中显式写 <code>ORDER BY</code>。</li>
@@ -494,7 +519,8 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;User, Long&gt; &#123;<br>    <span class="hljs-meta">@Query(&quot;SELECT u FROM User u WHERE u.status = :status&quot;)</span><br>    Page&lt;User&gt; <span class="hljs-title function_">findByStatusWithQuery</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;status&quot;)</span> String status, Pageable pageable)</span>;<br><br>    <span class="hljs-comment">// 如果 JPQL 中有 ORDER BY，Pageable 中的 Sort 会被忽略</span><br>    <span class="hljs-meta">@Query(&quot;SELECT u FROM User u WHERE u.status = :status ORDER BY u.username ASC&quot;)</span><br>    Page&lt;User&gt; <span class="hljs-title function_">findByStatusOrderedByName</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;status&quot;)</span> String status, Pageable pageable)</span>;<br><br>    <span class="hljs-comment">// 对于复杂的 COUNT 查询，可以自定义 countQuery</span><br>    <span class="hljs-meta">@Query(value = &quot;SELECT u FROM User u JOIN u.department d WHERE d.name = :deptName&quot;,</span><br><span class="hljs-meta">           countQuery = &quot;SELECT count(u) FROM User u JOIN u.department d WHERE d.name = :deptName&quot;)</span><br>    Page&lt;User&gt; <span class="hljs-title function_">findByDepartmentName</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;deptName&quot;)</span> String deptName, Pageable pageable)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
-<li><strong>原生 SQL 中的分页与排序</strong>:<ul>
+<li><strong>原生 SQL 中的分页与排序</strong>:
+<ul>
 <li>Spring Data JPA 对原生 SQL 的分页支持有限。它会尝试包装你的原生 SQL 来添加分页子句，但这取决于数据库方言和 SQL 的复杂性。</li>
 <li>对于原生 SQL，如果需要精确控制分页，有时可能需要手动在 SQL 中处理分页参数 (如 <code>LIMIT :limit OFFSET :offset</code>)，并自己计算 <code>count</code>。</li>
 <li>或者，如果查询简单，可以依赖 Spring Data JPA 的自动包装，但要充分测试。</li>

@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="详细了解 MyBatis-Plus 提供的性能分析和多租户相关的插件。这些插件对于保证系统稳定性和实现特定业务需求非常有帮助。  3.9 性能分析与安全防护插件MyBatis-Plus 提供了一些用于开发和测试阶段的插件，帮助开发者发现潜在的性能问题或不规范的 SQL 操作，以及防止一些危险的操作。 3.9.1 IllegalSqlInnerInterceptor (非法 SQL 拦截器 - MP">
+    <meta name="description" content="详细了解 MyBatis-Plus 提供的性能分析和多租户相关的插件。这些插件对于保证系统稳定性和实现特定业务需求非常有帮助。  3.9 性能分析与安全防护插件 MyBatis-Plus 提供了一些用于开发和测试阶段的插件，帮助开发者发现潜在的性能问题或不规范的 SQL 操作，以及防止一些危险的操作。 3.9.1 IllegalSqlInnerInterceptor (非法 SQL 拦截器 - M">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%92%8C%E5%A4%9A%E7%A7%9F%E6%88%B7%E7%9B%B8%E5%85%B3%E6%8F%92%E4%BB%B6/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="详细了解 MyBatis-Plus 提供的性能分析和多租户相关的插件。这些插件对于保证系统稳定性和实现特定业务需求非常有帮助。  3.9 性能分析与安全防护插件MyBatis-Plus 提供了一些用于开发和测试阶段的插件，帮助开发者发现潜在的性能问题或不规范的 SQL 操作，以及防止一些危险的操作。 3.9.1 IllegalSqlInnerInterceptor (非法 SQL 拦截器 - MP">
+<meta property="og:description" content="详细了解 MyBatis-Plus 提供的性能分析和多租户相关的插件。这些插件对于保证系统稳定性和实现特定业务需求非常有帮助。  3.9 性能分析与安全防护插件 MyBatis-Plus 提供了一些用于开发和测试阶段的插件，帮助开发者发现潜在的性能问题或不规范的 SQL 操作，以及防止一些危险的操作。 3.9.1 IllegalSqlInnerInterceptor (非法 SQL 拦截器 - M">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.109Z">
 <meta property="article:modified_time" content="2025-06-16T07:56:20.992Z">
@@ -302,28 +302,36 @@
                 
                 <p>详细了解 MyBatis-Plus 提供的性能分析和多租户相关的插件。这些插件对于保证系统稳定性和实现特定业务需求非常有帮助。</p>
 <hr>
-<h4 id="3-9-性能分析与安全防护插件"><a href="#3-9-性能分析与安全防护插件" class="headerlink" title="3.9 性能分析与安全防护插件"></a>3.9 性能分析与安全防护插件</h4><p>MyBatis-Plus 提供了一些用于开发和测试阶段的插件，帮助开发者发现潜在的性能问题或不规范的 SQL 操作，以及防止一些危险的操作。</p>
-<h5 id="3-9-1-IllegalSqlInnerInterceptor-非法-SQL-拦截器-MP-早期版本，已不推荐直接使用"><a href="#3-9-1-IllegalSqlInnerInterceptor-非法-SQL-拦截器-MP-早期版本，已不推荐直接使用" class="headerlink" title="3.9.1 IllegalSqlInnerInterceptor (非法 SQL 拦截器 - MP 早期版本，已不推荐直接使用)"></a>3.9.1 <code>IllegalSqlInnerInterceptor</code> (非法 SQL 拦截器 - MP 早期版本，已不推荐直接使用)</h5><ul>
-<li><strong>作用 (早期)</strong>: 在早期版本 (如 3.x 初期)，有一个 <code>PerformanceInterceptor</code> (性能分析拦截器)，它可以输出 SQL 执行时间和分析结果，并且可以配置当 SQL 执行时间超过某个阈值时抛出异常。同时，它也包含了一些简单的防止全表更新&#x2F;删除的逻辑。</li>
+<h4 id="3-9-性能分析与安全防护插件">3.9 性能分析与安全防护插件</h4>
+<p>MyBatis-Plus 提供了一些用于开发和测试阶段的插件，帮助开发者发现潜在的性能问题或不规范的 SQL 操作，以及防止一些危险的操作。</p>
+<h5 id="3-9-1-IllegalSqlInnerInterceptor-非法-SQL-拦截器-MP-早期版本，已不推荐直接使用">3.9.1 <code>IllegalSqlInnerInterceptor</code> (非法 SQL 拦截器 - MP 早期版本，已不推荐直接使用)</h5>
+<ul>
+<li><strong>作用 (早期)</strong>: 在早期版本 (如 3.x 初期)，有一个 <code>PerformanceInterceptor</code> (性能分析拦截器)，它可以输出 SQL 执行时间和分析结果，并且可以配置当 SQL 执行时间超过某个阈值时抛出异常。同时，它也包含了一些简单的防止全表更新/删除的逻辑。</li>
 <li><strong>现状</strong>: <code>PerformanceInterceptor</code> 已经被标记为 <code>@Deprecated</code>，并且<strong>不推荐在生产环境使用</strong>，因为它本身会带来一定的性能开销。其功能被更细粒度的内部插件所替代。</li>
 </ul>
-<h5 id="3-9-2-BlockAttackInnerInterceptor-防止全表更新与删除插件-推荐"><a href="#3-9-2-BlockAttackInnerInterceptor-防止全表更新与删除插件-推荐" class="headerlink" title="3.9.2 BlockAttackInnerInterceptor (防止全表更新与删除插件 - 推荐)"></a>3.9.2 <code>BlockAttackInnerInterceptor</code> (防止全表更新与删除插件 - 推荐)</h5><ul>
+<h5 id="3-9-2-BlockAttackInnerInterceptor-防止全表更新与删除插件-推荐">3.9.2 <code>BlockAttackInnerInterceptor</code> (防止全表更新与删除插件 - 推荐)</h5>
+<ul>
 <li><strong>作用</strong>: 这个插件专门用于<strong>防止执行没有 <code>WHERE</code> 条件的 <code>UPDATE</code> 和 <code>DELETE</code> 语句</strong>，从而避免意外地更新或删除整个表的数据。这在开发和测试阶段非常有用，可以及时发现这类高危操作。</li>
-<li><strong>配置</strong>: 将其添加到 <code>MybatisPlusInterceptor</code> 中。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 在 MybatisPlusPluginConfig.java 中的 mybatisPlusInterceptor() 方法内添加</span><br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;<br><span class="hljs-comment">// ...</span><br>interceptor.addInnerInterceptor(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BlockAttackInnerInterceptor</span>());<br><span class="hljs-comment">// ...</span><br></code></pre></td></tr></table></figure></li>
-<li><strong>行为</strong>:<ul>
+<li><strong>配置</strong>: 将其添加到 <code>MybatisPlusInterceptor</code> 中。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 在 MybatisPlusPluginConfig.java 中的 mybatisPlusInterceptor() 方法内添加</span><br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.inner.BlockAttackInnerInterceptor;<br><span class="hljs-comment">// ...</span><br>interceptor.addInnerInterceptor(<span class="hljs-keyword">new</span> <span class="hljs-title class_">BlockAttackInnerInterceptor</span>());<br><span class="hljs-comment">// ...</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>行为</strong>:
+<ul>
 <li>当插件检测到将要执行的 <code>UPDATE</code> 或 <code>DELETE</code> 语句没有 <code>WHERE</code> 条件时（或者 <code>WHERE</code> 条件为恒真如 <code>1=1</code>，但这通常更难检测），它会抛出 <code>MyBatisPlusException</code> (或其他特定异常)，从而阻止该 SQL 的执行。</li>
 <li><strong>注意</strong>: 这个插件主要针对通过 MP 通用方法 (如 <code>update(null, wrapper)</code> 且 <code>wrapper</code> 为空) 或动态 SQL 构建出的没有 <code>WHERE</code> 的语句。对于手写的、直接在 XML 中就没有 <code>WHERE</code> 的高危 SQL，它可能无法完全覆盖，或者其检测能力有限。</li>
 </ul>
 </li>
 <li><strong>适用阶段</strong>: <strong>强烈建议在开发和测试环境启用</strong>。对于生产环境，是否启用需要谨慎评估，因为正常的业务逻辑中可能确实存在需要全表更新的场景 (虽然很少见且通常应避免)，此时插件会误拦截。但作为一道防线，它可以减少误操作的风险。</li>
 </ul>
-<h5 id="SQL-执行性能分析"><a href="#SQL-执行性能分析" class="headerlink" title="SQL 执行性能分析"></a>SQL 执行性能分析</h5><p>MP 本身不再内置一个重量级的“性能分析插件”来替代老的 <code>PerformanceInterceptor</code>。SQL 执行时间的分析和监控，现在更推荐以下方式：</p>
+<h5 id="SQL-执行性能分析">SQL 执行性能分析</h5>
+<p>MP 本身不再内置一个重量级的“性能分析插件”来替代老的 <code>PerformanceInterceptor</code>。SQL 执行时间的分析和监控，现在更推荐以下方式：</p>
 <ol>
-<li><p><strong>日志</strong>:</p>
+<li>
+<p><strong>日志</strong>:</p>
 <ul>
 <li>通过将 Mapper 包的日志级别设为 <code>DEBUG</code>，你可以看到 SQL 的执行情况，但通常不直接显示执行耗时。</li>
 <li>一些更高级的日志配置或 JDBC 代理库 (如 P 6 Spy) 可以打印出包括执行时间在内的详细 SQL 日志。</li>
-<li><strong>P 6 Spy</strong>: 是一个流行的 JDBC 代理驱动，可以拦截所有 JDBC 调用，记录 SQL、执行时间、参数等。与 Spring Boot 集成也比较方便。<ul>
+<li><strong>P 6 Spy</strong>: 是一个流行的 JDBC 代理驱动，可以拦截所有 JDBC 调用，记录 SQL、执行时间、参数等。与 Spring Boot 集成也比较方便。
+<ul>
 <li>添加依赖: <code>p6spy:p6spy:&lt;version&gt;</code></li>
 <li>修改 <code>datasource.url</code>: <code>jdbc:p6spy:mysql://localhost...</code></li>
 <li>配置 <code>spy.properties</code> 文件来控制日志格式和输出。</li>
@@ -331,22 +339,25 @@
 </li>
 </ul>
 </li>
-<li><p><strong>APM 工具 (Application Performance Management)</strong>:</p>
+<li>
+<p><strong>APM 工具 (Application Performance Management)</strong>:</p>
 <ul>
 <li>如 SkyWalking, Pinpoint, Arthas, New Relic, Dynatrace 等。</li>
 <li>这些工具能提供更全面的应用性能监控，包括数据库交互、慢 SQL 追踪、调用链分析等。它们通常通过 Java Agent 方式无侵入地集成。</li>
 </ul>
 </li>
-<li><p><strong>数据库自身的监控工具</strong>:</p>
+<li>
+<p><strong>数据库自身的监控工具</strong>:</p>
 <ul>
 <li>例如 MySQL 的慢查询日志 (Slow Query Log), <code>Performance Schema</code>, <code>EXPLAIN</code>。</li>
 <li>PostgreSQL 的 <code>pg_stat_statements</code>。</li>
 </ul>
 </li>
 </ol>
-<p><strong>结论</strong>: 对于防止全表更新&#x2F;删除，<code>BlockAttackInnerInterceptor</code> 是一个简单有效的选择。对于 SQL 性能分析，依赖日志、P 6 Spy 或专业的 APM 工具是更现代和全面的做法。</p>
+<p><strong>结论</strong>: 对于防止全表更新/删除，<code>BlockAttackInnerInterceptor</code> 是一个简单有效的选择。对于 SQL 性能分析，依赖日志、P 6 Spy 或专业的 APM 工具是更现代和全面的做法。</p>
 <hr>
-<h4 id="3-10-多租户插件-TenantLineInnerInterceptor"><a href="#3-10-多租户插件-TenantLineInnerInterceptor" class="headerlink" title="3.10 多租户插件 (TenantLineInnerInterceptor)"></a>3.10 多租户插件 (TenantLineInnerInterceptor)</h4><p>多租户是一种软件架构模式，允许多个独立的客户 (租户) 共享同一个应用程序的单个实例及其底层资源 (如数据库)。每个租户的数据是隔离的，通常通过在数据表中添加一个 <code>tenant_id</code> (租户 ID) 字段来实现。</p>
+<h4 id="3-10-多租户插件-TenantLineInnerInterceptor">3.10 多租户插件 (TenantLineInnerInterceptor)</h4>
+<p>多租户是一种软件架构模式，允许多个独立的客户 (租户) 共享同一个应用程序的单个实例及其底层资源 (如数据库)。每个租户的数据是隔离的，通常通过在数据表中添加一个 <code>tenant_id</code> (租户 ID) 字段来实现。</p>
 <p>MyBatis-Plus 的 <code>TenantLineInnerInterceptor</code> (行级多租户插件) 可以帮助开发者透明地处理 SQL 中的 <code>tenant_id</code> 条件，简化多租户应用的开发。</p>
 <p><strong>基本原理：</strong></p>
 <p>插件会拦截将要执行的 SQL 语句，并根据配置：</p>
@@ -357,15 +368,19 @@
 </ul>
 <p><strong>配置与使用：</strong></p>
 <ol>
-<li><p><strong>在数据库表中添加 <code>tenant_id</code> 列</strong> (例如 <code>tenant_id BIGINT</code> 或 <code>tenant_id VARCHAR</code>)。</p>
+<li>
+<p><strong>在数据库表中添加 <code>tenant_id</code> 列</strong> (例如 <code>tenant_id BIGINT</code> 或 <code>tenant_id VARCHAR</code>)。</p>
 </li>
-<li><p><strong>实现 <code>com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler</code> 接口</strong>:<br>这个 Handler 负责提供当前的租户 ID，以及指定哪些表需要进行多租户处理。</p>
+<li>
+<p><strong>实现 <code>com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler</code> 接口</strong>:<br>
+这个 Handler 负责提供当前的租户 ID，以及指定哪些表需要进行多租户处理。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.handler;<br><br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.handler.TenantLineHandler;<br><span class="hljs-keyword">import</span> lombok.extern.slf4j.Slf4j;<br><span class="hljs-keyword">import</span> net.sf.jsqlparser.expression.Expression;<br><span class="hljs-keyword">import</span> net.sf.jsqlparser.expression.LongValue; <span class="hljs-comment">// 或者 StringValue 等，取决于你的租户ID类型</span><br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-keyword">import</span> java.util.Arrays;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@Slf4j</span><br><span class="hljs-meta">@Component</span> <span class="hljs-comment">// 注册为 Spring Bean</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyTenantLineHandler</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">TenantLineHandler</span> &#123;<br><br>    <span class="hljs-comment">// 需要进行多租户处理的表名列表 (精确匹配)</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;String&gt; tenantTables = Arrays.asList(<span class="hljs-string">&quot;user_info&quot;</span>, <span class="hljs-string">&quot;product_orders&quot;</span>, <span class="hljs-string">&quot;customer_details&quot;</span>);<br>    <span class="hljs-comment">// 或者配置不需要进行多租户处理的表名 (忽略的表)</span><br>    <span class="hljs-comment">// private final List&lt;String&gt; ignoreTables = Arrays.asList(&quot;sys_config&quot;, &quot;tenant_info_table&quot;);</span><br><br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取当前租户的ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> Expression 类型的租户ID值 (例如 new LongValue(123L) 或 new StringValue(&quot;tenant_A&quot;))</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Expression <span class="hljs-title function_">getTenantId</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 在实际应用中，这里通常从当前用户上下文、请求头、Session等地方获取租户ID</span><br>        <span class="hljs-comment">// 例如：</span><br>        <span class="hljs-comment">// Long currentTenantId = TenantContextHolder.getTenantId();</span><br>        <span class="hljs-comment">// if (currentTenantId == null) &#123;</span><br>        <span class="hljs-comment">//     log.warn(&quot;Cannot get current tenantId, defaulting or skipping tenant filter.&quot;);</span><br>        <span class="hljs-comment">//     // 可以返回一个表示“不应用租户过滤”的特殊值，或者抛异常，或者返回默认租户ID</span><br>        <span class="hljs-comment">//     // 如果返回 null，插件可能不会添加租户条件</span><br>        <span class="hljs-comment">//     return null; // 或者 return new NullValue(); // JSqlParser 的 NullValue</span><br>        <span class="hljs-comment">// &#125;</span><br>        <span class="hljs-comment">// return new LongValue(currentTenantId);</span><br><br>        <span class="hljs-comment">// 示例：返回一个固定的租户ID</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">LongValue</span>(<span class="hljs-number">1L</span>); <span class="hljs-comment">// 假设当前租户ID是 1</span><br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 获取租户ID的数据库列名 (默认是 &quot;tenant_id&quot;)</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> String</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getTenantIdColumn</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;tenant_id&quot;</span>; <span class="hljs-comment">// 你的数据库中租户ID的列名</span><br>    &#125;<br><br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * 表名断言，判断是否为需要处理的租户表</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> tableName 表名</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@return</span> boolean true 表示需要进行租户ID过滤，false 表示不需要</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">ignoreTable</span><span class="hljs-params">(String tableName)</span> &#123;<br>        <span class="hljs-comment">// 如果 getTenantId() 返回 null，则所有表都会被忽略 (插件行为可能变化，需测试)</span><br>        <span class="hljs-keyword">if</span> (getTenantId() == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        &#125;<br>        <span class="hljs-comment">// 方式一：只处理在 tenantTables 列表中的表</span><br>        <span class="hljs-keyword">return</span> !tenantTables.contains(tableName.toLowerCase()); <span class="hljs-comment">// 转小写比较，避免大小写问题</span><br><br>        <span class="hljs-comment">// 方式二：忽略在 ignoreTables 列表中的表，其他都处理</span><br>        <span class="hljs-comment">// return ignoreTables.contains(tableName.toLowerCase());</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
 <li><code>TenantContextHolder</code> (需要自己实现): 通常是一个使用 <code>ThreadLocal</code> 来存储当前请求的租户 ID 的工具类，在请求开始时设置，结束时清除。</li>
 </ul>
 </li>
-<li><p><strong>添加 <code>TenantLineInnerInterceptor</code> 插件到 <code>MybatisPlusInterceptor</code></strong>:</p>
+<li>
+<p><strong>添加 <code>TenantLineInnerInterceptor</code> 插件到 <code>MybatisPlusInterceptor</code></strong>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 在 MybatisPlusPluginConfig.java 中的 mybatisPlusInterceptor() 方法内添加</span><br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerInterceptor;<br><span class="hljs-keyword">import</span> com.example.yourproject.handler.MyTenantLineHandler; <span class="hljs-comment">// 引入你的 Handler</span><br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-comment">// ...</span><br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MybatisPlusPluginConfig</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span> <span class="hljs-comment">// 注入你自定义的 TenantLineHandler</span><br>    <span class="hljs-keyword">private</span> MyTenantLineHandler myTenantLineHandler;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> MybatisPlusInterceptor <span class="hljs-title function_">mybatisPlusInterceptor</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">MybatisPlusInterceptor</span> <span class="hljs-variable">interceptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MybatisPlusInterceptor</span>();<br><br>        <span class="hljs-comment">// 添加多租户插件</span><br>        <span class="hljs-type">TenantLineInnerInterceptor</span> <span class="hljs-variable">tenantInterceptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TenantLineInnerInterceptor</span>(myTenantLineHandler);<br>        interceptor.addInnerInterceptor(tenantInterceptor);<br><br>        <span class="hljs-comment">// 添加其他插件...</span><br>        <span class="hljs-comment">// interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));</span><br>        <span class="hljs-comment">// interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());</span><br><br>        <span class="hljs-keyword">return</span> interceptor;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
 <li>构造 <code>TenantLineInnerInterceptor</code> 时，需要传入你实现的 <code>TenantLineHandler</code> Bean。</li>
@@ -376,10 +391,12 @@
 <ol>
 <li>当执行 MyBatis 的 SQL 操作时，<code>TenantLineInnerInterceptor</code> 会被触发。</li>
 <li>它调用 <code>TenantLineHandler.ignoreTable(tableName)</code> 判断当前操作的表是否需要进行多租户处理。</li>
-<li>如果需要处理：<ul>
+<li>如果需要处理：
+<ul>
 <li>它调用 <code>TenantLineHandler.getTenantId()</code> 获取当前的租户 ID。</li>
 <li>它调用 <code>TenantLineHandler.getTenantIdColumn()</code> 获取租户 ID 的列名。</li>
-<li>然后，它会使用 JSqlParser (一个 SQL 解析库) 修改原始 SQL 语句：<ul>
+<li>然后，它会使用 JSqlParser (一个 SQL 解析库) 修改原始 SQL 语句：
+<ul>
 <li><code>INSERT</code>: 添加 <code>tenant_id</code> 列和值。</li>
 <li><code>SELECT</code>, <code>UPDATE</code>, <code>DELETE</code>: 在 <code>WHERE</code> 子句中追加 <code>AND tenant_id = ?</code> (或者直接拼接值，取决于实现)。</li>
 <li>对于 <code>JOIN</code> 等复杂查询，插件会尽力处理，但复杂程度较高时可能需要开发者通过自定义SQL或调整 <code>ignoreTable</code> 逻辑来辅助。</li>
@@ -392,14 +409,16 @@
 <ul>
 <li><strong><code>JOIN</code> 查询</strong>: 多租户插件处理 <code>JOIN</code> 语句时，需要确保能正确地为每个应该隔离的表添加 <code>tenant_id</code> 条件。<code>TenantLineHandler</code> 的 <code>ignoreTable</code> 方法会被多次调用（针对 <code>JOIN</code> 中的每个表）。有时，对于复杂的 <code>JOIN</code>，可能需要更精细的控制，或者在自定义 SQL 中手动处理部分租户条件。</li>
 <li><strong>子查询</strong>: 插件对子查询中租户 ID 的自动处理能力可能有限，复杂情况下需要测试验证。</li>
-<li><strong>忽略某些 SQL 方法</strong>: 如果某些特定的 Mapper 方法不希望被多租户插件处理（例如，一个超级管理员查询所有租户数据的后台功能），可以通过以下方式：<ul>
-<li><strong>使用 <code>@InterceptorIgnore(tenantLine = &quot;true&quot;)</code> 注解</strong> (MP 3.4.0+): 加在 Mapper 方法上，可以临时忽略多租户插件。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// UserMapper.java</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;User&gt; &#123;<br>    <span class="hljs-meta">@InterceptorIgnore(tenantLine = &quot;true&quot;)</span> <span class="hljs-comment">// 忽略此方法的多租户处理</span><br>    List&lt;User&gt; <span class="hljs-title function_">selectAllUsersAcrossTenants</span><span class="hljs-params">()</span>; <span class="hljs-comment">// 对应的SQL需要自己写，不带租户ID</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><strong>忽略某些 SQL 方法</strong>: 如果某些特定的 Mapper 方法不希望被多租户插件处理（例如，一个超级管理员查询所有租户数据的后台功能），可以通过以下方式：
+<ul>
+<li><strong>使用 <code>@InterceptorIgnore(tenantLine = &quot;true&quot;)</code> 注解</strong> (MP 3.4.0+): 加在 Mapper 方法上，可以临时忽略多租户插件。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// UserMapper.java</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;User&gt; &#123;<br>    <span class="hljs-meta">@InterceptorIgnore(tenantLine = &quot;true&quot;)</span> <span class="hljs-comment">// 忽略此方法的多租户处理</span><br>    List&lt;User&gt; <span class="hljs-title function_">selectAllUsersAcrossTenants</span><span class="hljs-params">()</span>; <span class="hljs-comment">// 对应的SQL需要自己写，不带租户ID</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 <li><strong>在 <code>TenantLineHandler</code> 中更精细地控制</strong>: 通过在 <code>getTenantId()</code> 方法中根据某些上下文（如当前执行的 Mapper 方法 ID，<code>MappedStatement.getId()</code>）来决定是否返回 <code>null</code> (表示不应用租户过滤)。但这耦合性较高。</li>
 </ul>
 </li>
 <li><strong>性能</strong>: SQL 解析和修改会带来一定的性能开销，虽然 MP 团队已对此进行优化，但在高并发场景下仍需关注。</li>
 <li><strong>数据库设计</strong>: 确保所有需要租户隔离的表都有统一的 <code>tenant_id</code> 列，并且该列有索引。</li>
-<li><strong>数据初始化&#x2F;迁移</strong>: 在引入多租户插件前，历史数据的 <code>tenant_id</code> 需要正确填充。</li>
+<li><strong>数据初始化/迁移</strong>: 在引入多租户插件前，历史数据的 <code>tenant_id</code> 需要正确填充。</li>
 </ul>
 <p>多租户插件是一个非常强大的功能，但也相对复杂，需要仔细设计 <code>TenantLineHandler</code> 的逻辑，并进行充分的测试，以确保其行为符合预期，并且没有遗漏或错误地添加租户条件。</p>
 <hr>

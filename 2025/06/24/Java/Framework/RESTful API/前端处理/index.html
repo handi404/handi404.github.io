@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前端处理 RESTful API 通常是通过 HTTP 请求与后端通信，获取或提交数据以实现应用功能。以下是前端处理 RESTful API 的详细步骤和最佳实践。  1. 基本流程 发送 HTTP 请求  使用前端框架&#x2F;库（如 Axios、Fetch API）或内置方法（如 XMLHttpRequest）发送请求。 确保请求方法、URL 和请求体符合 RESTful 设计。   解析响">
+    <meta name="description" content="前端处理 RESTful API 通常是通过 HTTP 请求与后端通信，获取或提交数据以实现应用功能。以下是前端处理 RESTful API 的详细步骤和最佳实践。  1. 基本流程   发送 HTTP 请求  使用前端框架&#x2F;库（如 Axios、Fetch API）或内置方法（如 XMLHttpRequest）发送请求。 确保请求方法、URL 和请求体符合 RESTful 设计。    解析响应">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/RESTful%20API/%E5%89%8D%E7%AB%AF%E5%A4%84%E7%90%86/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="前端处理 RESTful API 通常是通过 HTTP 请求与后端通信，获取或提交数据以实现应用功能。以下是前端处理 RESTful API 的详细步骤和最佳实践。  1. 基本流程 发送 HTTP 请求  使用前端框架&#x2F;库（如 Axios、Fetch API）或内置方法（如 XMLHttpRequest）发送请求。 确保请求方法、URL 和请求体符合 RESTful 设计。   解析响">
+<meta property="og:description" content="前端处理 RESTful API 通常是通过 HTTP 请求与后端通信，获取或提交数据以实现应用功能。以下是前端处理 RESTful API 的详细步骤和最佳实践。  1. 基本流程   发送 HTTP 请求  使用前端框架&#x2F;库（如 Axios、Fetch API）或内置方法（如 XMLHttpRequest）发送请求。 确保请求方法、URL 和请求体符合 RESTful 设计。    解析响应">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:26.902Z">
 <meta property="article:modified_time" content="2024-12-07T12:26:46.939Z">
@@ -302,125 +302,148 @@
                 
                 <p>前端处理 RESTful API 通常是通过 HTTP 请求与后端通信，获取或提交数据以实现应用功能。以下是前端处理 RESTful API 的详细步骤和最佳实践。</p>
 <hr>
-<h3 id="1-基本流程"><a href="#1-基本流程" class="headerlink" title="1. 基本流程"></a><strong>1. 基本流程</strong></h3><ol>
-<li><p><strong>发送 HTTP 请求</strong></p>
+<h3 id="1-基本流程"><strong>1. 基本流程</strong></h3>
+<ol>
+<li>
+<p><strong>发送 HTTP 请求</strong></p>
 <ul>
-<li>使用前端框架&#x2F;库（如 Axios、Fetch API）或内置方法（如 XMLHttpRequest）发送请求。</li>
+<li>使用前端框架/库（如 Axios、Fetch API）或内置方法（如 XMLHttpRequest）发送请求。</li>
 <li>确保请求方法、URL 和请求体符合 RESTful 设计。</li>
 </ul>
 </li>
-<li><p><strong>解析响应</strong></p>
+<li>
+<p><strong>解析响应</strong></p>
 <ul>
 <li>接收后端返回的响应数据（通常是 JSON 格式）。</li>
 <li>根据 HTTP 状态码判断操作结果并处理错误。</li>
 </ul>
 </li>
-<li><p><strong>展示数据</strong></p>
+<li>
+<p><strong>展示数据</strong></p>
 <ul>
 <li>将获取的数据渲染到 UI 上（如表格、卡片等）。</li>
-<li>如果是数据操作（如新增&#x2F;删除），刷新视图以反映最新状态。</li>
+<li>如果是数据操作（如新增/删除），刷新视图以反映最新状态。</li>
 </ul>
 </li>
 </ol>
 <hr>
-<h3 id="2-常用工具"><a href="#2-常用工具" class="headerlink" title="2. 常用工具"></a><strong>2. 常用工具</strong></h3><h4 id="1）Fetch-API"><a href="#1）Fetch-API" class="headerlink" title="1）Fetch API"></a><strong>1）Fetch API</strong></h4><p>浏览器内置的 HTTP 请求接口，简单但功能强大。</p>
+<h3 id="2-常用工具"><strong>2. 常用工具</strong></h3>
+<h4 id="1）Fetch-API"><strong>1）Fetch API</strong></h4>
+<p>浏览器内置的 HTTP 请求接口，简单但功能强大。</p>
 <p><strong>示例：</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;https://api.example.com/users&#x27;</span>)<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (!response.<span class="hljs-property">ok</span>) &#123;<br>      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;Network response was not ok &#x27;</span> + response.<span class="hljs-property">statusText</span>);<br>    &#125;<br>    <span class="hljs-keyword">return</span> response.<span class="hljs-title function_">json</span>();<br>  &#125;)<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">data</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data))<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;There was a problem with the fetch operation:&#x27;</span>, error));<br></code></pre></td></tr></table></figure>
-
-<h4 id="2）Axios"><a href="#2）Axios" class="headerlink" title="2）Axios"></a><strong>2）Axios</strong></h4><p>一个流行的 HTTP 客户端库，提供更简洁的 API 和更强的功能（如自动处理 JSON、请求拦截器等）。</p>
+<h4 id="2）Axios"><strong>2）Axios</strong></h4>
+<p>一个流行的 HTTP 客户端库，提供更简洁的 API 和更强的功能（如自动处理 JSON、请求拦截器等）。</p>
 <p><strong>示例：</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>;<br><br>axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;https://api.example.com/users&#x27;</span>)<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(response.<span class="hljs-property">data</span>);<br>  &#125;)<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Error fetching data:&#x27;</span>, error);<br>  &#125;);<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="3-操作-RESTful-API-的实践"><a href="#3-操作-RESTful-API-的实践" class="headerlink" title="3. 操作 RESTful API 的实践"></a><strong>3. 操作 RESTful API 的实践</strong></h3><ol>
-<li><p><strong>获取资源（GET 请求）</strong></p>
+<h3 id="3-操作-RESTful-API-的实践"><strong>3. 操作 RESTful API 的实践</strong></h3>
+<ol>
+<li>
+<p><strong>获取资源（GET 请求）</strong></p>
 <ul>
 <li>前端通过 GET 请求获取资源列表或资源详情。</li>
 </ul>
-<p> <strong>示例：</strong></p>
+<p><strong>示例：</strong></p>
  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript">axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>  <span class="hljs-title function_">setUsers</span>(response.<span class="hljs-property">data</span>); <span class="hljs-comment">// 将数据保存到状态</span><br>&#125;);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>创建资源（POST 请求）</strong></p>
+<li>
+<p><strong>创建资源（POST 请求）</strong></p>
 <ul>
 <li>通过 POST 请求向服务器提交数据。</li>
 </ul>
-<p> <strong>示例：</strong></p>
+<p><strong>示例：</strong></p>
  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> newUser = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John&#x27;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">30</span> &#125;;<br>axios.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>, newUser).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Created user:&#x27;</span>, response.<span class="hljs-property">data</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>更新资源（PUT&#x2F;PATCH 请求）</strong></p>
+<li>
+<p><strong>更新资源（PUT/PATCH 请求）</strong></p>
 <ul>
 <li>用 PUT 完全更新资源，PATCH 部分更新资源。</li>
 </ul>
-<p> <strong>示例：</strong></p>
+<p><strong>示例：</strong></p>
  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> updatedUser = &#123; <span class="hljs-attr">age</span>: <span class="hljs-number">31</span> &#125;;<br>axios.<span class="hljs-title function_">patch</span>(<span class="hljs-string">&#x27;/api/users/1&#x27;</span>, updatedUser).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Updated user:&#x27;</span>, response.<span class="hljs-property">data</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>删除资源（DELETE 请求）</strong></p>
+<li>
+<p><strong>删除资源（DELETE 请求）</strong></p>
 <ul>
 <li>DELETE 请求用于删除资源。</li>
 </ul>
-<p> <strong>示例：</strong></p>
- <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript">axios.<span class="hljs-title function_">delete</span>(<span class="hljs-string">&#x27;/api/users/1&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;User deleted&#x27;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure></li>
+<p><strong>示例：</strong></p>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript">axios.<span class="hljs-title function_">delete</span>(<span class="hljs-string">&#x27;/api/users/1&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;User deleted&#x27;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
 </ol>
 <hr>
-<h3 id="4-处理复杂场景"><a href="#4-处理复杂场景" class="headerlink" title="4. 处理复杂场景"></a><strong>4. 处理复杂场景</strong></h3><ol>
-<li><p><strong>分页、筛选、排序</strong></p>
+<h3 id="4-处理复杂场景"><strong>4. 处理复杂场景</strong></h3>
+<ol>
+<li>
+<p><strong>分页、筛选、排序</strong></p>
 <ul>
 <li>在 URL 中添加查询参数。 <strong>示例：</strong></li>
 </ul>
  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript">axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>, &#123; <span class="hljs-attr">params</span>: &#123; <span class="hljs-attr">page</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">size</span>: <span class="hljs-number">20</span>, <span class="hljs-attr">sort</span>: <span class="hljs-string">&#x27;age,desc&#x27;</span> &#125; &#125;)<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>    <span class="hljs-title function_">setUsers</span>(response.<span class="hljs-property">data</span>);<br>  &#125;);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>鉴权和 Token 处理</strong></p>
+<li>
+<p><strong>鉴权和 Token 处理</strong></p>
 <ul>
 <li>使用 Authorization 头添加 Token。 <strong>示例：</strong></li>
 </ul>
  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript">axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>, &#123;<br>  <span class="hljs-attr">headers</span>: &#123; <span class="hljs-title class_">Authorization</span>: <span class="hljs-string">&#x27;Bearer YOUR_ACCESS_TOKEN&#x27;</span> &#125;<br>&#125;).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(response.<span class="hljs-property">data</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>错误处理</strong></p>
+<li>
+<p><strong>错误处理</strong></p>
 <ul>
 <li>根据 HTTP 状态码显示友好的错误消息。 <strong>示例：</strong></li>
 </ul>
  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript">axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>)<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (error.<span class="hljs-property">response</span>) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Server error:&#x27;</span>, error.<span class="hljs-property">response</span>.<span class="hljs-property">data</span>);<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (error.<span class="hljs-property">request</span>) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;No response received:&#x27;</span>, error.<span class="hljs-property">request</span>);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Error setting up request:&#x27;</span>, error.<span class="hljs-property">message</span>);<br>    &#125;<br>  &#125;);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>加载状态和用户提示</strong></p>
+<li>
+<p><strong>加载状态和用户提示</strong></p>
 <ul>
 <li>请求期间显示加载动画，请求完成后隐藏。 <strong>示例：</strong></li>
 </ul>
- <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title function_">setLoading</span>(<span class="hljs-literal">true</span>);<br>axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>  <span class="hljs-title function_">setUsers</span>(response.<span class="hljs-property">data</span>);<br>&#125;).<span class="hljs-title function_">finally</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-title function_">setLoading</span>(<span class="hljs-literal">false</span>);<br>&#125;);<br></code></pre></td></tr></table></figure></li>
+ <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title function_">setLoading</span>(<span class="hljs-literal">true</span>);<br>axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>  <span class="hljs-title function_">setUsers</span>(response.<span class="hljs-property">data</span>);<br>&#125;).<span class="hljs-title function_">finally</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-title function_">setLoading</span>(<span class="hljs-literal">false</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
 </ol>
 <hr>
-<h3 id="5-前端框架中的-RESTful-API-处理"><a href="#5-前端框架中的-RESTful-API-处理" class="headerlink" title="5. 前端框架中的 RESTful API 处理"></a><strong>5. 前端框架中的 RESTful API 处理</strong></h3><h4 id="React"><a href="#React" class="headerlink" title="React"></a><strong>React</strong></h4><ul>
+<h3 id="5-前端框架中的-RESTful-API-处理"><strong>5. 前端框架中的 RESTful API 处理</strong></h3>
+<h4 id="React"><strong>React</strong></h4>
+<ul>
 <li>使用状态管理工具（如 Redux、React Context）保存从 RESTful API 获取的数据。</li>
 <li>使用 <code>useEffect</code> 钩子发送请求。</li>
 </ul>
 <p><strong>示例：</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> &#123; useState, useEffect &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react&#x27;</span>;<br><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">UserList</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> [users, setUsers] = <span class="hljs-title function_">useState</span>([]);<br>  <span class="hljs-keyword">const</span> [loading, setLoading] = <span class="hljs-title function_">useState</span>(<span class="hljs-literal">true</span>);<br><br>  <span class="hljs-title function_">useEffect</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>)<br>      .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> <span class="hljs-title function_">setUsers</span>(response.<span class="hljs-property">data</span>))<br>      .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Error:&#x27;</span>, error))<br>      .<span class="hljs-title function_">finally</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">setLoading</span>(<span class="hljs-literal">false</span>));<br>  &#125;, []);<br><br>  <span class="hljs-keyword">if</span> (loading) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span>;<br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">      &#123;users.map(user =&gt; <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">key</span>=<span class="hljs-string">&#123;user.id&#125;</span>&gt;</span>&#123;user.name&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>)&#125;</span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h4 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a><strong>Vue</strong></h4><ul>
+<h4 id="Vue"><strong>Vue</strong></h4>
+<ul>
 <li>使用 Axios 或 Vue Resource，通过 Vuex 保存状态。</li>
 <li>使用生命周期钩子（如 <code>mounted</code>）发送请求。</li>
 </ul>
 <p><strong>示例：</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs javascript">&lt;template&gt;<br>  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">v-for</span>=<span class="hljs-string">&quot;user in users&quot;</span> <span class="hljs-attr">:key</span>=<span class="hljs-string">&quot;user.id&quot;</span>&gt;</span>&#123;&#123; user.name &#125;&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br><span class="language-xml">  <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span><br>&lt;/template&gt;<br><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>;</span></span><br><span class="language-javascript"><span class="language-xml"></span></span><br><span class="language-javascript"><span class="language-xml"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> &#123;</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-title function_">data</span>(<span class="hljs-params"></span>) &#123;</span></span><br><span class="language-javascript"><span class="language-xml">    <span class="hljs-keyword">return</span> &#123;</span></span><br><span class="language-javascript"><span class="language-xml">      <span class="hljs-attr">users</span>: [],</span></span><br><span class="language-javascript"><span class="language-xml">    &#125;;</span></span><br><span class="language-javascript"><span class="language-xml">  &#125;,</span></span><br><span class="language-javascript"><span class="language-xml">  <span class="hljs-title function_">mounted</span>(<span class="hljs-params"></span>) &#123;</span></span><br><span class="language-javascript"><span class="language-xml">    axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>)</span></span><br><span class="language-javascript"><span class="language-xml">      .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;</span></span><br><span class="language-javascript"><span class="language-xml">        <span class="hljs-variable language_">this</span>.<span class="hljs-property">users</span> = response.<span class="hljs-property">data</span>;</span></span><br><span class="language-javascript"><span class="language-xml">      &#125;)</span></span><br><span class="language-javascript"><span class="language-xml">      .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;</span></span><br><span class="language-javascript"><span class="language-xml">        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Error:&#x27;</span>, error);</span></span><br><span class="language-javascript"><span class="language-xml">      &#125;);</span></span><br><span class="language-javascript"><span class="language-xml">  &#125;,</span></span><br><span class="language-javascript"><span class="language-xml">&#125;;</span></span><br><span class="language-javascript"><span class="language-xml"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="6-最佳实践"><a href="#6-最佳实践" class="headerlink" title="6. 最佳实践"></a><strong>6. 最佳实践</strong></h3><ol>
-<li><p><strong>模块化封装</strong></p>
+<h3 id="6-最佳实践"><strong>6. 最佳实践</strong></h3>
+<ol>
+<li>
+<p><strong>模块化封装</strong></p>
 <ul>
 <li>将 API 请求封装成独立模块，避免代码重复。 <strong>示例：</strong></li>
 </ul>
  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> <span class="hljs-variable constant_">API</span> = &#123;<br>  <span class="hljs-attr">getUsers</span>: <span class="hljs-function">() =&gt;</span> axios.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>),<br>  <span class="hljs-attr">createUser</span>: <span class="hljs-function">(<span class="hljs-params">data</span>) =&gt;</span> axios.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x27;/api/users&#x27;</span>, data),<br>&#125;;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>节流与防抖</strong></p>
+<li>
+<p><strong>节流与防抖</strong></p>
 <ul>
 <li>对频繁的请求（如搜索）进行节流处理，减少网络压力。</li>
 </ul>
 </li>
-<li><p><strong>缓存</strong></p>
+<li>
+<p><strong>缓存</strong></p>
 <ul>
 <li>对常用数据实现缓存，避免重复请求。</li>
 </ul>
 </li>
-<li><p><strong>数据格式验证</strong></p>
+<li>
+<p><strong>数据格式验证</strong></p>
 <ul>
 <li>使用工具（如 <code>AJV</code>）验证返回数据格式是否符合预期。</li>
 </ul>

@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在Java中，双冒号 :: 是 方法引用（Method Reference） 的语法符号，它是 Java 8 引入的一种简化 Lambda 表达式的写法。当 Lambda 表达式仅仅是调用一个已存在的方法时，可以用方法引用替代，使代码更简洁、可读性更高。  方法引用的作用 简化代码：将 Lambda 表达式中仅调用一个方法的代码替换为更简洁的形式。 提高可读性：直接引用方法名，明确调用目标。 复用">
+    <meta name="description" content="在Java中，双冒号 :: 是 方法引用（Method Reference） 的语法符号，它是 Java 8 引入的一种简化 Lambda 表达式的写法。当 Lambda 表达式仅仅是调用一个已存在的方法时，可以用方法引用替代，使代码更简洁、可读性更高。  方法引用的作用  简化代码：将 Lambda 表达式中仅调用一个方法的代码替换为更简洁的形式。 提高可读性：直接引用方法名，明确调用目标。 复">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%208%EF%BC%88LTS%EF%BC%89/%E6%96%B9%E6%B3%95%E5%BC%95%E7%94%A8/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="在Java中，双冒号 :: 是 方法引用（Method Reference） 的语法符号，它是 Java 8 引入的一种简化 Lambda 表达式的写法。当 Lambda 表达式仅仅是调用一个已存在的方法时，可以用方法引用替代，使代码更简洁、可读性更高。  方法引用的作用 简化代码：将 Lambda 表达式中仅调用一个方法的代码替换为更简洁的形式。 提高可读性：直接引用方法名，明确调用目标。 复用">
+<meta property="og:description" content="在Java中，双冒号 :: 是 方法引用（Method Reference） 的语法符号，它是 Java 8 引入的一种简化 Lambda 表达式的写法。当 Lambda 表达式仅仅是调用一个已存在的方法时，可以用方法引用替代，使代码更简洁、可读性更高。  方法引用的作用  简化代码：将 Lambda 表达式中仅调用一个方法的代码替换为更简洁的形式。 提高可读性：直接引用方法名，明确调用目标。 复">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.854Z">
 <meta property="article:modified_time" content="2025-03-14T03:32:13.859Z">
@@ -302,13 +302,15 @@
                 
                 <p>在Java中，双冒号 <code>::</code> 是 <strong>方法引用（Method Reference）</strong> 的语法符号，它是 Java 8 引入的一种简化 Lambda 表达式的写法。当 Lambda 表达式仅仅是调用一个已存在的方法时，可以用方法引用替代，使代码更简洁、可读性更高。</p>
 <hr>
-<h3 id="方法引用的作用"><a href="#方法引用的作用" class="headerlink" title="方法引用的作用"></a><strong>方法引用的作用</strong></h3><ol>
+<h3 id="方法引用的作用"><strong>方法引用的作用</strong></h3>
+<ol>
 <li><strong>简化代码</strong>：将 Lambda 表达式中仅调用一个方法的代码替换为更简洁的形式。</li>
 <li><strong>提高可读性</strong>：直接引用方法名，明确调用目标。</li>
 <li><strong>复用现有方法</strong>：直接引用已有的静态方法、实例方法或构造方法。</li>
 </ol>
 <hr>
-<h3 id="方法引用的类型"><a href="#方法引用的类型" class="headerlink" title="方法引用的类型"></a><strong>方法引用的类型</strong></h3><p>Java 支持以下 4 种方法引用：</p>
+<h3 id="方法引用的类型"><strong>方法引用的类型</strong></h3>
+<p>Java 支持以下 4 种方法引用：</p>
 <table>
 <thead>
 <tr>
@@ -317,7 +319,8 @@
 <th>示例</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>静态方法引用</strong></td>
 <td><code>类名::静态方法名</code></td>
 <td><code>Math::max</code></td>
@@ -337,59 +340,78 @@
 <td><code>类名::new</code></td>
 <td><code>ArrayList::new</code></td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <hr>
-<h3 id="具体用法及示例"><a href="#具体用法及示例" class="headerlink" title="具体用法及示例"></a><strong>具体用法及示例</strong></h3><h4 id="1-静态方法引用-类名-静态方法名"><a href="#1-静态方法引用-类名-静态方法名" class="headerlink" title="1. 静态方法引用(类名::静态方法名)"></a>1. 静态方法引用(类名::静态方法名)</h4><p>引用类的静态方法，参数需与目标方法一致。</p>
+<h3 id="具体用法及示例"><strong>具体用法及示例</strong></h3>
+<h4 id="1-静态方法引用-类名-静态方法名">1. 静态方法引用(类名::静态方法名)</h4>
+<p>引用类的静态方法，参数需与目标方法一致。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Lambda表达式</span><br>Function&lt;Integer, Double&gt; lambda = a -&gt; Math.sqrt(a);<br><span class="hljs-comment">// 方法引用</span><br>Function&lt;Integer, Double&gt; ref = Math::sqrt;<br><br>System.out.println(ref.apply(<span class="hljs-number">4</span>)); <span class="hljs-comment">// 输出 2.0</span><br></code></pre></td></tr></table></figure>
-
-<h4 id="2-实例方法引用-对象-实例方法名"><a href="#2-实例方法引用-对象-实例方法名" class="headerlink" title="2. 实例方法引用(对象::实例方法名)"></a>2. 实例方法引用(对象::实例方法名)</h4><p>引用某个对象的实例方法。</p>
+<h4 id="2-实例方法引用-对象-实例方法名">2. 实例方法引用(对象::实例方法名)</h4>
+<p>引用某个对象的实例方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;String&gt; list = Arrays.asList(<span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-string">&quot;B&quot;</span>, <span class="hljs-string">&quot;C&quot;</span>);<br><span class="hljs-comment">// Lambda表达式</span><br>list.forEach(s -&gt; System.out.println(s));<br><span class="hljs-comment">// 方法引用</span><br>list.forEach(System.out::println);<br></code></pre></td></tr></table></figure>
-
-<h4 id="3-任意对象的实例方法引用-类名-实例方法名"><a href="#3-任意对象的实例方法引用-类名-实例方法名" class="headerlink" title="3. 任意对象的实例方法引用(类名::实例方法名)"></a>3. 任意对象的实例方法引用(类名::实例方法名)</h4><p>通过类名引用实例方法，第一个参数是调用方法的对象。</p>
+<h4 id="3-任意对象的实例方法引用-类名-实例方法名">3. 任意对象的实例方法引用(类名::实例方法名)</h4>
+<p>通过类名引用实例方法，第一个参数是调用方法的对象。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Lambda表达式</span><br>BiFunction&lt;String, String, Boolean&gt; lambda = (s1, s2) -&gt; s1.equals(s2);<br><span class="hljs-comment">// 方法引用</span><br>BiFunction&lt;String, String, Boolean&gt; ref = String::equals;<br><br>System.out.println(ref.apply(<span class="hljs-string">&quot;Java&quot;</span>, <span class="hljs-string">&quot;Java&quot;</span>)); <span class="hljs-comment">// 输出 true</span><br></code></pre></td></tr></table></figure>
-
-<h4 id="4-构造方法引用-类名-new"><a href="#4-构造方法引用-类名-new" class="headerlink" title="4. 构造方法引用(类名::new)"></a>4. 构造方法引用(类名::new)</h4><p>引用类的构造方法，用于创建对象。</p>
+<h4 id="4-构造方法引用-类名-new">4. 构造方法引用(类名::new)</h4>
+<p>引用类的构造方法，用于创建对象。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Lambda表达式</span><br>Supplier&lt;List&lt;String&gt;&gt; lambda = () -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br><span class="hljs-comment">// 方法引用</span><br>Supplier&lt;List&lt;String&gt;&gt; ref = ArrayList::<span class="hljs-keyword">new</span>;<br><br>List&lt;String&gt; list = ref.get();<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a><strong>使用场景</strong></h3><p>方法引用通常与 <strong>函数式接口（如 <code>Runnable</code>, <code>Function</code>, <code>Consumer</code> 等）</strong> 结合使用，常见于：<br>4. <strong>集合操作</strong>：如 <code>Stream</code> 的 <code>map</code>, <code>filter</code>, <code>forEach</code> 等方法。<br>   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;String&gt; names = Arrays.asList(<span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-string">&quot;Bob&quot;</span>);<br>names.stream().map(String::toUpperCase).forEach(System.out::println);<br></code></pre></td></tr></table></figure><br>5. <strong>线程任务</strong>：直接引用方法作为线程执行体。<br>   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(MyClass::doTask).start();<br></code></pre></td></tr></table></figure><br>6. <strong>工厂模式</strong>：通过构造方法引用创建对象。<br>   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">Function&lt;Integer, LocalDate&gt; dateFactory = LocalDate::of;<br><span class="hljs-type">LocalDate</span> <span class="hljs-variable">date</span> <span class="hljs-operator">=</span> dateFactory.apply(<span class="hljs-number">2023</span>, <span class="hljs-number">10</span>, <span class="hljs-number">1</span>);<br></code></pre></td></tr></table></figure></p>
+<h3 id="使用场景"><strong>使用场景</strong></h3>
+<p>方法引用通常与 <strong>函数式接口（如 <code>Runnable</code>, <code>Function</code>, <code>Consumer</code> 等）</strong> 结合使用，常见于：<br>
+4. <strong>集合操作</strong>：如 <code>Stream</code> 的 <code>map</code>, <code>filter</code>, <code>forEach</code> 等方法。</p>
+   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;String&gt; names = Arrays.asList(<span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-string">&quot;Bob&quot;</span>);<br>names.stream().map(String::toUpperCase).forEach(System.out::println);<br></code></pre></td></tr></table></figure>
+<ol start="5">
+<li><strong>线程任务</strong>：直接引用方法作为线程执行体。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(MyClass::doTask).start();<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>工厂模式</strong>：通过构造方法引用创建对象。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">Function&lt;Integer, LocalDate&gt; dateFactory = LocalDate::of;<br><span class="hljs-type">LocalDate</span> <span class="hljs-variable">date</span> <span class="hljs-operator">=</span> dateFactory.apply(<span class="hljs-number">2023</span>, <span class="hljs-number">10</span>, <span class="hljs-number">1</span>);<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
 <hr>
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a><strong>注意事项</strong></h3><ol start="7">
+<h3 id="注意事项"><strong>注意事项</strong></h3>
+<ol start="7">
 <li><strong>目标必须是函数式接口</strong>：方法引用必须赋值给一个函数式接口（如 <code>Function</code>, <code>Consumer</code>）。</li>
 <li><strong>参数和返回值匹配</strong>：被引用方法的参数和返回值需与函数式接口的抽象方法一致。</li>
 <li><strong>方法重载</strong> ：如果方法被重载，需确保参数类型与函数式接口匹配。</li>
 </ol>
 <hr>
-<h2 id="this-和-super"><a href="#this-和-super" class="headerlink" title="this 和 super"></a>this 和 super</h2><p><strong>this 和 super</strong> ：可以引用当前类或父类的方法：</p>
+<h2 id="this-和-super">this 和 super</h2>
+<p><strong>this 和 super</strong> ：可以引用当前类或父类的方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-comment">// 引用当前类的方法</span><br>Function&lt;String, String&gt; func = <span class="hljs-built_in">this</span>::process;<br><br><span class="hljs-comment">// 引用父类的方法</span><br>Consumer&lt;String&gt; consumer = <span class="hljs-built_in">super</span>::handle;<br></code></pre></td></tr></table></figure>
 <hr>
-<h3 id="使用场景及示例"><a href="#使用场景及示例" class="headerlink" title="使用场景及示例"></a><strong>使用场景及示例</strong></h3><h4 id="1-替代调用当前对象方法的-Lambda"><a href="#1-替代调用当前对象方法的-Lambda" class="headerlink" title="1. 替代调用当前对象方法的 Lambda"></a>1. 替代调用当前对象方法的 Lambda</h4><p>当 Lambda 表达式仅调用当前对象的某个方法时，可以用 <code>this::方法</code> 替代。</p>
-<p><strong>示例</strong>：<br>假设有一个 <code>Processor</code> 类，其中的 <code>process</code> 方法需要调用当前对象的 <code>validate</code> 方法：</p>
+<h3 id="使用场景及示例"><strong>使用场景及示例</strong></h3>
+<h4 id="1-替代调用当前对象方法的-Lambda">1. 替代调用当前对象方法的 Lambda</h4>
+<p>当 Lambda 表达式仅调用当前对象的某个方法时，可以用 <code>this::方法</code> 替代。</p>
+<p><strong>示例</strong>：<br>
+假设有一个 <code>Processor</code> 类，其中的 <code>process</code> 方法需要调用当前对象的 <code>validate</code> 方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Processor</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">validate</span><span class="hljs-params">(String input)</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;Validating: &quot;</span> + input);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">process</span><span class="hljs-params">(List&lt;String&gt; inputs)</span> &#123;<br>        <span class="hljs-comment">// 使用 Lambda 表达式</span><br>        inputs.forEach(s -&gt; <span class="hljs-built_in">this</span>.validate(s));<br>        <br>        <span class="hljs-comment">// 使用方法引用</span><br>        inputs.forEach(<span class="hljs-built_in">this</span>::validate);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h4 id="2-在事件监听或回调中简化代码"><a href="#2-在事件监听或回调中简化代码" class="headerlink" title="2. 在事件监听或回调中简化代码"></a>2. 在事件监听或回调中简化代码</h4><p>例如，在 Swing 应用中为按钮绑定点击事件，直接引用当前类的处理方法：</p>
+<h4 id="2-在事件监听或回调中简化代码">2. 在事件监听或回调中简化代码</h4>
+<p>例如，在 Swing 应用中为按钮绑定点击事件，直接引用当前类的处理方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyFrame</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JFrame</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyFrame</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">JButton</span> <span class="hljs-variable">button</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JButton</span>(<span class="hljs-string">&quot;Click&quot;</span>);<br>        <span class="hljs-comment">// 使用 Lambda 表达式</span><br>        button.addActionListener(e -&gt; <span class="hljs-built_in">this</span>.handleClick());<br>        <span class="hljs-comment">// 使用方法引用</span><br>        button.addActionListener(<span class="hljs-built_in">this</span>::handleClick);<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">handleClick</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;Button clicked!&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h4 id="3-结合函数式接口使用"><a href="#3-结合函数式接口使用" class="headerlink" title="3. 结合函数式接口使用"></a>3. 结合函数式接口使用</h4><p>当需要将当前对象的方法传递给需要函数式接口的地方时，<code>this::方法</code> 可以直接绑定。</p>
-<p><strong>示例</strong>：<br>使用 <code>Supplier</code> 接口获取当前对象的状态：</p>
+<h4 id="3-结合函数式接口使用">3. 结合函数式接口使用</h4>
+<p>当需要将当前对象的方法传递给需要函数式接口的地方时，<code>this::方法</code> 可以直接绑定。</p>
+<p><strong>示例</strong>：<br>
+使用 <code>Supplier</code> 接口获取当前对象的状态：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataHolder</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">String</span> <span class="hljs-variable">data</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Some data&quot;</span>;<br><br>    <span class="hljs-keyword">public</span> Supplier&lt;String&gt; <span class="hljs-title function_">getDataSupplier</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 使用 Lambda 表达式</span><br>        <span class="hljs-keyword">return</span> () -&gt; <span class="hljs-built_in">this</span>.getData();<br>        <span class="hljs-comment">// 使用方法引用</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>::getData;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> String <span class="hljs-title function_">getData</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> data;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="注意事项-1"><a href="#注意事项-1" class="headerlink" title="注意事项"></a><strong>注意事项</strong></h3><ol start="10">
-<li><strong>静态上下文中不可用</strong>：<br>   <code>this</code> 在静态方法中不存在，因此在静态方法中使用 <code>this::方法</code> 会导致编译错误。</li>
+<h3 id="注意事项-2"><strong>注意事项</strong></h3>
+<ol start="10">
+<li><strong>静态上下文中不可用</strong>：<br>
+<code>this</code> 在静态方法中不存在，因此在静态方法中使用 <code>this::方法</code> 会导致编译错误。</li>
 </ol>
    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Demo</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">staticMethod</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 错误！静态方法中不能使用 this</span><br>        <span class="hljs-type">Runnable</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>::doSomething; <br>    &#125;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doSomething</span><span class="hljs-params">()</span> &#123;&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <ol start="11">
-<li><strong>匿名内部类中的 <code>this</code></strong>：<br>   如果在匿名内部类中使用 <code>this::方法</code>，<code>this</code> 会指向匿名类本身，而非外部类。此时需要显式指定外部类的 <code>this</code>：</li>
+<li><strong>匿名内部类中的 <code>this</code></strong>：<br>
+如果在匿名内部类中使用 <code>this::方法</code>，<code>this</code> 会指向匿名类本身，而非外部类。此时需要显式指定外部类的 <code>this</code>：</li>
 </ol>
    <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Outer</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(() -&gt; &#123;<br>            <span class="hljs-comment">// 匿名内部类中的 this 指向 Runnable 实例</span><br>            <span class="hljs-comment">// 错误：this::doTask 会尝试调用 Runnable 的 doTask 方法</span><br>        &#125;).start();<br><br>        <span class="hljs-comment">// 正确：显式使用 Outer 的 this</span><br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">Thread</span>(Outer.<span class="hljs-built_in">this</span>::doTask).start();<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doTask</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;Processing...&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <ol start="12">
-<li><strong>避免过度使用</strong>：<br>   如果 Lambda 表达式逻辑复杂（如包含条件判断或修改状态），使用方法引用可能反而降低可读性。</li>
+<li><strong>避免过度使用</strong>：<br>
+如果 Lambda 表达式逻辑复杂（如包含条件判断或修改状态），使用方法引用可能反而降低可读性。</li>
 </ol>
 <hr>
-<h3 id="与其他方法引用的对比"><a href="#与其他方法引用的对比" class="headerlink" title="与其他方法引用的对比"></a><strong>与其他方法引用的对比</strong></h3><table>
+<h3 id="与其他方法引用的对比"><strong>与其他方法引用的对比</strong></h3>
+<table>
 <thead>
 <tr>
 <th>方法引用类型</th>
@@ -397,7 +419,8 @@
 <th>适用场景</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>静态方法引用</strong></td>
 <td><code>Math::max</code></td>
 <td>引用静态方法</td>
@@ -422,9 +445,11 @@
 <td><code>ArrayList::new</code></td>
 <td>引用构造方法</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <hr>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><ul>
+<h3 id="总结"><strong>总结</strong></h3>
+<ul>
 <li><strong><code>this::方法</code> 是什么</strong>：一种引用当前对象实例方法的方法引用。</li>
 <li><strong>何时使用</strong>：当 Lambda 表达式仅调用当前对象的某个方法时，用来替代冗余的 Lambda 写法。</li>
 <li><strong>典型场景</strong>：事件监听、Stream API、函数式接口参数传递。</li>

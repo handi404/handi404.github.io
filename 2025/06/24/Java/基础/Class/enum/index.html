@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="聊聊 Java 中的 enum (枚举)。从基础讲起，逐步深入到它的高级特性和实际应用，确保内容既全面又跟得上潮流。 什么是枚举 (Enum)？想象一下，你需要表示一组固定的常量，比如一周中的几天（周一、周二…）、交通信号灯的颜色（红、黄、绿）或者订单的状态（待支付、已支付、已发货、已完成）。 在没有枚举之前，你可能会这样做： 1234567public class OldConstants &amp;#">
+    <meta name="description" content="聊聊 Java 中的 enum (枚举)。从基础讲起，逐步深入到它的高级特性和实际应用，确保内容既全面又跟得上潮流。 什么是枚举 (Enum)？ 想象一下，你需要表示一组固定的常量，比如一周中的几天（周一、周二…）、交通信号灯的颜色（红、黄、绿）或者订单的状态（待支付、已支付、已发货、已完成）。 在没有枚举之前，你可能会这样做： 1234567public class OldConstants &amp;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="enum">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/%E5%9F%BA%E7%A1%80/Class/enum/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="聊聊 Java 中的 enum (枚举)。从基础讲起，逐步深入到它的高级特性和实际应用，确保内容既全面又跟得上潮流。 什么是枚举 (Enum)？想象一下，你需要表示一组固定的常量，比如一周中的几天（周一、周二…）、交通信号灯的颜色（红、黄、绿）或者订单的状态（待支付、已支付、已发货、已完成）。 在没有枚举之前，你可能会这样做： 1234567public class OldConstants &amp;#">
+<meta property="og:description" content="聊聊 Java 中的 enum (枚举)。从基础讲起，逐步深入到它的高级特性和实际应用，确保内容既全面又跟得上潮流。 什么是枚举 (Enum)？ 想象一下，你需要表示一组固定的常量，比如一周中的几天（周一、周二…）、交通信号灯的颜色（红、黄、绿）或者订单的状态（待支付、已支付、已发货、已完成）。 在没有枚举之前，你可能会这样做： 1234567public class OldConstants &amp;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.757Z">
 <meta property="article:modified_time" content="2025-06-24T13:46:46.950Z">
@@ -301,10 +301,10 @@
               <div class="markdown-body">
                 
                 <p>聊聊 Java 中的 <code>enum</code> (枚举)。从基础讲起，逐步深入到它的高级特性和实际应用，确保内容既全面又跟得上潮流。</p>
-<h3 id="什么是枚举-Enum-？"><a href="#什么是枚举-Enum-？" class="headerlink" title="什么是枚举 (Enum)？"></a>什么是枚举 (Enum)？</h3><p>想象一下，你需要表示一组固定的常量，比如一周中的几天（周一、周二…）、交通信号灯的颜色（红、黄、绿）或者订单的状态（待支付、已支付、已发货、已完成）。</p>
+<h3 id="什么是枚举-Enum-？">什么是枚举 (Enum)？</h3>
+<p>想象一下，你需要表示一组固定的常量，比如一周中的几天（周一、周二…）、交通信号灯的颜色（红、黄、绿）或者订单的状态（待支付、已支付、已发货、已完成）。</p>
 <p>在没有枚举之前，你可能会这样做：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OldConstants</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">DAY_MONDAY</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">DAY_TUESDAY</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">COLOR_RED</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;RED&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">COLOR_YELLOW</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;YELLOW&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>这种方式有几个<strong>缺点</strong>：</p>
 <ol>
 <li><strong>类型不安全</strong>：比如一个需要星期几的方法，你可能会错误地传入一个表示颜色的整数。编译器不会报错。</li>
@@ -314,41 +314,46 @@
 <li><strong>难以关联更多信息</strong>：如果想给“红色”关联一个十六进制码，就很麻烦。</li>
 </ol>
 <p><strong>枚举 (Enum)</strong> 就是 Java 提供的解决方案，它是一种特殊的<strong>类</strong>，表示一组固定的常量集合。</p>
-<h3 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 定义一个表示星期的枚举</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Day</span> &#123;<br>    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY<br>&#125;<br><br><span class="hljs-comment">// 定义一个表示交通信号灯颜色的枚举</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">TrafficLight</span> &#123;<br>    RED, YELLOW, GREEN<br>&#125;<br></code></pre></td></tr></table></figure>
-
+<h3 id="基础用法">基础用法</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 定义一个表示星期的枚举</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Day</span> &#123;<br>    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY<br>&#125;<br><br><span class="hljs-comment">// 定义一个表示交通信号灯颜色的枚举</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">TrafficLight</span> &#123;<br>    RED, YELLOW, GREEN<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><strong>使用枚举：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">EnumDemo</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">Day</span> <span class="hljs-variable">today</span> <span class="hljs-operator">=</span> Day.MONDAY;<br>        System.out.println(<span class="hljs-string">&quot;Today is: &quot;</span> + today); <span class="hljs-comment">// 输出: Today is: MONDAY</span><br><br>        <span class="hljs-type">TrafficLight</span> <span class="hljs-variable">light</span> <span class="hljs-operator">=</span> TrafficLight.GREEN;<br>        System.out.println(<span class="hljs-string">&quot;Current light: &quot;</span> + light); <span class="hljs-comment">// 输出: Current light: GREEN</span><br><br>        <span class="hljs-comment">// 枚举天然支持 switch 语句</span><br>        <span class="hljs-keyword">switch</span> (today) &#123;<br>            <span class="hljs-keyword">case</span> MONDAY:<br>                System.out.println(<span class="hljs-string">&quot;Start of the work week!&quot;</span>);<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> FRIDAY:<br>                System.out.println(<span class="hljs-string">&quot;Almost weekend!&quot;</span>);<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">default</span>:<br>                System.out.println(<span class="hljs-string">&quot;Another day.&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-comment">// 遍历所有枚举实例</span><br>        System.out.println(<span class="hljs-string">&quot;\nAll days of the week:&quot;</span>);<br>        <span class="hljs-keyword">for</span> (Day d : Day.values()) &#123; <span class="hljs-comment">// values() 方法返回所有枚举实例的数组</span><br>            System.out.println(d + <span class="hljs-string">&quot; (ordinal: &quot;</span> + d.ordinal() + <span class="hljs-string">&quot;)&quot;</span>);<br>        &#125;<br>        <span class="hljs-comment">// ordinal() 方法返回枚举实例的声明顺序（从0开始）</span><br><br>        <span class="hljs-comment">// 通过字符串名称获取枚举实例</span><br>        <span class="hljs-type">Day</span> <span class="hljs-variable">specificDay</span> <span class="hljs-operator">=</span> Day.valueOf(<span class="hljs-string">&quot;WEDNESDAY&quot;</span>); <span class="hljs-comment">// valueOf() 方法根据名称查找</span><br>        System.out.println(<span class="hljs-string">&quot;\nSpecific day: &quot;</span> + specificDay); <span class="hljs-comment">// 输出: Specific day: WEDNESDAY</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="枚举的核心特性与高级用法"><a href="#枚举的核心特性与高级用法" class="headerlink" title="枚举的核心特性与高级用法"></a>枚举的核心特性与高级用法</h3><p>枚举远不止是简单的常量集合，它实际上是一个功能齐全的类。</p>
+<h3 id="枚举的核心特性与高级用法">枚举的核心特性与高级用法</h3>
+<p>枚举远不止是简单的常量集合，它实际上是一个功能齐全的类。</p>
 <ol>
-<li><p><strong>枚举是类，枚举常量是实例</strong>：</p>
+<li>
+<p><strong>枚举是类，枚举常量是实例</strong>：</p>
 <ul>
 <li>每个枚举常量（如 <code>Day.MONDAY</code>）都是 <code>Day</code> 这个枚举类的一个唯一实例。</li>
 <li>它们是 <code>public static final</code> 的，并且在类加载时被初始化。</li>
 <li>由于构造器是私有的（后面会讲），你不能在外部 <code>new</code> 一个枚举实例。</li>
 </ul>
 </li>
-<li><p><strong>构造方法 (Constructor)</strong>：</p>
+<li>
+<p><strong>构造方法 (Constructor)</strong>：</p>
 <ul>
 <li>枚举可以有构造方法，但它<strong>必须是 <code>private</code> 或包级私有</strong>（默认）。</li>
 <li>构造方法在定义枚举常量时自动调用。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">TrafficLight</span> &#123;<br>    RED(<span class="hljs-string">&quot;Stop&quot;</span>), <span class="hljs-comment">// 调用构造方法 TrafficLight(&quot;Stop&quot;)</span><br>    YELLOW(<span class="hljs-string">&quot;Caution&quot;</span>),<br>    GREEN(<span class="hljs-string">&quot;Go&quot;</span>);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String description; <span class="hljs-comment">// 实例字段</span><br><br>    <span class="hljs-comment">// 构造方法必须是 private (或包私有)</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">TrafficLight</span><span class="hljs-params">(String description)</span> &#123;<br>        <span class="hljs-built_in">this</span>.description = description;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getDescription</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> description;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br>System.out.println(TrafficLight.RED.getDescription()); <span class="hljs-comment">// 输出: Stop</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>字段和方法 (Fields and Methods)</strong>：</p>
+<li>
+<p><strong>字段和方法 (Fields and Methods)</strong>：</p>
 <ul>
 <li>枚举可以像普通类一样拥有实例字段和方法。</li>
 <li>每个枚举常量都可以拥有这些字段和方法的特定状态或行为。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">ErrorCode</span> &#123;<br>    NOT_FOUND(<span class="hljs-number">404</span>, <span class="hljs-string">&quot;Resource not found&quot;</span>),<br>    UNAUTHORIZED(<span class="hljs-number">401</span>, <span class="hljs-string">&quot;Authentication required&quot;</span>),<br>    INTERNAL_SERVER_ERROR(<span class="hljs-number">500</span>, <span class="hljs-string">&quot;Server error&quot;</span>);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> httpStatus;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String message;<br><br>    ErrorCode(<span class="hljs-type">int</span> httpStatus, String message) &#123;<br>        <span class="hljs-built_in">this</span>.httpStatus = httpStatus;<br>        <span class="hljs-built_in">this</span>.message = message;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getHttpStatus</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> httpStatus;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getMessage</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> message;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">displayError</span><span class="hljs-params">()</span> &#123;<br>        System.err.println(<span class="hljs-string">&quot;Error &quot;</span> + httpStatus + <span class="hljs-string">&quot;: &quot;</span> + message);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br>ErrorCode.NOT_FOUND.displayError(); <span class="hljs-comment">// 输出: Error 404: Resource not found</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>实现接口 (Implementing Interfaces)</strong>：</p>
+<li>
+<p><strong>实现接口 (Implementing Interfaces)</strong>：</p>
 <ul>
 <li>枚举可以实现接口，这使得枚举常量可以参与多态。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Describable</span> &#123;<br>    String <span class="hljs-title function_">getFullDescription</span><span class="hljs-params">()</span>;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Status</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Describable</span> &#123;<br>    PENDING(<span class="hljs-string">&quot;Order is pending confirmation.&quot;</span>),<br>    PROCESSING(<span class="hljs-string">&quot;Order is being processed.&quot;</span>),<br>    SHIPPED(<span class="hljs-string">&quot;Order has been shipped.&quot;</span>);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String details;<br><br>    Status(String details) &#123;<br>        <span class="hljs-built_in">this</span>.details = details;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getFullDescription</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Status: &quot;</span> + <span class="hljs-built_in">this</span>.name() + <span class="hljs-string">&quot; - Details: &quot;</span> + details;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br><span class="hljs-type">Describable</span> <span class="hljs-variable">currentStatus</span> <span class="hljs-operator">=</span> Status.PROCESSING;<br>System.out.println(currentStatus.getFullDescription());<br><span class="hljs-comment">// 输出: Status: PROCESSING - Details: Order is being processed.</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>常量特定的方法实现 (Constant-Specific Method Implementations)</strong>：</p>
+<li>
+<p><strong>常量特定的方法实现 (Constant-Specific Method Implementations)</strong>：</p>
 <ul>
 <li>这是枚举非常强大的一个特性。你可以让每个枚举常量提供其独有的方法实现，通常通过定义一个抽象方法在枚举类中，然后每个常量去覆盖它。这比在方法内部使用 <code>switch</code> 语句更优雅，更符合面向对象原则。</li>
 </ul>
@@ -356,7 +361,8 @@
 <p>这种方式通常被称为<strong>策略枚举 (Strategy Enum Pattern)</strong>，它替代了在枚举方法中使用 <code>switch</code> 语句的冗长写法。</p>
 </li>
 </ol>
-<h3 id="枚举的内置方法"><a href="#枚举的内置方法" class="headerlink" title="枚举的内置方法"></a>枚举的内置方法</h3><p>所有枚举都隐式继承自 <code>java.lang.Enum</code> 类，因此它们都拥有一些有用的内置方法：</p>
+<h3 id="枚举的内置方法">枚举的内置方法</h3>
+<p>所有枚举都隐式继承自 <code>java.lang.Enum</code> 类，因此它们都拥有一些有用的内置方法：</p>
 <ul>
 <li><code>String name()</code>: 返回枚举常量的名称（与 <code>toString()</code> 默认行为一致，但 <code>toString()</code> 可以被重写）。</li>
 <li><code>int ordinal()</code>: 返回枚举常量在声明时的序数（从0开始）。<strong>注意</strong>：尽量避免依赖 <code>ordinal()</code> 进行业务逻辑判断，因为修改枚举常量的顺序会导致逻辑错误。它主要用于 <code>EnumSet</code> 和 <code>EnumMap</code>。</li>
@@ -367,7 +373,8 @@
 <li><code>hashCode()</code>: 返回枚举常量的哈希码。</li>
 <li><code>getDeclaringClass()</code>: 返回与此枚举常量对应的枚举类型所属的 <code>Class</code> 对象。</li>
 </ul>
-<h3 id="枚举的优势总结"><a href="#枚举的优势总结" class="headerlink" title="枚举的优势总结"></a>枚举的优势总结</h3><ol>
+<h3 id="枚举的优势总结">枚举的优势总结</h3>
+<ol>
 <li><strong>类型安全 (Type Safety)</strong>：编译器会检查类型，防止传入错误的值。</li>
 <li><strong>可读性强 (Readability)</strong>：代码更清晰，意图更明显。</li>
 <li><strong>易于维护 (Maintainability)</strong>：修改或添加常量更方便，不易出错。</li>
@@ -378,28 +385,36 @@
 <li><strong>单例保证 (Singleton Guarantee)</strong>：每个枚举常量在 JVM 中都是唯一的实例，天然线程安全，常用于实现单例模式。</li>
 <li><strong>序列化保证 (Serialization Guarantee)</strong>：Java 序列化机制确保反序列化时枚举常量仍然是 JVM 中原有的那个实例，不会创建新的。</li>
 </ol>
-<h3 id="枚举的性能考量与特殊集合"><a href="#枚举的性能考量与特殊集合" class="headerlink" title="枚举的性能考量与特殊集合"></a>枚举的性能考量与特殊集合</h3><ul>
+<h3 id="枚举的性能考量与特殊集合">枚举的性能考量与特殊集合</h3>
+<ul>
 <li><strong>性能</strong>：枚举常量是在类加载时初始化的，这点开销通常很小。与 <code>static final int</code> 相比，枚举在内存占用和访问速度上可能会有微小的额外开销，但在绝大多数情况下，这点开销可以忽略不计，而其带来的好处远大于这点开销。</li>
-<li><strong><code>EnumSet</code></strong>：专门为枚举类型设计的 <code>Set</code> 实现。内部通常使用位向量 (bit vector) 实现，性能极高，远超 <code>HashSet</code>。推荐在需要存储枚举常量的集合时使用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">EnumSet&lt;Day&gt; weekend = EnumSet.of(Day.SATURDAY, Day.SUNDAY);<br>System.out.println(<span class="hljs-string">&quot;Weekend days: &quot;</span> + weekend);<br></code></pre></td></tr></table></figure></li>
-<li><strong><code>EnumMap</code></strong>：专门为枚举类型作为键设计的 <code>Map</code> 实现。内部通常使用数组实现，性能也极高，远超 <code>HashMap</code>。推荐在需要以枚举常量作为键的映射时使用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">EnumMap&lt;Day, String&gt; schedule = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EnumMap</span>&lt;&gt;(Day.class);<br>schedule.put(Day.MONDAY, <span class="hljs-string">&quot;Work&quot;</span>);<br>schedule.put(Day.FRIDAY, <span class="hljs-string">&quot;Party planning&quot;</span>);<br>System.out.println(<span class="hljs-string">&quot;Monday&#x27;s schedule: &quot;</span> + schedule.get(Day.MONDAY));<br></code></pre></td></tr></table></figure></li>
+<li><strong><code>EnumSet</code></strong>：专门为枚举类型设计的 <code>Set</code> 实现。内部通常使用位向量 (bit vector) 实现，性能极高，远超 <code>HashSet</code>。推荐在需要存储枚举常量的集合时使用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">EnumSet&lt;Day&gt; weekend = EnumSet.of(Day.SATURDAY, Day.SUNDAY);<br>System.out.println(<span class="hljs-string">&quot;Weekend days: &quot;</span> + weekend);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong><code>EnumMap</code></strong>：专门为枚举类型作为键设计的 <code>Map</code> 实现。内部通常使用数组实现，性能也极高，远超 <code>HashMap</code>。推荐在需要以枚举常量作为键的映射时使用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">EnumMap&lt;Day, String&gt; schedule = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EnumMap</span>&lt;&gt;(Day.class);<br>schedule.put(Day.MONDAY, <span class="hljs-string">&quot;Work&quot;</span>);<br>schedule.put(Day.FRIDAY, <span class="hljs-string">&quot;Party planning&quot;</span>);<br>System.out.println(<span class="hljs-string">&quot;Monday&#x27;s schedule: &quot;</span> + schedule.get(Day.MONDAY));<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
-<h3 id="何时使用枚举？"><a href="#何时使用枚举？" class="headerlink" title="何时使用枚举？"></a>何时使用枚举？</h3><ul>
+<h3 id="何时使用枚举？">何时使用枚举？</h3>
+<ul>
 <li>当有一组固定的、有限的、在编译时就知道的常量集合时。</li>
 <li>需要表示状态、类型、选项等。</li>
 <li>希望为这些常量关联额外的数据或行为。</li>
 <li>需要类型安全地传递这些常量。</li>
 <li>可以替代简单的策略模式实现。</li>
 </ul>
-<h3 id="避免的事项"><a href="#避免的事项" class="headerlink" title="避免的事项"></a>避免的事项</h3><ul>
+<h3 id="避免的事项">避免的事项</h3>
+<ul>
 <li><strong>过度依赖 <code>ordinal()</code></strong>：如前所述，枚举常量的顺序可能会改变，导致依赖 <code>ordinal()</code> 的逻辑出错。如果需要一个稳定的值，应该为枚举定义一个显式的字段（如 <code>id</code>）。</li>
 <li><strong>滥用枚举实现复杂逻辑</strong>：虽然枚举可以有方法和实现接口，但如果逻辑变得过于复杂，可能还是拆分成单独的类更合适。枚举应保持其作为“常量集合”的核心职责。</li>
 </ul>
-<h3 id="最新进展-Java-17-21-及以后"><a href="#最新进展-Java-17-21-及以后" class="headerlink" title="最新进展 (Java 17, 21 及以后)"></a>最新进展 (Java 17, 21 及以后)</h3><p>枚举的核心机制自 Java 5 引入以来，一直非常稳定和强大，并没有发生翻天覆地的变化。后续 Java 版本主要是在其他方面进行增强，例如：</p>
+<h3 id="最新进展-Java-17-21-及以后">最新进展 (Java 17, 21 及以后)</h3>
+<p>枚举的核心机制自 Java 5 引入以来，一直非常稳定和强大，并没有发生翻天覆地的变化。后续 Java 版本主要是在其他方面进行增强，例如：</p>
 <ul>
-<li><p><strong><code>switch</code> 表达式 (Java 12+ 预览, Java 14 正式)</strong>：<code>switch</code> 表达式与枚举配合使用更加简洁和强大，尤其是可以返回值，并且强制 <code>exhaustive</code> (覆盖所有情况，否则编译错误，除非有 <code>default</code>)。</p>
+<li>
+<p><strong><code>switch</code> 表达式 (Java 12+ 预览, Java 14 正式)</strong>：<code>switch</code> 表达式与枚举配合使用更加简洁和强大，尤其是可以返回值，并且强制 <code>exhaustive</code> (覆盖所有情况，否则编译错误，除非有 <code>default</code>)。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Java 14+</span><br><span class="hljs-type">Day</span> <span class="hljs-variable">today</span> <span class="hljs-operator">=</span> Day.MONDAY;<br><span class="hljs-type">String</span> <span class="hljs-variable">activity</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">switch</span> (today) &#123;<br>    <span class="hljs-keyword">case</span> MONDAY, TUESDAY, WEDNESDAY, THURSDAY -&gt; <span class="hljs-string">&quot;Working&quot;</span>;<br>    <span class="hljs-keyword">case</span> FRIDAY -&gt; <span class="hljs-string">&quot;Working and planning weekend&quot;</span>;<br>    <span class="hljs-keyword">case</span> SATURDAY, SUNDAY -&gt; <span class="hljs-string">&quot;Relaxing&quot;</span>;<br>    <span class="hljs-comment">// 如果 Day 枚举新增了常量，这里不处理编译器会警告或报错（取决于配置）</span><br>&#125;;<br>System.out.println(<span class="hljs-string">&quot;Activity for &quot;</span> + today + <span class="hljs-string">&quot;: &quot;</span> + activity);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>记录类型 (Records, Java 14+ 预览, Java 16 正式)</strong>：虽然不是直接针对枚举，但记录类型简化了数据类的创建。在某些场景下，如果枚举常量需要关联大量数据，且这些数据本身可以构成一个简单的 DTO，可以考虑结合使用。但通常枚举自身的字段已经足够。</p>
+<li>
+<p><strong>记录类型 (Records, Java 14+ 预览, Java 16 正式)</strong>：虽然不是直接针对枚举，但记录类型简化了数据类的创建。在某些场景下，如果枚举常量需要关联大量数据，且这些数据本身可以构成一个简单的 DTO，可以考虑结合使用。但通常枚举自身的字段已经足够。</p>
 </li>
 </ul>
 <p>总的来说，Java 枚举是一个设计得非常好且非常实用的特性。它不仅仅是常量的集合，更是一个强大的工具，可以帮助你编写更安全、更可读、更易维护的代码。</p>

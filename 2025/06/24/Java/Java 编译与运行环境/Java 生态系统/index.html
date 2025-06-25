@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="在 Java 生态系统中，各种组件之间存在包含和被包含的关系。以下是 Java 组件之间的包含关系层次结构： 1. JDK（Java Development Kit） 包含： JRE（Java Runtime Environment） 包含： JVM（Java Virtual Machine） 包含： 解释器（Interpreter） 即时编译器（JIT Compiler） 垃圾收集器（Garba">
+    <meta name="description" content="在 Java 生态系统中，各种组件之间存在包含和被包含的关系。以下是 Java 组件之间的包含关系层次结构： 1. JDK（Java Development Kit）  包含：  JRE（Java Runtime Environment）  包含：  JVM（Java Virtual Machine）  包含：  解释器（Interpreter） 即时编译器（JIT Compiler） 垃圾收集器">
 <meta property="og:type" content="article">
 <meta property="og:title" content="生态系统">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Java%20%E7%BC%96%E8%AF%91%E4%B8%8E%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/Java%20%E7%94%9F%E6%80%81%E7%B3%BB%E7%BB%9F/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="在 Java 生态系统中，各种组件之间存在包含和被包含的关系。以下是 Java 组件之间的包含关系层次结构： 1. JDK（Java Development Kit） 包含： JRE（Java Runtime Environment） 包含： JVM（Java Virtual Machine） 包含： 解释器（Interpreter） 即时编译器（JIT Compiler） 垃圾收集器（Garba">
+<meta property="og:description" content="在 Java 生态系统中，各种组件之间存在包含和被包含的关系。以下是 Java 组件之间的包含关系层次结构： 1. JDK（Java Development Kit）  包含：  JRE（Java Runtime Environment）  包含：  JVM（Java Virtual Machine）  包含：  解释器（Interpreter） 即时编译器（JIT Compiler） 垃圾收集器">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:26.267Z">
 <meta property="article:modified_time" content="2025-06-25T02:55:34.231Z">
@@ -301,12 +301,18 @@
               <div class="markdown-body">
                 
                 <p>在 Java 生态系统中，各种组件之间存在包含和被包含的关系。以下是 Java 组件之间的包含关系层次结构：</p>
-<h3 id="1-JDK（Java-Development-Kit）"><a href="#1-JDK（Java-Development-Kit）" class="headerlink" title="1. JDK（Java Development Kit）"></a>1. <strong>JDK（Java Development Kit）</strong></h3><ul>
-<li><strong>包含：</strong><ul>
-<li><strong>JRE（Java Runtime Environment）</strong><ul>
-<li><strong>包含：</strong><ul>
-<li><strong>JVM（Java Virtual Machine）</strong><ul>
-<li><strong>包含：</strong><ul>
+<h3 id="1-JDK（Java-Development-Kit）">1. <strong>JDK（Java Development Kit）</strong></h3>
+<ul>
+<li><strong>包含：</strong>
+<ul>
+<li><strong>JRE（Java Runtime Environment）</strong>
+<ul>
+<li><strong>包含：</strong>
+<ul>
+<li><strong>JVM（Java Virtual Machine）</strong>
+<ul>
+<li><strong>包含：</strong>
+<ul>
 <li><strong>解释器</strong>（Interpreter）</li>
 <li><strong>即时编译器</strong>（JIT Compiler）</li>
 <li><strong>垃圾收集器</strong>（Garbage Collector）</li>
@@ -314,11 +320,13 @@
 </li>
 </ul>
 </li>
-<li><strong>核心类库</strong>（Core Libraries）<ul>
+<li><strong>核心类库</strong>（Core Libraries）
+<ul>
 <li>包含运行 Java 程序所需的类库，例如 <code>java.lang</code>、<code>java.util</code> 等。</li>
 </ul>
 </li>
-<li><strong>库文件</strong>（如动态链接库、配置文件等）<ul>
+<li><strong>库文件</strong>（如动态链接库、配置文件等）
+<ul>
 <li>包含 <code>.dll</code>、<code>.so</code> 等文件，以及支持 Java 应用程序运行的其他文件。</li>
 </ul>
 </li>
@@ -326,8 +334,10 @@
 </li>
 </ul>
 </li>
-<li><strong>开发工具</strong><ul>
-<li><strong>包含：</strong><ul>
+<li><strong>开发工具</strong>
+<ul>
+<li><strong>包含：</strong>
+<ul>
 <li><strong><code>javac</code>（Java 编译器）</strong>：将 <code>.java</code> 文件编译为 <code>.class</code> 文件。</li>
 <li><strong><code>jar</code> 工具</strong>：打包和解压 <code>.jar</code> 文件。</li>
 <li><strong><code>javadoc</code></strong>：生成文档的工具。</li>
@@ -341,10 +351,14 @@
 </ul>
 </li>
 </ul>
-<h3 id="2-JRE（Java-Runtime-Environment）"><a href="#2-JRE（Java-Runtime-Environment）" class="headerlink" title="2. JRE（Java Runtime Environment）"></a>2. <strong>JRE（Java Runtime Environment）</strong></h3><ul>
-<li><strong>包含：</strong><ul>
-<li><strong>JVM（Java Virtual Machine）</strong><ul>
-<li><strong>包含：</strong><ul>
+<h3 id="2-JRE（Java-Runtime-Environment）">2. <strong>JRE（Java Runtime Environment）</strong></h3>
+<ul>
+<li><strong>包含：</strong>
+<ul>
+<li><strong>JVM（Java Virtual Machine）</strong>
+<ul>
+<li><strong>包含：</strong>
+<ul>
 <li><strong>解释器</strong>：逐条解释执行 Java 字节码。</li>
 <li><strong>即时编译器（JIT）</strong>：将热点字节码编译为本地机器码。</li>
 <li><strong>垃圾收集器</strong>：自动管理内存，回收不再使用的对象。</li>
@@ -352,8 +366,10 @@
 </li>
 </ul>
 </li>
-<li><strong>核心类库</strong>（Core Libraries）<ul>
-<li><strong>包含：</strong><ul>
+<li><strong>核心类库</strong>（Core Libraries）
+<ul>
+<li><strong>包含：</strong>
+<ul>
 <li>例如 <code>java.lang</code>、<code>java.util</code>、<code>java.io</code> 等标准类库。</li>
 </ul>
 </li>
@@ -363,24 +379,30 @@
 </ul>
 </li>
 </ul>
-<h3 id="3-JVM（Java-Virtual-Machine）"><a href="#3-JVM（Java-Virtual-Machine）" class="headerlink" title="3. JVM（Java Virtual Machine）"></a>3. <strong>JVM（Java Virtual Machine）</strong></h3><ul>
-<li><strong>包含：</strong><ul>
-<li><strong>解释器</strong>（Interpreter）<ul>
+<h3 id="3-JVM（Java-Virtual-Machine）">3. <strong>JVM（Java Virtual Machine）</strong></h3>
+<ul>
+<li><strong>包含：</strong>
+<ul>
+<li><strong>解释器</strong>（Interpreter）
+<ul>
 <li><strong>功能</strong>：解释执行 Java 字节码。</li>
 </ul>
 </li>
-<li><strong>即时编译器（JIT Compiler）</strong><ul>
+<li><strong>即时编译器（JIT Compiler）</strong>
+<ul>
 <li><strong>功能</strong>：将经常执行的字节码编译为本地机器码以提高性能。</li>
 </ul>
 </li>
-<li><strong>垃圾收集器（Garbage Collector）</strong><ul>
+<li><strong>垃圾收集器（Garbage Collector）</strong>
+<ul>
 <li><strong>功能</strong>：自动管理内存，回收不再使用的对象。</li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-<h3 id="组件包含关系总结："><a href="#组件包含关系总结：" class="headerlink" title="组件包含关系总结："></a>组件包含关系总结：</h3><ul>
+<h3 id="组件包含关系总结：">组件包含关系总结：</h3>
+<ul>
 <li><strong>JDK</strong> 是最顶层的组件，包含 <strong>JRE</strong> 和开发工具。</li>
 <li><strong>JRE</strong> 是 <strong>JDK</strong> 的子集，主要用于运行 Java 程序，它包含 <strong>JVM</strong> 和核心类库。</li>
 <li><strong>JVM</strong> 是 <strong>JRE</strong> 的核心部分，负责实际执行 Java 程序的字节码，并包含解释器、JIT 编译器和垃圾收集器。</li>

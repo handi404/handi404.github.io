@@ -303,15 +303,20 @@
                 <p>Spring Cloud 是一组用于构建分布式系统和微服务架构的开源工具和库。它为开发者提供了一些常用的解决方案，可以快速地搭建和管理微服务应用。Spring Cloud 基于 Spring Framework 和 Spring Boot，并且集成了很多成熟的技术，帮助开发者简化在分布式系统中的常见问题，比如服务注册与发现、负载均衡、断路器、配置管理、消息驱动的服务等。</p>
 <p>一些常用的 Spring Cloud 组件包括：</p>
 <ol>
-<li><p><strong>Spring Cloud Netflix</strong>：集成了 Netflix 的一些工具，如 Eureka（服务注册与发现）、Ribbon（客户端负载均衡）、Hystrix（断路器模式）等。</p>
+<li>
+<p><strong>Spring Cloud Netflix</strong>：集成了 Netflix 的一些工具，如 Eureka（服务注册与发现）、Ribbon（客户端负载均衡）、Hystrix（断路器模式）等。</p>
 </li>
-<li><p><strong>Spring Cloud Config</strong>：提供集中化的配置管理，允许微服务从集中式配置仓库加载配置。</p>
+<li>
+<p><strong>Spring Cloud Config</strong>：提供集中化的配置管理，允许微服务从集中式配置仓库加载配置。</p>
 </li>
-<li><p><strong>Spring Cloud Stream</strong>：用于构建消息驱动的微服务，支持多种消息中间件，如 RabbitMQ 和 Kafka。</p>
+<li>
+<p><strong>Spring Cloud Stream</strong>：用于构建消息驱动的微服务，支持多种消息中间件，如 RabbitMQ 和 Kafka。</p>
 </li>
-<li><p><strong>Spring Cloud Gateway</strong>：提供 API 网关的功能，支持路由、负载均衡、过滤等功能。</p>
+<li>
+<p><strong>Spring Cloud Gateway</strong>：提供 API 网关的功能，支持路由、负载均衡、过滤等功能。</p>
 </li>
-<li><p><strong>Spring Cloud Sleuth</strong>：用于分布式追踪，帮助开发者在微服务架构中追踪请求的流向，便于调试和性能优化。</p>
+<li>
+<p><strong>Spring Cloud Sleuth</strong>：用于分布式追踪，帮助开发者在微服务架构中追踪请求的流向，便于调试和性能优化。</p>
 </li>
 </ol>
 <p>总的来说，Spring Cloud 通过将这些功能模块化，极大地简化了开发和维护分布式系统的复杂性。</p>
@@ -319,14 +324,16 @@
 <p>问：springcloud是否和springboot一样，算是一种框架吗？</p>
 <p>Spring Cloud 和 Spring Boot 都是基于 Spring 生态系统的工具，但它们的功能和目的有所不同，不能完全算作是同一种框架。</p>
 <ol>
-<li><p><strong>Spring Boot</strong>：</p>
+<li>
+<p><strong>Spring Boot</strong>：</p>
 <ul>
 <li><strong>框架类型</strong>：Spring Boot 是一个快速开发框架，它简化了 Spring 应用的配置和部署，帮助开发者更容易地创建、配置和部署独立的 Java 应用程序。</li>
 <li><strong>目标</strong>：简化 Spring 应用程序的配置，自动化常见的配置和设置，提供开箱即用的功能，使得开发者不需要手动配置很多复杂的 Spring 配置文件。</li>
 <li><strong>核心</strong>：Spring Boot 本身并不直接关注微服务架构或分布式系统，而是专注于开发高效、可独立运行的 Java 应用。</li>
 </ul>
 </li>
-<li><p><strong>Spring Cloud</strong>：</p>
+<li>
+<p><strong>Spring Cloud</strong>：</p>
 <ul>
 <li><strong>框架类型</strong>：Spring Cloud 是一组用于开发分布式系统和微服务架构的工具库，可以看作是 Spring 生态中专注于微服务解决方案的扩展集合。</li>
 <li><strong>目标</strong>：Spring Cloud 旨在提供分布式系统中常见的功能，如服务发现、配置管理、负载均衡、断路器等，简化微服务架构的构建和管理。</li>
@@ -340,9 +347,11 @@
 <p>是的，你可以这样理解。<strong>Spring Cloud</strong> 是建立在 <strong>Spring Boot</strong> 之上的，它主要为开发分布式系统和微服务架构提供了一些扩展功能和工具集。</p>
 <p>具体来说：</p>
 <ul>
-<li><p><strong>Spring Boot</strong> 是用于构建独立的、生产级别的 Spring 应用程序的框架，帮助开发者简化配置和部署流程，提供了大量的自动化配置功能，使得应用开发更加高效。</p>
+<li>
+<p><strong>Spring Boot</strong> 是用于构建独立的、生产级别的 Spring 应用程序的框架，帮助开发者简化配置和部署流程，提供了大量的自动化配置功能，使得应用开发更加高效。</p>
 </li>
-<li><p><strong>Spring Cloud</strong> 则是基于 Spring Boot 的一组开源工具，它通过增加一系列的功能和模块来帮助开发者构建分布式系统和微服务架构。这些功能包括服务发现、配置管理、负载均衡、断路器等。</p>
+<li>
+<p><strong>Spring Cloud</strong> 则是基于 Spring Boot 的一组开源工具，它通过增加一系列的功能和模块来帮助开发者构建分布式系统和微服务架构。这些功能包括服务发现、配置管理、负载均衡、断路器等。</p>
 </li>
 </ul>
 <p>所以，<strong>Spring Cloud</strong> 在 <strong>Spring Boot</strong> 的基础上提供了许多与微服务架构相关的扩展，它并不是一个全新的框架，而是对 Spring Boot 的一个扩展，专注于分布式系统中的常见问题。两者结合使用，能帮助开发者更高效地搭建和管理微服务应用。</p>

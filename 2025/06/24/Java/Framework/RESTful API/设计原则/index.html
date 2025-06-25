@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="RESTful（Representational State Transfer）是一种广泛采用的架构风格，用于设计网络应用程序的 API。以下是 RESTful 设计的核心原则以及如何设计资源导向的 API：  RESTful 设计的核心原则 资源导向（Resource-Oriented） REST 中的核心是资源，资源可以是数据库中的数据表、文件或逻辑实体等。每个资源通过唯一的 URI 标识。">
+    <meta name="description" content="RESTful（Representational State Transfer）是一种广泛采用的架构风格，用于设计网络应用程序的 API。以下是 RESTful 设计的核心原则以及如何设计资源导向的 API：  RESTful 设计的核心原则   资源导向（Resource-Oriented） REST 中的核心是资源，资源可以是数据库中的数据表、文件或逻辑实体等。每个资源通过唯一的 URI 标识">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/RESTful%20API/%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="RESTful（Representational State Transfer）是一种广泛采用的架构风格，用于设计网络应用程序的 API。以下是 RESTful 设计的核心原则以及如何设计资源导向的 API：  RESTful 设计的核心原则 资源导向（Resource-Oriented） REST 中的核心是资源，资源可以是数据库中的数据表、文件或逻辑实体等。每个资源通过唯一的 URI 标识。">
+<meta property="og:description" content="RESTful（Representational State Transfer）是一种广泛采用的架构风格，用于设计网络应用程序的 API。以下是 RESTful 设计的核心原则以及如何设计资源导向的 API：  RESTful 设计的核心原则   资源导向（Resource-Oriented） REST 中的核心是资源，资源可以是数据库中的数据表、文件或逻辑实体等。每个资源通过唯一的 URI 标识">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:26.908Z">
 <meta property="article:modified_time" content="2024-12-07T12:25:12.733Z">
@@ -302,41 +302,59 @@
                 
                 <p>RESTful（Representational State Transfer）是一种广泛采用的架构风格，用于设计网络应用程序的 API。以下是 RESTful 设计的核心原则以及如何设计资源导向的 API：</p>
 <hr>
-<h3 id="RESTful-设计的核心原则"><a href="#RESTful-设计的核心原则" class="headerlink" title="RESTful 设计的核心原则"></a><strong>RESTful 设计的核心原则</strong></h3><ol>
-<li><p><strong>资源导向（Resource-Oriented）</strong><br> REST 中的核心是资源，资源可以是数据库中的数据表、文件或逻辑实体等。每个资源通过唯一的 URI 标识。</p>
+<h3 id="RESTful-设计的核心原则"><strong>RESTful 设计的核心原则</strong></h3>
+<ol>
+<li>
+<p><strong>资源导向（Resource-Oriented）</strong><br>
+REST 中的核心是资源，资源可以是数据库中的数据表、文件或逻辑实体等。每个资源通过唯一的 URI 标识。</p>
 </li>
-<li><p><strong>无状态性（Stateless）</strong><br> 每个请求都必须包含所有信息（如认证信息）以完成操作，服务器不会存储客户端的状态。</p>
+<li>
+<p><strong>无状态性（Stateless）</strong><br>
+每个请求都必须包含所有信息（如认证信息）以完成操作，服务器不会存储客户端的状态。</p>
 </li>
-<li><p><strong>统一接口（Uniform Interface）</strong><br> REST 使用统一的接口约束，资源通过标准的 HTTP 方法（GET、POST、PUT、DELETE 等）操作。</p>
+<li>
+<p><strong>统一接口（Uniform Interface）</strong><br>
+REST 使用统一的接口约束，资源通过标准的 HTTP 方法（GET、POST、PUT、DELETE 等）操作。</p>
 </li>
-<li><p><strong>分层系统（Layered System）</strong><br> 允许在架构中引入中间层（如缓存、负载均衡器）来提高性能和扩展性。</p>
+<li>
+<p><strong>分层系统（Layered System）</strong><br>
+允许在架构中引入中间层（如缓存、负载均衡器）来提高性能和扩展性。</p>
 </li>
-<li><p><strong>客户端-服务器分离（Client-Server Separation）</strong><br> 客户端和服务器的职责分离，客户端专注于用户界面，服务器负责数据存储和业务逻辑。</p>
+<li>
+<p><strong>客户端-服务器分离（Client-Server Separation）</strong><br>
+客户端和服务器的职责分离，客户端专注于用户界面，服务器负责数据存储和业务逻辑。</p>
 </li>
-<li><p><strong>可缓存性（Cacheable）</strong><br> 响应需要明确定义是否可以缓存，提升效率。</p>
+<li>
+<p><strong>可缓存性（Cacheable）</strong><br>
+响应需要明确定义是否可以缓存，提升效率。</p>
 </li>
 </ol>
 <hr>
-<h3 id="资源导向的-API-设计"><a href="#资源导向的-API-设计" class="headerlink" title="资源导向的 API 设计"></a><strong>资源导向的 API 设计</strong></h3><ol>
-<li><p><strong>URL 结构</strong><br> URL 是资源的唯一标识，应该尽量简洁且能准确表达资源含义。</p>
+<h3 id="资源导向的-API-设计"><strong>资源导向的 API 设计</strong></h3>
+<ol>
+<li>
+<p><strong>URL 结构</strong><br>
+URL 是资源的唯一标识，应该尽量简洁且能准确表达资源含义。</p>
 <ul>
 <li>使用名词而不是动词（URL 表示资源，不是行为）。</li>
 <li>采用层次结构表示资源之间的关系。</li>
 </ul>
-<p> <strong>示例：</strong></p>
+<p><strong>示例：</strong></p>
 <ul>
 <li>获取所有用户：<code>GET /users</code></li>
 <li>获取特定用户：<code>GET /users/&#123;id&#125;</code></li>
 <li>获取用户的订单：<code>GET /users/&#123;id&#125;/orders</code></li>
 <li>获取订单中的特定商品：<code>GET /orders/&#123;orderId&#125;/items/&#123;itemId&#125;</code></li>
 </ul>
-<p> <strong>建议：</strong></p>
+<p><strong>建议：</strong></p>
 <ul>
 <li>使用小写字母，避免混淆。</li>
 <li>不要在 URL 中加入文件扩展名（如 <code>.json</code>，内容协商通过 <code>Accept</code> 头实现）。</li>
 </ul>
 </li>
-<li><p><strong>HTTP 方法与 CRUD 映射</strong><br> HTTP 方法与资源的操作之间存在天然映射关系：</p>
+<li>
+<p><strong>HTTP 方法与 CRUD 映射</strong><br>
+HTTP 方法与资源的操作之间存在天然映射关系：</p>
 <ul>
 <li><code>GET</code>：检索资源或资源集合。</li>
 <li><code>POST</code>：创建新资源。</li>
@@ -344,7 +362,7 @@
 <li><code>PATCH</code>：部分更新资源。</li>
 <li><code>DELETE</code>：删除资源。</li>
 </ul>
-<p> <strong>示例：</strong></p>
+<p><strong>示例：</strong></p>
 <ul>
 <li>获取用户列表：<code>GET /users</code></li>
 <li>创建用户：<code>POST /users</code></li>
@@ -352,7 +370,9 @@
 <li>删除用户：<code>DELETE /users/&#123;id&#125;</code></li>
 </ul>
 </li>
-<li><p><strong>使用状态码</strong><br> 合理使用 HTTP 状态码表达操作结果：</p>
+<li>
+<p><strong>使用状态码</strong><br>
+合理使用 HTTP 状态码表达操作结果：</p>
 <ul>
 <li><strong>200 OK</strong>：请求成功。</li>
 <li><strong>201 Created</strong>：资源创建成功。</li>
@@ -363,27 +383,39 @@
 <li><strong>500 Internal Server Error</strong>：服务器内部错误。</li>
 </ul>
 </li>
-<li><p><strong>支持过滤、排序、分页</strong><br> 为了提高灵活性，可以通过查询参数实现：</p>
+<li>
+<p><strong>支持过滤、排序、分页</strong><br>
+为了提高灵活性，可以通过查询参数实现：</p>
 <ul>
 <li>过滤：<code>GET /users?role=admin</code></li>
 <li>排序：<code>GET /users?sort=age,desc</code></li>
 <li>分页：<code>GET /users?page=2&amp;size=20</code></li>
 </ul>
 </li>
-<li><p><strong>HATEOAS（超媒体作为应用状态的引擎）</strong><br> 在响应中提供链接，引导客户端如何进一步操作。<br> <strong>示例响应：</strong></p>
+<li>
+<p><strong>HATEOAS（超媒体作为应用状态的引擎）</strong><br>
+在响应中提供链接，引导客户端如何进一步操作。<br>
+<strong>示例响应：</strong></p>
  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;John Doe&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;links&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-punctuation">&#123;</span> <span class="hljs-attr">&quot;rel&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;self&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;href&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/users/1&quot;</span> <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-punctuation">&#123;</span> <span class="hljs-attr">&quot;rel&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;orders&quot;</span><span class="hljs-punctuation">,</span> <span class="hljs-attr">&quot;href&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;/users/1/orders&quot;</span> <span class="hljs-punctuation">&#125;</span><br>    <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>版本控制</strong><br> 避免对现有 API 的破坏性修改，建议对 API 进行版本控制：</p>
+<li>
+<p><strong>版本控制</strong><br>
+避免对现有 API 的破坏性修改，建议对 API 进行版本控制：</p>
 <ul>
 <li>URL 版本：<code>/v1/users</code></li>
 <li>Header 版本：<code>Accept: application/vnd.example.v1+json</code></li>
 </ul>
 </li>
-<li><p><strong>返回一致的错误信息</strong><br> 返回结构化的错误消息便于调试。<br> <strong>示例：</strong></p>
- <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">404</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;User not found&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>
+<p><strong>返回一致的错误信息</strong><br>
+返回结构化的错误消息便于调试。<br>
+<strong>示例：</strong></p>
+ <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">404</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;User not found&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
 </ol>
 <hr>
-<h3 id="最佳实践"><a href="#最佳实践" class="headerlink" title="最佳实践"></a><strong>最佳实践</strong></h3><ul>
+<h3 id="最佳实践"><strong>最佳实践</strong></h3>
+<ul>
 <li><strong>尽量保持简洁和一致性</strong>：API 设计应该易于理解和使用。</li>
 <li><strong>支持 JSON</strong>：默认采用 JSON 格式传递数据。</li>
 <li><strong>安全性</strong>：使用 HTTPS、Token 认证（如 OAuth2）等保障数据安全。</li>

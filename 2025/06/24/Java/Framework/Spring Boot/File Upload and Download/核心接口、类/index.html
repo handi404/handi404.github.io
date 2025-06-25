@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="org.springframework.web.multipart.MultipartFilejava.nio.file.Pathjava.nio.file.Pathsjava.io.Filejava.nio.file.Filesorg.springframework.core.io.Resource 这六个类&#x2F;接口确实是文件操作中的核心，理解它们的定位和关系至关重要。我会逐个详细解释，">
+    <meta name="description" content="org.springframework.web.multipart.MultipartFile java.nio.file.Path java.nio.file.Paths java.io.File java.nio.file.Files org.springframework.core.io.Resource 这六个类&#x2F;接口确实是文件操作中的核心，理解它们的定位和关系至关重要。我会逐个详细解释，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/File%20Upload%20and%20Download/%E6%A0%B8%E5%BF%83%E6%8E%A5%E5%8F%A3%E3%80%81%E7%B1%BB/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="org.springframework.web.multipart.MultipartFilejava.nio.file.Pathjava.nio.file.Pathsjava.io.Filejava.nio.file.Filesorg.springframework.core.io.Resource 这六个类&#x2F;接口确实是文件操作中的核心，理解它们的定位和关系至关重要。我会逐个详细解释，">
+<meta property="og:description" content="org.springframework.web.multipart.MultipartFile java.nio.file.Path java.nio.file.Paths java.io.File java.nio.file.Files org.springframework.core.io.Resource 这六个类&#x2F;接口确实是文件操作中的核心，理解它们的定位和关系至关重要。我会逐个详细解释，">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.154Z">
 <meta property="article:modified_time" content="2025-06-23T12:35:33.709Z">
@@ -300,29 +300,40 @@
             
               <div class="markdown-body">
                 
-                <p>org.springframework.web.multipart.MultipartFile<br>java.nio.file.Path<br>java.nio.file.Paths<br>java.io.File<br>java.nio.file.Files<br>org.springframework.core.io.Resource</p>
-<p>这六个类&#x2F;接口确实是文件操作中的核心，理解它们的定位和关系至关重要。我会逐个详细解释，并阐明它们在 Spring Boot 文件上传下载场景中的角色和联系。</p>
+                <p>org.springframework.web.multipart.MultipartFile<br>
+java.nio.file.Path<br>
+java.nio.file.Paths<br>
+java.io.File<br>
+java.nio.file.Files<br>
+org.springframework.core.io.Resource</p>
+<p>这六个类/接口确实是文件操作中的核心，理解它们的定位和关系至关重要。我会逐个详细解释，并阐明它们在 Spring Boot 文件上传下载场景中的角色和联系。</p>
 <hr>
-<h3 id="1-org-springframework-web-multipart-MultipartFile-Spring-MVC-接口"><a href="#1-org-springframework-web-multipart-MultipartFile-Spring-MVC-接口" class="headerlink" title="1. org.springframework.web.multipart.MultipartFile (Spring MVC 接口)"></a>1. <code>org.springframework.web.multipart.MultipartFile</code> (Spring MVC 接口)</h3><ul>
-<li><p><strong>作用</strong>:</p>
+<h3 id="1-org-springframework-web-multipart-MultipartFile-Spring-MVC-接口">1. <code>org.springframework.web.multipart.MultipartFile</code> (Spring MVC 接口)</h3>
+<ul>
+<li>
+<p><strong>作用</strong>:</p>
 <ul>
 <li>这是Spring MVC框架专门用来<strong>表示通过 <code>multipart/form-data</code> 请求上传的文件</strong>的接口。</li>
 <li>它提供了一种便捷的方式来访问上传文件的内容、名称、大小、类型等元数据。</li>
 <li>它是对Servlet API中 <code>javax.servlet.http.Part</code> 的一个更友好的封装。</li>
 </ul>
 </li>
-<li><p><strong>如何使用</strong>:</p>
+<li>
+<p><strong>如何使用</strong>:</p>
 <ul>
-<li>在Spring MVC的Controller方法中，使用 <code>@RequestParam</code> 注解来接收上传的文件。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/upload&quot;)</span><br><span class="hljs-keyword">public</span> String <span class="hljs-title function_">handleFileUpload</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam(&quot;file&quot;)</span> MultipartFile file,</span><br><span class="hljs-params">                             <span class="hljs-meta">@RequestParam(&quot;anotherFile&quot;)</span> MultipartFile anotherFile)</span> &#123;<br>    <span class="hljs-keyword">if</span> (!file.isEmpty()) &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">originalName</span> <span class="hljs-operator">=</span> file.getOriginalFilename();<br>        <span class="hljs-type">long</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> file.getSize();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">contentType</span> <span class="hljs-operator">=</span> file.getContentType();<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">byte</span>[] bytes = file.getBytes(); <span class="hljs-comment">// 获取文件内容的字节数组 (小心内存溢出)</span><br>            <span class="hljs-type">InputStream</span> <span class="hljs-variable">inputStream</span> <span class="hljs-operator">=</span> file.getInputStream(); <span class="hljs-comment">// 获取文件内容的输入流</span><br>            <span class="hljs-comment">// 保存文件</span><br>            file.transferTo(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;/path/to/your/destination/&quot;</span> + originalName));<br>            <span class="hljs-comment">// 或者使用 Path</span><br>            <span class="hljs-comment">// file.transferTo(Paths.get(&quot;/path/to/your/destination/&quot; + originalName));</span><br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            <span class="hljs-comment">// 处理异常</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;redirect:/uploadStatus&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>在Spring MVC的Controller方法中，使用 <code>@RequestParam</code> 注解来接收上传的文件。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/upload&quot;)</span><br><span class="hljs-keyword">public</span> String <span class="hljs-title function_">handleFileUpload</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam(&quot;file&quot;)</span> MultipartFile file,</span><br><span class="hljs-params">                             <span class="hljs-meta">@RequestParam(&quot;anotherFile&quot;)</span> MultipartFile anotherFile)</span> &#123;<br>    <span class="hljs-keyword">if</span> (!file.isEmpty()) &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">originalName</span> <span class="hljs-operator">=</span> file.getOriginalFilename();<br>        <span class="hljs-type">long</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> file.getSize();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">contentType</span> <span class="hljs-operator">=</span> file.getContentType();<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">byte</span>[] bytes = file.getBytes(); <span class="hljs-comment">// 获取文件内容的字节数组 (小心内存溢出)</span><br>            <span class="hljs-type">InputStream</span> <span class="hljs-variable">inputStream</span> <span class="hljs-operator">=</span> file.getInputStream(); <span class="hljs-comment">// 获取文件内容的输入流</span><br>            <span class="hljs-comment">// 保存文件</span><br>            file.transferTo(<span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;/path/to/your/destination/&quot;</span> + originalName));<br>            <span class="hljs-comment">// 或者使用 Path</span><br>            <span class="hljs-comment">// file.transferTo(Paths.get(&quot;/path/to/your/destination/&quot; + originalName));</span><br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            <span class="hljs-comment">// 处理异常</span><br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;redirect:/uploadStatus&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>在文件上传下载中扮演的角色</strong>:</p>
+<li>
+<p><strong>在文件上传下载中扮演的角色</strong>:</p>
 <ul>
 <li><strong>上传</strong>: <strong>核心角色</strong>。它是服务器端接收到的上传文件的直接表示。所有关于上传文件的操作（获取元数据、读取内容、保存到磁盘）都始于这个对象。</li>
 <li><strong>下载</strong>: <strong>不直接参与</strong>。<code>MultipartFile</code> 是用于处理<em>进入</em>服务器的文件的。</li>
 </ul>
 </li>
-<li><p><strong>关键方法</strong>:</p>
+<li>
+<p><strong>关键方法</strong>:</p>
 <ul>
 <li><code>String getOriginalFilename()</code>: 获取客户端上传的原始文件名。</li>
 <li><code>String getName()</code>: 获取表单中 <code>input</code> 标签的 <code>name</code> 属性值。</li>
@@ -337,58 +348,70 @@
 </li>
 </ul>
 <hr>
-<h3 id="2-java-nio-file-Path-Java-NIO-接口"><a href="#2-java-nio-file-Path-Java-NIO-接口" class="headerlink" title="2. java.nio.file.Path (Java NIO 接口)"></a>2. <code>java.nio.file.Path</code> (Java NIO 接口)</h3><ul>
-<li><p><strong>作用</strong>:</p>
+<h3 id="2-java-nio-file-Path-Java-NIO-接口">2. <code>java.nio.file.Path</code> (Java NIO 接口)</h3>
 <ul>
-<li>Java NIO (New I&#x2F;O) API 的一部分，自 Java 7 引入。</li>
+<li>
+<p><strong>作用</strong>:</p>
+<ul>
+<li>Java NIO (New I/O) API 的一部分，自 Java 7 引入。</li>
 <li><strong>表示文件系统中的一个路径</strong>，这个路径可以指向一个文件或一个目录。</li>
 <li>它是一个<strong>抽象的路径表示</strong>，与操作系统无关。它本身不打开文件，也不包含文件内容。</li>
 <li><code>Path</code> 对象是<strong>不可变的 (immutable)</strong>。</li>
 </ul>
 </li>
-<li><p><strong>如何使用</strong>:</p>
+<li>
+<p><strong>如何使用</strong>:</p>
 <ul>
-<li>通常通过 <code>Paths</code> 工具类的 <code>get()</code> 方法创建。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Path</span> <span class="hljs-variable">p1</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;/tmp/foo&quot;</span>); <span class="hljs-comment">// 绝对路径 (Unix-like)</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">p2</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;C:\\tmp\\foo&quot;</span>); <span class="hljs-comment">// 绝对路径 (Windows)</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">p3</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;project&quot;</span>, <span class="hljs-string">&quot;data&quot;</span>, <span class="hljs-string">&quot;file.txt&quot;</span>); <span class="hljs-comment">// 相对路径</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">p4</span> <span class="hljs-operator">=</span> p3.resolve(<span class="hljs-string">&quot;another_level&quot;</span>); <span class="hljs-comment">// project/data/file.txt/another_level</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">parent</span> <span class="hljs-operator">=</span> p3.getParent(); <span class="hljs-comment">// project/data</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">fileName</span> <span class="hljs-operator">=</span> p3.getFileName(); <span class="hljs-comment">// file.txt</span><br></code></pre></td></tr></table></figure></li>
+<li>通常通过 <code>Paths</code> 工具类的 <code>get()</code> 方法创建。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Path</span> <span class="hljs-variable">p1</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;/tmp/foo&quot;</span>); <span class="hljs-comment">// 绝对路径 (Unix-like)</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">p2</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;C:\\tmp\\foo&quot;</span>); <span class="hljs-comment">// 绝对路径 (Windows)</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">p3</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;project&quot;</span>, <span class="hljs-string">&quot;data&quot;</span>, <span class="hljs-string">&quot;file.txt&quot;</span>); <span class="hljs-comment">// 相对路径</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">p4</span> <span class="hljs-operator">=</span> p3.resolve(<span class="hljs-string">&quot;another_level&quot;</span>); <span class="hljs-comment">// project/data/file.txt/another_level</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">parent</span> <span class="hljs-operator">=</span> p3.getParent(); <span class="hljs-comment">// project/data</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">fileName</span> <span class="hljs-operator">=</span> p3.getFileName(); <span class="hljs-comment">// file.txt</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>在文件上传下载中扮演的角色</strong>:</p>
+<li>
+<p><strong>在文件上传下载中扮演的角色</strong>:</p>
 <ul>
 <li><strong>上传</strong>: 用于<strong>指定服务器上保存上传文件的目标位置</strong>。<code>MultipartFile.transferTo(Path)</code> 方法的参数就是 <code>Path</code> 对象。也用于配合 <code>java.nio.file.Files</code> 类进行文件操作，如创建目录。</li>
 <li><strong>下载</strong>: 用于<strong>指定服务器上待下载文件的源文件位置</strong>。在构建 <code>Resource</code> 对象（如 <code>FileSystemResource</code> 或 <code>UrlResource</code>）时，会用到 <code>Path</code>。</li>
 </ul>
 </li>
-<li><p><strong>关键方法</strong>:</p>
+<li>
+<p><strong>关键方法</strong>:</p>
 <ul>
 <li><code>Path getFileName()</code>: 返回路径中的文件名或最后一个目录名。</li>
 <li><code>Path getParent()</code>: 返回父路径。</li>
 <li><code>Path resolve(String other)</code> 或 <code>Path resolve(Path other)</code>: 将给定的路径字符串或 <code>Path</code> 对象解析到当前路径下，形成新路径。</li>
-<li><code>Path normalize()</code>: 规范化路径，移除 “.” 和 “..” 等。</li>
+<li><code>Path normalize()</code>: 规范化路径，移除 “.” 和 “…” 等。</li>
 <li><code>URI toUri()</code>: 将路径转换为 <code>URI</code>。</li>
 <li><code>File toFile()</code>: 将路径转换为旧的 <code>java.io.File</code> 对象 (如果需要与旧 API 交互)。</li>
-<li><code>boolean startsWith(Path other)</code> &#x2F; <code>boolean endsWith(Path other)</code>: 路径比较。</li>
+<li><code>boolean startsWith(Path other)</code> / <code>boolean endsWith(Path other)</code>: 路径比较。</li>
 </ul>
 </li>
 </ul>
 <hr>
-<h3 id="3-java-nio-file-Paths-Java-NIO-工具类"><a href="#3-java-nio-file-Paths-Java-NIO-工具类" class="headerlink" title="3. java.nio.file.Paths (Java NIO 工具类)"></a>3. <code>java.nio.file.Paths</code> (Java NIO 工具类)</h3><ul>
-<li><p><strong>作用</strong>:</p>
+<h3 id="3-java-nio-file-Paths-Java-NIO-工具类">3. <code>java.nio.file.Paths</code> (Java NIO 工具类)</h3>
+<ul>
+<li>
+<p><strong>作用</strong>:</p>
 <ul>
 <li>这是一个<strong>工具类 (Utility Class)</strong>，仅包含静态方法。</li>
 <li>它的主要作用是<strong>创建 <code>Path</code> 实例</strong>。</li>
 </ul>
 </li>
-<li><p><strong>如何使用</strong>:</p>
+<li>
+<p><strong>如何使用</strong>:</p>
 <ul>
-<li>最常用的方法是 <code>get()</code>。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 从字符串序列构造 Path</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">path1</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;/opt/myapp/uploads&quot;</span>, <span class="hljs-string">&quot;images&quot;</span>, <span class="hljs-string">&quot;avatar.jpg&quot;</span>);<br><span class="hljs-comment">// 从单个字符串构造 Path (可以是绝对或相对)</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">path2</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;config.properties&quot;</span>);<br><span class="hljs-comment">// 从 URI 构造 Path</span><br><span class="hljs-comment">// URI uri = ...;</span><br><span class="hljs-comment">// Path path3 = Paths.get(uri);</span><br></code></pre></td></tr></table></figure></li>
+<li>最常用的方法是 <code>get()</code>。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 从字符串序列构造 Path</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">path1</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;/opt/myapp/uploads&quot;</span>, <span class="hljs-string">&quot;images&quot;</span>, <span class="hljs-string">&quot;avatar.jpg&quot;</span>);<br><span class="hljs-comment">// 从单个字符串构造 Path (可以是绝对或相对)</span><br><span class="hljs-type">Path</span> <span class="hljs-variable">path2</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;config.properties&quot;</span>);<br><span class="hljs-comment">// 从 URI 构造 Path</span><br><span class="hljs-comment">// URI uri = ...;</span><br><span class="hljs-comment">// Path path3 = Paths.get(uri);</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>在文件上传下载中扮演的角色</strong>:</p>
+<li>
+<p><strong>在文件上传下载中扮演的角色</strong>:</p>
 <ul>
 <li><strong>上传</strong>: 用于<strong>构建上传文件的目标存储路径</strong> <code>Path</code> 对象。例如，结合配置的上传目录和生成的文件名来创建 <code>Path</code>。</li>
 <li><strong>下载</strong>: 用于<strong>构建待下载文件的源文件路径</strong> <code>Path</code> 对象。例如，结合配置的下载目录和请求的文件名来创建 <code>Path</code>。</li>
 </ul>
 </li>
-<li><p><strong>关键方法</strong>:</p>
+<li>
+<p><strong>关键方法</strong>:</p>
 <ul>
 <li><code>static Path get(String first, String... more)</code>: 将一系列字符串连接起来形成一个 <code>Path</code>。这是最常用的方法。</li>
 <li><code>static Path get(URI uri)</code>: 从一个 <code>URI</code> 对象创建 <code>Path</code>。</li>
@@ -396,27 +419,34 @@
 </li>
 </ul>
 <hr>
-<h3 id="4-java-io-File-Java-Legacy-IO-类"><a href="#4-java-io-File-Java-Legacy-IO-类" class="headerlink" title="4. java.io.File (Java Legacy IO 类)"></a>4. <code>java.io.File</code> (Java Legacy IO 类)</h3><ul>
-<li><p><strong>作用</strong>:</p>
+<h3 id="4-java-io-File-Java-Legacy-IO-类">4. <code>java.io.File</code> (Java Legacy IO 类)</h3>
 <ul>
-<li>Java 早期 I&#x2F;O API 的一部分，用于<strong>表示文件系统中的文件或目录的抽象路径名</strong>。</li>
+<li>
+<p><strong>作用</strong>:</p>
+<ul>
+<li>Java 早期 I/O API 的一部分，用于<strong>表示文件系统中的文件或目录的抽象路径名</strong>。</li>
 <li>它既可以代表路径，也可以用于执行一些基本的文件操作（如创建、删除、重命名、检查属性等）。</li>
 <li>与 <code>java.nio.file.Path</code> 相比，<code>java.io.File</code> 的 API 设计较为老旧，且在错误处理、原子操作等方面不如 NIO。</li>
 </ul>
 </li>
-<li><p><strong>如何使用</strong>:</p>
+<li>
+<p><strong>如何使用</strong>:</p>
 <ul>
-<li>通过构造函数创建。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">File</span> <span class="hljs-variable">file1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;/tmp/myfile.txt&quot;</span>);<br><span class="hljs-type">File</span> <span class="hljs-variable">dir</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;/tmp/mydirectory&quot;</span>);<br><span class="hljs-type">File</span> <span class="hljs-variable">file2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(dir, <span class="hljs-string">&quot;anotherfile.txt&quot;</span>);<br><br><span class="hljs-keyword">if</span> (file1.exists()) &#123;<br>    System.out.println(<span class="hljs-string">&quot;File exists: &quot;</span> + file1.getAbsolutePath());<br>&#125;<br><span class="hljs-keyword">if</span> (dir.isDirectory()) &#123;<br>    dir.mkdirs(); <span class="hljs-comment">// 创建目录，包括任何必需但不存在的父目录</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>通过构造函数创建。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">File</span> <span class="hljs-variable">file1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;/tmp/myfile.txt&quot;</span>);<br><span class="hljs-type">File</span> <span class="hljs-variable">dir</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(<span class="hljs-string">&quot;/tmp/mydirectory&quot;</span>);<br><span class="hljs-type">File</span> <span class="hljs-variable">file2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">File</span>(dir, <span class="hljs-string">&quot;anotherfile.txt&quot;</span>);<br><br><span class="hljs-keyword">if</span> (file1.exists()) &#123;<br>    System.out.println(<span class="hljs-string">&quot;File exists: &quot;</span> + file1.getAbsolutePath());<br>&#125;<br><span class="hljs-keyword">if</span> (dir.isDirectory()) &#123;<br>    dir.mkdirs(); <span class="hljs-comment">// 创建目录，包括任何必需但不存在的父目录</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>在文件上传下载中扮演的角色</strong>:</p>
+<li>
+<p><strong>在文件上传下载中扮演的角色</strong>:</p>
 <ul>
-<li><strong>上传</strong>:<ul>
+<li><strong>上传</strong>:
+<ul>
 <li>可以用作 <code>MultipartFile.transferTo(File dest)</code> 的参数，指定上传文件的保存位置。</li>
 <li>但现在更推荐使用 <code>Path</code> 和 <code>MultipartFile.transferTo(Path dest)</code>。</li>
 </ul>
 </li>
-<li><strong>下载</strong>:<ul>
+<li><strong>下载</strong>:
+<ul>
 <li>可以用于表示待下载的源文件。</li>
 <li>可以用于创建 <code>org.springframework.core.io.FileSystemResource</code>：<code>new FileSystemResource(new File(&quot;/path/to/download&quot;))</code>。</li>
 <li>同样，现在更推荐使用 <code>Path</code> 来创建 <code>FileSystemResource</code>。</li>
@@ -424,13 +454,14 @@
 </li>
 </ul>
 </li>
-<li><p><strong>关键方法</strong>:</p>
+<li>
+<p><strong>关键方法</strong>:</p>
 <ul>
 <li><code>boolean exists()</code>: 判断文件或目录是否存在。</li>
-<li><code>boolean isFile()</code> &#x2F; <code>boolean isDirectory()</code>: 判断是文件还是目录。</li>
+<li><code>boolean isFile()</code> / <code>boolean isDirectory()</code>: 判断是文件还是目录。</li>
 <li><code>String getAbsolutePath()</code>: 获取绝对路径。</li>
 <li><code>String getName()</code>: 获取文件名或目录名。</li>
-<li><code>boolean mkdir()</code> &#x2F; <code>boolean mkdirs()</code>: 创建目录。</li>
+<li><code>boolean mkdir()</code> / <code>boolean mkdirs()</code>: 创建目录。</li>
 <li><code>boolean delete()</code>: 删除文件或空目录。</li>
 <li><code>Path toPath()</code>: (Java 7+) 将 <code>File</code> 对象转换为 <code>Path</code> 对象。</li>
 </ul>
@@ -438,27 +469,34 @@
 </ul>
 <p><strong>注意</strong>: 尽管 <code>java.io.File</code> 仍可使用，但在现代Java开发中，<strong>优先推荐使用 <code>java.nio.file.Path</code> 和 <code>java.nio.file.Files</code></strong>，因为它们提供了更强大、更灵活、更一致的 API。</p>
 <hr>
-<h3 id="5-java-nio-file-Files-Java-NIO-工具类"><a href="#5-java-nio-file-Files-Java-NIO-工具类" class="headerlink" title="5. java.nio.file.Files (Java NIO 工具类)"></a>5. <code>java.nio.file.Files</code> (Java NIO 工具类)</h3><ul>
-<li><p><strong>作用</strong>:</p>
+<h3 id="5-java-nio-file-Files-Java-NIO-工具类">5. <code>java.nio.file.Files</code> (Java NIO 工具类)</h3>
+<ul>
+<li>
+<p><strong>作用</strong>:</p>
 <ul>
 <li>这也是一个<strong>工具类</strong>，包含用于操作文件和目录的<strong>静态方法</strong>。</li>
 <li>它与 <code>Path</code> 对象紧密配合，提供了比 <code>java.io.File</code> 类更丰富和强大的文件操作功能。</li>
 <li>支持原子操作、符号链接、文件属性访问等。</li>
 </ul>
 </li>
-<li><p><strong>如何使用</strong>:</p>
+<li>
+<p><strong>如何使用</strong>:</p>
 <ul>
-<li>所有方法都是静态的，直接通过类名调用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Path</span> <span class="hljs-variable">sourcePath</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;source.txt&quot;</span>);<br><span class="hljs-type">Path</span> <span class="hljs-variable">targetPath</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;target.txt&quot;</span>);<br><span class="hljs-type">Path</span> <span class="hljs-variable">dirPath</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;new_directory&quot;</span>);<br><br><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-comment">// 复制文件</span><br>    Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);<br>    <span class="hljs-comment">// 移动/重命名文件</span><br>    <span class="hljs-comment">// Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);</span><br>    <span class="hljs-comment">// 删除文件</span><br>    <span class="hljs-comment">// Files.delete(targetPath);</span><br>    <span class="hljs-comment">// 创建目录</span><br>    Files.createDirectories(dirPath); <span class="hljs-comment">// 创建目录，如果父目录不存在也会创建</span><br>    <span class="hljs-comment">// 检查文件是否存在</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-variable">exists</span> <span class="hljs-operator">=</span> Files.exists(sourcePath);<br>    <span class="hljs-comment">// 获取文件大小</span><br>    <span class="hljs-type">long</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> Files.size(sourcePath);<br>    <span class="hljs-comment">// 读取文件所有字节 (小文件适用)</span><br>    <span class="hljs-comment">// byte[] content = Files.readAllBytes(sourcePath);</span><br>    <span class="hljs-comment">// 获取输入流/输出流</span><br>    <span class="hljs-type">InputStream</span> <span class="hljs-variable">in</span> <span class="hljs-operator">=</span> Files.newInputStream(sourcePath);<br>    <span class="hljs-type">OutputStream</span> <span class="hljs-variable">out</span> <span class="hljs-operator">=</span> Files.newOutputStream(targetPath);<br>&#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>    <span class="hljs-comment">// 处理异常</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>所有方法都是静态的，直接通过类名调用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Path</span> <span class="hljs-variable">sourcePath</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;source.txt&quot;</span>);<br><span class="hljs-type">Path</span> <span class="hljs-variable">targetPath</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;target.txt&quot;</span>);<br><span class="hljs-type">Path</span> <span class="hljs-variable">dirPath</span> <span class="hljs-operator">=</span> Paths.get(<span class="hljs-string">&quot;new_directory&quot;</span>);<br><br><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-comment">// 复制文件</span><br>    Files.copy(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);<br>    <span class="hljs-comment">// 移动/重命名文件</span><br>    <span class="hljs-comment">// Files.move(sourcePath, targetPath, StandardCopyOption.REPLACE_EXISTING);</span><br>    <span class="hljs-comment">// 删除文件</span><br>    <span class="hljs-comment">// Files.delete(targetPath);</span><br>    <span class="hljs-comment">// 创建目录</span><br>    Files.createDirectories(dirPath); <span class="hljs-comment">// 创建目录，如果父目录不存在也会创建</span><br>    <span class="hljs-comment">// 检查文件是否存在</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-variable">exists</span> <span class="hljs-operator">=</span> Files.exists(sourcePath);<br>    <span class="hljs-comment">// 获取文件大小</span><br>    <span class="hljs-type">long</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> Files.size(sourcePath);<br>    <span class="hljs-comment">// 读取文件所有字节 (小文件适用)</span><br>    <span class="hljs-comment">// byte[] content = Files.readAllBytes(sourcePath);</span><br>    <span class="hljs-comment">// 获取输入流/输出流</span><br>    <span class="hljs-type">InputStream</span> <span class="hljs-variable">in</span> <span class="hljs-operator">=</span> Files.newInputStream(sourcePath);<br>    <span class="hljs-type">OutputStream</span> <span class="hljs-variable">out</span> <span class="hljs-operator">=</span> Files.newOutputStream(targetPath);<br>&#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>    <span class="hljs-comment">// 处理异常</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>在文件上传下载中扮演的角色</strong>:</p>
+<li>
+<p><strong>在文件上传下载中扮演的角色</strong>:</p>
 <ul>
-<li><strong>上传</strong>:<ul>
+<li><strong>上传</strong>:
+<ul>
 <li><strong>创建上传目录</strong>: <code>Files.createDirectories(uploadDirPath)</code> 确保上传目录存在。</li>
 <li><strong>保存文件内容</strong>: 如果不使用 <code>MultipartFile.transferTo()</code>, 可以通过 <code>multipartFile.getInputStream()</code> 获取输入流，然后使用 <code>Files.copy(inputStream, destinationPath)</code> 将文件内容写入到目标 <code>Path</code>。这是更底层的控制方式。</li>
 </ul>
 </li>
-<li><strong>下载</strong>:<ul>
+<li><strong>下载</strong>:
+<ul>
 <li><strong>检查文件是否存在和可读性</strong>: <code>Files.exists(filePath)</code> 和 <code>Files.isReadable(filePath)</code>。</li>
 <li><strong>获取文件大小</strong>: <code>Files.size(filePath)</code>，用于设置 <code>Content-Length</code> 头部。</li>
 <li><strong>获取文件MIME类型</strong>: <code>Files.probeContentType(filePath)</code> (不一定总是准确，依赖系统配置)。</li>
@@ -469,16 +507,20 @@
 </li>
 </ul>
 <hr>
-<h3 id="6-org-springframework-core-io-Resource-Spring-核心接口"><a href="#6-org-springframework-core-io-Resource-Spring-核心接口" class="headerlink" title="6. org.springframework.core.io.Resource (Spring 核心接口)"></a>6. <code>org.springframework.core.io.Resource</code> (Spring 核心接口)</h3><ul>
-<li><p><strong>作用</strong>:</p>
+<h3 id="6-org-springframework-core-io-Resource-Spring-核心接口">6. <code>org.springframework.core.io.Resource</code> (Spring 核心接口)</h3>
+<ul>
+<li>
+<p><strong>作用</strong>:</p>
 <ul>
 <li>Spring 框架中用于<strong>抽象各种底层资源访问</strong>的通用接口（如文件系统文件、类路径资源、URL 资源、字节数组等）。</li>
 <li>它提供了一套统一的 API 来处理不同来源的资源，使得应用程序代码可以<strong>与具体的资源类型解耦</strong>。</li>
 </ul>
 </li>
-<li><p><strong>如何使用</strong>:</p>
+<li>
+<p><strong>如何使用</strong>:</p>
 <ul>
-<li>你通常不会直接实例化 <code>Resource</code> 接口本身，而是使用它的具体实现类：<ul>
+<li>你通常不会直接实例化 <code>Resource</code> 接口本身，而是使用它的具体实现类：
+<ul>
 <li><code>FileSystemResource</code>: 访问文件系统中的文件 (<code>new FileSystemResource(&quot;/path/to/file.txt&quot;)</code> 或 <code>new FileSystemResource(Path)</code> 或 <code>new FileSystemResource(File)</code>)。</li>
 <li><code>ClassPathResource</code>: 访问类路径下的资源 (<code>new ClassPathResource(&quot;config/myconfig.xml&quot;)</code>)。</li>
 <li><code>UrlResource</code>: 访问URL指向的资源 (<code>new UrlResource(&quot;http://example.com/file.zip&quot;)</code> 或 <code>new UrlResource(Path.toUri())</code>)。</li>
@@ -486,16 +528,19 @@
 <li><code>ByteArrayResource</code>: 包装一个字节数组 (<code>new ByteArrayResource(myByteArray)</code>).</li>
 </ul>
 </li>
-<li>Spring MVC的Controller方法可以返回 <code>ResponseEntity&lt;Resource&gt;</code> 来实现文件下载。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/download/&#123;filename:.+&#125;&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;Resource&gt; <span class="hljs-title function_">downloadFile</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> String filename)</span> &#123;<br>    <span class="hljs-type">Path</span> <span class="hljs-variable">filePath</span> <span class="hljs-operator">=</span> Paths.get(downloadDir).resolve(filename).normalize();<br>    Resource resource;<br>    <span class="hljs-keyword">try</span> &#123;<br>        resource = <span class="hljs-keyword">new</span> <span class="hljs-title class_">UrlResource</span>(filePath.toUri()); <span class="hljs-comment">// 或者 FileSystemResource</span><br>    &#125; <span class="hljs-keyword">catch</span> (MalformedURLException e) &#123;<br>        <span class="hljs-keyword">return</span> ResponseEntity.badRequest().build();<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (resource.exists() &amp;&amp; resource.isReadable()) &#123;<br>        <span class="hljs-type">HttpHeaders</span> <span class="hljs-variable">headers</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>();<br>        headers.add(HttpHeaders.CONTENT_DISPOSITION, <span class="hljs-string">&quot;attachment; filename=\&quot;&quot;</span> + resource.getFilename() + <span class="hljs-string">&quot;\&quot;&quot;</span>);<br>        <span class="hljs-keyword">return</span> ResponseEntity.ok()<br>                .headers(headers)<br>                .contentType(MediaType.APPLICATION_OCTET_STREAM) <span class="hljs-comment">// 或者更具体的MIME类型</span><br>                .body(resource);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">return</span> ResponseEntity.notFound().build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>Spring MVC的Controller方法可以返回 <code>ResponseEntity&lt;Resource&gt;</code> 来实现文件下载。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/download/&#123;filename:.+&#125;&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;Resource&gt; <span class="hljs-title function_">downloadFile</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> String filename)</span> &#123;<br>    <span class="hljs-type">Path</span> <span class="hljs-variable">filePath</span> <span class="hljs-operator">=</span> Paths.get(downloadDir).resolve(filename).normalize();<br>    Resource resource;<br>    <span class="hljs-keyword">try</span> &#123;<br>        resource = <span class="hljs-keyword">new</span> <span class="hljs-title class_">UrlResource</span>(filePath.toUri()); <span class="hljs-comment">// 或者 FileSystemResource</span><br>    &#125; <span class="hljs-keyword">catch</span> (MalformedURLException e) &#123;<br>        <span class="hljs-keyword">return</span> ResponseEntity.badRequest().build();<br>    &#125;<br><br>    <span class="hljs-keyword">if</span> (resource.exists() &amp;&amp; resource.isReadable()) &#123;<br>        <span class="hljs-type">HttpHeaders</span> <span class="hljs-variable">headers</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>();<br>        headers.add(HttpHeaders.CONTENT_DISPOSITION, <span class="hljs-string">&quot;attachment; filename=\&quot;&quot;</span> + resource.getFilename() + <span class="hljs-string">&quot;\&quot;&quot;</span>);<br>        <span class="hljs-keyword">return</span> ResponseEntity.ok()<br>                .headers(headers)<br>                .contentType(MediaType.APPLICATION_OCTET_STREAM) <span class="hljs-comment">// 或者更具体的MIME类型</span><br>                .body(resource);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">return</span> ResponseEntity.notFound().build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>在文件上传下载中扮演的角色</strong>:</p>
+<li>
+<p><strong>在文件上传下载中扮演的角色</strong>:</p>
 <ul>
 <li><strong>上传</strong>: <strong>不直接参与</strong>。<code>Resource</code> 主要用于读取或表示已存在的资源。</li>
 <li><strong>下载</strong>: <strong>核心角色</strong>。当服务器需要向客户端发送文件时，通常会将文件（无论其来源）包装成一个 <code>Resource</code> 对象。Spring MVC能够高效地将 <code>Resource</code> 的内容流式传输到 HTTP 响应体中，从而实现文件下载。</li>
 </ul>
 </li>
-<li><p><strong>关键方法</strong>:</p>
+<li>
+<p><strong>关键方法</strong>:</p>
 <ul>
 <li><code>boolean exists()</code>: 检查资源是否存在。</li>
 <li><code>boolean isReadable()</code>: 资源是否可读。</li>
@@ -511,21 +556,24 @@
 </li>
 </ul>
 <hr>
-<h3 id="它们之间的关系-在文件上传下载场景中"><a href="#它们之间的关系-在文件上传下载场景中" class="headerlink" title="它们之间的关系 (在文件上传下载场景中)"></a>它们之间的关系 (在文件上传下载场景中)</h3><p><strong>文件上传流程</strong>:</p>
+<h3 id="它们之间的关系-在文件上传下载场景中">它们之间的关系 (在文件上传下载场景中)</h3>
+<p><strong>文件上传流程</strong>:</p>
 <ol>
 <li>客户端发起 <code>multipart/form-data</code> 请求，包含文件数据。</li>
 <li>Spring MVC接收请求，将文件数据封装成一个或多个 <strong><code>MultipartFile</code></strong> 对象。</li>
 <li>在Controller中，你拿到 <code>MultipartFile</code> 对象。</li>
 <li>你需要决定文件存储在服务器的哪个位置。使用 <strong><code>Paths.get()</code></strong> (来自 <code>java.nio.file.Paths</code>) 来构建一个目标 <strong><code>Path</code></strong> 对象，表示服务器上的目标文件路径 (例如: <code>Path targetPath = Paths.get(uploadDir, uniqueFileName);</code>)。</li>
 <li>(可选) 使用 <strong><code>java.nio.file.Files.createDirectories(targetPath.getParent())</code></strong> 来确保目标目录存在。</li>
-<li>使用 <code>multipartFile.transferTo(targetPath)</code> (推荐) 或 <code>multipartFile.transferTo(targetPath.toFile())</code> (使用旧的 <code>java.io.File</code>) 将文件内容保存到该 <code>Path</code>。<br>或者，你也可以通过 <code>multipartFile.getInputStream()</code> 获取输入流，然后使用 <strong><code>java.nio.file.Files.copy(inputStream, targetPath)</code></strong> 手动复制。</li>
+<li>使用 <code>multipartFile.transferTo(targetPath)</code> (推荐) 或 <code>multipartFile.transferTo(targetPath.toFile())</code> (使用旧的 <code>java.io.File</code>) 将文件内容保存到该 <code>Path</code>。<br>
+或者，你也可以通过 <code>multipartFile.getInputStream()</code> 获取输入流，然后使用 <strong><code>java.nio.file.Files.copy(inputStream, targetPath)</code></strong> 手动复制。</li>
 </ol>
 <p><strong>文件下载流程</strong>:</p>
 <ol>
 <li>客户端请求下载某个文件 (通常通过文件名或 ID)。</li>
 <li>服务器根据请求确定待下载文件在服务器上的位置。使用 <strong><code>Paths.get()</code></strong> (来自 <code>java.nio.file.Paths</code>) 来构建一个源文件的 <strong><code>Path</code></strong> 对象 (例如: <code>Path sourcePath = Paths.get(downloadDir, requestedFileName);</code>)。</li>
 <li>(可选) 使用 <strong><code>java.nio.file.Files.exists(sourcePath)</code></strong> 和 <strong><code>java.nio.file.Files.isReadable(sourcePath)</code></strong> 检查文件是否存在且可读。</li>
-<li>将这个 <code>Path</code> 对象（或其对应的 <code>java.io.File</code> 对象，或其URI）包装成一个Spring的 <strong><code>Resource</code></strong> 对象。最常用的是:<ul>
+<li>将这个 <code>Path</code> 对象（或其对应的 <code>java.io.File</code> 对象，或其URI）包装成一个Spring的 <strong><code>Resource</code></strong> 对象。最常用的是:
+<ul>
 <li><code>Resource resource = new FileSystemResource(sourcePath);</code> (如果 <code>sourcePath</code> 是本地文件系统路径)</li>
 <li><code>Resource resource = new UrlResource(sourcePath.toUri());</code> (通用，推荐)</li>
 </ul>
@@ -537,7 +585,7 @@
 <li><strong><code>MultipartFile</code></strong>: 是上传过程的起点，代表了从客户端接收到的文件数据。</li>
 <li><strong><code>Path</code> 和 <code>Paths</code></strong>: 是Java NIO中处理文件系统路径的现代方式。用于精确表示服务器上的文件位置（无论是上传的目标还是下载的源）。<code>Paths</code> 是创建 <code>Path</code> 的工厂。</li>
 <li><strong><code>File</code></strong>: 是Java旧IO中处理文件系统路径的方式。功能上与 <code>Path</code> 类似，但 API 较老。可以与 <code>Path</code> 互相转换 (<code>file.toPath()</code>, <code>path.toFile()</code>)。</li>
-<li><strong><code>Files</code></strong>: 是Java NIO中操作文件和目录的工具类，与 <code>Path</code> 配合使用，执行如复制、删除、创建目录等实际 I&#x2F;O 操作。</li>
+<li><strong><code>Files</code></strong>: 是Java NIO中操作文件和目录的工具类，与 <code>Path</code> 配合使用，执行如复制、删除、创建目录等实际 I/O 操作。</li>
 <li><strong><code>Resource</code></strong>: 是 Spring 对各种资源（包括文件）的抽象，是下载过程的终点（从服务器角度看），Spring MVC 用它来将文件内容发送给客户端。</li>
 </ul>
 <p>简而言之：</p>
@@ -545,128 +593,162 @@
 <li><strong>上传</strong>: <code>Client</code> -&gt; <code>HTTP Request (multipart)</code> -&gt; <code>Spring (MultipartFile)</code> -&gt; <code>Your Code (Paths/Path + Files/File)</code> -&gt; <code>Server Disk</code></li>
 <li><strong>下载</strong>: <code>Client</code> -&gt; <code>HTTP Request (download)</code> -&gt; <code>Your Code (Paths/Path + Files/File)</code> -&gt; <code>Spring (Resource)</code> -&gt; <code>HTTP Response</code> -&gt; <code>Client</code></li>
 </ul>
-<h2 id="完整、健壮"><a href="#完整、健壮" class="headerlink" title="完整、健壮"></a>完整、健壮</h2><p>你已经掌握了最核心的一批！上面讨论的六个（<code>MultipartFile</code>, <code>Path</code>, <code>Paths</code>, <code>File</code>, <code>Files</code>, <code>Resource</code>）确实是日常 Spring Boot 文件上传下载开发中最常直接打交道的。</p>
+<h2 id="完整、健壮">完整、健壮</h2>
+<p>你已经掌握了最核心的一批！上面讨论的六个（<code>MultipartFile</code>, <code>Path</code>, <code>Paths</code>, <code>File</code>, <code>Files</code>, <code>Resource</code>）确实是日常 Spring Boot 文件上传下载开发中最常直接打交道的。</p>
 <p>不过，如果我们把“核心”的范围稍微扩大一点，考虑到它们背后的机制、辅助工具以及更全面的 HTTP 交互，还有一些值得了解的接口和类：</p>
-<h3 id="1-org-springframework-web-multipart-MultipartResolver-Spring-MVC-接口"><a href="#1-org-springframework-web-multipart-MultipartResolver-Spring-MVC-接口" class="headerlink" title="1. org.springframework.web.multipart.MultipartResolver (Spring MVC 接口)"></a>1. <code>org.springframework.web.multipart.MultipartResolver</code> (Spring MVC 接口)</h3><ul>
-<li><strong>作用</strong>:<ul>
+<h3 id="1-org-springframework-web-multipart-MultipartResolver-Spring-MVC-接口">1. <code>org.springframework.web.multipart.MultipartResolver</code> (Spring MVC 接口)</h3>
+<ul>
+<li><strong>作用</strong>:
+<ul>
 <li>这是Spring MVC用于<strong>解析 <code>multipart/form-data</code> 请求的策略接口</strong>。当一个包含文件上传的请求到达时，<code>DispatcherServlet</code> 会使用注册的 <code>MultipartResolver</code> 来处理这个请求，将其中的文件部分和其他表单数据提取出来。</li>
 <li>Spring Boot 会自动配置一个 <code>StandardServletMultipartResolver</code> (如果Servlet容器支持Servlet 3.0+的multipart处理) 或 <code>CommonsMultipartResolver</code> (如果 Apache Commons FileUpload 在类路径上且未检测到 Servlet 3.0+支持，但前者更常见和推荐)。</li>
 </ul>
 </li>
-<li><strong>如何使用</strong>:<ul>
+<li><strong>如何使用</strong>:
+<ul>
 <li>你通常<strong>不需要直接使用</strong>它。Spring Boot 的自动配置会为你处理好。</li>
 <li>了解它的存在有助于理解 <code>MultipartFile</code> 是如何产生的。</li>
 <li>如果你需要非常细致地自定义multipart处理行为（例如，自定义临时文件存储、编码等，超出了 <code>application.properties</code> 提供的范围），你可能会提供自己的 <code>MultipartResolver</code> bean。</li>
 </ul>
 </li>
-<li><strong>在文件上传下载中扮演的角色</strong>:<ul>
+<li><strong>在文件上传下载中扮演的角色</strong>:
+<ul>
 <li><strong>上传</strong>: <strong>幕后英雄</strong>。它是Spring MVC能够识别和处理文件上传请求，并最终将数据包装成 <code>MultipartFile</code> 对象的关键组件。</li>
 <li><strong>下载</strong>: 不直接参与。</li>
 </ul>
 </li>
 </ul>
-<h3 id="2-org-springframework-http-ResponseEntity-Spring-MVC-类"><a href="#2-org-springframework-http-ResponseEntity-Spring-MVC-类" class="headerlink" title="2. org.springframework.http.ResponseEntity&lt;T&gt; (Spring MVC 类)"></a>2. <code>org.springframework.http.ResponseEntity&lt;T&gt;</code> (Spring MVC 类)</h3><ul>
-<li><strong>作用</strong>:<ul>
+<h3 id="2-org-springframework-http-ResponseEntity-T-Spring-MVC-类">2. <code>org.springframework.http.ResponseEntity&lt;T&gt;</code> (Spring MVC 类)</h3>
+<ul>
+<li><strong>作用</strong>:
+<ul>
 <li>代表整个HTTP响应：状态码、头部和响应体。我们之前在下载示例中用过 <code>ResponseEntity&lt;Resource&gt;</code>。</li>
 <li>它提供了对 HTTP 响应的完全控制。</li>
 </ul>
 </li>
-<li><strong>如何使用</strong>:<ul>
-<li>在 Controller 方法中返回它。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/some-data&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;String&gt; <span class="hljs-title function_">getData</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">HttpHeaders</span> <span class="hljs-variable">headers</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>();<br>    headers.add(<span class="hljs-string">&quot;Custom-Header&quot;</span>, <span class="hljs-string">&quot;value&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseEntity</span>&lt;&gt;(<span class="hljs-string">&quot;Response Body&quot;</span>, headers, HttpStatus.OK);<br>&#125;<br><span class="hljs-comment">// 对于文件下载:</span><br><span class="hljs-comment">// return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(resource);</span><br></code></pre></td></tr></table></figure></li>
+<li><strong>如何使用</strong>:
+<ul>
+<li>在 Controller 方法中返回它。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/some-data&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;String&gt; <span class="hljs-title function_">getData</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">HttpHeaders</span> <span class="hljs-variable">headers</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>();<br>    headers.add(<span class="hljs-string">&quot;Custom-Header&quot;</span>, <span class="hljs-string">&quot;value&quot;</span>);<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseEntity</span>&lt;&gt;(<span class="hljs-string">&quot;Response Body&quot;</span>, headers, HttpStatus.OK);<br>&#125;<br><span class="hljs-comment">// 对于文件下载:</span><br><span class="hljs-comment">// return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(resource);</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><strong>在文件上传下载中扮演的角色</strong>:<ul>
+<li><strong>在文件上传下载中扮演的角色</strong>:
+<ul>
 <li><strong>上传</strong>: 可以用来返回上传操作的结果状态和信息，例如 <code>ResponseEntity.ok(&quot;上传成功&quot;)</code> 或 <code>ResponseEntity.status(HttpStatus.BAD_REQUEST).body(&quot;文件过大&quot;)</code>。</li>
 <li><strong>下载</strong>: <strong>核心角色</strong>。用于构建包含文件内容 (<code>Resource</code>)、<code>Content-Disposition</code> 头部、<code>Content-Type</code> 头部等的 HTTP 响应，从而触发浏览器下载。</li>
 </ul>
 </li>
 </ul>
-<h3 id="3-org-springframework-http-HttpHeaders-Spring-HTTP-类"><a href="#3-org-springframework-http-HttpHeaders-Spring-HTTP-类" class="headerlink" title="3. org.springframework.http.HttpHeaders (Spring HTTP 类)"></a>3. <code>org.springframework.http.HttpHeaders</code> (Spring HTTP 类)</h3><ul>
-<li><strong>作用</strong>:<ul>
+<h3 id="3-org-springframework-http-HttpHeaders-Spring-HTTP-类">3. <code>org.springframework.http.HttpHeaders</code> (Spring HTTP 类)</h3>
+<ul>
+<li><strong>作用</strong>:
+<ul>
 <li>表示 HTTP 请求或响应的头部。提供了方便的方法来添加、设置和获取常见的 HTTP 头部。</li>
 </ul>
 </li>
-<li><strong>如何使用</strong>:<ul>
-<li>在构建 <code>ResponseEntity</code> 时使用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">HttpHeaders</span> <span class="hljs-variable">headers</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>();<br>headers.setContentType(MediaType.APPLICATION_JSON);<br>headers.setContentDisposition(ContentDisposition.attachment().filename(<span class="hljs-string">&quot;data.json&quot;</span>).build());<br>headers.setCacheControl(<span class="hljs-string">&quot;no-cache, no-store, must-revalidate&quot;</span>);<br></code></pre></td></tr></table></figure></li>
+<li><strong>如何使用</strong>:
+<ul>
+<li>在构建 <code>ResponseEntity</code> 时使用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">HttpHeaders</span> <span class="hljs-variable">headers</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>();<br>headers.setContentType(MediaType.APPLICATION_JSON);<br>headers.setContentDisposition(ContentDisposition.attachment().filename(<span class="hljs-string">&quot;data.json&quot;</span>).build());<br>headers.setCacheControl(<span class="hljs-string">&quot;no-cache, no-store, must-revalidate&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><strong>在文件上传下载中扮演的角色</strong>:<ul>
+<li><strong>在文件上传下载中扮演的角色</strong>:
+<ul>
 <li><strong>上传</strong>: 服务器端可以检查请求中的 <code>HttpHeaders</code> (例如 <code>Content-Type</code> 是否为 <code>multipart/form-data</code>)，但通常由 Spring 框架处理。</li>
 <li><strong>下载</strong>: <strong>至关重要</strong>。用于设置 <code>Content-Disposition</code> (触发下载并指定文件名)、<code>Content-Type</code> (文件MIME类型)、<code>Content-Length</code> (文件大小)等。</li>
 </ul>
 </li>
 </ul>
-<h3 id="4-org-springframework-http-MediaType-Spring-HTTP-类"><a href="#4-org-springframework-http-MediaType-Spring-HTTP-类" class="headerlink" title="4. org.springframework.http.MediaType (Spring HTTP 类)"></a>4. <code>org.springframework.http.MediaType</code> (Spring HTTP 类)</h3><ul>
-<li><strong>作用</strong>:<ul>
+<h3 id="4-org-springframework-http-MediaType-Spring-HTTP-类">4. <code>org.springframework.http.MediaType</code> (Spring HTTP 类)</h3>
+<ul>
+<li><strong>作用</strong>:
+<ul>
 <li>封装了HTTP的MIME类型 (例如 <code>application/json</code>, <code>text/plain</code>, <code>image/jpeg</code>, <code>application/octet-stream</code>)。</li>
 <li>提供了许多预定义的常量，并允许解析和创建自定义 MIME 类型。</li>
 </ul>
 </li>
-<li><strong>如何使用</strong>:<ul>
-<li>在设置 <code>HttpHeaders</code> 的 <code>Content-Type</code> 时使用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">headers.setContentType(MediaType.APPLICATION_PDF);<br><span class="hljs-type">String</span> <span class="hljs-variable">contentType</span> <span class="hljs-operator">=</span> MediaType.APPLICATION_OCTET_STREAM_VALUE; <span class="hljs-comment">// &quot;application/octet-stream&quot;</span><br></code></pre></td></tr></table></figure></li>
+<li><strong>如何使用</strong>:
+<ul>
+<li>在设置 <code>HttpHeaders</code> 的 <code>Content-Type</code> 时使用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">headers.setContentType(MediaType.APPLICATION_PDF);<br><span class="hljs-type">String</span> <span class="hljs-variable">contentType</span> <span class="hljs-operator">=</span> MediaType.APPLICATION_OCTET_STREAM_VALUE; <span class="hljs-comment">// &quot;application/octet-stream&quot;</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><strong>在文件上传下载中扮演的角色</strong>:<ul>
+<li><strong>在文件上传下载中扮演的角色</strong>:
+<ul>
 <li><strong>上传</strong>: <code>MultipartFile.getContentType()</code> 返回的就是一个表示上传文件MIME类型的字符串，你可以用 <code>MediaType.parseMediaType()</code> 来解析它。</li>
 <li><strong>下载</strong>: 用于在 <code>HttpHeaders</code> 中设置响应的 <code>Content-Type</code>，告知浏览器如何处理返回的数据。</li>
 </ul>
 </li>
 </ul>
-<h3 id="5-org-springframework-http-ContentDisposition-Spring-HTTP-类-Spring-5-0"><a href="#5-org-springframework-http-ContentDisposition-Spring-HTTP-类-Spring-5-0" class="headerlink" title="5. org.springframework.http.ContentDisposition (Spring HTTP 类, Spring 5.0+)"></a>5. <code>org.springframework.http.ContentDisposition</code> (Spring HTTP 类, Spring 5.0+)</h3><ul>
-<li><strong>作用</strong>:<ul>
+<h3 id="5-org-springframework-http-ContentDisposition-Spring-HTTP-类-Spring-5-0">5. <code>org.springframework.http.ContentDisposition</code> (Spring HTTP 类, Spring 5.0+)</h3>
+<ul>
+<li><strong>作用</strong>:
+<ul>
 <li>一个构建器类，用于创建符合RFC 6266标准的 <code>Content-Disposition</code> HTTP 响应头。</li>
 <li>它能正确处理文件名中的特殊字符和编码问题（例如，非 ASCII 字符的文件名）。</li>
 </ul>
 </li>
-<li><strong>如何使用</strong>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ContentDisposition</span> <span class="hljs-variable">contentDisposition</span> <span class="hljs-operator">=</span> ContentDisposition.attachment()<br>                                            .filename(<span class="hljs-string">&quot;你好世界.txt&quot;</span>, StandardCharsets.UTF_8) <span class="hljs-comment">// 正确处理中文名</span><br>                                            .build();<br>headers.setContentDisposition(contentDisposition);<br></code></pre></td></tr></table></figure></li>
-<li><strong>在文件上传下载中扮演的角色</strong>:<ul>
+<li><strong>如何使用</strong>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ContentDisposition</span> <span class="hljs-variable">contentDisposition</span> <span class="hljs-operator">=</span> ContentDisposition.attachment()<br>                                            .filename(<span class="hljs-string">&quot;你好世界.txt&quot;</span>, StandardCharsets.UTF_8) <span class="hljs-comment">// 正确处理中文名</span><br>                                            .build();<br>headers.setContentDisposition(contentDisposition);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>在文件上传下载中扮演的角色</strong>:
+<ul>
 <li><strong>下载</strong>: <strong>强烈推荐使用</strong>，用于生成 <code>Content-Disposition</code> 头部，以确保跨浏览器和操作系统的文件名兼容性。</li>
 </ul>
 </li>
 </ul>
-<h3 id="6-java-io-InputStream-和-java-io-OutputStream-Java-IO-抽象类"><a href="#6-java-io-InputStream-和-java-io-OutputStream-Java-IO-抽象类" class="headerlink" title="6. java.io.InputStream 和 java.io.OutputStream (Java IO 抽象类)"></a>6. <code>java.io.InputStream</code> 和 <code>java.io.OutputStream</code> (Java IO 抽象类)</h3><ul>
-<li><strong>作用</strong>:<ul>
-<li>Java I&#x2F;O 的基础，分别代表字节输入流和字节输出流。它们是处理所有类型数据流（包括文件）的底层抽象。</li>
+<h3 id="6-java-io-InputStream-和-java-io-OutputStream-Java-IO-抽象类">6. <code>java.io.InputStream</code> 和 <code>java.io.OutputStream</code> (Java IO 抽象类)</h3>
+<ul>
+<li><strong>作用</strong>:
+<ul>
+<li>Java I/O 的基础，分别代表字节输入流和字节输出流。它们是处理所有类型数据流（包括文件）的底层抽象。</li>
 </ul>
 </li>
-<li><strong>如何使用</strong>:<ul>
+<li><strong>如何使用</strong>:
+<ul>
 <li><code>MultipartFile.getInputStream()</code>: 获取上传文件的输入流，用于读取其内容。</li>
 <li><code>Resource.getInputStream()</code>: 获取资源（如待下载文件）的输入流。</li>
 <li><code>Files.newInputStream(Path)</code> 和 <code>Files.newOutputStream(Path)</code>: 创建用于读写NIO <code>Path</code> 的流。</li>
-<li>在需要手动、低级别控制数据流时使用，例如进行加密&#x2F;解密、压缩&#x2F;解压缩等操作。</li>
+<li>在需要手动、低级别控制数据流时使用，例如进行加密/解密、压缩/解压缩等操作。</li>
 </ul>
 </li>
-<li><strong>在文件上传下载中扮演的角色</strong>:<ul>
+<li><strong>在文件上传下载中扮演的角色</strong>:
+<ul>
 <li><strong>上传</strong>: <code>MultipartFile.getInputStream()</code> 提供了访问上传文件内容的途径，可以逐字节或成块读取，避免一次性加载大文件到内存。<code>Files.copy(inputStream, path)</code> 就是一个常见用法。</li>
 <li><strong>下载</strong>: <code>Resource.getInputStream()</code> 是 Spring MVC 将文件内容流式传输到 HTTP 响应的基础。虽然你通常不直接操作这个流来发送响应 (Spring 帮你做了)，但理解它的存在很重要。如果你需要对下载内容进行动态处理（如加水印），你会用到这个流。</li>
 </ul>
 </li>
 </ul>
-<h3 id="7-jakarta-servlet-http-HttpServletRequest-和-jakarta-servlet-http-HttpServletResponse-Jakarta-EE-Servlet-API-接口"><a href="#7-jakarta-servlet-http-HttpServletRequest-和-jakarta-servlet-http-HttpServletResponse-Jakarta-EE-Servlet-API-接口" class="headerlink" title="7. jakarta.servlet.http.HttpServletRequest 和 jakarta.servlet.http.HttpServletResponse (Jakarta EE Servlet API 接口)"></a>7. <code>jakarta.servlet.http.HttpServletRequest</code> 和 <code>jakarta.servlet.http.HttpServletResponse</code> (Jakarta EE Servlet API 接口)</h3><ul>
-<li><strong>作用</strong>:<ul>
+<h3 id="7-jakarta-servlet-http-HttpServletRequest-和-jakarta-servlet-http-HttpServletResponse-Jakarta-EE-Servlet-API-接口">7. <code>jakarta.servlet.http.HttpServletRequest</code> 和 <code>jakarta.servlet.http.HttpServletResponse</code> (Jakarta EE Servlet API 接口)</h3>
+<ul>
+<li><strong>作用</strong>:
+<ul>
 <li>Servlet API 的核心接口，分别代表 HTTP 请求和响应。Spring MVC 构建在其之上。</li>
 </ul>
 </li>
-<li><strong>如何使用</strong>:<ul>
-<li>可以在 Controller 方法中直接注入它们作为参数。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/info&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getInfo</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">userAgent</span> <span class="hljs-operator">=</span> request.getHeader(<span class="hljs-string">&quot;User-Agent&quot;</span>);<br>    <span class="hljs-comment">// response.setContentType(&quot;text/plain&quot;);</span><br>    <span class="hljs-comment">// response.getWriter().println(&quot;Hello from Servlet API&quot;);</span><br>    <span class="hljs-comment">// 对于文件下载，可以直接写到 response.getOutputStream()，但不推荐，用 ResponseEntity&lt;Resource&gt; 更好</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><strong>如何使用</strong>:
+<ul>
+<li>可以在 Controller 方法中直接注入它们作为参数。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/info&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getInfo</span><span class="hljs-params">(HttpServletRequest request, HttpServletResponse response)</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">userAgent</span> <span class="hljs-operator">=</span> request.getHeader(<span class="hljs-string">&quot;User-Agent&quot;</span>);<br>    <span class="hljs-comment">// response.setContentType(&quot;text/plain&quot;);</span><br>    <span class="hljs-comment">// response.getWriter().println(&quot;Hello from Servlet API&quot;);</span><br>    <span class="hljs-comment">// 对于文件下载，可以直接写到 response.getOutputStream()，但不推荐，用 ResponseEntity&lt;Resource&gt; 更好</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 <li><code>request.getServletContext().getMimeType(filePath)</code>: 一个获取文件 MIME 类型的实用方法。</li>
 </ul>
 </li>
-<li><strong>在文件上传下载中扮演的角色</strong>:<ul>
-<li><strong>上传&#x2F;下载</strong>: 它们是HTTP交互的底层表示。虽然Spring MVC提供了更高级的抽象 (<code>MultipartFile</code>, <code>ResponseEntity</code>, <code>Resource</code>)，但了解它们有助于理解整个流程。在某些特殊情况下，或者需要访问 Servlet API 独有的功能时，可能会直接使用。</li>
+<li><strong>在文件上传下载中扮演的角色</strong>:
+<ul>
+<li><strong>上传/下载</strong>: 它们是HTTP交互的底层表示。虽然Spring MVC提供了更高级的抽象 (<code>MultipartFile</code>, <code>ResponseEntity</code>, <code>Resource</code>)，但了解它们有助于理解整个流程。在某些特殊情况下，或者需要访问 Servlet API 独有的功能时，可能会直接使用。</li>
 </ul>
 </li>
 </ul>
-<h3 id="关系和重要性"><a href="#关系和重要性" class="headerlink" title="关系和重要性"></a>关系和重要性</h3><ul>
+<h3 id="关系和重要性">关系和重要性</h3>
+<ul>
 <li><strong><code>MultipartResolver</code></strong> 是 Spring MVC 处理上传的起点。</li>
 <li><strong><code>MultipartFile</code></strong> (已讨论) 是上传文件的服务器端表示。</li>
 <li><strong><code>Path</code>, <code>Paths</code>, <code>File</code>, <code>Files</code></strong> (已讨论) 是处理服务器本地文件系统的核心 Java API。</li>
-<li><strong><code>InputStream</code> &#x2F; <code>OutputStream</code></strong> 是数据流的底层抽象，连接了 <code>MultipartFile</code> &#x2F; <code>Resource</code> 与文件系统操作。</li>
+<li><strong><code>InputStream</code> / <code>OutputStream</code></strong> 是数据流的底层抽象，连接了 <code>MultipartFile</code> / <code>Resource</code> 与文件系统操作。</li>
 <li><strong><code>Resource</code></strong> (已讨论) 是 Spring 对各种可读资源的抽象，是下载时提供给 Spring MVC 的对象。</li>
 <li><strong><code>ResponseEntity</code></strong>, <strong><code>HttpHeaders</code></strong>, <strong><code>MediaType</code></strong>, <strong><code>ContentDisposition</code></strong> 是构建健壮、标准 HTTP 下载响应的关键组件。</li>
-<li><strong>Servlet API (<code>HttpServletRequest</code> &#x2F; <code>Response</code>)</strong> 是 Spring MVC 的基础，虽然不常直接操作，但其概念贯穿始终。</li>
+<li><strong>Servlet API (<code>HttpServletRequest</code> / <code>Response</code>)</strong> 是 Spring MVC 的基础，虽然不常直接操作，但其概念贯穿始终。</li>
 </ul>
-<p>总的来说，你之前提出的六个确实是日常编码中最直接接触的。而这一批，特别是 <code>ResponseEntity</code>, <code>HttpHeaders</code>, <code>MediaType</code>, <code>ContentDisposition</code>，以及 <code>InputStream</code> &#x2F; <code>OutputStream</code> 的概念，对于构建完整、健壮的文件下载功能，和理解上传的某些方面（如流式处理）也非常重要。<code>MultipartResolver</code> 则是理解 Spring 如何启动 multipart 处理的关键。</p>
+<p>总的来说，你之前提出的六个确实是日常编码中最直接接触的。而这一批，特别是 <code>ResponseEntity</code>, <code>HttpHeaders</code>, <code>MediaType</code>, <code>ContentDisposition</code>，以及 <code>InputStream</code> / <code>OutputStream</code> 的概念，对于构建完整、健壮的文件下载功能，和理解上传的某些方面（如流式处理）也非常重要。<code>MultipartResolver</code> 则是理解 Spring 如何启动 multipart 处理的关键。</p>
 <p>记住，Spring Boot 的强大之处在于它为你自动配置和简化了很多底层细节，但了解这些核心组件能让你在遇到更复杂的需求或问题时，更有底气去解决。</p>
 
                 

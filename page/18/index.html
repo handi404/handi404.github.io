@@ -245,7 +245,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/final/" target="_self">
         <div>
-          在Spring Boot项目中，final关键字同样沿用了Java的原有语义，但在实际开发中，它有一些特别的应用场景和注意事项。下面从多个角度详细说明final在Spring Boot中的各种使用：  1. 构造器注入中的不可变依赖背景在Spring Boot中，依赖注入是核心机制之一。采用构造器注入时，将依赖声明为final既表达了“依赖一经注入便不应改变”的设计理念，也有助于编译器检查依赖是否
+          在Spring Boot项目中，final关键字同样沿用了Java的原有语义，但在实际开发中，它有一些特别的应用场景和注意事项。下面从多个角度详细说明final在Spring Boot中的各种使用：  1. 构造器注入中的不可变依赖 背景 在Spring Boot中，依赖注入是核心机制之一。采用构造器注入时，将依赖声明为final既表达了“依赖一经注入便不应改变”的设计理念，也有助于编译器检查依赖
         </div>
       </a>
 
@@ -278,7 +278,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Dependency%20Injection%20%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5/" target="_self">
         <div>
-          用「点外卖」的例子帮助理解依赖注入，尽量让概念生活化。跟着我的节奏一步步来： ⛳️ 情景设定：假设你开了一家奶茶店，需要处理订单👉 传统方式：你自己种茶叶、养奶牛、送外卖 → 耦合度高👉 依赖注入：美团帮你联系茶园、奶厂、骑手 → 你只需专注做奶茶 一、依赖注入的三大要素1️⃣ 控制反转（IoC）：把找原料的工作交给美团（容器）2️⃣ 依赖：奶茶店需要牛奶供应（MilkService）3️⃣
+          用「点外卖」的例子帮助理解依赖注入，尽量让概念生活化。跟着我的节奏一步步来： ⛳️ 情景设定：假设你开了一家奶茶店，需要处理订单 👉 传统方式：你自己种茶叶、养奶牛、送外卖 → 耦合度高 👉 依赖注入：美团帮你联系茶园、奶厂、骑手 → 你只需专注做奶茶 一、依赖注入的三大要素 1️⃣ 控制反转（IoC）：把找原料的工作交给美团（容器） 2️⃣ 依赖：奶茶店需要牛奶供应（MilkService）
         </div>
       </a>
 
@@ -311,7 +311,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/CORS%20%E9%85%8D%E7%BD%AE/" target="_self">
         <div>
-          CORS（跨域资源共享，Cross-Origin Resource Sharing）是一种浏览器安全机制，用于解决浏览器“同源策略”带来的跨域访问限制。在 Spring Boot 项目中，配置 CORS 主要是为了解决前后端分离架构中，由于前端和后端部署在不同域名或端口上而产生的跨域请求问题。  为什么需要配置 CORS？同源策略的限制浏览器的同源策略要求：  协议、域名、端口必须完全一致，否则就
+          CORS（跨域资源共享，Cross-Origin Resource Sharing）是一种浏览器安全机制，用于解决浏览器“同源策略”带来的跨域访问限制。在 Spring Boot 项目中，配置 CORS 主要是为了解决前后端分离架构中，由于前端和后端部署在不同域名或端口上而产生的跨域请求问题。  为什么需要配置 CORS？ 同源策略的限制 浏览器的同源策略要求：  协议、域名、端口必须完全一致，否
         </div>
       </a>
 
@@ -410,7 +410,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/%E6%9C%AA%E5%91%BD%E5%90%8D/" target="_self">
         <div>
-          Prompt 和 PromptTemplate 深入讲解一、Prompt 核心概念1.1 Prompt 的本质Prompt 是 Spring AI 中代表完整AI请求的核心数据结构。它不仅包含用户的输入文本，还包含了控制AI行为的各种参数和上下文信息。 12345678910public class Prompt &#123;    private final List&lt;Message&gt
+          Prompt 和 PromptTemplate 深入讲解 一、Prompt 核心概念 1.1 Prompt 的本质 Prompt 是 Spring AI 中代表完整AI请求的核心数据结构。它不仅包含用户的输入文本，还包含了控制AI行为的各种参数和上下文信息。 12345678910public class Prompt &#123;    private final List&lt;Message
         </div>
       </a>
 
@@ -443,7 +443,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Prompt%E3%80%81Role%20%E5%92%8C%20Message/" target="_self">
         <div>
-          Spring AI 中的 Prompt、Role 和 Message 体系详解核心概念关系图123456789Prompt (提示词容器)├── Messages (消息列表)│   ├── SystemMessage (系统角色消息)│   ├── UserMessage (用户角色消息) │   ├── AssistantMessage (助手角色消息)│   └── ToolResponse
+          Spring AI 中的 Prompt、Role 和 Message 体系详解 核心概念关系图 123456789Prompt (提示词容器)├── Messages (消息列表)│   ├── SystemMessage (系统角色消息)│   ├── UserMessage (用户角色消息) │   ├── AssistantMessage (助手角色消息)│   └── ToolRespon
         </div>
       </a>
 
@@ -476,7 +476,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Prompt%20%E4%B8%8E%20PromptTemplate/" target="_self">
         <div>
-          一、Prompt (提示) 是什么？  Prompt 在 Spring AI 中是一个对象，它封装了发送给 AI 模型的完整输入。 你可以把它想象成你向 AI 提出的一个具体问题、指令或者一段需要处理的文本。 最简单的 Prompt 就是一个包含你想要发送给模型的字符串。   为什么需要一个对象，而不仅仅是字符串？  结构化：虽然最基本的是文本指令，但一个 Prompt 对象可以携带更多结构化信息
+          一、Prompt (提示)   是什么？  Prompt 在 Spring AI 中是一个对象，它封装了发送给 AI 模型的完整输入。 你可以把它想象成你向 AI 提出的一个具体问题、指令或者一段需要处理的文本。 最简单的 Prompt 就是一个包含你想要发送给模型的字符串。    为什么需要一个对象，而不仅仅是字符串？  结构化：虽然最基本的是文本指令，但一个 Prompt 对象可以携带更多结构
         </div>
       </a>
 

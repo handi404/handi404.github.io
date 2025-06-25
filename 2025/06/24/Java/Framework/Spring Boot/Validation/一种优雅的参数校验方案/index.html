@@ -19,19 +19,19 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="1、前言在平时的开发工作中，我们通常需要对接口进行参数格式验证。当参数个数较少（个数小于3）时，可以使用 if ... else ...手动进行参数验证。当参数个数大于3个时，使用 if ... else ...进行参数验证就会让代码显得臃肿，这个时候推荐使用注解来进行参数验证。 2、常用注解下面列举一些常用的验证注解：  1. @NotNull ：值不能为null； 2. @NotEmpty ：">
+    <meta name="description" content="1、前言 在平时的开发工作中，我们通常需要对接口进行参数格式验证。当参数个数较少（个数小于3）时，可以使用 if ... else ...手动进行参数验证。当参数个数大于3个时，使用 if ... else ...进行参数验证就会让代码显得臃肿，这个时候推荐使用注解来进行参数验证。 2、常用注解 下面列举一些常用的验证注解： 1. @NotNull ：值不能为null； 2. @NotEmpty">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Validation/%E4%B8%80%E7%A7%8D%E4%BC%98%E9%9B%85%E7%9A%84%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C%E6%96%B9%E6%A1%88/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="1、前言在平时的开发工作中，我们通常需要对接口进行参数格式验证。当参数个数较少（个数小于3）时，可以使用 if ... else ...手动进行参数验证。当参数个数大于3个时，使用 if ... else ...进行参数验证就会让代码显得臃肿，这个时候推荐使用注解来进行参数验证。 2、常用注解下面列举一些常用的验证注解：  1. @NotNull ：值不能为null； 2. @NotEmpty ：">
+<meta property="og:description" content="1、前言 在平时的开发工作中，我们通常需要对接口进行参数格式验证。当参数个数较少（个数小于3）时，可以使用 if ... else ...手动进行参数验证。当参数个数大于3个时，使用 if ... else ...进行参数验证就会让代码显得臃肿，这个时候推荐使用注解来进行参数验证。 2、常用注解 下面列举一些常用的验证注解： 1. @NotNull ：值不能为null； 2. @NotEmpty">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ePVkqAnZf6vTdkPaPEJ1uEDEGoQnic25icqdciakTLaEfoz3NibSWqKIxEKnLWZhkUW4G1mLNeVm8kGWSKKCEqbC0w/640?wx_fmt=png&from=appmsg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta property="og:image" content="https://mmbiz.qpic.cn/mmbiz_png/ePVkqAnZf6vTdkPaPEJ1uEDEGoQnic25icqdciakTLaEfoz3NibSWqKIxEKnLWZhkUW4G1mLNeVm8kGWSKKCEqbC0w/640?wx_fmt=png&amp;from=appmsg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1">
 <meta property="article:published_time" content="2025-06-24T13:34:27.345Z">
 <meta property="article:modified_time" content="2025-05-17T14:30:16.720Z">
 <meta property="article:author" content="Han Di">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/ePVkqAnZf6vTdkPaPEJ1uEDEGoQnic25icqdciakTLaEfoz3NibSWqKIxEKnLWZhkUW4G1mLNeVm8kGWSKKCEqbC0w/640?wx_fmt=png&from=appmsg&tp=webp&wxfrom=5&wx_lazy=1">
+<meta name="twitter:image" content="https://mmbiz.qpic.cn/mmbiz_png/ePVkqAnZf6vTdkPaPEJ1uEDEGoQnic25icqdciakTLaEfoz3NibSWqKIxEKnLWZhkUW4G1mLNeVm8kGWSKKCEqbC0w/640?wx_fmt=png&amp;from=appmsg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -302,16 +302,34 @@
             
               <div class="markdown-body">
                 
-                <h2 id="1、前言"><a href="#1、前言" class="headerlink" title="1、前言"></a>1、前言</h2><p>在平时的开发工作中，我们通常需要对接口进行参数格式验证。当参数个数较少（个数小于3）时，可以使用 <code>if ... else ...</code>手动进行参数验证。当参数个数大于3个时，使用 <code>if ... else ...</code>进行参数验证就会让代码显得臃肿，这个时候推荐使用注解来进行参数验证。</p>
-<h2 id="2、常用注解"><a href="#2、常用注解" class="headerlink" title="2、常用注解"></a>2、常用注解</h2><p>下面列举一些常用的验证注解：</p>
-<p> 1. <code>@NotNull</code> ：值不能为null；<br> 2. <code>@NotEmpty</code> ：字符串、集合或数组的值不能为空，即长度大于0；<br> 3. <code>@NotBlank</code> ：字符串的值不能为空白，即不能只包含空格；<br> 4. <code>@Size</code> ：字符串、集合或数组的大小是否在指定范围内；<br> 5. <code>@Min</code> ：数值的最小值；<br> 6. <code>@Max</code> ：数值的最大值；<br> 7. <code>@DecimalMin</code> ：数值的最小值，可以包含小数；<br> 8. <code>@DecimalMax</code> ：数值的最大值，可以包含小数；<br> 9. <code>@Digits</code> ：数值是否符合指定的整数和小数位数；<br> 10. <code>@Pattern</code> ：字符串是否匹配指定的正则表达式；<br> 11. <code>@Email</code> ：字符串是否为有效的电子邮件地址；<br> 12. <code>@AssertTrue</code> ：布尔值是否为true；<br> 13. <code>@AssertFalse</code> ：布尔值是否为false；<br> 14. <code>@Future</code> ：日期是否为将来的日期；<br> 15. <code>@Past</code> ：日期是否为过去的日期；</p>
-<h2 id="3、实现示例"><a href="#3、实现示例" class="headerlink" title="3、实现示例"></a>3、实现示例</h2><h3 id="3-1-创建项目，添加依赖"><a href="#3-1-创建项目，添加依赖" class="headerlink" title="3.1 创建项目，添加依赖"></a>3.1 创建项目，添加依赖</h3><blockquote>
+                <h2 id="1、前言">1、前言</h2>
+<p>在平时的开发工作中，我们通常需要对接口进行参数格式验证。当参数个数较少（个数小于3）时，可以使用 <code>if ... else ...</code>手动进行参数验证。当参数个数大于3个时，使用 <code>if ... else ...</code>进行参数验证就会让代码显得臃肿，这个时候推荐使用注解来进行参数验证。</p>
+<h2 id="2、常用注解">2、常用注解</h2>
+<p>下面列举一些常用的验证注解：</p>
+<p>1. <code>@NotNull</code> ：值不能为null；<br>
+2. <code>@NotEmpty</code> ：字符串、集合或数组的值不能为空，即长度大于0；<br>
+3. <code>@NotBlank</code> ：字符串的值不能为空白，即不能只包含空格；<br>
+4. <code>@Size</code> ：字符串、集合或数组的大小是否在指定范围内；<br>
+5. <code>@Min</code> ：数值的最小值；<br>
+6. <code>@Max</code> ：数值的最大值；<br>
+7. <code>@DecimalMin</code> ：数值的最小值，可以包含小数；<br>
+8. <code>@DecimalMax</code> ：数值的最大值，可以包含小数；<br>
+9. <code>@Digits</code> ：数值是否符合指定的整数和小数位数；<br>
+10. <code>@Pattern</code> ：字符串是否匹配指定的正则表达式；<br>
+11. <code>@Email</code> ：字符串是否为有效的电子邮件地址；<br>
+12. <code>@AssertTrue</code> ：布尔值是否为true；<br>
+13. <code>@AssertFalse</code> ：布尔值是否为false；<br>
+14. <code>@Future</code> ：日期是否为将来的日期；<br>
+15. <code>@Past</code> ：日期是否为过去的日期；</p>
+<h2 id="3、实现示例">3、实现示例</h2>
+<h3 id="3-1-创建项目，添加依赖">3.1 创建项目，添加依赖</h3>
+<blockquote>
 <p>本示例中使用的spring boot 版本为 <code>2.7.7</code> 。</p>
 </blockquote>
 <p>使用 <code>IDEA</code> 创建一个 <code>spring boot</code> 项目。在项目的 <code>pom.xml</code> 文件中添加如下依赖：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-validation<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="3-2-创建示例实体类"><a href="#3-2-创建示例实体类" class="headerlink" title="3.2 创建示例实体类"></a>3.2 创建示例实体类</h3><p>创建一个 <code>User</code> 实体类，在实体类中需要对属性进行如下验证：</p>
+<h3 id="3-2-创建示例实体类">3.2 创建示例实体类</h3>
+<p>创建一个 <code>User</code> 实体类，在实体类中需要对属性进行如下验证：</p>
 <ul>
 <li>• <code>name</code> - 用户姓名，不能为空；</li>
 <li>• <code>password</code> - 密码，不能为空，长度不能小于6；</li>
@@ -320,27 +338,28 @@
 </ul>
 <p><code>User</code> 实体类具体代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> javax.validation.constraints.*;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br><br>    <span class="hljs-meta">@NotBlank(message = &quot;用户姓名不能为空&quot;)</span><br>    <span class="hljs-keyword">private</span> String name;<br><br>    <span class="hljs-meta">@NotBlank(message = &quot;密码不能为空&quot;)</span><br>    <span class="hljs-meta">@Size(min = 6, message = &quot;密码长度不能少于6位&quot;)</span><br>    <span class="hljs-keyword">private</span> String password;<br><br>    <span class="hljs-meta">@Min(value = 0, message = &quot;年龄不能小于0岁&quot;)</span><br>    <span class="hljs-meta">@Max(value = 150, message = &quot;年龄不应超过150岁&quot;)</span><br>    <span class="hljs-keyword">private</span> Integer age;<br><br>    <span class="hljs-meta">@Pattern(regexp = &quot;^((13[0-9])|(15[^4])|(18[0-9])|(17[0-9])|(147))\\d&#123;8&#125;$&quot;, message = &quot;手机号格式不正确&quot;)</span><br>    <span class="hljs-keyword">private</span> String phone;<br><br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="3-3-创建控制器类"><a href="#3-3-创建控制器类" class="headerlink" title="3.3 创建控制器类"></a>3.3 创建控制器类</h3><p>创建一个简单的控制器类，用于演示参数验证功能。</p>
+<h3 id="3-3-创建控制器类">3.3 创建控制器类</h3>
+<p>创建一个简单的控制器类，用于演示参数验证功能。</p>
 <p>控制器代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> cn.ddcherry.springboot.demo.util.R;<br><span class="hljs-keyword">import</span> cn.ddcherry.springboot.demo.entity.User;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.PostMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestBody;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-keyword">import</span> javax.validation.Valid;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/user&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserController</span> &#123;<br><br>    <span class="hljs-meta">@PostMapping(&quot;/save&quot;)</span><br>    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">save</span><span class="hljs-params">(<span class="hljs-meta">@Valid</span> <span class="hljs-meta">@RequestBody</span> User user)</span> &#123;<br>        <span class="hljs-keyword">return</span> R.ok(user);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>我们在参数 <code>user</code> 前添加 <code>@Valid</code> 注解，表示验证该参数。</p>
 <p>其中 <code>R</code> 是封装的一个简易工具类，用于统一返回结果格式。代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> lombok.Data;<br><br><span class="hljs-keyword">import</span> java.io.Serializable;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">R</span>&lt;T&gt; <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> code;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> success;<br>    <span class="hljs-keyword">private</span> T data;<br>    <span class="hljs-keyword">private</span> String msg;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">R</span><span class="hljs-params">(<span class="hljs-type">int</span> code, T data, String msg)</span> &#123;<br>        <span class="hljs-built_in">this</span>.code = code;<br>        <span class="hljs-built_in">this</span>.data = data;<br>        <span class="hljs-built_in">this</span>.msg = msg;<br>        <span class="hljs-built_in">this</span>.success = code == <span class="hljs-number">200</span>;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; R&lt;T&gt; <span class="hljs-title function_">ok</span><span class="hljs-params">(T data)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>&lt;&gt;(<span class="hljs-number">200</span>, data, <span class="hljs-literal">null</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T&gt; R&lt;T&gt; <span class="hljs-title function_">error</span><span class="hljs-params">(String msg)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">R</span>&lt;&gt;(<span class="hljs-number">500</span>, <span class="hljs-literal">null</span>, msg);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="3-4-定义全局异常处理类"><a href="#3-4-定义全局异常处理类" class="headerlink" title="3.4 定义全局异常处理类"></a>3.4 定义全局异常处理类</h3><p>全局异常处理类代码如下：</p>
+<h3 id="3-4-定义全局异常处理类">3.4 定义全局异常处理类</h3>
+<p>全局异常处理类代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> cn.ddcherry.springboot.demo.util.R;<br><span class="hljs-keyword">import</span> org.springframework.validation.BindException;<br><span class="hljs-keyword">import</span> org.springframework.validation.BindingResult;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.ExceptionHandler;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestControllerAdvice;<br><br><span class="hljs-meta">@RestControllerAdvice</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GlobalExceptionHandler</span> &#123;<br><br>    <span class="hljs-meta">@ExceptionHandler(BindException.class)</span><br>    <span class="hljs-keyword">public</span> R <span class="hljs-title function_">handleError</span><span class="hljs-params">(BindException e)</span> &#123;<br>        <span class="hljs-type">BindingResult</span> <span class="hljs-variable">bindingResult</span> <span class="hljs-operator">=</span> e.getBindingResult();<br>        <span class="hljs-keyword">return</span> R.error(bindingResult.getFieldError().getDefaultMessage());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>我们在全局异常处理类中使用 <code>ExceptionHandler</code> 捕获 <code>BindException</code> 异常，获取参数验证异常信息，最后返回统一的异常结果格式。</p>
-<h3 id="3-5-测试"><a href="#3-5-测试" class="headerlink" title="3.5 测试"></a>3.5 测试</h3><p>在接口测试工具中测试接口。</p>
+<h3 id="3-5-测试">3.5 测试</h3>
+<p>在接口测试工具中测试接口。</p>
 <p>以密码长度不足6位为例，返回的结果如下图所示：</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz_png/ePVkqAnZf6vTdkPaPEJ1uEDEGoQnic25icqdciakTLaEfoz3NibSWqKIxEKnLWZhkUW4G1mLNeVm8kGWSKKCEqbC0w/640?wx_fmt=png&from=appmsg&tp=webp&wxfrom=5&wx_lazy=1" srcset="/img/loading.gif" lazyload alt="image-20230925143558493"></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz_png/ePVkqAnZf6vTdkPaPEJ1uEDEGoQnic25icqdciakTLaEfoz3NibSWqKIxEKnLWZhkUW4G1mLNeVm8kGWSKKCEqbC0w/640?wx_fmt=png&amp;from=appmsg&amp;tp=webp&amp;wxfrom=5&amp;wx_lazy=1" srcset="/img/loading.gif" lazyload alt="image-20230925143558493"></p>
 <p>image-20230925143558493</p>
-<h3 id="3-6-小结"><a href="#3-6-小结" class="headerlink" title="3.6 小结"></a>3.6 小结</h3><p>至此，我们就简单地讲述了Spring Boot项目使用 <code>@Valid</code> 注解进行参数验证的实现步骤。示例的验证逻辑流程如下图所示：</p>
+<h3 id="3-6-小结">3.6 小结</h3>
+<p>至此，我们就简单地讲述了Spring Boot项目使用 <code>@Valid</code> 注解进行参数验证的实现步骤。示例的验证逻辑流程如下图所示：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">参数验证通过参数验证失败客户端调用接口执行参数验证逻辑执行控制器后续业务逻辑抛出BindException异常全局异常处理器捕获BindException异常获取错误信息，返回自定义错误消息体<br></code></pre></td></tr></table></figure>
-
-<h2 id="4、进阶"><a href="#4、进阶" class="headerlink" title="4、进阶"></a>4、进阶</h2><h3 id="4-1-Valid与-Validated的区别"><a href="#4-1-Valid与-Validated的区别" class="headerlink" title="4.1 @Valid与@Validated的区别"></a>4.1 @Valid与@Validated的区别</h3><p>用于参数校验的注解通常有两个： <code>@Valid</code> 和 <code>@Validated</code> 。它们的区别有如下几点：</p>
+<h2 id="4、进阶">4、进阶</h2>
+<h3 id="4-1-Valid与-Validated的区别">4.1 @Valid与@Validated的区别</h3>
+<p>用于参数校验的注解通常有两个： <code>@Valid</code> 和 <code>@Validated</code> 。它们的区别有如下几点：</p>
 <table>
 <thead>
 <tr>
@@ -349,7 +368,8 @@
 <th>@Validated</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td>来源</td>
 <td><code>@Valid</code>  是Java标准注解</td>
 <td><code>@Validated</code>  是Spring框架定义的注解。</td>
@@ -369,11 +389,12 @@
 <td>支持</td>
 <td>不支持</td>
 </tr>
-</tbody></table>
-<h3 id="4-2-自定义验证注解"><a href="#4-2-自定义验证注解" class="headerlink" title="4.2 自定义验证注解"></a>4.2 自定义验证注解</h3><p>除了框架自带的注解，平时的工作中可能需要我们自定义验证注解处理特定的业务需求。这里汪小成将上面 <code>User</code> 类中的手机号格式验证改成使用自定义注解的验证方式。</p>
+</tbody>
+</table>
+<h3 id="4-2-自定义验证注解">4.2 自定义验证注解</h3>
+<p>除了框架自带的注解，平时的工作中可能需要我们自定义验证注解处理特定的业务需求。这里汪小成将上面 <code>User</code> 类中的手机号格式验证改成使用自定义注解的验证方式。</p>
 <p>4.2.1 定义注解</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Documented</span><br><span class="hljs-meta">@Retention(RUNTIME)</span><br><span class="hljs-meta">@Constraint(validatedBy = &#123;PhoneValidator.class&#125;)</span><br><span class="hljs-meta">@Target(&#123;METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE&#125;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-meta">@interface</span> Phone &#123;<br><br>    String <span class="hljs-title function_">message</span><span class="hljs-params">()</span> <span class="hljs-keyword">default</span> <span class="hljs-string">&quot;手机号格式错误&quot;</span>;<br><br>    Class&lt;?&gt;[] groups() <span class="hljs-keyword">default</span> &#123;&#125;;<br><br>    Class&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Payload</span>&gt;[] payload() <span class="hljs-keyword">default</span> &#123;&#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>说明：</p>
 <ul>
 <li>• <code>@Constraint(validatedBy = &#123;PhoneValidator.class&#125;)</code> ：用于指定验证器类；</li>
@@ -381,14 +402,12 @@
 </ul>
 <p>4.2.2 定义验证器类</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PhoneValidator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ConstraintValidator</span>&lt;Phone, String&gt; &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">Logger</span> <span class="hljs-variable">LOGGER</span> <span class="hljs-operator">=</span> LoggerFactory.getLogger(PhoneValidator.class);<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">REGEX</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;^((13[0-9])|(15[^4])|(18[0-9])|(17[0-9])|(147))\\d&#123;8&#125;$&quot;</span>;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isValid</span><span class="hljs-params">(String s, ConstraintValidatorContext context)</span> &#123;<br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-keyword">try</span> &#123;<br>            result = Pattern.matches(REGEX, s);<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            LOGGER.error(<span class="hljs-string">&quot;验证手机号格式时发生异常，异常信息：&quot;</span>, e);<br>        &#125;<br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>4.2.3 使用注解</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br><br>    <span class="hljs-comment">// 省略其它代码</span><br><br>- <span class="hljs-comment">//    @Pattern(regexp = &quot;^((13[0-9])|(15[^4])|(18[0-9])|(17[0-9])|(147))\\d&#123;8&#125;$&quot;, message = &quot;手机号格式不正确&quot;)</span><br>+   <span class="hljs-meta">@Phone</span><br>    <span class="hljs-keyword">private</span> String phone;<br><br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>这样我们就成功地使用自定义注解 <code>@Phone</code> 验证手机号格式了。</p>
 <p>使用自定义注解实现业务验证的一个比较大的优点是 <strong>可以复用</strong> 。所有需要进行手机号格式验证的属性，只需要添加上 <code>@Phone</code> 注解就可以了。如果后期我们需要修改手机号的验证规则，只需要修改 <code>PhoneValidator</code> 类中的验证逻辑，就可以作用于所有添加了 <code>@Phone</code> 注解的字段了。</p>
 <p>枚举验证，新增不需要，修改需要id等验证如何做？</p>
-<p>分组检验，注解中有个groups&#x3D;{}属性，@validated 中指定组。</p>
+<p>分组检验，注解中有个groups={}属性，@validated 中指定组。</p>
 <p>或者继承。</p>
 
                 

@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="探讨 JPA 的这些进阶主题。这些主题对于构建健壮、高效且功能丰富的企业级 JPA 应用至关重要。  4. JPA 进阶主题4.1 事务管理 (与 Spring @Transactional 深度集成)事务是保证数据一致性的核心机制。JPA 本身定义了事务管理的 API，但与 Spring Boot (Spring Framework) 集成时，我们通常依赖 Spring 强大且灵活的声明式事务管">
+    <meta name="description" content="探讨 JPA 的这些进阶主题。这些主题对于构建健壮、高效且功能丰富的企业级 JPA 应用至关重要。  4. JPA 进阶主题 4.1 事务管理 (与 Spring @Transactional 深度集成) 事务是保证数据一致性的核心机制。JPA 本身定义了事务管理的 API，但与 Spring Boot (Spring Framework) 集成时，我们通常依赖 Spring 强大且灵活的声明式事">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/JPA/4.%E8%BF%9B%E9%98%B6/4.1%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86%20(%E4%B8%8E%20Spring%20@Transactional%20%E6%B7%B1%E5%BA%A6%E9%9B%86%E6%88%90)/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="探讨 JPA 的这些进阶主题。这些主题对于构建健壮、高效且功能丰富的企业级 JPA 应用至关重要。  4. JPA 进阶主题4.1 事务管理 (与 Spring @Transactional 深度集成)事务是保证数据一致性的核心机制。JPA 本身定义了事务管理的 API，但与 Spring Boot (Spring Framework) 集成时，我们通常依赖 Spring 强大且灵活的声明式事务管">
+<meta property="og:description" content="探讨 JPA 的这些进阶主题。这些主题对于构建健壮、高效且功能丰富的企业级 JPA 应用至关重要。  4. JPA 进阶主题 4.1 事务管理 (与 Spring @Transactional 深度集成) 事务是保证数据一致性的核心机制。JPA 本身定义了事务管理的 API，但与 Spring Boot (Spring Framework) 集成时，我们通常依赖 Spring 强大且灵活的声明式事">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.055Z">
 <meta property="article:modified_time" content="2025-06-16T08:45:22.222Z">
@@ -302,7 +302,9 @@
                 
                 <p>探讨 JPA 的这些进阶主题。这些主题对于构建健壮、高效且功能丰富的企业级 JPA 应用至关重要。</p>
 <hr>
-<h3 id="4-JPA-进阶主题"><a href="#4-JPA-进阶主题" class="headerlink" title="4. JPA 进阶主题"></a>4. JPA 进阶主题</h3><h4 id="4-1-事务管理-与-Spring-Transactional-深度集成"><a href="#4-1-事务管理-与-Spring-Transactional-深度集成" class="headerlink" title="4.1 事务管理 (与 Spring @Transactional 深度集成)"></a>4.1 事务管理 (与 Spring <code>@Transactional</code> 深度集成)</h4><p>事务是保证数据一致性的核心机制。JPA 本身定义了事务管理的 API，但与 Spring Boot (Spring Framework) 集成时，我们通常依赖 Spring 强大且灵活的声明式事务管理。</p>
+<h3 id="4-JPA-进阶主题">4. JPA 进阶主题</h3>
+<h4 id="4-1-事务管理-与-Spring-Transactional-深度集成">4.1 事务管理 (与 Spring <code>@Transactional</code> 深度集成)</h4>
+<p>事务是保证数据一致性的核心机制。JPA 本身定义了事务管理的 API，但与 Spring Boot (Spring Framework) 集成时，我们通常依赖 Spring 强大且灵活的声明式事务管理。</p>
 <p><strong>JPA 原生事务 API (了解即可，Spring 环境下通常不用)：</strong></p>
 <ul>
 <li><code>EntityManager</code> 提供了 <code>getTransaction()</code> 方法返回一个 <code>EntityTransaction</code> 对象。</li>
@@ -311,16 +313,19 @@
 </ul>
 <p><strong>Spring 事务管理与 JPA 的协作：</strong></p>
 <ul>
-<li><strong><code>spring-boot-starter-data-jpa</code> 的作用</strong>:<ul>
+<li><strong><code>spring-boot-starter-data-jpa</code> 的作用</strong>:
+<ul>
 <li>它会自动配置一个 <code>PlatformTransactionManager</code> 的实现，通常是 <code>JpaTransactionManager</code>。</li>
 <li><code>JpaTransactionManager</code> 负责将 Spring 的事务语义（如传播行为、隔离级别、超时、只读）转换为 JPA <code>EntityManager</code> 和底层 JDBC 连接的事务操作。</li>
 <li>它确保了 <code>EntityManager</code> 的生命周期与 Spring 管理的事务同步。同一个 Spring 事务中，获取的 <code>EntityManager</code> 实例会共享同一个持久化上下文。</li>
 </ul>
 </li>
-<li><strong><code>@Transactional</code> 注解 (Spring 的核心)</strong>:<ul>
+<li><strong><code>@Transactional</code> 注解 (Spring 的核心)</strong>:
+<ul>
 <li>这是在 Spring 应用中实现声明式事务管理的首选方式。</li>
 <li>可以应用在<strong>类级别</strong> (该类所有 <code>public</code> 方法都将应用事务) 或<strong>方法级别</strong> (覆盖类级别配置)。</li>
-<li><strong>常用属性</strong>:<ul>
+<li><strong>常用属性</strong>:
+<ul>
 <li><code>propagation</code> (传播行为): <code>REQUIRED</code> (默认), <code>REQUIRES_NEW</code>, <code>SUPPORTS</code>, <code>NOT_SUPPORTED</code>, <code>MANDATORY</code>, <code>NEVER</code>, <code>NESTED</code>。</li>
 <li><code>isolation</code> (隔离级别): <code>DEFAULT</code>, <code>READ_UNCOMMITTED</code>, <code>READ_COMMITTED</code>, <code>REPEATABLE_READ</code>, <code>SERIALIZABLE</code>。</li>
 <li><code>timeout</code> (超时时间，秒)。</li>
@@ -333,13 +338,13 @@
 </ul>
 <p><strong>示例 (在 Service 层使用 <code>@Transactional</code>)：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.service;<br><br><span class="hljs-keyword">import</span> com.example.yourproject.entity.User;<br><span class="hljs-keyword">import</span> com.example.yourproject.repository.UserRepository;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><span class="hljs-keyword">import</span> org.springframework.transaction.annotation.Propagation;<br><span class="hljs-keyword">import</span> org.springframework.transaction.annotation.Transactional; <span class="hljs-comment">// Spring 的事务注解</span><br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> UserRepository userRepository;<br><br>    <span class="hljs-meta">@Autowired</span> <span class="hljs-comment">// (可选) 如果需要直接操作 EntityManager</span><br>    <span class="hljs-keyword">private</span> jakarta.persistence.EntityManager entityManager; <span class="hljs-comment">// 或 javax.persistence.EntityManager</span><br><br>    <span class="hljs-meta">@Transactional</span> <span class="hljs-comment">// 默认传播行为 REQUIRED, 默认回滚规则 (RuntimeException/Error)</span><br>    <span class="hljs-keyword">public</span> User <span class="hljs-title function_">createUserAndLog</span><span class="hljs-params">(User user, String logMessage)</span> &#123;<br>        <span class="hljs-type">User</span> <span class="hljs-variable">savedUser</span> <span class="hljs-operator">=</span> userRepository.save(user); <span class="hljs-comment">// JPA 操作在事务内</span><br>        <span class="hljs-comment">// logService.logActivity(logMessage); // 假设另一个服务调用</span><br>        <span class="hljs-keyword">if</span> (logMessage.contains(<span class="hljs-string">&quot;ERROR&quot;</span>)) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;Simulated error during logging, transaction should rollback.&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> savedUser;<br>    &#125;<br><br>    <span class="hljs-meta">@Transactional(readOnly = true)</span> <span class="hljs-comment">// ① 只读事务优化</span><br>    <span class="hljs-keyword">public</span> User <span class="hljs-title function_">findUser</span><span class="hljs-params">(Long id)</span> &#123;<br>        <span class="hljs-keyword">return</span> userRepository.findById(id).orElse(<span class="hljs-literal">null</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@Transactional(propagation = Propagation.REQUIRES_NEW)</span> <span class="hljs-comment">// ② 开启新事务</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateUserPasswordInNewTransaction</span><span class="hljs-params">(Long userId, String newPassword)</span> &#123;<br>        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userRepository.findById(userId).orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;User not found&quot;</span>));<br>        user.setPassword(newPassword); <span class="hljs-comment">// 假设有 password 字段</span><br>        userRepository.save(user);<br>        <span class="hljs-comment">// 这个方法会独立于调用它的外部事务提交或回滚</span><br>    &#125;<br><br>    <span class="hljs-meta">@Transactional</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">complexOperation</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// ... some read operations ...</span><br>        <span class="hljs-comment">// entityManager.flush(); // ③ (可选) 手动刷新持久化上下文到数据库</span><br>        <span class="hljs-comment">// ... some write operations ...</span><br>        <span class="hljs-comment">// 如果这里发生异常，整个 complexOperation 事务会回滚</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p><strong>只读事务 (<code>readOnly = true</code>) 的优化 (①)：</strong></p>
 <ul>
 <li>当 <code>@Transactional(readOnly = true)</code> 应用于一个方法时，它向底层 JPA 提供者 (如 Hibernate) 和数据库驱动发出一个提示，表明这个事务<strong>不会修改任何数据</strong>。</li>
-<li><strong>潜在的优化</strong>:<ul>
+<li><strong>潜在的优化</strong>:
+<ul>
 <li><strong>Hibernate</strong>: 可能会禁止对持久化上下文进行脏检查 (Dirty Checking)，从而减少开销。它可能不会在事务结束时执行 <code>flush</code> 操作。</li>
-<li><strong>数据库驱动&#x2F;数据库</strong>: 可能会进行一些只读优化，例如不记录不必要的回滚日志，或者在某些隔离级别下提供更好的并发性能 (如将事务路由到只读副本，但这通常需要更复杂的数据库架构)。</li>
+<li><strong>数据库驱动/数据库</strong>: 可能会进行一些只读优化，例如不记录不必要的回滚日志，或者在某些隔离级别下提供更好的并发性能 (如将事务路由到只读副本，但这通常需要更复杂的数据库架构)。</li>
 <li><strong>避免不必要的 <code>flush</code></strong>: 对于纯查询操作，设置为 <code>true</code> 可以避免因某些情况 (如查询后立即执行另一个可能依赖未刷新数据的查询) 触发的隐式 <code>flush</code>。</li>
 </ul>
 </li>

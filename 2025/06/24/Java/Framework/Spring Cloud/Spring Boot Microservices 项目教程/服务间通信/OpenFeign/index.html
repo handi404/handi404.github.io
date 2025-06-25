@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="以下是关于 OpenFeign 的详解，包括它与 Spring 声明式 HTTP 客户端（如 RestClient）的对比、使用方法和核心特性。  OpenFeign 简介OpenFeign 是 Netflix 开源的声明式 HTTP 客户端工具，后由 Spring Cloud 集成为 Spring Cloud OpenFeign。它通过接口和注解定义 HTTP 请求，自动生成实现类，简化了 RE">
+    <meta name="description" content="以下是关于 OpenFeign 的详解，包括它与 Spring 声明式 HTTP 客户端（如 RestClient）的对比、使用方法和核心特性。  OpenFeign 简介 OpenFeign 是 Netflix 开源的声明式 HTTP 客户端工具，后由 Spring Cloud 集成为 Spring Cloud OpenFeign。它通过接口和注解定义 HTTP 请求，自动生成实现类，简化了 R">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Cloud/Spring%20Boot%20Microservices%20%E9%A1%B9%E7%9B%AE%E6%95%99%E7%A8%8B/%E6%9C%8D%E5%8A%A1%E9%97%B4%E9%80%9A%E4%BF%A1/OpenFeign/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="以下是关于 OpenFeign 的详解，包括它与 Spring 声明式 HTTP 客户端（如 RestClient）的对比、使用方法和核心特性。  OpenFeign 简介OpenFeign 是 Netflix 开源的声明式 HTTP 客户端工具，后由 Spring Cloud 集成为 Spring Cloud OpenFeign。它通过接口和注解定义 HTTP 请求，自动生成实现类，简化了 RE">
+<meta property="og:description" content="以下是关于 OpenFeign 的详解，包括它与 Spring 声明式 HTTP 客户端（如 RestClient）的对比、使用方法和核心特性。  OpenFeign 简介 OpenFeign 是 Netflix 开源的声明式 HTTP 客户端工具，后由 Spring Cloud 集成为 Spring Cloud OpenFeign。它通过接口和注解定义 HTTP 请求，自动生成实现类，简化了 R">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.457Z">
 <meta property="article:modified_time" content="2025-04-18T04:11:02.360Z">
@@ -302,14 +302,17 @@
                 
                 <p>以下是关于 <strong>OpenFeign</strong> 的详解，包括它与 Spring 声明式 HTTP 客户端（如 <code>RestClient</code>）的对比、使用方法和核心特性。</p>
 <hr>
-<h2 id="OpenFeign-简介"><a href="#OpenFeign-简介" class="headerlink" title="OpenFeign 简介"></a>OpenFeign 简介</h2><p><strong>OpenFeign</strong> 是 Netflix 开源的声明式 HTTP 客户端工具，后由 Spring Cloud 集成为 <code>Spring Cloud OpenFeign</code>。它通过接口和注解定义 HTTP 请求，自动生成实现类，简化了 REST 服务调用。<br><strong>核心优势</strong>：</p>
+<h2 id="OpenFeign-简介">OpenFeign 简介</h2>
+<p><strong>OpenFeign</strong> 是 Netflix 开源的声明式 HTTP 客户端工具，后由 Spring Cloud 集成为 <code>Spring Cloud OpenFeign</code>。它通过接口和注解定义 HTTP 请求，自动生成实现类，简化了 REST 服务调用。<br>
+<strong>核心优势</strong>：</p>
 <ul>
 <li><strong>声明式 API</strong>：通过接口和注解描述 HTTP 请求，无需手动编写 HTTP 客户端代码。</li>
 <li><strong>与 Spring Cloud 集成</strong>：天然支持服务发现（如 Eureka）、负载均衡（通过 Ribbon 或 Spring Cloud LoadBalancer）。</li>
 <li><strong>丰富的功能</strong>：支持超时配置、拦截器、错误处理、日志等。</li>
 </ul>
 <hr>
-<h2 id="OpenFeign-vs-Spring-RestClient"><a href="#OpenFeign-vs-Spring-RestClient" class="headerlink" title="OpenFeign vs Spring RestClient"></a>OpenFeign vs Spring RestClient</h2><table>
+<h2 id="OpenFeign-vs-Spring-RestClient">OpenFeign vs Spring RestClient</h2>
+<table>
 <thead>
 <tr>
 <th>特性</th>
@@ -317,10 +320,11 @@
 <th>Spring RestClient (声明式)</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr>
 <td><strong>依赖</strong></td>
 <td>需引入 <code>spring-cloud-starter-openfeign</code></td>
-<td>内置于 Spring 6+ &#x2F; Spring Boot 3+</td>
+<td>内置于 Spring 6+ / Spring Boot 3+</td>
 </tr>
 <tr>
 <td><strong>服务发现</strong></td>
@@ -329,7 +333,7 @@
 </tr>
 <tr>
 <td><strong>负载均衡</strong></td>
-<td>默认支持（通过 Ribbon&#x2F;LoadBalancer）</td>
+<td>默认支持（通过 Ribbon/LoadBalancer）</td>
 <td>需手动集成 LoadBalancer</td>
 </tr>
 <tr>
@@ -342,62 +346,68 @@
 <td>微服务架构（尤其 Spring Cloud 项目）</td>
 <td>轻量级 HTTP 调用</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <hr>
-<h2 id="使用-OpenFeign-的步骤"><a href="#使用-OpenFeign-的步骤" class="headerlink" title="使用 OpenFeign 的步骤"></a>使用 OpenFeign 的步骤</h2><h3 id="1-添加依赖"><a href="#1-添加依赖" class="headerlink" title="1. 添加依赖"></a>1. 添加依赖</h3><p>在 <code>pom.xml</code> 中添加 Spring Cloud OpenFeign 依赖：</p>
+<h2 id="使用-OpenFeign-的步骤">使用 OpenFeign 的步骤</h2>
+<h3 id="1-添加依赖">1. 添加依赖</h3>
+<p>在 <code>pom.xml</code> 中添加 Spring Cloud OpenFeign 依赖：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- Spring Cloud OpenFeign --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-openfeign<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;spring-cloud.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 若需负载均衡（Spring Cloud 2020+ 默认使用 LoadBalancer） --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-loadbalancer<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
 <blockquote>
 <p><strong>版本匹配</strong>：确保 Spring Boot 与 Spring Cloud 版本兼容（如 Spring Boot 3.x 对应 Spring Cloud 2022.x）。</p>
 </blockquote>
 <hr>
-<h3 id="2-启用-Feign-客户端"><a href="#2-启用-Feign-客户端" class="headerlink" title="2. 启用 Feign 客户端"></a>2. 启用 Feign 客户端</h3><p>在启动类上添加 <code>@EnableFeignClients</code>：</p>
+<h3 id="2-启用-Feign-客户端">2. 启用 Feign 客户端</h3>
+<p>在启动类上添加 <code>@EnableFeignClients</code>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-meta">@EnableFeignClients</span>  <span class="hljs-comment">// 启用 Feign 客户端扫描</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderServiceApplication</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SpringApplication.run(OrderServiceApplication.class, args);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="3-定义-Feign-客户端接口"><a href="#3-定义-Feign-客户端接口" class="headerlink" title="3. 定义 Feign 客户端接口"></a>3. 定义 Feign 客户端接口</h3><p>使用 <code>@FeignClient</code> 注解声明接口，并定义 HTTP 请求。</p>
-<h4 id="示例：调用库存服务"><a href="#示例：调用库存服务" class="headerlink" title="示例：调用库存服务"></a>示例：调用库存服务</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.cloud.openfeign.FeignClient;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestParam;<br><br><span class="hljs-meta">@FeignClient(name = &quot;inventory-service&quot;, url = &quot;$&#123;inventory.service.url&#125;&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">InventoryClient</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/api/inventory&quot;)</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">isInStock</span><span class="hljs-params">(</span><br><span class="hljs-params">        <span class="hljs-meta">@RequestParam(&quot;skuCode&quot;)</span> String skuCode,</span><br><span class="hljs-params">        <span class="hljs-meta">@RequestParam(&quot;quantity&quot;)</span> Integer quantity</span><br><span class="hljs-params">    )</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h4 id="注解说明："><a href="#注解说明：" class="headerlink" title="注解说明："></a>注解说明：</h4><ul>
-<li><strong><code>@FeignClient</code></strong>：<ul>
+<h3 id="3-定义-Feign-客户端接口">3. 定义 Feign 客户端接口</h3>
+<p>使用 <code>@FeignClient</code> 注解声明接口，并定义 HTTP 请求。</p>
+<h4 id="示例：调用库存服务">示例：调用库存服务</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.cloud.openfeign.FeignClient;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestParam;<br><br><span class="hljs-meta">@FeignClient(name = &quot;inventory-service&quot;, url = &quot;$&#123;inventory.service.url&#125;&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">InventoryClient</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/api/inventory&quot;)</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">isInStock</span><span class="hljs-params">(</span><br><span class="hljs-params">        <span class="hljs-meta">@RequestParam(&quot;skuCode&quot;)</span> String skuCode,</span><br><span class="hljs-params">        <span class="hljs-meta">@RequestParam(&quot;quantity&quot;)</span> Integer quantity</span><br><span class="hljs-params">    )</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="注解说明：">注解说明：</h4>
+<ul>
+<li><strong><code>@FeignClient</code></strong>：
+<ul>
 <li><code>name</code>：服务名称（用于服务发现）。</li>
 <li><code>url</code>：直接指定服务地址（若无需服务发现）。</li>
 <li><code>fallback</code>：指定熔断降级类（需配合 Hystrix 或 Resilience 4 j）。</li>
 </ul>
 </li>
-<li><strong><code>@GetMapping</code></strong> &#x2F; <code>@PostMapping</code>：Spring MVC 注解，定义 HTTP 方法和路径。</li>
+<li><strong><code>@GetMapping</code></strong> / <code>@PostMapping</code>：Spring MVC 注解，定义 HTTP 方法和路径。</li>
 <li><strong><code>@RequestParam</code></strong>：绑定查询参数。</li>
 </ul>
 <hr>
-<h3 id="4-注入并使用客户端"><a href="#4-注入并使用客户端" class="headerlink" title="4. 注入并使用客户端"></a>4. 注入并使用客户端</h3><p>在业务类中直接注入 Feign 客户端接口：</p>
+<h3 id="4-注入并使用客户端">4. 注入并使用客户端</h3>
+<p>在业务类中直接注入 Feign 客户端接口：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> InventoryClient inventoryClient;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">OrderService</span><span class="hljs-params">(InventoryClient inventoryClient)</span> &#123;<br>        <span class="hljs-built_in">this</span>.inventoryClient = inventoryClient;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">placeOrder</span><span class="hljs-params">(String skuCode, <span class="hljs-type">int</span> quantity)</span> &#123;<br>        <span class="hljs-keyword">if</span> (inventoryClient.isInStock(skuCode, quantity)) &#123;<br>            <span class="hljs-comment">// 库存充足，下单逻辑</span><br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">InsufficientStockException</span>(<span class="hljs-string">&quot;库存不足&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h2 id="高级配置"><a href="#高级配置" class="headerlink" title="高级配置"></a>高级配置</h2><h3 id="1-集成服务发现"><a href="#1-集成服务发现" class="headerlink" title="1. 集成服务发现"></a>1. 集成服务发现</h3><p>若使用服务注册中心（如 Eureka），无需硬编码 URL，直接通过服务名调用：</p>
+<h2 id="高级配置">高级配置</h2>
+<h3 id="1-集成服务发现">1. 集成服务发现</h3>
+<p>若使用服务注册中心（如 Eureka），无需硬编码 URL，直接通过服务名调用：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@FeignClient(name = &quot;inventory-service&quot;)</span>  <span class="hljs-comment">// 通过服务名调用</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">InventoryClient</span> &#123;<br>    <span class="hljs-meta">@GetMapping(&quot;/api/inventory&quot;)</span><br>    <span class="hljs-type">boolean</span> <span class="hljs-title function_">isInStock</span><span class="hljs-params">(<span class="hljs-meta">@RequestParam</span> String skuCode, <span class="hljs-meta">@RequestParam</span> Integer quantity)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>确保已配置服务发现客户端（如 <code>spring-cloud-starter-netflix-eureka-client</code>）。</p>
 <hr>
-<h3 id="2-自定义超时与重试"><a href="#2-自定义超时与重试" class="headerlink" title="2. 自定义超时与重试"></a>2. 自定义超时与重试</h3><p>在 <code>application.yml</code> 中配置：</p>
+<h3 id="2-自定义超时与重试">2. 自定义超时与重试</h3>
+<p>在 <code>application.yml</code> 中配置：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">feign:</span><br>  <span class="hljs-attr">client:</span><br>    <span class="hljs-attr">config:</span><br>      <span class="hljs-attr">default:</span>  <span class="hljs-comment"># 全局配置</span><br>        <span class="hljs-attr">connectTimeout:</span> <span class="hljs-number">5000</span>  <span class="hljs-comment"># 连接超时（ms）</span><br>        <span class="hljs-attr">readTimeout:</span> <span class="hljs-number">5000</span>     <span class="hljs-comment"># 读取超时（ms）</span><br>        <span class="hljs-attr">loggerLevel:</span> <span class="hljs-string">basic</span>    <span class="hljs-comment"># 日志级别（none, basic, full）</span><br>      <span class="hljs-attr">inventory-service:</span>       <span class="hljs-comment"># 针对特定服务的配置</span><br>        <span class="hljs-attr">readTimeout:</span> <span class="hljs-number">3000</span><br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="3-错误处理"><a href="#3-错误处理" class="headerlink" title="3. 错误处理"></a>3. 错误处理</h3><p>自定义错误解码器：</p>
+<h3 id="3-错误处理">3. 错误处理</h3>
+<p>自定义错误解码器：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> ErrorDecoder <span class="hljs-title function_">errorDecoder</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> (methodKey, response) -&gt; &#123;<br>        <span class="hljs-keyword">if</span> (response.status() == <span class="hljs-number">404</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResourceNotFoundException</span>(<span class="hljs-string">&quot;资源未找到&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">FeignException</span>(<span class="hljs-string">&quot;服务调用失败&quot;</span>);<br>    &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="4-拦截器"><a href="#4-拦截器" class="headerlink" title="4. 拦截器"></a>4. 拦截器</h3><p>添加请求拦截器（如添加认证头）：</p>
+<h3 id="4-拦截器">4. 拦截器</h3>
+<p>添加请求拦截器（如添加认证头）：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> RequestInterceptor <span class="hljs-title function_">authInterceptor</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> requestTemplate -&gt; &#123;<br>        requestTemplate.header(<span class="hljs-string">&quot;Authorization&quot;</span>, <span class="hljs-string">&quot;Bearer &quot;</span> + getToken());<br>    &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="5-熔断降级（Hystrix-Resilience-4-j）"><a href="#5-熔断降级（Hystrix-Resilience-4-j）" class="headerlink" title="5. 熔断降级（Hystrix&#x2F;Resilience 4 j）"></a>5. 熔断降级（Hystrix&#x2F;Resilience 4 j）</h3><p>定义降级类并配置熔断策略：</p>
+<h3 id="5-熔断降级（Hystrix-Resilience-4-j）">5. 熔断降级（Hystrix/Resilience 4 j）</h3>
+<p>定义降级类并配置熔断策略：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@FeignClient(</span><br><span class="hljs-meta">    name = &quot;inventory-service&quot;,</span><br><span class="hljs-meta">    fallback = InventoryClientFallback.class</span><br><span class="hljs-meta">)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">InventoryClient</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br><br><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">InventoryClientFallback</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">InventoryClient</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">isInStock</span><span class="hljs-params">(String skuCode, Integer quantity)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;  <span class="hljs-comment">// 默认返回库存不足</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>在 <code>application.yml</code> 中启用熔断：</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">feign:</span><br>  <span class="hljs-attr">circuitbreaker:</span><br>    <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
-
 <hr>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><strong>OpenFeign</strong> 是 Spring Cloud 生态中声明式 HTTP 客户端的首选工具，特别适合微服务场景：  </p>
+<h2 id="总结">总结</h2>
+<p><strong>OpenFeign</strong> 是 Spring Cloud 生态中声明式 HTTP 客户端的首选工具，特别适合微服务场景：</p>
 <ol>
 <li><strong>声明式调用</strong>：通过接口和注解简化 REST 调用。</li>
 <li><strong>服务发现与负载均衡</strong>：天然集成 Spring Cloud 基础设施。</li>

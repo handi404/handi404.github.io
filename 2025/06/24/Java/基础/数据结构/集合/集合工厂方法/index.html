@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="聊聊 Java 中的集合工厂方法 (Collection Factory Methods)。这绝对是 Java 9 引入的一个非常受欢迎且实用的特性，极大地提升了我们创建小型、不可变集合的便捷性和代码的可读性。 一、为什么需要集合工厂方法？ (痛点) 在 Java 9 之前，如果你想创建一个包含少量元素的集合，通常有以下几种方式，但都略显繁琐：  Arrays.asList() 配合构造函数： 1">
+    <meta name="description" content="聊聊 Java 中的集合工厂方法 (Collection Factory Methods)。这绝对是 Java 9 引入的一个非常受欢迎且实用的特性，极大地提升了我们创建小型、不可变集合的便捷性和代码的可读性。 一、为什么需要集合工厂方法？ (痛点) 在 Java 9 之前，如果你想创建一个包含少量元素的集合，通常有以下几种方式，但都略显繁琐：   Arrays.asList() 配合构造函数：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="集合工厂方法">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88/%E9%9B%86%E5%90%88%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="聊聊 Java 中的集合工厂方法 (Collection Factory Methods)。这绝对是 Java 9 引入的一个非常受欢迎且实用的特性，极大地提升了我们创建小型、不可变集合的便捷性和代码的可读性。 一、为什么需要集合工厂方法？ (痛点) 在 Java 9 之前，如果你想创建一个包含少量元素的集合，通常有以下几种方式，但都略显繁琐：  Arrays.asList() 配合构造函数： 1">
+<meta property="og:description" content="聊聊 Java 中的集合工厂方法 (Collection Factory Methods)。这绝对是 Java 9 引入的一个非常受欢迎且实用的特性，极大地提升了我们创建小型、不可变集合的便捷性和代码的可读性。 一、为什么需要集合工厂方法？ (痛点) 在 Java 9 之前，如果你想创建一个包含少量元素的集合，通常有以下几种方式，但都略显繁琐：   Arrays.asList() 配合构造函数：">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.817Z">
 <meta property="article:modified_time" content="2025-06-25T02:31:42.283Z">
@@ -304,15 +304,18 @@
 <p><strong>一、为什么需要集合工厂方法？ (痛点)</strong></p>
 <p>在 Java 9 之前，如果你想创建一个包含少量元素的集合，通常有以下几种方式，但都略显繁琐：</p>
 <ol>
-<li><p><strong><code>Arrays.asList()</code> 配合构造函数：</strong></p>
+<li>
+<p><strong><code>Arrays.asList()</code> 配合构造函数：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// List</span><br>List&lt;String&gt; oldList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(Arrays.asList(<span class="hljs-string">&quot;Java&quot;</span>, <span class="hljs-string">&quot;Python&quot;</span>, <span class="hljs-string">&quot;Go&quot;</span>));<br><span class="hljs-comment">// Set</span><br>Set&lt;String&gt; oldSet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(Arrays.asList(<span class="hljs-string">&quot;Java&quot;</span>, <span class="hljs-string">&quot;Python&quot;</span>, <span class="hljs-string">&quot;Go&quot;</span>));<br></code></pre></td></tr></table></figure>
 <p>注意：<code>Arrays.asList()</code> 返回的是一个固定大小的 <code>List</code>，对其进行添加或删除操作会抛出 <code>UnsupportedOperationException</code>。而且，它仍然是可变的（可以修改元素）。</p>
 </li>
-<li><p><strong>逐个添加：</strong></p>
+<li>
+<p><strong>逐个添加：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;String&gt; anotherOldList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>anotherOldList.add(<span class="hljs-string">&quot;Java&quot;</span>);<br>anotherOldList.add(<span class="hljs-string">&quot;Python&quot;</span>);<br>anotherOldList.add(<span class="hljs-string">&quot;Go&quot;</span>);<br><br>Map&lt;String, Integer&gt; oldMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>oldMap.put(<span class="hljs-string">&quot;One&quot;</span>, <span class="hljs-number">1</span>);<br>oldMap.put(<span class="hljs-string">&quot;Two&quot;</span>, <span class="hljs-number">2</span>);<br></code></pre></td></tr></table></figure>
 <p>这种方式代码冗余，尤其当元素不多时。</p>
 </li>
-<li><p><strong>双括号初始化 (Double Brace Initialization) - 不推荐：</strong></p>
+<li>
+<p><strong>双括号初始化 (Double Brace Initialization) - 不推荐：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// List&lt;String&gt; doubleBraceList = new ArrayList&lt;&gt;() &#123;&#123;</span><br><span class="hljs-comment">//     add(&quot;Java&quot;);</span><br><span class="hljs-comment">//     add(&quot;Python&quot;);</span><br><span class="hljs-comment">// &#125;&#125;;</span><br></code></pre></td></tr></table></figure>
 <p>这种方式实际上是创建了一个匿名内部类，它有一些潜在的序列化问题和内存泄漏风险，并且可读性也并非最佳。</p>
 </li>
@@ -322,53 +325,56 @@
 <p>Java 9 在 <code>List</code>, <code>Set</code>, <code>Map</code> 接口中引入了一系列静态的 <code>of()</code> 工厂方法，用于方便地创建<strong>不可变的 (Immutable)</strong> 集合实例。</p>
 <p><strong>1. <code>List.of()</code></strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 创建一个空的不可变 List</span><br>List&lt;String&gt; emptyList = List.of();<br><br><span class="hljs-comment">// 创建包含元素的不可变 List</span><br>List&lt;String&gt; names = List.of(<span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-string">&quot;Bob&quot;</span>, <span class="hljs-string">&quot;Charlie&quot;</span>);<br><span class="hljs-comment">// names.add(&quot;David&quot;); // 这行会抛出 UnsupportedOperationException</span><br><span class="hljs-comment">// names.set(0, &quot;Eve&quot;); // 这行也会抛出 UnsupportedOperationException</span><br><br>System.out.println(names); <span class="hljs-comment">// 输出: [Alice, Bob, Charlie]</span><br></code></pre></td></tr></table></figure>
-
 <p><strong>2. <code>Set.of()</code></strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 创建一个空的不可变 Set</span><br>Set&lt;String&gt; emptySet = Set.of();<br><br><span class="hljs-comment">// 创建包含元素的不可变 Set</span><br>Set&lt;String&gt; languages = Set.of(<span class="hljs-string">&quot;Java&quot;</span>, <span class="hljs-string">&quot;Python&quot;</span>, <span class="hljs-string">&quot;Go&quot;</span>);<br><span class="hljs-comment">// languages.add(&quot;C++&quot;); // 抛出 UnsupportedOperationException</span><br><br><span class="hljs-comment">// 注意：如果尝试用 Set.of() 创建包含重复元素的 Set，会抛出 IllegalArgumentException</span><br><span class="hljs-comment">// Set&lt;String&gt; duplicateSet = Set.of(&quot;Java&quot;, &quot;Python&quot;, &quot;Java&quot;); // 抛出 IllegalArgumentException</span><br><br>System.out.println(languages); <span class="hljs-comment">// 输出可能是 (顺序不保证): [Python, Java, Go]</span><br></code></pre></td></tr></table></figure>
-
 <p><strong>3. <code>Map.of()</code> 和 <code>Map.ofEntries()</code></strong></p>
 <p><code>Map.of()</code> 提供多个重载版本，最多支持 10 个键值对。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 创建一个空的不可变 Map</span><br>Map&lt;String, Integer&gt; emptyMap = Map.of();<br><br><span class="hljs-comment">// 创建包含少量键值对的不可变 Map</span><br>Map&lt;String, Integer&gt; scores = Map.of(<span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-number">90</span>, <span class="hljs-string">&quot;Bob&quot;</span>, <span class="hljs-number">85</span>, <span class="hljs-string">&quot;Charlie&quot;</span>, <span class="hljs-number">95</span>);<br><span class="hljs-comment">// scores.put(&quot;David&quot;, 80); // 抛出 UnsupportedOperationException</span><br><br><span class="hljs-comment">// 注意：如果键重复，会抛出 IllegalArgumentException</span><br><span class="hljs-comment">// Map&lt;String, Integer&gt; duplicateKeyMap = Map.of(&quot;A&quot;, 1, &quot;B&quot;, 2, &quot;A&quot;, 3); // 抛出 IllegalArgumentException</span><br><br>System.out.println(scores); <span class="hljs-comment">// 输出: &#123;Alice=90, Bob=85, Charlie=95&#125; (Java 9+ Map.of() 保证迭代顺序)</span><br></code></pre></td></tr></table></figure>
-
 <p>如果需要创建超过 10 个键值对的 <code>Map</code>，或者键值对是通过某种方式动态生成的，可以使用 <code>Map.ofEntries()</code>：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> <span class="hljs-keyword">static</span> java.util.Map.entry; <span class="hljs-comment">// 静态导入 Map.entry()</span><br><br>Map&lt;String, Integer&gt; largeMap = Map.ofEntries(<br>    entry(<span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-number">1</span>),<br>    entry(<span class="hljs-string">&quot;B&quot;</span>, <span class="hljs-number">2</span>),<br>    entry(<span class="hljs-string">&quot;C&quot;</span>, <span class="hljs-number">3</span>),<br>    <span class="hljs-comment">// ...更多 entry</span><br>    entry(<span class="hljs-string">&quot;K&quot;</span>, <span class="hljs-number">11</span>)<br>);<br>System.out.println(largeMap);<br></code></pre></td></tr></table></figure>
 <p><code>Map.entry(key, value)</code> 是一个辅助静态方法，用于创建 <code>Map.Entry</code> 对象。</p>
 <p><strong>三、关键特性与注意事项 (完美无遗漏)</strong></p>
 <ol>
-<li><p><strong>不可变性 (Immutability):</strong></p>
+<li>
+<p><strong>不可变性 (Immutability):</strong></p>
 <ul>
 <li>这是这些工厂方法创建的集合最核心的特性。一旦创建，就不能添加、删除或修改元素。</li>
 <li>任何尝试修改的操作（如 <code>add()</code>, <code>remove()</code>, <code>set()</code>, <code>put()</code>, <code>clear()</code> 等）都会抛出 <code>UnsupportedOperationException</code>。</li>
 <li>这种不可变性使得集合在并发环境中更安全，也适合用作常量。</li>
 </ul>
 </li>
-<li><p><strong>Null 元素&#x2F;键&#x2F;值不允许:</strong></p>
+<li>
+<p><strong>Null 元素/键/值不允许:</strong></p>
 <ul>
 <li><code>List.of()</code> 和 <code>Set.of()</code> 不允许传入 <code>null</code> 元素。</li>
 <li><code>Map.of()</code> 和 <code>Map.ofEntries()</code> 不允许传入 <code>null</code> 键或 <code>null</code> 值。</li>
 <li>如果尝试传入 <code>null</code>，会立即抛出 <code>NullPointerException</code>。这是设计上的选择，旨在避免后续使用中出现 <code>NullPointerException</code> 的麻烦，提倡“快速失败”。</li>
 </ul>
 </li>
-<li><p><strong>重复元素&#x2F;键的处理:</strong></p>
+<li>
+<p><strong>重复元素/键的处理:</strong></p>
 <ul>
 <li><code>Set.of()</code>: 如果传入重复元素，会抛出 <code>IllegalArgumentException</code>。</li>
-<li><code>Map.of()</code> &#x2F; <code>Map.ofEntries()</code>: 如果传入重复的键，会抛出 <code>IllegalArgumentException</code>。</li>
+<li><code>Map.of()</code> / <code>Map.ofEntries()</code>: 如果传入重复的键，会抛出 <code>IllegalArgumentException</code>。</li>
 <li><code>List.of()</code>: 允许重复元素，因为 <code>List</code> 本身就支持重复。</li>
 </ul>
 </li>
-<li><p><strong>序列化:</strong></p>
+<li>
+<p><strong>序列化:</strong></p>
 <ul>
 <li>这些不可变集合是可序列化的，前提是它们包含的元素也是可序列化的。</li>
 </ul>
 </li>
-<li><p><strong>迭代顺序:</strong></p>
+<li>
+<p><strong>迭代顺序:</strong></p>
 <ul>
 <li><code>List.of()</code>: 元素顺序与传入参数的顺序一致。</li>
 <li><code>Set.of()</code>: 元素的迭代顺序是<strong>不确定</strong>的（虽然对于少量元素，实际实现可能表现出某种固定顺序，但不应依赖）。</li>
-<li><code>Map.of()</code> &#x2F; <code>Map.ofEntries()</code>: 键值对的迭代顺序是<strong>基于参数传入的顺序</strong>。这一点与传统的 <code>HashMap</code> (无序) 和 <code>LinkedHashMap</code> (插入顺序) 不同，<code>Map.of()</code> 创建的 <code>Map</code> 是有序的。</li>
+<li><code>Map.of()</code> / <code>Map.ofEntries()</code>: 键值对的迭代顺序是<strong>基于参数传入的顺序</strong>。这一点与传统的 <code>HashMap</code> (无序) 和 <code>LinkedHashMap</code> (插入顺序) 不同，<code>Map.of()</code> 创建的 <code>Map</code> 是有序的。</li>
 </ul>
 </li>
-<li><p><strong>底层实现:</strong></p>
+<li>
+<p><strong>底层实现:</strong></p>
 <ul>
 <li>这些工厂方法返回的并不是我们熟知的 <code>ArrayList</code>, <code>HashSet</code>, <code>HashMap</code> 的实例。它们是 JDK 内部专门实现的、高度优化的、紧凑的不可变集合类型（例如，<code>ImmutableCollections.ListN</code>, <code>ImmutableCollections.SetN</code>, <code>ImmutableCollections.MapN</code> 等）。</li>
 </ul>
@@ -378,7 +384,8 @@
 <ol>
 <li><strong>简洁性 (Conciseness):</strong> 代码量大大减少，一行代码即可创建并初始化集合。</li>
 <li><strong>可读性 (Readability):</strong> 代码意图更清晰，一眼就能看出是在创建一个固定的集合。</li>
-<li><strong>安全性 (Safety):</strong><ul>
+<li><strong>安全性 (Safety):</strong>
+<ul>
 <li><strong>不可变性</strong>：避免了集合在后续代码中被意外修改，尤其在多线程环境或作为 API 返回值时非常有用。</li>
 <li><strong>Null 安全</strong>：创建时就禁止 <code>null</code>，减少了后续的 <code>NullPointerException</code> 风险。</li>
 <li><strong>类型安全</strong>：利用了泛型。</li>
@@ -388,19 +395,27 @@
 </ol>
 <p><strong>五、应用场景与扩展</strong></p>
 <ul>
-<li><p><strong>定义常量集合:</strong></p>
+<li>
+<p><strong>定义常量集合:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> List&lt;String&gt; SUPPORTED_FORMATS = List.of(<span class="hljs-string">&quot;JPEG&quot;</span>, <span class="hljs-string">&quot;PNG&quot;</span>, <span class="hljs-string">&quot;GIF&quot;</span>);<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> Set&lt;Character&gt; VOWELS = Set.of(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>, <span class="hljs-string">&#x27;i&#x27;</span>, <span class="hljs-string">&#x27;o&#x27;</span>, <span class="hljs-string">&#x27;u&#x27;</span>);<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>单元测试中的测试数据:</strong></p>
+<li>
+<p><strong>单元测试中的测试数据:</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// assertEquals(expectedOutput, process(List.of(&quot;input1&quot;, &quot;input2&quot;)));</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>方法返回值 (防御性拷贝的替代):</strong> 当方法需要返回一个集合，并且不希望调用者修改它时，这些工厂方法是绝佳选择。</p>
+<li>
+<p><strong>方法返回值 (防御性拷贝的替代):</strong> 当方法需要返回一个集合，并且不希望调用者修改它时，这些工厂方法是绝佳选择。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> List&lt;String&gt; <span class="hljs-title function_">getSupportedFeatures</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-comment">// ... 内部可能是可变集合</span><br>    List&lt;String&gt; features = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>    features.add(<span class="hljs-string">&quot;FeatureA&quot;</span>);<br>    features.add(<span class="hljs-string">&quot;FeatureB&quot;</span>);<br>    <span class="hljs-comment">// return Collections.unmodifiableList(features); // Java 8 及以前的方式</span><br>    <span class="hljs-keyword">return</span> List.copyOf(features); <span class="hljs-comment">// Java 10+ 的方式，更推荐</span><br>    <span class="hljs-comment">// 或者如果数据是固定的，直接：</span><br>    <span class="hljs-comment">// return List.of(&quot;FeatureA&quot;, &quot;FeatureB&quot;);</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p>注意：<code>List.copyOf()</code>, <code>Set.copyOf()</code>, <code>Map.copyOf()</code> 是 Java 10 引入的，它们接受一个已有的集合作为参数，并返回该集合的一个不可变副本。如果源集合本身已经是不可变的且符合要求，<code>copyOf</code> 方法可能会直接返回源集合，避免不必要的拷贝。</p>
 </li>
-<li><p><strong>替代 <code>Collections.unmodifiableXxx()</code>:</strong><br>在 Java 9 之前，创建不可变集合通常使用 <code>Collections.unmodifiableList(new ArrayList&lt;&gt;(Arrays.asList(...)))</code> 这样的冗长方式。现在 <code>List.of()</code> 等方法简洁得多。<br>对于已有的可变集合，如果想得到其不可变视图（注意是视图，不是拷贝），仍然可以使用 <code>Collections.unmodifiableXxx()</code>。但如果想得到一个真正的不可变拷贝，Java 10+ 的 <code>List.copyOf()</code>, <code>Set.copyOf()</code>, <code>Map.copyOf()</code> 是更好的选择。</p>
+<li>
+<p><strong>替代 <code>Collections.unmodifiableXxx()</code>:</strong><br>
+在 Java 9 之前，创建不可变集合通常使用 <code>Collections.unmodifiableList(new ArrayList&lt;&gt;(Arrays.asList(...)))</code> 这样的冗长方式。现在 <code>List.of()</code> 等方法简洁得多。<br>
+对于已有的可变集合，如果想得到其不可变视图（注意是视图，不是拷贝），仍然可以使用 <code>Collections.unmodifiableXxx()</code>。但如果想得到一个真正的不可变拷贝，Java 10+ 的 <code>List.copyOf()</code>, <code>Set.copyOf()</code>, <code>Map.copyOf()</code> 是更好的选择。</p>
 </li>
-<li><p><strong>与 Stream API 结合:</strong><br>虽然集合工厂方法主要用于创建包含少量固定元素的集合，但 Stream API 提供了更灵活的创建不可变集合的方式，特别是从已有数据源转换时：</p>
+<li>
+<p><strong>与 Stream API 结合:</strong><br>
+虽然集合工厂方法主要用于创建包含少量固定元素的集合，但 Stream API 提供了更灵活的创建不可变集合的方式，特别是从已有数据源转换时：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;String&gt; source = ...;<br>List&lt;String&gt; immutableList = source.stream()<br>                                   .filter(s -&gt; s.length() &gt; <span class="hljs-number">3</span>)<br>                                   .collect(Collectors.toUnmodifiableList()); <span class="hljs-comment">// Java 10+</span><br>Set&lt;String&gt; immutableSet = source.stream()<br>                                 .map(String::toUpperCase)<br>                                 .collect(Collectors.toUnmodifiableSet()); <span class="hljs-comment">// Java 10+</span><br><span class="hljs-comment">// Map&lt;K, V&gt; immutableMap = source.stream()</span><br><span class="hljs-comment">//                              .collect(Collectors.toUnmodifiableMap(keyMapper, valueMapper)); // Java 10+</span><br></code></pre></td></tr></table></figure>
 <p><code>Collectors.toUnmodifiableList()</code>, <code>toUnmodifiableSet()</code>, <code>toUnmodifiableMap()</code> 同样返回不可变集合。</p>
 </li>
@@ -408,8 +423,8 @@
 <p><strong>六、何时不适用？</strong></p>
 <ul>
 <li>当集合需要在创建后被修改时。</li>
-<li>当集合中需要存储 <code>null</code> 元素&#x2F;键&#x2F;值时。</li>
-<li>当需要创建包含大量元素的 <code>Set</code> 或 <code>Map</code> 并关心重复元素&#x2F;键的处理方式时（例如，如果希望忽略重复而不是抛异常，则不能直接用 <code>Set.of()</code> 或 <code>Map.of()</code>）。</li>
+<li>当集合中需要存储 <code>null</code> 元素/键/值时。</li>
+<li>当需要创建包含大量元素的 <code>Set</code> 或 <code>Map</code> 并关心重复元素/键的处理方式时（例如，如果希望忽略重复而不是抛异常，则不能直接用 <code>Set.of()</code> 或 <code>Map.of()</code>）。</li>
 </ul>
 <p>总而言之，Java 9 引入的集合工厂方法 (<code>List.of()</code>, <code>Set.of()</code>, <code>Map.of()</code>, <code>Map.ofEntries()</code>) 是现代 Java 开发中创建小型、固定、不可变集合的首选方式。它们让代码更简洁、更安全、更易读。后续 Java 10 引入的 <code>copyOf</code> 方法和 <code>Collectors.toUnmodifiableXxx</code> 则进一步完善了不可变集合的生态。</p>
 

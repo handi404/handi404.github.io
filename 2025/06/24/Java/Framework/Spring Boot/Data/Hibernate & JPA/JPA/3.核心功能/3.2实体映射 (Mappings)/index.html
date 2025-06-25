@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="探讨 JPA 中的实体映射 (Mappings)。这部分内容是 ORM 的核心，它定义了 Java 实体类及其属性如何与数据库表及其列进行对应。正确和高效地配置映射对于 JPA 应用的性能和行为至关重要。  3.2 实体映射 (Mappings)JPA 通过一系列注解来定义实体和数据库之间的映射关系。 3.2.1 基本类型映射JPA 自动支持 Java 的基本数据类型及其包装类，以及 String">
+    <meta name="description" content="探讨 JPA 中的实体映射 (Mappings)。这部分内容是 ORM 的核心，它定义了 Java 实体类及其属性如何与数据库表及其列进行对应。正确和高效地配置映射对于 JPA 应用的性能和行为至关重要。  3.2 实体映射 (Mappings) JPA 通过一系列注解来定义实体和数据库之间的映射关系。 3.2.1 基本类型映射 JPA 自动支持 Java 的基本数据类型及其包装类，以及 Stri">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.2%E5%AE%9E%E4%BD%93%E6%98%A0%E5%B0%84%20(Mappings)/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="探讨 JPA 中的实体映射 (Mappings)。这部分内容是 ORM 的核心，它定义了 Java 实体类及其属性如何与数据库表及其列进行对应。正确和高效地配置映射对于 JPA 应用的性能和行为至关重要。  3.2 实体映射 (Mappings)JPA 通过一系列注解来定义实体和数据库之间的映射关系。 3.2.1 基本类型映射JPA 自动支持 Java 的基本数据类型及其包装类，以及 String">
+<meta property="og:description" content="探讨 JPA 中的实体映射 (Mappings)。这部分内容是 ORM 的核心，它定义了 Java 实体类及其属性如何与数据库表及其列进行对应。正确和高效地配置映射对于 JPA 应用的性能和行为至关重要。  3.2 实体映射 (Mappings) JPA 通过一系列注解来定义实体和数据库之间的映射关系。 3.2.1 基本类型映射 JPA 自动支持 Java 的基本数据类型及其包装类，以及 Stri">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.044Z">
 <meta property="article:modified_time" content="2025-06-16T08:33:21.271Z">
@@ -302,28 +302,32 @@
                 
                 <p>探讨 JPA 中的<strong>实体映射 (Mappings)</strong>。这部分内容是 ORM 的核心，它定义了 Java 实体类及其属性如何与数据库表及其列进行对应。正确和高效地配置映射对于 JPA 应用的性能和行为至关重要。</p>
 <hr>
-<h4 id="3-2-实体映射-Mappings"><a href="#3-2-实体映射-Mappings" class="headerlink" title="3.2 实体映射 (Mappings)"></a>3.2 实体映射 (Mappings)</h4><p>JPA 通过一系列注解来定义实体和数据库之间的映射关系。</p>
-<h5 id="3-2-1-基本类型映射"><a href="#3-2-1-基本类型映射" class="headerlink" title="3.2.1 基本类型映射"></a>3.2.1 基本类型映射</h5><p>JPA 自动支持 Java 的基本数据类型及其包装类，以及 <code>String</code>, <code>java.math.BigDecimal</code>, <code>java.math.BigInteger</code> 等常见类型的映射。</p>
+<h4 id="3-2-实体映射-Mappings">3.2 实体映射 (Mappings)</h4>
+<p>JPA 通过一系列注解来定义实体和数据库之间的映射关系。</p>
+<h5 id="3-2-1-基本类型映射">3.2.1 基本类型映射</h5>
+<p>JPA 自动支持 Java 的基本数据类型及其包装类，以及 <code>String</code>, <code>java.math.BigDecimal</code>, <code>java.math.BigInteger</code> 等常见类型的映射。</p>
 <ul>
-<li><strong>Java 类型</strong> -&gt; <strong>JDBC 类型</strong> -&gt; <strong>数据库列类型</strong><ul>
-<li><code>boolean</code> &#x2F; <code>Boolean</code> -&gt; <code>BIT</code> &#x2F; <code>BOOLEAN</code></li>
-<li><code>byte</code> &#x2F; <code>Byte</code> -&gt; <code>TINYINT</code></li>
-<li><code>short</code> &#x2F; <code>Short</code> -&gt; <code>SMALLINT</code></li>
-<li><code>int</code> &#x2F; <code>Integer</code> -&gt; <code>INTEGER</code></li>
-<li><code>long</code> &#x2F; <code>Long</code> -&gt; <code>BIGINT</code></li>
-<li><code>float</code> &#x2F; <code>Float</code> -&gt; <code>REAL</code> &#x2F; <code>FLOAT</code></li>
-<li><code>double</code> &#x2F; <code>Double</code> -&gt; <code>DOUBLE PRECISION</code> &#x2F; <code>DOUBLE</code></li>
-<li><code>char</code> &#x2F; <code>Character</code> -&gt; <code>CHAR(1)</code></li>
-<li><code>String</code> -&gt; <code>VARCHAR</code> &#x2F; <code>TEXT</code> (取决于长度和配置)</li>
-<li><code>java.math.BigDecimal</code> -&gt; <code>NUMERIC</code> &#x2F; <code>DECIMAL</code></li>
-<li><code>java.math.BigInteger</code> -&gt; <code>NUMERIC</code> &#x2F; <code>BIGINT</code></li>
-<li><code>byte[]</code> &#x2F; <code>Byte[]</code> -&gt; <code>VARBINARY</code> &#x2F; <code>BLOB</code> (取决于 <code>@Lob</code> 注解)</li>
-<li><code>char[]</code> &#x2F; <code>Character[]</code> -&gt; <code>VARCHAR</code> &#x2F; <code>CLOB</code> (取决于 <code>@Lob</code> 注解)</li>
+<li><strong>Java 类型</strong> -&gt; <strong>JDBC 类型</strong> -&gt; <strong>数据库列类型</strong>
+<ul>
+<li><code>boolean</code> / <code>Boolean</code> -&gt; <code>BIT</code> / <code>BOOLEAN</code></li>
+<li><code>byte</code> / <code>Byte</code> -&gt; <code>TINYINT</code></li>
+<li><code>short</code> / <code>Short</code> -&gt; <code>SMALLINT</code></li>
+<li><code>int</code> / <code>Integer</code> -&gt; <code>INTEGER</code></li>
+<li><code>long</code> / <code>Long</code> -&gt; <code>BIGINT</code></li>
+<li><code>float</code> / <code>Float</code> -&gt; <code>REAL</code> / <code>FLOAT</code></li>
+<li><code>double</code> / <code>Double</code> -&gt; <code>DOUBLE PRECISION</code> / <code>DOUBLE</code></li>
+<li><code>char</code> / <code>Character</code> -&gt; <code>CHAR(1)</code></li>
+<li><code>String</code> -&gt; <code>VARCHAR</code> / <code>TEXT</code> (取决于长度和配置)</li>
+<li><code>java.math.BigDecimal</code> -&gt; <code>NUMERIC</code> / <code>DECIMAL</code></li>
+<li><code>java.math.BigInteger</code> -&gt; <code>NUMERIC</code> / <code>BIGINT</code></li>
+<li><code>byte[]</code> / <code>Byte[]</code> -&gt; <code>VARBINARY</code> / <code>BLOB</code> (取决于 <code>@Lob</code> 注解)</li>
+<li><code>char[]</code> / <code>Character[]</code> -&gt; <code>VARCHAR</code> / <code>CLOB</code> (取决于 <code>@Lob</code> 注解)</li>
 </ul>
 </li>
 </ul>
 <p>通常情况下，这些基本类型的映射是自动的，你不需要做额外的配置，除非需要通过 <code>@Column</code> 注解指定列名、长度、是否可空等属性。</p>
-<h5 id="3-2-2-日期时间类型映射-Java-8-java-time"><a href="#3-2-2-日期时间类型映射-Java-8-java-time" class="headerlink" title="3.2.2 日期时间类型映射 (Java 8 java.time.*)"></a>3.2.2 日期时间类型映射 (Java 8 <code>java.time.*</code>)</h5><p>JPA 2.2 规范 (Hibernate 5.2+ 实现) 开始<strong>原生支持 Java 8 引入的 <code>java.time</code> 包中的日期和时间 API</strong>。这意味着你不再需要使用旧的 <code>java.util.Date</code> 或 <code>java.sql.Timestamp</code>，也不需要额外的转换器。</p>
+<h5 id="3-2-2-日期时间类型映射-Java-8-java-time">3.2.2 日期时间类型映射 (Java 8 <code>java.time.*</code>)</h5>
+<p>JPA 2.2 规范 (Hibernate 5.2+ 实现) 开始<strong>原生支持 Java 8 引入的 <code>java.time</code> 包中的日期和时间 API</strong>。这意味着你不再需要使用旧的 <code>java.util.Date</code> 或 <code>java.sql.Timestamp</code>，也不需要额外的转换器。</p>
 <ul>
 <li><strong><code>java.time.LocalDate</code></strong> -&gt; 映射到数据库的 <code>DATE</code> 类型。</li>
 <li><strong><code>java.time.LocalTime</code></strong> -&gt; 映射到数据库的 <code>TIME</code> 类型。</li>
@@ -338,14 +342,17 @@
 <p><strong>示例：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Event</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-keyword">private</span> String name;<br><br>    <span class="hljs-meta">@Column(name = &quot;event_date&quot;)</span><br>    <span class="hljs-keyword">private</span> LocalDate eventDate; <span class="hljs-comment">// 对应 DATE</span><br><br>    <span class="hljs-meta">@Column(name = &quot;start_time&quot;)</span><br>    <span class="hljs-keyword">private</span> LocalTime startTime; <span class="hljs-comment">// 对应 TIME</span><br><br>    <span class="hljs-meta">@Column(name = &quot;creation_timestamp&quot;)</span><br>    <span class="hljs-keyword">private</span> LocalDateTime creationTimestamp; <span class="hljs-comment">// 对应 TIMESTAMP</span><br><br>    <span class="hljs-meta">@Column(name = &quot;publish_at_utc&quot;)</span><br>    <span class="hljs-keyword">private</span> Instant publishAtUtc; <span class="hljs-comment">// 对应 TIMESTAMP (通常UTC)</span><br><br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p><strong>配置</strong>: 通常不需要额外配置，JPA 提供者会自动处理。确保你的 JPA 提供者版本支持 JPA 2.2+。</p>
-<h5 id="3-2-3-枚举类型映射-Enumerated"><a href="#3-2-3-枚举类型映射-Enumerated" class="headerlink" title="3.2.3 枚举类型映射 (@Enumerated)"></a>3.2.3 枚举类型映射 (<code>@Enumerated</code>)</h5><p>JPA 提供了 <code>@Enumerated</code> 注解来指定如何将 Java 枚举类型持久化到数据库。</p>
+<h5 id="3-2-3-枚举类型映射-Enumerated">3.2.3 枚举类型映射 (<code>@Enumerated</code>)</h5>
+<p>JPA 提供了 <code>@Enumerated</code> 注解来指定如何将 Java 枚举类型持久化到数据库。</p>
 <ul>
-<li><strong><code>EnumType.ORDINAL</code> (默认)</strong>:<ul>
+<li><strong><code>EnumType.ORDINAL</code> (默认)</strong>:
+<ul>
 <li>将枚举常量的<strong>顺序 (ordinal)</strong> (从 0 开始的整数) 存储到数据库中。</li>
 <li><strong>缺点</strong>: 非常不推荐！如果以后修改了枚举常量的定义顺序（增加、删除、调整位置），会导致数据库中已存储的数据与新的枚举定义不匹配，引发数据错乱。</li>
 </ul>
 </li>
-<li><strong><code>EnumType.STRING</code></strong>:<ul>
+<li><strong><code>EnumType.STRING</code></strong>:
+<ul>
 <li>将枚举常量的<strong>名称 (name)</strong> (即枚举常量的字符串字面值) 存储到数据库中。</li>
 <li><strong>优点</strong>: 更具可读性，并且对枚举常量的顺序不敏感。如果修改了枚举常量的名称，则需要相应地更新数据库数据或进行迁移。</li>
 <li><strong>推荐使用此方式。</strong></li>
@@ -355,18 +362,22 @@
 <p><strong>示例：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">TaskStatus</span> &#123;<br>    PENDING, IN_PROGRESS, COMPLETED, CANCELED<br>&#125;<br><br><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Task</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-keyword">private</span> String description;<br><br>    <span class="hljs-meta">@Enumerated(EnumType.STRING)</span> <span class="hljs-comment">// 推荐：将枚举名 (如 &quot;PENDING&quot;) 存入数据库</span><br>    <span class="hljs-meta">@Column(length = 20)</span><br>    <span class="hljs-keyword">private</span> TaskStatus status;<br><br>    <span class="hljs-comment">// 不推荐的用法：</span><br>    <span class="hljs-comment">// @Enumerated(EnumType.ORDINAL)</span><br>    <span class="hljs-comment">// private TaskStatus priority; // 会存储 0, 1, 2...</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p><strong>注意</strong>: 如果使用 MyBatis-Plus，其对枚举的处理方式（如 <code>IEnum</code> 接口或 <code>@EnumValue</code> 注解配合 <code>type-enums-package</code>）通常更为灵活和推荐，因为它允许你将枚举映射到任意自定义的值 (如特定的整数代码或缩写字符串)，而不仅仅是 ordinal 或 name。如果同时使用 JPA 和 MyBatis-Plus，需要注意两者枚举处理方式的协调。</p>
-<h5 id="3-2-4-嵌入式对象-Embeddable-Embedded-AttributeOverride"><a href="#3-2-4-嵌入式对象-Embeddable-Embedded-AttributeOverride" class="headerlink" title="3.2.4 嵌入式对象 (@Embeddable, @Embedded, @AttributeOverride)"></a>3.2.4 嵌入式对象 (<code>@Embeddable</code>, <code>@Embedded</code>, <code>@AttributeOverride</code>)</h5><p>有时，多个实体可能共享一组相同的属性，或者你想将一个实体的某些属性逻辑上组织在一起，这时可以使用嵌入式对象。</p>
+<h5 id="3-2-4-嵌入式对象-Embeddable-Embedded-AttributeOverride">3.2.4 嵌入式对象 (<code>@Embeddable</code>, <code>@Embedded</code>, <code>@AttributeOverride</code>)</h5>
+<p>有时，多个实体可能共享一组相同的属性，或者你想将一个实体的某些属性逻辑上组织在一起，这时可以使用嵌入式对象。</p>
 <ul>
-<li><strong><code>@Embeddable</code></strong>:<ul>
+<li><strong><code>@Embeddable</code></strong>:
+<ul>
 <li>标记一个类为<strong>可嵌入类</strong>。这个类本身不是一个实体 (没有 <code>@Entity</code> 注解，也没有自己的 <code>@Id</code>)。</li>
 <li>它的属性将被嵌入到拥有它的实体所映射的表中，作为该表的一部分列。</li>
 </ul>
 </li>
-<li><strong><code>@Embedded</code></strong>:<ul>
+<li><strong><code>@Embedded</code></strong>:
+<ul>
 <li>在实体类中标记一个类型为 <code>@Embeddable</code> 的属性。</li>
 </ul>
 </li>
-<li><strong><code>@AttributeOverrides</code> 和 <code>@AttributeOverride</code></strong>:<ul>
+<li><strong><code>@AttributeOverrides</code> 和 <code>@AttributeOverride</code></strong>:
+<ul>
 <li>如果一个实体类中嵌入了多个相同类型的 <code>@Embeddable</code> 对象，或者你想覆盖 <code>@Embeddable</code> 类中属性映射到数据库列的默认名称或配置，可以使用这两个注解。</li>
 </ul>
 </li>
@@ -379,12 +390,14 @@
 <li><strong>逻辑组织</strong>: 将相关的属性组织到一个类中，使实体模型更清晰。</li>
 <li><strong>数据库层面</strong>: 最终还是映射到同一张表，不会创建额外的表。</li>
 </ul>
-<h5 id="3-2-5-大对象-LOBs-Lob"><a href="#3-2-5-大对象-LOBs-Lob" class="headerlink" title="3.2.5 大对象 (LOBs: @Lob)"></a>3.2.5 大对象 (LOBs: <code>@Lob</code>)</h5><p>对于需要存储大量数据的字段，如长文本 (文章内容、JSON&#x2F;XML 数据) 或二进制数据 (图片、文件)，可以使用 <code>@Lob</code> 注解。</p>
+<h5 id="3-2-5-大对象-LOBs-Lob">3.2.5 大对象 (LOBs: <code>@Lob</code>)</h5>
+<p>对于需要存储大量数据的字段，如长文本 (文章内容、JSON/XML 数据) 或二进制数据 (图片、文件)，可以使用 <code>@Lob</code> 注解。</p>
 <ul>
-<li><strong><code>@Lob</code></strong>:<ul>
+<li><strong><code>@Lob</code></strong>:
+<ul>
 <li>标记一个持久化属性为大对象类型。</li>
 <li><strong>对于 <code>String</code> 或 <code>char[]</code> 类型</strong>: 通常映射到数据库的 <code>CLOB</code> (Character Large Object) 或 <code>TEXT</code> 类型。</li>
-<li><strong>对于 <code>byte[]</code> 或 <code>java.sql.Blob</code> (不推荐直接用) 类型</strong>: 通常映射到数据库的 <code>BLOB</code> (Binary Large Object) 或 <code>VARBINARY(MAX)</code> &#x2F; <code>BYTEA</code> 类型。</li>
+<li><strong>对于 <code>byte[]</code> 或 <code>java.sql.Blob</code> (不推荐直接用) 类型</strong>: 通常映射到数据库的 <code>BLOB</code> (Binary Large Object) 或 <code>VARBINARY(MAX)</code> / <code>BYTEA</code> 类型。</li>
 <li><strong>对于 <code>java.sql.Clob</code> (不推荐直接用) 类型</strong>: 映射到 <code>CLOB</code>。</li>
 </ul>
 </li>
@@ -397,11 +410,12 @@
 <hr>
 <p>深入探讨 JPA 中最为核心和复杂的特性之一：<strong>关联映射 (Relationships)</strong>。这部分内容定义了实体对象之间如何建立和维护类似数据库表之间外键关联的关系。</p>
 <hr>
-<h5 id="3-2-6-关联映射-Relationships"><a href="#3-2-6-关联映射-Relationships" class="headerlink" title="3.2.6 关联映射 (Relationships)"></a>3.2.6 关联映射 (Relationships)</h5><p>JPA 提供了四种主要的关联类型注解：<code>@OneToOne</code>, <code>@OneToMany</code>, <code>@ManyToOne</code>, <code>@ManyToMany</code>。理解这些注解以及它们的属性 (<code>cascade</code>, <code>fetch</code>, <code>mappedBy</code>, <code>@JoinColumn</code>, <code>@JoinTable</code>) 对于构建正确的领域模型至关重要。</p>
+<h5 id="3-2-6-关联映射-Relationships">3.2.6 关联映射 (Relationships)</h5>
+<p>JPA 提供了四种主要的关联类型注解：<code>@OneToOne</code>, <code>@OneToMany</code>, <code>@ManyToOne</code>, <code>@ManyToMany</code>。理解这些注解以及它们的属性 (<code>cascade</code>, <code>fetch</code>, <code>mappedBy</code>, <code>@JoinColumn</code>, <code>@JoinTable</code>) 对于构建正确的领域模型至关重要。</p>
 <p><strong>核心概念：</strong></p>
 <ul>
 <li><strong>所有者端 (Owning Side)</strong>: 在双向关联中，负责维护数据库中外键关系的一方。通常，外键列所在的表对应的实体是所有者端。</li>
-<li><strong>被维护端 &#x2F; 反向端 (Inverse Side &#x2F; Non-owning Side)</strong>: 在双向关联中，不负责维护外键关系的一方。它通过 <code>mappedBy</code> 属性指向所有者端的关系属性。</li>
+<li><strong>被维护端 / 反向端 (Inverse Side / Non-owning Side)</strong>: 在双向关联中，不负责维护外键关系的一方。它通过 <code>mappedBy</code> 属性指向所有者端的关系属性。</li>
 <li><strong>单向关联 (Unidirectional)</strong>: 只有一方知道另一方的存在。</li>
 <li><strong>双向关联 (Bidirectional)</strong>: 双方都知道彼此的存在，并且可以相互导航。</li>
 </ul>
@@ -411,12 +425,14 @@
 <li><strong>数据库实现</strong>: 通常在“多”的一方 (子表，如 <code>orders</code> 表) 添加一个外键列，指向“一”的一方 (父表，如 <code>customers</code> 表) 的主键。</li>
 <li><strong>JPA 实现</strong>: 在“多”的实体 (<code>Order</code>) 中定义一个指向“一”的实体 (<code>Customer</code>) 的属性，并使用 <code>@ManyToOne</code> 注解。</li>
 </ul>
-<p><strong>示例 (单向 <code>@ManyToOne</code>)：</strong><br><code>Order.java</code>:</p>
+<p><strong>示例 (单向 <code>@ManyToOne</code>)：</strong><br>
+<code>Order.java</code>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;orders&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Order</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-keyword">private</span> String orderNumber;<br>    <span class="hljs-keyword">private</span> LocalDateTime orderDate;<br><br>    <span class="hljs-meta">@ManyToOne(fetch = FetchType.LAZY)</span> <span class="hljs-comment">// 默认 FetchType.EAGER for @ManyToOne，但推荐 LAZY</span><br>    <span class="hljs-meta">@JoinColumn(name = &quot;customer_id&quot;, // 外键列名 (在 orders 表中)</span><br><span class="hljs-meta">                referencedColumnName = &quot;id&quot;, // (可选) customer 表中被引用的主键列名，默认是对方主键</span><br><span class="hljs-meta">                nullable = false, // (可选) 外键是否可空</span><br><span class="hljs-meta">                foreignKey = @ForeignKey(name = &quot;fk_order_customer&quot;))</span> <span class="hljs-comment">// (可选) DDL生成时的外键约束名</span><br>    <span class="hljs-keyword">private</span> Customer customer; <span class="hljs-comment">// 指向 Customer 实体</span><br><br>    <span class="hljs-comment">// getters, setters</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p><code>Customer.java</code>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;customers&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Customer</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-comment">// Customer 不知道 Order (单向)</span><br>    <span class="hljs-comment">// getters, setters</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
-<li><code>@JoinColumn</code>: <strong>在所有者端（通常是“多”的一方）使用</strong>，定义了外键列的映射。<ul>
+<li><code>@JoinColumn</code>: <strong>在所有者端（通常是“多”的一方）使用</strong>，定义了外键列的映射。
+<ul>
 <li><code>name</code>: 指定在本实体对应的表中外键列的名称。</li>
 <li><code>referencedColumnName</code>: 指定关联实体对应表中被引用的列名 (通常是对方的主键列)。如果省略，默认为对方实体的主键列。</li>
 </ul>
@@ -429,12 +445,14 @@
 <li><strong>数据库实现</strong>: 外键仍然在“多”的一方 (子表)。</li>
 <li><strong>JPA 实现</strong>: 在“一”的实体 (<code>Customer</code>) 中定义一个集合属性 (如 <code>List&lt;Order&gt;</code>)，并使用 <code>@OneToMany</code> 注解。</li>
 </ul>
-<p><strong>示例 (双向 <code>@OneToMany</code> &#x2F; <code>@ManyToOne</code>)：</strong><br><code>Customer.java</code> (现在是双向的):</p>
+<p><strong>示例 (双向 <code>@OneToMany</code> / <code>@ManyToOne</code>)：</strong><br>
+<code>Customer.java</code> (现在是双向的):</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;customers&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Customer</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-keyword">private</span> String name;<br><br>    <span class="hljs-comment">//mappedBy 指向 Order 实体中名为 &quot;customer&quot; 的属性，该属性是 @ManyToOne 关联的所有者端</span><br>    <span class="hljs-meta">@OneToMany(mappedBy = &quot;customer&quot;, // ① 指定关系由 Order.customer 字段维护</span><br><span class="hljs-meta">               cascade = CascadeType.ALL, // ② (可选) 级联操作</span><br><span class="hljs-meta">               fetch = FetchType.LAZY, // ③ 默认 FetchType.LAZY for @OneToMany (推荐)</span><br><span class="hljs-meta">               orphanRemoval = true)</span> <span class="hljs-comment">// ④ (可选) 孤儿删除</span><br>    <span class="hljs-keyword">private</span> List&lt;Order&gt; orders = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(); <span class="hljs-comment">// 存储关联的 Order 列表</span><br><br>    <span class="hljs-comment">// getters, setters</span><br><br>    <span class="hljs-comment">// (可选但推荐) 维护双向关联的辅助方法</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addOrder</span><span class="hljs-params">(Order order)</span> &#123;<br>        orders.add(order);<br>        order.setCustomer(<span class="hljs-built_in">this</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeOrder</span><span class="hljs-params">(Order order)</span> &#123;<br>        orders.remove(order);<br>        order.setCustomer(<span class="hljs-literal">null</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><code>Order.java</code> (与之前 <code>@ManyToOne</code> 示例类似，但现在是双向的一部分):</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;orders&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Order</span> &#123;<br>    <span class="hljs-comment">// ... (id, orderNumber, orderDate)</span><br>    <span class="hljs-meta">@ManyToOne(fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@JoinColumn(name = &quot;customer_id&quot;, nullable = false)</span><br>    <span class="hljs-keyword">private</span> Customer customer;<br>    <span class="hljs-comment">// getters, setters</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
-<li><strong><code>mappedBy = &quot;customer&quot;</code> (在 <code>@OneToMany</code> 端)</strong>:<ul>
+<li><strong><code>mappedBy = &quot;customer&quot;</code> (在 <code>@OneToMany</code> 端)</strong>:
+<ul>
 <li><strong>非常重要</strong>。在双向关联中，<code>@OneToMany</code> 端通常是<strong>被维护端 (inverse side)</strong>。</li>
 <li><code>mappedBy</code> 属性的值是<strong>对方实体中维护这个关联关系的属性名</strong> (即 <code>Order</code> 类中名为 <code>customer</code> 的 <code>@ManyToOne</code> 属性)。</li>
 <li>它告诉 JPA：“我这个 <code>orders</code> 集合的关系是由 <code>Order</code> 实体的 <code>customer</code> 属性来管理的，数据库中的外键信息在 <code>orders</code> 表的 <code>customer_id</code> 列，你不要再尝试为我（<code>Customer</code>）这张表创建额外的外键或连接表了。”</li>
@@ -446,22 +464,26 @@
 <p><strong>3. <code>@OneToOne</code> (一对一)</strong></p>
 <ul>
 <li><strong>场景</strong>: 一个实体严格对应另一个实体。例如，一个 <code>User</code> 对应一个 <code>UserProfile</code>。</li>
-<li><strong>数据库实现</strong>:<ul>
+<li><strong>数据库实现</strong>:
+<ul>
 <li><strong>共享主键 (Shared Primary Key)</strong>: 两张表使用相同的主键值。不常用，且限制较多。</li>
 <li><strong>外键关联 (Foreign Key Association)</strong>: 一张表包含一个外键指向另一张表的主键。这是更常见的方式。<strong>哪张表包含外键决定了谁是所有者端。</strong></li>
 </ul>
 </li>
 </ul>
-<p><strong>示例 (双向 <code>@OneToOne</code>，外键在 <code>UserProfile</code> 表中，<code>User</code> 是被维护端)：</strong><br><code>User.java</code>:</p>
+<p><strong>示例 (双向 <code>@OneToOne</code>，外键在 <code>UserProfile</code> 表中，<code>User</code> 是被维护端)：</strong><br>
+<code>User.java</code>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;users&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String username;<br><br>    <span class="hljs-comment">// UserProfile 是所有者端，User 是被维护端</span><br>    <span class="hljs-meta">@OneToOne(mappedBy = &quot;user&quot;, // 指向 UserProfile 中名为 &quot;user&quot; 的属性</span><br><span class="hljs-meta">              cascade = CascadeType.ALL,</span><br><span class="hljs-meta">              fetch = FetchType.LAZY, // 默认 EAGER for @OneToOne，但推荐 LAZY</span><br><span class="hljs-meta">              optional = false)</span> <span class="hljs-comment">// (可选) false 表示 UserProfile 必须存在</span><br>    <span class="hljs-keyword">private</span> UserProfile userProfile;<br><br>    <span class="hljs-comment">// getters, setters</span><br>    <span class="hljs-comment">// 维护双向关系的辅助方法</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setUserProfile</span><span class="hljs-params">(UserProfile userProfile)</span> &#123;<br>        <span class="hljs-keyword">if</span> (userProfile == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span>.userProfile != <span class="hljs-literal">null</span>) &#123;<br>                <span class="hljs-built_in">this</span>.userProfile.setUser(<span class="hljs-literal">null</span>);<br>            &#125;<br>        &#125; <span class="hljs-keyword">else</span> &#123;<br>            userProfile.setUser(<span class="hljs-built_in">this</span>);<br>        &#125;<br>        <span class="hljs-built_in">this</span>.userProfile = userProfile;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><code>UserProfile.java</code> (所有者端，包含外键):</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;user_profiles&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserProfile</span> &#123;<br>    <span class="hljs-meta">@Id</span> <span class="hljs-comment">// ① 主键 (与 User 的主键独立，或者也可以共享主键)</span><br>    <span class="hljs-keyword">private</span> Long id; <span class="hljs-comment">// 如果这里是 user_id 且与 User 的 id 关联，需要特殊配置</span><br><br>    <span class="hljs-keyword">private</span> String bio;<br>    <span class="hljs-keyword">private</span> String avatarUrl;<br><br>    <span class="hljs-meta">@OneToOne(fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@MapsId</span> <span class="hljs-comment">// ② 如果 UserProfile 的主键就是 User 的外键 (共享主键或外键即主键场景)</span><br>             <span class="hljs-comment">// 或者使用 @JoinColumn(name = &quot;user_id&quot;) 来定义一个普通的外键列</span><br>    <span class="hljs-meta">@JoinColumn(name = &quot;user_id&quot;, referencedColumnName = &quot;id&quot;)</span> <span class="hljs-comment">// 定义外键列 user_id 指向 users 表的 id</span><br>    <span class="hljs-keyword">private</span> User user; <span class="hljs-comment">// 指向 User 实体</span><br><br>    <span class="hljs-comment">// getters, setters</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong><code>@OneToOne</code> 中的 <code>mappedBy</code></strong>: 与 <code>@OneToMany</code> 类似，用于双向关联的被维护端。</li>
 <li><strong><code>@JoinColumn</code></strong>: 在所有者端使用，定义外键。</li>
-<li><strong><code>@MapsId</code></strong>:<ul>
+<li><strong><code>@MapsId</code></strong>:
+<ul>
 <li>这是一个特殊的注解，用于<strong>将关联实体的主键值映射到当前实体的主键上</strong>。</li>
-<li>常用于以下场景：<ul>
+<li>常用于以下场景：
+<ul>
 <li><strong>共享主键</strong>: <code>UserProfile</code> 的主键 <code>id</code> 与 <code>User</code> 的主键 <code>id</code> 相同。此时 <code>UserProfile</code> 的 <code>@Id</code> 字段不需要 <code>@GeneratedValue</code>，它的值来源于关联的 <code>User</code>。</li>
 <li><strong>外键作为主键的一部分 (组合主键)</strong>: 不太常见于简单的 <code>@OneToOne</code>。</li>
 </ul>
@@ -474,21 +496,24 @@
 <p><strong>4. <code>@ManyToMany</code> (多对多)</strong></p>
 <ul>
 <li><strong>场景</strong>: 一个实体可以关联多个其他实体，同时对方实体也可以关联多个当前实体。例如，一个 <code>Student</code> 可以选修多门 <code>Course</code>，一门 <code>Course</code> 也可以被多个 <code>Student</code> 选修。</li>
-<li><strong>数据库实现</strong>: 必须通过一个<strong>中间连接表 (Join Table &#x2F; Link Table)</strong> 来实现。这个连接表至少包含两个外键，分别指向参与多对多关系的两个表的主键。</li>
+<li><strong>数据库实现</strong>: 必须通过一个<strong>中间连接表 (Join Table / Link Table)</strong> 来实现。这个连接表至少包含两个外键，分别指向参与多对多关系的两个表的主键。</li>
 <li><strong>JPA 实现</strong>: 在任意一方 (或双方，如果是双向) 定义一个集合属性，并使用 <code>@ManyToMany</code> 注解。通过 <code>@JoinTable</code> 注解来配置连接表。</li>
 </ul>
-<p><strong>示例 (双向 <code>@ManyToMany</code>)：</strong><br><code>Student.java</code>:</p>
+<p><strong>示例 (双向 <code>@ManyToMany</code>)：</strong><br>
+<code>Student.java</code>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;students&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String name;<br><br>    <span class="hljs-meta">@ManyToMany(cascade = &#123; CascadeType.PERSIST, CascadeType.MERGE &#125;, fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@JoinTable(</span><br><span class="hljs-meta">        name = &quot;student_course_enrollment&quot;, // ① 连接表的名称</span><br><span class="hljs-meta">        joinColumns = @JoinColumn(name = &quot;student_id&quot;, referencedColumnName = &quot;id&quot;), // ② 外键列，指向 Student 表</span><br><span class="hljs-meta">        inverseJoinColumns = @JoinColumn(name = &quot;course_id&quot;, referencedColumnName = &quot;id&quot;) // ③ 外键列，指向 Course 表</span><br><span class="hljs-meta">    )</span><br>    <span class="hljs-keyword">private</span> Set&lt;Course&gt; courses = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(); <span class="hljs-comment">// 使用 Set 避免重复</span><br><br>    <span class="hljs-comment">// getters, setters</span><br>    <span class="hljs-comment">// 维护双向关系的辅助方法</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addCourse</span><span class="hljs-params">(Course course)</span> &#123;<br>        <span class="hljs-built_in">this</span>.courses.add(course);<br>        course.getStudents().add(<span class="hljs-built_in">this</span>);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeCourse</span><span class="hljs-params">(Course course)</span> &#123;<br>        <span class="hljs-built_in">this</span>.courses.remove(course);<br>        course.getStudents().remove(<span class="hljs-built_in">this</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p><code>Course.java</code>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;courses&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Course</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String title;<br><br>    <span class="hljs-meta">@ManyToMany(mappedBy = &quot;courses&quot;, fetch = FetchType.LAZY)</span> <span class="hljs-comment">// ④ mappedBy 指向 Student 中名为 &quot;courses&quot; 的属性</span><br>    <span class="hljs-keyword">private</span> Set&lt;Student&gt; students = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();<br><br>    <span class="hljs-comment">// getters, setters</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
-<li><strong><code>@JoinTable</code> (通常在所有者端配置，或者在单向 <code>@ManyToMany</code> 时配置)</strong>:<ul>
+<li><strong><code>@JoinTable</code> (通常在所有者端配置，或者在单向 <code>@ManyToMany</code> 时配置)</strong>:
+<ul>
 <li><code>name</code>: 连接表的名称。</li>
 <li><code>joinColumns</code>: 定义连接表中指向<strong>当前实体</strong> (拥有 <code>@JoinTable</code> 注解的实体，即所有者端) 的外键列。是一个 <code>@JoinColumn</code> 注解数组 (通常只有一个)。</li>
 <li><code>inverseJoinColumns</code>: 定义连接表中指向<strong>对方实体</strong> (关联的实体) 的外键列。是一个 <code>@JoinColumn</code> 注解数组 (通常只有一个)。</li>
 </ul>
 </li>
-<li><strong><code>mappedBy</code> (在被维护端配置)</strong>:<ul>
+<li><strong><code>mappedBy</code> (在被维护端配置)</strong>:
+<ul>
 <li>在双向 <code>@ManyToMany</code> 关联中，通常选择一方作为所有者端 (配置 <code>@JoinTable</code>)，另一方作为被维护端 (配置 <code>mappedBy</code>)。</li>
 <li><code>mappedBy</code> 的值是所有者端实体中关联集合的属性名。</li>
 </ul>
@@ -497,10 +522,12 @@
 </ul>
 <p><strong>重要属性详解 (<code>cascade</code>, <code>fetch</code>, <code>mappedBy</code>, <code>orphanRemoval</code>)</strong></p>
 <ul>
-<li><p><strong><code>cascade</code> (级联操作 - <code>CascadeType</code> 枚举)</strong>:</p>
+<li>
+<p><strong><code>cascade</code> (级联操作 - <code>CascadeType</code> 枚举)</strong>:</p>
 <ul>
 <li>定义了当对当前实体执行持久化操作 (如 <code>persist</code>, <code>merge</code>, <code>remove</code>, <code>refresh</code>, <code>detach</code>) 时，是否将这些操作<strong>级联</strong>到其关联的实体上。</li>
-<li>常用的 <code>CascadeType</code> 值：<ul>
+<li>常用的 <code>CascadeType</code> 值：
+<ul>
 <li><code>ALL</code>: 所有操作都级联。<strong>慎用！</strong> 尤其是 <code>CascadeType.REMOVE</code>，可能会意外删除大量关联数据。</li>
 <li><code>PERSIST</code>: 级联保存 (当保存父实体时，如果关联的子实体是新的，也会被保存)。</li>
 <li><code>MERGE</code>: 级联更新 (当合并父实体时，关联的子实体状态也会被合并)。</li>
@@ -509,7 +536,8 @@
 <li><code>DETACH</code>: 级联分离。</li>
 </ul>
 </li>
-<li><strong>示例</strong>: 在 <code>@OneToMany</code> <code>Customer.orders</code> 上设置 <code>cascade = CascadeType.ALL</code>，意味着：<ul>
+<li><strong>示例</strong>: 在 <code>@OneToMany</code> <code>Customer.orders</code> 上设置 <code>cascade = CascadeType.ALL</code>，意味着：
+<ul>
 <li>保存 <code>Customer</code> 时，其 <code>orders</code> 集合中的新 <code>Order</code> 也会被保存。</li>
 <li>更新 <code>Customer</code> 时，其 <code>orders</code> 中的 <code>Order</code> 也会被更新。</li>
 <li>删除 <code>Customer</code> 时，其所有关联的 <code>Order</code> 也会被删除。</li>
@@ -518,20 +546,24 @@
 <li><strong>最佳实践</strong>: 按需配置级联。对于父子关系强烈的 (如 <code>Order</code> 和 <code>OrderItem</code>)，<code>CascadeType.ALL</code> (或至少 <code>PERSIST</code>, <code>MERGE</code>, <code>REMOVE</code>) 可能合适。对于关联较弱的，应避免不必要的级联删除。</li>
 </ul>
 </li>
-<li><p><strong><code>fetch</code> (抓取策略 - <code>FetchType</code> 枚举)</strong>:</p>
+<li>
+<p><strong><code>fetch</code> (抓取策略 - <code>FetchType</code> 枚举)</strong>:</p>
 <ul>
 <li>定义了在加载当前实体时，如何加载其关联的实体。</li>
-<li><code>EAGER</code> (立即加载): 加载当前实体时，<strong>立即</strong>通过 <code>JOIN</code> (或其他方式) 加载其关联的实体。<ul>
+<li><code>EAGER</code> (立即加载): 加载当前实体时，<strong>立即</strong>通过 <code>JOIN</code> (或其他方式) 加载其关联的实体。
+<ul>
 <li><strong>优点</strong>: 访问关联对象时不需要额外的数据库查询。</li>
 <li><strong>缺点</strong>: 如果关联对象很多或不需要立即使用，会造成不必要的性能开销，容易引发 N+1 问题 (如果多个 EAGER 关联嵌套)。</li>
 </ul>
 </li>
-<li><code>LAZY</code> (延迟加载): 加载当前实体时，<strong>不立即</strong>加载其关联的实体。关联实体会以代理对象的形式存在。只有当<strong>第一次实际访问</strong>该关联属性时 (如调用 getter 方法)，JPA 才会发起额外的数据库查询去加载它。<ul>
+<li><code>LAZY</code> (延迟加载): 加载当前实体时，<strong>不立即</strong>加载其关联的实体。关联实体会以代理对象的形式存在。只有当<strong>第一次实际访问</strong>该关联属性时 (如调用 getter 方法)，JPA 才会发起额外的数据库查询去加载它。
+<ul>
 <li><strong>优点</strong>: 初始加载快，节省资源，避免不必要的查询。</li>
-<li><strong>缺点</strong>: 如果在持久化上下文 (EntityManager&#x2F;Session) 关闭后访问懒加载属性，会抛出 <code>LazyInitializationException</code>。</li>
+<li><strong>缺点</strong>: 如果在持久化上下文 (EntityManager/Session) 关闭后访问懒加载属性，会抛出 <code>LazyInitializationException</code>。</li>
 </ul>
 </li>
-<li><strong>默认 FetchType</strong>:<ul>
+<li><strong>默认 FetchType</strong>:
+<ul>
 <li><code>@ManyToOne</code>: <code>EAGER</code> (<strong>建议改为 LAZY</strong>)</li>
 <li><code>@OneToOne</code>: <code>EAGER</code> (<strong>建议改为 LAZY</strong>)</li>
 <li><code>@OneToMany</code>: <code>LAZY</code> (通常保持)</li>
@@ -541,16 +573,19 @@
 <li><strong>最佳实践</strong>: <strong>尽可能使用 <code>LAZY</code> 加载</strong>。只有当你确定几乎总是需要立即使用关联对象时，才考虑 <code>EAGER</code>。对于需要立即加载的特定查询场景，优先使用 JPQL 的 <code>FETCH JOIN</code> 或 Entity Graphs 来显式控制。</li>
 </ul>
 </li>
-<li><p><strong><code>mappedBy</code> (在双向关联的被维护端使用)</strong>:</p>
+<li>
+<p><strong><code>mappedBy</code> (在双向关联的被维护端使用)</strong>:</p>
 <ul>
 <li>已在 <code>@OneToMany</code>, <code>@OneToOne</code>, <code>@ManyToMany</code> 中解释。它声明了当前关联关系是由对方实体的哪个属性来维护的，从而避免了 JPA 为被维护端生成不必要的外键或连接表。</li>
 <li><strong>只有双向关联的被维护端才需要配置 <code>mappedBy</code>。所有者端不需要。</strong></li>
 </ul>
 </li>
-<li><p><strong><code>orphanRemoval = true</code> (通常与 <code>@OneToMany</code> 或 <code>@OneToOne</code> 配合 <code>cascade = CascadeType.ALL</code> 或 <code>REMOVE</code> 使用)</strong>:</p>
+<li>
+<p><strong><code>orphanRemoval = true</code> (通常与 <code>@OneToMany</code> 或 <code>@OneToOne</code> 配合 <code>cascade = CascadeType.ALL</code> 或 <code>REMOVE</code> 使用)</strong>:</p>
 <ul>
 <li><strong>孤儿删除</strong>: 如果设置为 <code>true</code>，当一个子实体从父实体的集合中被移除 (例如 <code>customer.getOrders().remove(order)</code>) 并且这个子实体不再被其他父实体引用时，JPA 会自动从数据库中删除这个“孤儿”子实体。</li>
-<li>它与 <code>CascadeType.REMOVE</code> 的区别：<ul>
+<li>它与 <code>CascadeType.REMOVE</code> 的区别：
+<ul>
 <li><code>CascadeType.REMOVE</code>: 删除父实体时，级联删除子实体。</li>
 <li><code>orphanRemoval = true</code>: 从父实体的集合中移除子实体引用时（且子实体成为孤儿），删除子实体，即使父实体本身没有被删除。</li>
 </ul>
@@ -561,16 +596,19 @@
 </li>
 </ul>
 <p><strong>双向关联与维护关系端 (Consistency Management)：</strong></p>
-<p>在双向关联中，例如 <code>Customer</code> 和 <code>Order</code> (<code>OneToMany</code> &#x2F; <code>ManyToOne</code>)：</p>
+<p>在双向关联中，例如 <code>Customer</code> 和 <code>Order</code> (<code>OneToMany</code> / <code>ManyToOne</code>)：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Customer.java</span><br><span class="hljs-comment">// ...</span><br><span class="hljs-comment">// @OneToMany(mappedBy = &quot;customer&quot;, ...)</span><br><span class="hljs-comment">// private List&lt;Order&gt; orders;</span><br><br><span class="hljs-comment">// Order.java</span><br><span class="hljs-comment">// ...</span><br><span class="hljs-comment">// @ManyToOne</span><br><span class="hljs-comment">// @JoinColumn(name = &quot;customer_id&quot;)</span><br><span class="hljs-comment">// private Customer customer;</span><br></code></pre></td></tr></table></figure>
 <ul>
 <li><code>Order</code> 是所有者端 (因为它有 <code>@JoinColumn</code>，负责维护外键 <code>customer_id</code>)。</li>
 <li><code>Customer</code> 是被维护端 (因为它有 <code>mappedBy</code>)。</li>
-<li><strong>持久化操作</strong>: 当你保存或更新关系时，<strong>应该在所有者端设置关联</strong>。<ul>
-<li>例如，要创建一个新的 <code>Order</code> 并关联到一个已存在的 <code>Customer</code>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Customer</span> <span class="hljs-variable">existingCustomer</span> <span class="hljs-operator">=</span> entityManager.find(Customer.class, customerId);<br><span class="hljs-type">Order</span> <span class="hljs-variable">newOrder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Order</span>();<br>newOrder.setOrderNumber(<span class="hljs-string">&quot;ORD123&quot;</span>);<br>newOrder.setCustomer(existingCustomer); <span class="hljs-comment">// 在所有者端 (Order) 设置关联</span><br>entityManager.persist(newOrder); <span class="hljs-comment">// 保存 Order，外键 customer_id 会被设置</span><br></code></pre></td></tr></table></figure></li>
+<li><strong>持久化操作</strong>: 当你保存或更新关系时，<strong>应该在所有者端设置关联</strong>。
+<ul>
+<li>例如，要创建一个新的 <code>Order</code> 并关联到一个已存在的 <code>Customer</code>：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Customer</span> <span class="hljs-variable">existingCustomer</span> <span class="hljs-operator">=</span> entityManager.find(Customer.class, customerId);<br><span class="hljs-type">Order</span> <span class="hljs-variable">newOrder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Order</span>();<br>newOrder.setOrderNumber(<span class="hljs-string">&quot;ORD123&quot;</span>);<br>newOrder.setCustomer(existingCustomer); <span class="hljs-comment">// 在所有者端 (Order) 设置关联</span><br>entityManager.persist(newOrder); <span class="hljs-comment">// 保存 Order，外键 customer_id 会被设置</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><strong>内存中对象图的一致性</strong>: 为了保持 Java 对象模型在内存中的一致性，当建立双向关联时，<strong>最佳实践是同时更新两端的引用</strong>。通常通过在实体类中提供辅助方法来实现：<br><code>Customer.java</code>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addOrder</span><span class="hljs-params">(Order order)</span> &#123;<br>    <span class="hljs-built_in">this</span>.orders.add(order); <span class="hljs-comment">// 更新 Customer 端的集合</span><br>    order.setCustomer(<span class="hljs-built_in">this</span>);  <span class="hljs-comment">// 更新 Order 端的引用</span><br>&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeOrder</span><span class="hljs-params">(Order order)</span> &#123;<br>    <span class="hljs-built_in">this</span>.orders.remove(order);<br>    order.setCustomer(<span class="hljs-literal">null</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<li><strong>内存中对象图的一致性</strong>: 为了保持 Java 对象模型在内存中的一致性，当建立双向关联时，<strong>最佳实践是同时更新两端的引用</strong>。通常通过在实体类中提供辅助方法来实现：<br>
+<code>Customer.java</code>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addOrder</span><span class="hljs-params">(Order order)</span> &#123;<br>    <span class="hljs-built_in">this</span>.orders.add(order); <span class="hljs-comment">// 更新 Customer 端的集合</span><br>    order.setCustomer(<span class="hljs-built_in">this</span>);  <span class="hljs-comment">// 更新 Order 端的引用</span><br>&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeOrder</span><span class="hljs-params">(Order order)</span> &#123;<br>    <span class="hljs-built_in">this</span>.orders.remove(order);<br>    order.setCustomer(<span class="hljs-literal">null</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
 使用这些辅助方法：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">Customer</span> <span class="hljs-variable">customer</span> <span class="hljs-operator">=</span> ...;<br><span class="hljs-type">Order</span> <span class="hljs-variable">order</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Order</span>();<br><span class="hljs-comment">// ...</span><br>customer.addOrder(order); <span class="hljs-comment">// 调用辅助方法，同时更新两端</span><br><span class="hljs-comment">// entityManager.persist(customer); // 如果 customer 是新的</span><br>entityManager.persist(order);    <span class="hljs-comment">// 或者只保存 order (如果 customer 已持久化)</span><br></code></pre></td></tr></table></figure>
 虽然 JPA 持久化时主要依赖所有者端的设置，但维护内存中对象图的一致性对于避免程序逻辑错误和方便对象导航非常重要。</li>
 </ul>

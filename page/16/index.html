@@ -245,7 +245,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%AE%9E%E4%BD%93%E7%B1%BB%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E8%A7%A3%E6%9E%90/" target="_self">
         <div>
-          下面按大类对 Hibernate 与 JPA 在实体类中常用的注解进行分类讲解，每个注解说明其用途及主要参数。需要注意的是，JPA 提供的注解属于 Java EE 标准，而 Hibernate 则在此基础上提供了一些扩展。以下介绍主要涵盖常见场景和常用参数。  一、实体类与表映射注解1.1 @Entity 用途：标记一个 Java 类为实体类，该类的实例会映射到数据库表中的记录。  主要参数：
+          下面按大类对 Hibernate 与 JPA 在实体类中常用的注解进行分类讲解，每个注解说明其用途及主要参数。需要注意的是，JPA 提供的注解属于 Java EE 标准，而 Hibernate 则在此基础上提供了一些扩展。以下介绍主要涵盖常见场景和常用参数。  一、实体类与表映射注解 1.1 @Entity   用途：标记一个 Java 类为实体类，该类的实例会映射到数据库表中的记录。   主要参
         </div>
       </a>
 
@@ -327,7 +327,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%AE%8C%E6%95%B4%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88/" target="_self">
         <div>
-          以下是基于 Spring Boot 的完整技术实现方案，包含 实体类定义、DTO 映射、复杂查询操作及 高级特性，并明确代码位置和依赖要求：  一、项目结构 &amp; 依赖1234567src/main/java├── com/example/demo│   ├── config          # 配置类│   ├── domain          # JPA 实体类│   ├── dto
+          以下是基于 Spring Boot 的完整技术实现方案，包含 实体类定义、DTO 映射、复杂查询操作及 高级特性，并明确代码位置和依赖要求：  一、项目结构 &amp; 依赖 1234567src/main/java├── com/example/demo│   ├── config          # 配置类│   ├── domain          # JPA 实体类│   ├── dt
         </div>
       </a>
 
@@ -409,7 +409,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%94%AF%E4%B8%80%E6%A0%87%E8%AF%86%E7%AC%A6/" target="_self">
         <div>
-          在 Hibernate &amp; JPA 中，可通过以下步骤实现实体类对象存储时自动生成不含横杠的 UUID 作为唯一标识符： 方法 1：使用 @PrePersist 回调生成 UUID在实体类中定义 @PrePersist 方法，手动生成并处理 UUID： 1234567891011121314151617181920import javax.persistence.Entity;import
+          在 Hibernate &amp; JPA 中，可通过以下步骤实现实体类对象存储时自动生成不含横杠的 UUID 作为唯一标识符： 方法 1：使用 @PrePersist 回调生成 UUID 在实体类中定义 @PrePersist 方法，手动生成并处理 UUID： 1234567891011121314151617181920import javax.persistence.Entity;impor
         </div>
       </a>
 
@@ -442,7 +442,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%8A%A8%E6%80%81%20SQL/" target="_self">
         <div>
-          动态 SQL 是指根据查询条件的变化，动态生成不同的 SQL 查询语句。在开发中，经常需要根据前端用户输入、多个筛选条件或其他变量动态构建查询条件。Spring Data JPA 提供了几种方式来实现动态查询，以下是几种常见的实现方式。  1. 使用 Criteria API 构建动态 SQLCriteria API 是 JPA 提供的一种类型安全的查询构造工具，允许你在代码中动态构建 SQL 查
+          动态 SQL 是指根据查询条件的变化，动态生成不同的 SQL 查询语句。在开发中，经常需要根据前端用户输入、多个筛选条件或其他变量动态构建查询条件。Spring Data JPA 提供了几种方式来实现动态查询，以下是几种常见的实现方式。  1. 使用 Criteria API 构建动态 SQL Criteria API 是 JPA 提供的一种类型安全的查询构造工具，允许你在代码中动态构建 SQL
         </div>
       </a>
 
@@ -475,7 +475,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%88%86%E9%A1%B5%E3%80%81%E6%9D%A1%E4%BB%B6%E5%88%86%E9%A1%B5%E4%BB%A5%E5%8F%8A%E6%8E%92%E5%BA%8F/" target="_self">
         <div>
-          分页、条件分页以及排序是 Spring Data JPA 中非常常用且核心的功能。它们能帮助我们高效地处理大量数据，并以用户友好的方式展示。 我们来逐一分解，并结合最新的实践进行讲解。 1. 基本分页 (Paging)当数据量很大时，一次性加载所有数据到内存中是不现实的，既浪费内存也可能导致性能问题。分页就是将数据分成固定大小的“页”进行加载。  核心接口&#x2F;类:  org.springf
+          分页、条件分页以及排序是 Spring Data JPA 中非常常用且核心的功能。它们能帮助我们高效地处理大量数据，并以用户友好的方式展示。 我们来逐一分解，并结合最新的实践进行讲解。 1. 基本分页 (Paging) 当数据量很大时，一次性加载所有数据到内存中是不现实的，既浪费内存也可能导致性能问题。分页就是将数据分成固定大小的“页”进行加载。   核心接口/类:  org.springfram
         </div>
       </a>
 
@@ -508,7 +508,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%E5%92%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2/" target="_self">
         <div>
-          Hibernate &amp; JPA 的关系映射和多表查询是 Spring Boot 应用数据持久化的核心。我们来深入浅出地探讨一下。 前提：JPA 与 Hibernate  JPA (Jakarta Persistence API)：它是一个 Java 规范&#x2F;标准，定义了一套用于对象关系映射 (ORM) 和管理持久化数据的 API。你可以把它想象成 JDBC 规范，但更高级，是针对对
+          Hibernate &amp; JPA 的关系映射和多表查询是 Spring Boot 应用数据持久化的核心。我们来深入浅出地探讨一下。 前提：JPA 与 Hibernate  JPA (Jakarta Persistence API)：它是一个 Java 规范/标准，定义了一套用于对象关系映射 (ORM) 和管理持久化数据的 API。你可以把它想象成 JDBC 规范，但更高级，是针对对象的。 H
         </div>
       </a>
 
@@ -541,7 +541,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/Hibernate%20&amp;%20JPA/" target="_self">
         <div>
-          从获取正确的项目依赖项开始，使用 JPA 注解标注我们的类，并设置 SessionFactory。这使我们能够执行基本的 CRUD 操作、HQL 和 Criteria 查询。之后，我们可以简单地 JPA 化我们的代码，替换几个类，你就会理解 Hibernate &#x2F; JPA 与 Spring Boot 是如何协同工作的。到那时，你将对其使用有一个良好的（初步）了解，以及你的未来 Hiber
+          从获取正确的项目依赖项开始，使用 JPA 注解标注我们的类，并设置 SessionFactory。这使我们能够执行基本的 CRUD 操作、HQL 和 Criteria 查询。之后，我们可以简单地 JPA 化我们的代码，替换几个类，你就会理解 Hibernate / JPA 与 Spring Boot 是如何协同工作的。到那时，你将对其使用有一个良好的（初步）了解，以及你的未来 Hibernate
         </div>
       </a>
 
@@ -574,7 +574,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/Auditing/" target="_self">
         <div>
-          Basics 基础知识Spring Data 提供了完善的支持，可以透明地跟踪实体的创建者或更改者以及更改发生的时间。要使用此功能，您必须为实体类配备审计元数据，这些元数据可以使用注解或实现接口来定义。此外，还必须通过注解配置或 XML 配置来启用审计功能，以注册所需的基础架构组件。请参阅特定于商店的部分以获取配置示例。     仅跟踪创建和修改日期的应用程序不需要让其实体实现 AuditorAw
+          Basics 基础知识 Spring Data 提供了完善的支持，可以透明地跟踪实体的创建者或更改者以及更改发生的时间。要使用此功能，您必须为实体类配备审计元数据，这些元数据可以使用注解或实现接口来定义。此外，还必须通过注解配置或 XML 配置来启用审计功能，以注册所需的基础架构组件。请参阅特定于商店的部分以获取配置示例。     仅跟踪创建和修改日期的应用程序不需要让其实体实现 AuditorA
         </div>
       </a>
 
@@ -647,7 +647,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Actuator/%E4%BD%BF%E7%94%A8%20Grafana%20Stack%20%E5%AE%9E%E7%8E%B0%E5%8F%AF%E8%A7%82%E5%AF%9F%E6%80%A7/" target="_self">
         <div>
-          在这篇博文《 Spring Boot 3 与 Grafana Stack 的可观察性 》中，我们将学习如何使用 由 Grafana、Loki 和 Tempo 组成的 Grafana Stack 在我们的 Spring Boot 应用程序中实现可观察性。  什么是 Observability(可观察性)？简而言之，可观察性是借助 Log(日志)、Metrics(指标)和 Tracing(追踪) 信息
+          在这篇博文《 Spring Boot 3 与 Grafana Stack 的可观察性 》中，我们将学习如何使用 由 Grafana、Loki 和 Tempo 组成的 Grafana Stack 在我们的 Spring Boot 应用程序中实现可观察性。  什么是 Observability(可观察性)？ 简而言之，可观察性是借助 Log(日志)、Metrics(指标)和 Tracing(追踪) 信
         </div>
       </a>
 

@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Spring Boot 中的事务（Transactional）。这绝对是后端开发中至关重要的一个概念，尤其是在涉及到数据一致性的场景。 我会从“是什么” -&gt; “为什么需要” -&gt; “Spring Boot 中怎么用” -&gt; “关键点与最佳实践” -&gt; “扩展与新趋势” 这个思路来讲解。  1. 什么是事务？（是什么）在计算机科学中，尤其是在数据库领域，事务 (Transa">
+    <meta name="description" content="Spring Boot 中的事务（Transactional）。这绝对是后端开发中至关重要的一个概念，尤其是在涉及到数据一致性的场景。 我会从“是什么” -&gt; “为什么需要” -&gt; “Spring Boot 中怎么用” -&gt; “关键点与最佳实践” -&gt; “扩展与新趋势” 这个思路来讲解。  1. 什么是事务？（是什么） 在计算机科学中，尤其是在数据库领域，事务 (Trans">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Service/%E4%BA%8B%E5%8A%A1/%E4%BA%8B%E5%8A%A1%EF%BC%88Transactional%EF%BC%89/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="Spring Boot 中的事务（Transactional）。这绝对是后端开发中至关重要的一个概念，尤其是在涉及到数据一致性的场景。 我会从“是什么” -&gt; “为什么需要” -&gt; “Spring Boot 中怎么用” -&gt; “关键点与最佳实践” -&gt; “扩展与新趋势” 这个思路来讲解。  1. 什么是事务？（是什么）在计算机科学中，尤其是在数据库领域，事务 (Transa">
+<meta property="og:description" content="Spring Boot 中的事务（Transactional）。这绝对是后端开发中至关重要的一个概念，尤其是在涉及到数据一致性的场景。 我会从“是什么” -&gt; “为什么需要” -&gt; “Spring Boot 中怎么用” -&gt; “关键点与最佳实践” -&gt; “扩展与新趋势” 这个思路来讲解。  1. 什么是事务？（是什么） 在计算机科学中，尤其是在数据库领域，事务 (Trans">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.326Z">
 <meta property="article:modified_time" content="2025-06-16T06:48:09.684Z">
@@ -303,7 +303,8 @@
                 <p>Spring Boot 中的<strong>事务（Transactional）</strong>。这绝对是后端开发中至关重要的一个概念，尤其是在涉及到数据一致性的场景。</p>
 <p>我会从“是什么” -&gt; “为什么需要” -&gt; “Spring Boot 中怎么用” -&gt; “关键点与最佳实践” -&gt; “扩展与新趋势” 这个思路来讲解。</p>
 <hr>
-<h3 id="1-什么是事务？（是什么）"><a href="#1-什么是事务？（是什么）" class="headerlink" title="1. 什么是事务？（是什么）"></a>1. 什么是事务？（是什么）</h3><p>在计算机科学中，尤其是在数据库领域，<strong>事务 (Transaction)</strong> 指的是<strong>一组操作的集合，这些操作要么全部成功执行，要么全部失败回滚，是一个不可分割的工作单元。</strong></p>
+<h3 id="1-什么是事务？（是什么）">1. 什么是事务？（是什么）</h3>
+<p>在计算机科学中，尤其是在数据库领域，<strong>事务 (Transaction)</strong> 指的是<strong>一组操作的集合，这些操作要么全部成功执行，要么全部失败回滚，是一个不可分割的工作单元。</strong></p>
 <p>想象一下银行转账：</p>
 <ul>
 <li>账户 A 扣款 100 元</li>
@@ -318,14 +319,17 @@
 <li><strong>D - 持久性 (Durability):</strong> 一旦事务成功提交，其对数据库的修改就是永久性的，即使系统崩溃也不会丢失。</li>
 </ul>
 <hr>
-<h3 id="2-为什么需要事务？（为什么需要）"><a href="#2-为什么需要事务？（为什么需要）" class="headerlink" title="2. 为什么需要事务？（为什么需要）"></a>2. 为什么需要事务？（为什么需要）</h3><p>主要原因就是为了<strong>保证数据的完整性和一致性</strong>。在复杂的业务场景中，一个业务操作往往涉及到对多个数据表或多个记录的修改。如果没有事务：</p>
+<h3 id="2-为什么需要事务？（为什么需要）">2. 为什么需要事务？（为什么需要）</h3>
+<p>主要原因就是为了<strong>保证数据的完整性和一致性</strong>。在复杂的业务场景中，一个业务操作往往涉及到对多个数据表或多个记录的修改。如果没有事务：</p>
 <ul>
 <li><strong>数据不一致</strong>：部分操作成功，部分失败，导致数据处于一个中间的、错误的状态。</li>
 <li><strong>并发问题</strong>：多个用户同时操作数据时，可能产生脏读、不可重复读、幻读等问题，事务的隔离性就是为了解决这些问题。</li>
 </ul>
-<h4 id="何时使用"><a href="#何时使用" class="headerlink" title="何时使用"></a>何时使用</h4><p>当一个方法涉及多个写操作时</p>
+<h4 id="何时使用">何时使用</h4>
+<p>当一个方法涉及多个写操作时</p>
 <hr>
-<h3 id="3-Spring-Boot-中如何使用事务？（怎么用）"><a href="#3-Spring-Boot-中如何使用事务？（怎么用）" class="headerlink" title="3. Spring Boot 中如何使用事务？（怎么用）"></a>3. Spring Boot 中如何使用事务？（怎么用）</h3><p>Spring Boot 极大地简化了 Spring 框架的事务管理。其核心是依赖 Spring 框架自身强大的声明式事务管理功能，并通过自动配置来简化配置。</p>
+<h3 id="3-Spring-Boot-中如何使用事务？（怎么用）">3. Spring Boot 中如何使用事务？（怎么用）</h3>
+<p>Spring Boot 极大地简化了 Spring 框架的事务管理。其核心是依赖 Spring 框架自身强大的声明式事务管理功能，并通过自动配置来简化配置。</p>
 <p><strong>核心注解：<code>@Transactional</code></strong></p>
 <p>这是 Spring 中声明式事务最常用的方式。你可以将这个注解应用在<strong>类级别</strong>或<strong>方法级别</strong>。</p>
 <ul>
@@ -334,12 +338,12 @@
 </ul>
 <p><strong>基本用法示例：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><span class="hljs-keyword">import</span> org.springframework.transaction.annotation.Transactional;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> OrderRepository orderRepository;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ProductRepository productRepository;<br><br>    <span class="hljs-comment">// 构造函数注入依赖</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">OrderService</span><span class="hljs-params">(OrderRepository orderRepository, ProductRepository productRepository)</span> &#123;<br>        <span class="hljs-built_in">this</span>.orderRepository = orderRepository;<br>        <span class="hljs-built_in">this</span>.productRepository = productRepository;<br>    &#125;<br><br>    <span class="hljs-meta">@Transactional</span> <span class="hljs-comment">// 声明这是一个事务方法</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">placeOrder</span><span class="hljs-params">(Order order, Product productToUpdateStock)</span> &#123;<br>        <span class="hljs-comment">// 1. 保存订单</span><br>        orderRepository.save(order);<br><br>        <span class="hljs-comment">// 2. 更新产品库存 (假设这里可能抛出异常)</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">newStock</span> <span class="hljs-operator">=</span> productRepository.getStock(productToUpdateStock.getId()) - order.getQuantity();<br>        <span class="hljs-keyword">if</span> (newStock &lt; <span class="hljs-number">0</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;库存不足！订单创建失败。&quot;</span>); <span class="hljs-comment">// 抛出运行时异常，事务会回滚</span><br>        &#125;<br>        productRepository.updateStock(productToUpdateStock.getId(), newStock);<br><br>        <span class="hljs-comment">// 如果执行到这里没有异常，事务会自动提交</span><br>    &#125;<br><br>    <span class="hljs-comment">// 另一个方法，可能不需要事务或需要不同的事务配置</span><br>    <span class="hljs-keyword">public</span> Order <span class="hljs-title function_">getOrderDetails</span><span class="hljs-params">(Long orderId)</span> &#123;<br>        <span class="hljs-keyword">return</span> orderRepository.findById(orderId).orElse(<span class="hljs-literal">null</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p><strong>Spring Boot 的自动配置做了什么？</strong></p>
 <p>当你引入了像 <code>spring-boot-starter-data-jpa</code> 或 <code>spring-boot-starter-jdbc</code> 这样的起步依赖时，Spring Boot 会：</p>
 <ol>
 <li><strong>自动检测数据库的存在</strong>：通过 <code>DataSource</code>。</li>
-<li><strong>自动配置事务管理器</strong>：<ul>
+<li><strong>自动配置事务管理器</strong>：
+<ul>
 <li>如果是 JDBC，会配置 <code>DataSourceTransactionManager</code>。</li>
 <li>如果是 JPA (如 Hibernate)，会配置 <code>JpaTransactionManager</code>。</li>
 </ul>
@@ -348,9 +352,11 @@
 </ol>
 <p>所以，大部分情况下，你只需要在你的 Service 方法上添加 <code>@Transactional</code> 注解即可，无需编写任何 XML 配置或手动的事务管理器配置。</p>
 <hr>
-<h3 id="4-Transactional-的关键属性与最佳实践"><a href="#4-Transactional-的关键属性与最佳实践" class="headerlink" title="4. @Transactional 的关键属性与最佳实践"></a>4. <code>@Transactional</code> 的关键属性与最佳实践</h3><p><code>@Transactional</code> 注解有很多可选属性，可以更精细地控制事务行为。以下是一些最常用的：</p>
+<h3 id="4-Transactional-的关键属性与最佳实践">4. <code>@Transactional</code> 的关键属性与最佳实践</h3>
+<p><code>@Transactional</code> 注解有很多可选属性，可以更精细地控制事务行为。以下是一些最常用的：</p>
 <ol>
-<li><p><strong><code>propagation</code> (传播行为)</strong>：定义了当一个事务方法被另一个事务方法调用时，事务应该如何传播。</p>
+<li>
+<p><strong><code>propagation</code> (传播行为)</strong>：定义了当一个事务方法被另一个事务方法调用时，事务应该如何传播。</p>
 <ul>
 <li><code>REQUIRED</code> (默认值): 如果当前存在事务，则加入该事务；如果当前没有事务，则创建一个新的事务。<strong>这是最常用的设置。</strong></li>
 <li><code>SUPPORTS</code>: 如果当前存在事务，则加入该事务；如果当前没有事务，则以非事务方式执行。</li>
@@ -361,7 +367,8 @@
 <li><code>NESTED</code>: 如果当前存在事务，则在嵌套事务内执行。如果当前没有事务，则行为类似 <code>REQUIRED</code>。嵌套事务是外部事务的一部分，但可以独立回滚或提交（对于某些事务管理器，如 JDBC 的 <code>DataSourceTransactionManager</code>，它可能依赖保存点 savepoint）。它与 <code>REQUIRES_NEW</code> 的区别在于，<code>NESTED</code> 依赖于外部事务，外部事务回滚，它也会回滚；而 <code>REQUIRES_NEW</code> 是完全独立的。</li>
 </ul>
 </li>
-<li><p><strong><code>isolation</code> (隔离级别)</strong>：定义事务的隔离程度，以防止并发问题。</p>
+<li>
+<p><strong><code>isolation</code> (隔离级别)</strong>：定义事务的隔离程度，以防止并发问题。</p>
 <ul>
 <li><code>DEFAULT</code> (默认值): 使用数据库的默认隔离级别。</li>
 <li><code>READ_UNCOMMITTED</code>: 最低级别，允许读取尚未提交的数据变更（脏读）。性能最高，但数据一致性最差。</li>
@@ -370,19 +377,23 @@
 <li><code>SERIALIZABLE</code>: 最高级别，完全服从 ACID 的隔离级别。所有的事务依次逐个执行，这样事务之间就完全不可能产生干扰。性能最低，但数据一致性最好。</li>
 </ul>
 </li>
-<li><p><strong><code>timeout</code> (超时时间)</strong>：事务在超时前允许执行的最长时间（秒）。如果超时，事务将自动回滚。默认值为 <code>-1</code>（表示不超时，或使用底层事务系统的默认超时）。</p>
+<li>
+<p><strong><code>timeout</code> (超时时间)</strong>：事务在超时前允许执行的最长时间（秒）。如果超时，事务将自动回滚。默认值为 <code>-1</code>（表示不超时，或使用底层事务系统的默认超时）。</p>
 </li>
-<li><p><strong><code>readOnly</code> (只读事务)</strong>：</p>
+<li>
+<p><strong><code>readOnly</code> (只读事务)</strong>：</p>
 <ul>
 <li><code>true</code>: 表示这是一个只读事务。数据库可能会针对只读事务进行一些优化（例如，不记录回滚日志，或者在某些隔离级别下提供更好的并发性）。<strong>对于查询操作，建议设置为 <code>true</code>。</strong></li>
 <li><code>false</code> (默认值): 表示这是一个读写事务。</li>
 </ul>
 </li>
-<li><p><strong><code>rollbackFor</code> 和 <code>noRollbackFor</code> (回滚规则)</strong>：</p>
+<li>
+<p><strong><code>rollbackFor</code> 和 <code>noRollbackFor</code> (回滚规则)</strong>：</p>
 <ul>
 <li>默认情况下，Spring 的事务管理只会在遇到 <strong><code>RuntimeException</code> (运行时异常) 或 <code>Error</code></strong> 时才会回滚事务。</li>
 <li>对于 <strong><code>Checked Exception</code> (受检异常)</strong>，默认情况下<strong>不会回滚</strong>。</li>
-<li><code>rollbackFor</code>: 指定哪些异常类型会导致事务回滚。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(rollbackFor = &#123;IOException.class, MyBusinessException.class&#125;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processFile</span><span class="hljs-params">(String filePath)</span> <span class="hljs-keyword">throws</span> IOException, MyBusinessException &#123; ... &#125;<br></code></pre></td></tr></table></figure></li>
+<li><code>rollbackFor</code>: 指定哪些异常类型会导致事务回滚。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(rollbackFor = &#123;IOException.class, MyBusinessException.class&#125;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">processFile</span><span class="hljs-params">(String filePath)</span> <span class="hljs-keyword">throws</span> IOException, MyBusinessException &#123; ... &#125;<br></code></pre></td></tr></table></figure>
+</li>
 <li><code>noRollbackFor</code>: 指定哪些异常类型即使发生也不会导致事务回滚。</li>
 </ul>
 </li>
@@ -392,24 +403,32 @@
 <li><strong><code>@Transactional</code> 应主要用于业务逻辑层 (Service 层)</strong>：Service 层封装了业务逻辑，通常需要协调多个 DAO 操作。Controller 层一般不直接处理事务，DAO 层通常在 Service 层的事务边界内执行。</li>
 <li><strong><code>@Transactional</code> 仅对 <code>public</code> 方法生效</strong>：Spring 通过 AOP 代理来实现事务。对于 <code>private</code>, <code>protected</code> 或包可见性的方法，或者同一个类中的方法调用（<code>this.someMethod()</code>），代理可能不会生效，导致事务配置失效。要确保事务生效，方法必须是 <code>public</code> 且通过代理对象调用。</li>
 <li><strong>避免在事务方法中进行耗时操作</strong>：如网络请求、大量计算等，这会长时间占用数据库连接，影响系统吞吐量。</li>
-<li><strong>明确异常处理与回滚</strong>：理解默认的回滚规则。如果需要对受检异常进行回滚，务必使用 <code>rollbackFor</code>。如果捕获了异常但又希望事务回滚，要么重新抛出运行时异常，要么手动设置回滚：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.transaction.interceptor.TransactionAspectSupport;<br><span class="hljs-comment">// ...</span><br><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-comment">// ... some operations</span><br>&#125; <span class="hljs-keyword">catch</span> (SomeCheckedException e) &#123;<br>    <span class="hljs-comment">// Log the exception</span><br>    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); <span class="hljs-comment">// 手动标记回滚</span><br>    <span class="hljs-comment">// 可以选择向上抛出自定义的运行时异常或不抛出</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><strong>明确异常处理与回滚</strong>：理解默认的回滚规则。如果需要对受检异常进行回滚，务必使用 <code>rollbackFor</code>。如果捕获了异常但又希望事务回滚，要么重新抛出运行时异常，要么手动设置回滚：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.transaction.interceptor.TransactionAspectSupport;<br><span class="hljs-comment">// ...</span><br><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-comment">// ... some operations</span><br>&#125; <span class="hljs-keyword">catch</span> (SomeCheckedException e) &#123;<br>    <span class="hljs-comment">// Log the exception</span><br>    TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); <span class="hljs-comment">// 手动标记回滚</span><br>    <span class="hljs-comment">// 可以选择向上抛出自定义的运行时异常或不抛出</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 <li><strong>合理选择传播行为和隔离级别</strong>：大多数情况下 <code>REQUIRED</code> 和数据库默认隔离级别就够用。但在特定复杂场景下，需要仔细考虑。</li>
 <li><strong>只读事务优化</strong>：对于纯查询操作，使用 <code>@Transactional(readOnly = true)</code> 可以提升性能。</li>
 <li><strong>测试事务</strong>：Spring Boot 提供了 <code>@DataJpaTest</code> (针对 JPA) 或 <code>@JdbcTest</code> (针对 JDBC) 等测试注解，它们通常会默认开启事务并在测试结束后回滚，方便测试数据操作。也可以在 <code>@SpringBootTest</code> 中结合 <code>@Transactional</code> 使用，测试方法执行完毕后事务会自动回滚，避免污染数据库。如果想在测试中提交事务，可以使用 <code>@Rollback(false)</code>。</li>
 </ol>
 <hr>
-<h3 id="5-扩展与新趋势"><a href="#5-扩展与新趋势" class="headerlink" title="5. 扩展与新趋势"></a>5. 扩展与新趋势</h3><ol>
-<li><p><strong>编程式事务管理</strong>：<br>虽然声明式事务 (<code>@Transactional</code>) 是首选，但 Spring 也支持编程式事务管理，通过 <code>TransactionTemplate</code> 或直接使用 <code>PlatformTransactionManager</code>。这在一些特殊场景下（如动态决定事务行为）可能有用，但代码会更繁琐。</p>
+<h3 id="5-扩展与新趋势">5. 扩展与新趋势</h3>
+<ol>
+<li>
+<p><strong>编程式事务管理</strong>：<br>
+虽然声明式事务 (<code>@Transactional</code>) 是首选，但 Spring 也支持编程式事务管理，通过 <code>TransactionTemplate</code> 或直接使用 <code>PlatformTransactionManager</code>。这在一些特殊场景下（如动态决定事务行为）可能有用，但代码会更繁琐。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 示例：使用 TransactionTemplate</span><br><span class="hljs-meta">@Autowired</span><br><span class="hljs-keyword">private</span> TransactionTemplate transactionTemplate;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">doSomethingProgrammatically</span><span class="hljs-params">()</span> &#123;<br>    transactionTemplate.execute(status -&gt; &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 业务操作1</span><br>            <span class="hljs-comment">// 业务操作2</span><br>            <span class="hljs-keyword">return</span> someResult;<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            status.setRollbackOnly(); <span class="hljs-comment">// 手动标记回滚</span><br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;Operation failed&quot;</span>, e);<br>        &#125;<br>    &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>分布式事务 (JTA&#x2F;XA)</strong>：<br>当你的业务操作涉及到<strong>多个独立的事务资源</strong>（例如，两个不同的数据库，或者一个数据库和一个消息队列 JMS）时，单个 <code>@Transactional</code> 无法保证跨多个资源的原子性。这时就需要分布式事务。</p>
+<li>
+<p><strong>分布式事务 (JTA/XA)</strong>：<br>
+当你的业务操作涉及到<strong>多个独立的事务资源</strong>（例如，两个不同的数据库，或者一个数据库和一个消息队列 JMS）时，单个 <code>@Transactional</code> 无法保证跨多个资源的原子性。这时就需要分布式事务。</p>
 <ul>
 <li><strong>JTA (Java Transaction API)</strong> 是 Java EE 中用于分布式事务的标准 API。</li>
 <li>Spring Boot 可以集成 JTA 事务管理器，如 Atomikos 或 Narayana。你需要添加相应的 starter，如 <code>spring-boot-starter-jta-atomikos</code>。</li>
 <li>分布式事务通常比本地事务更复杂，性能开销也更大，应谨慎使用。对于微服务架构，常采用最终一致性方案（如 Saga 模式、事件驱动）来替代强一致性的分布式事务。</li>
 </ul>
 </li>
-<li><p><strong>响应式事务 (Reactive Transactions)</strong>：<br>随着 Spring WebFlux 和响应式编程的兴起，对响应式数据访问（如 R 2 DBC）的事务支持也变得重要。</p>
+<li>
+<p><strong>响应式事务 (Reactive Transactions)</strong>：<br>
+随着 Spring WebFlux 和响应式编程的兴起，对响应式数据访问（如 R 2 DBC）的事务支持也变得重要。</p>
 <ul>
 <li>Spring Framework 5.2+ 和 Spring Boot 2.2+ 开始提供对响应式事务的更好支持。</li>
 <li>可以使用 <code>@Transactional</code> 注解配合 R2DBC (例如，<code>spring-r2dbc</code> 模块)。</li>
@@ -418,7 +437,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 示例：使用 TransactionalOperator (R2DBC)</span><br><span class="hljs-comment">// @Autowired</span><br><span class="hljs-comment">// private ReactiveTransactionManager tm; // 自动配置</span><br><br><span class="hljs-comment">// public Flux&lt;Void&gt; saveAll(Publisher&lt;User&gt; users) &#123;</span><br><span class="hljs-comment">//     TransactionalOperator rxtx = TransactionalOperator.create(tm);</span><br><span class="hljs-comment">//     return Flux.from(users)</span><br><span class="hljs-comment">//         .flatMap(userRepository::save)</span><br><span class="hljs-comment">//         .as(rxtx::transactional); // 应用事务</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure>
 <p>从 Spring Framework 6.1 和 Spring Boot 3.2 开始，<code>@Transactional</code> 注解也得到了对响应式上下文的更好支持，可以直接在返回 <code>Mono</code> 或 <code>Flux</code> 的方法上使用，简化了响应式事务管理。</p>
 </li>
-<li><p><strong>Spring Boot 3.x 中的事务</strong>：</p>
+<li>
+<p><strong>Spring Boot 3.x 中的事务</strong>：</p>
 <ul>
 <li>Spring Boot 3.x 基于 Spring Framework 6.x，后者要求 Java 17+。</li>
 <li>事务管理的核心机制没有根本性变化，但对 Jakarta EE 规范的支持（如 <code>jakarta.transaction.Transactional</code>）是其一部分。</li>

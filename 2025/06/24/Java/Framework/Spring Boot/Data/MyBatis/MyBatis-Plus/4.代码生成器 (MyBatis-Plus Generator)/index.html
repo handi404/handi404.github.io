@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="讲解 MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)。这是一个极其实用的工具，能够根据数据库表结构自动生成项目所需的各层代码，大幅减少重复劳动，提高开发效率，并有助于保持代码风格的一致性。  4. MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)MyBatis-Plus Generator (简称 MPG) 是 MP 提">
+    <meta name="description" content="讲解 MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)。这是一个极其实用的工具，能够根据数据库表结构自动生成项目所需的各层代码，大幅减少重复劳动，提高开发效率，并有助于保持代码风格的一致性。  4. MyBatis-Plus 代码生成器 (MyBatis-Plus Generator) MyBatis-Plus Generator (简称 MPG) 是 MP">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/4.%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E5%99%A8%20(MyBatis-Plus%20Generator)/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="讲解 MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)。这是一个极其实用的工具，能够根据数据库表结构自动生成项目所需的各层代码，大幅减少重复劳动，提高开发效率，并有助于保持代码风格的一致性。  4. MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)MyBatis-Plus Generator (简称 MPG) 是 MP 提">
+<meta property="og:description" content="讲解 MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)。这是一个极其实用的工具，能够根据数据库表结构自动生成项目所需的各层代码，大幅减少重复劳动，提高开发效率，并有助于保持代码风格的一致性。  4. MyBatis-Plus 代码生成器 (MyBatis-Plus Generator) MyBatis-Plus Generator (简称 MPG) 是 MP">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.096Z">
 <meta property="article:modified_time" content="2025-06-16T07:58:50.921Z">
@@ -241,7 +241,7 @@
         
         
         
-          33 分钟
+          32 分钟
         
       </span>
     
@@ -302,11 +302,12 @@
                 
                 <p>讲解 <strong>MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)</strong>。这是一个极其实用的工具，能够根据数据库表结构自动生成项目所需的各层代码，大幅减少重复劳动，提高开发效率，并有助于保持代码风格的一致性。</p>
 <hr>
-<h3 id="4-MyBatis-Plus-代码生成器-MyBatis-Plus-Generator"><a href="#4-MyBatis-Plus-代码生成器-MyBatis-Plus-Generator" class="headerlink" title="4. MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)"></a>4. MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)</h3><p>MyBatis-Plus Generator (简称 MPG) 是 MP 提供的一个独立的代码生成引擎。它非常灵活，可以通过配置来控制生成的代码内容、风格、模板等。</p>
-<h4 id="4-1-依赖引入"><a href="#4-1-依赖引入" class="headerlink" title="4.1 依赖引入"></a>4.1 依赖引入</h4><p>要在项目中使用代码生成器，你需要添加以下依赖到你的 <code>pom.xml</code> (通常在一个专门的 <code>generator</code> 模块或者临时添加到主模块，生成完代码后可以移除或注释掉)。</p>
+<h3 id="4-MyBatis-Plus-代码生成器-MyBatis-Plus-Generator">4. MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)</h3>
+<p>MyBatis-Plus Generator (简称 MPG) 是 MP 提供的一个独立的代码生成引擎。它非常灵活，可以通过配置来控制生成的代码内容、风格、模板等。</p>
+<h4 id="4-1-依赖引入">4.1 依赖引入</h4>
+<p>要在项目中使用代码生成器，你需要添加以下依赖到你的 <code>pom.xml</code> (通常在一个专门的 <code>generator</code> 模块或者临时添加到主模块，生成完代码后可以移除或注释掉)。</p>
 <p><strong>对于 Maven 项目 (<code>pom.xml</code>):</strong></p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- MyBatis-Plus Generator --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-generator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.5<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <span class="hljs-comment">&lt;!-- 建议与 mybatis-plus-boot-starter 版本保持一致或兼容 --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 数据库驱动 (根据你的数据库类型选择) --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-j<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>runtime<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span> <span class="hljs-comment">&lt;!-- 注意 scope，生成时需要，运行时不一定需要这个依赖在主模块 --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 模板引擎 (根据你选择的模板引擎添加) --&gt;</span><br>    <span class="hljs-comment">&lt;!-- Velocity (默认模板引擎) --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.velocity<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>velocity-engine-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <span class="hljs-comment">&lt;!-- 或更高兼容版本 --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Freemarker (可选模板引擎) --&gt;</span><br>    <span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">    &lt;dependency&gt;</span><br><span class="hljs-comment">        &lt;groupId&gt;org.freemarker&lt;/groupId&gt;</span><br><span class="hljs-comment">        &lt;artifactId&gt;freemarker&lt;/artifactId&gt;</span><br><span class="hljs-comment">        &lt;version&gt;2.3.32&lt;/version&gt;</span><br><span class="hljs-comment">    &lt;/dependency&gt;</span><br><span class="hljs-comment">    --&gt;</span><br>    <span class="hljs-comment">&lt;!-- Beetl (可选模板引擎) --&gt;</span><br>    <span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">    &lt;dependency&gt;</span><br><span class="hljs-comment">        &lt;groupId&gt;com.ibeetl&lt;/groupId&gt;</span><br><span class="hljs-comment">        &lt;artifactId&gt;beetl&lt;/artifactId&gt;</span><br><span class="hljs-comment">        &lt;version&gt;3.15.7.RELEASE&lt;/version&gt;</span><br><span class="hljs-comment">    &lt;/dependency&gt;</span><br><span class="hljs-comment">    --&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- Lombok (如果生成的实体类希望使用 Lombok 注解) --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">optional</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">optional</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
 <p><strong>关键点：</strong></p>
 <ul>
 <li><code>mybatis-plus-generator</code>: 核心代码生成器依赖。</li>
@@ -314,19 +315,21 @@
 <li><strong>模板引擎</strong>: MPG 支持多种模板引擎，默认是 Velocity。如果你想使用 Freemarker 或 Beetl，需要引入相应的依赖，并在配置中指定。</li>
 <li><strong>版本</strong>: <code>mybatis-plus-generator</code> 的版本最好与你项目中使用的 <code>mybatis-plus-boot-starter</code> 版本保持一致或接近，以确保兼容性。</li>
 </ul>
-<h4 id="4-2-配置代码生成器"><a href="#4-2-配置代码生成器" class="headerlink" title="4.2 配置代码生成器"></a>4.2 配置代码生成器</h4><p>配置代码生成器通常是通过编写一个 Java 类，在该类中实例化并配置 <code>AutoGenerator</code> 对象。这个类可以放在 <code>src/test/java</code> 目录下，或者一个独立的 <code>generator</code> 模块中。</p>
+<h4 id="4-2-配置代码生成器">4.2 配置代码生成器</h4>
+<p>配置代码生成器通常是通过编写一个 Java 类，在该类中实例化并配置 <code>AutoGenerator</code> 对象。这个类可以放在 <code>src/test/java</code> 目录下，或者一个独立的 <code>generator</code> 模块中。</p>
 <p>以下是一个典型的配置示例 (使用 Velocity 模板引擎)：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.generator; <span class="hljs-comment">// 包路径自定义</span><br><br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.FastAutoGenerator;<br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.config.*;<br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.config.rules.DateType;<br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;<br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine; <span class="hljs-comment">// 或 FreemarkerTemplateEngine 等</span><br><br><span class="hljs-keyword">import</span> java.util.Arrays;<br><span class="hljs-keyword">import</span> java.util.Collections;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CodeGenerator</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 1. 数据源配置</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">jdbcUrl</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;jdbc:mysql://localhost:3306/your_database_name?useUnicode=true&amp;characterEncoding=utf-8&amp;serverTimezone=Asia/Shanghai&quot;</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">username</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;your_username&quot;</span>;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">password</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;your_password&quot;</span>;<br><br>        FastAutoGenerator.create(jdbcUrl, username, password)<br>                <span class="hljs-comment">// 2. 全局配置</span><br>                .globalConfig(builder -&gt; &#123;<br>                    builder.author(<span class="hljs-string">&quot;YourName&quot;</span>) <span class="hljs-comment">// 设置作者</span><br>                            .enableSwagger() <span class="hljs-comment">// 开启 swagger 模式 (可选)</span><br>                            .outputDir(System.getProperty(<span class="hljs-string">&quot;user.dir&quot;</span>) + <span class="hljs-string">&quot;/src/main/java&quot;</span>) <span class="hljs-comment">// 指定输出目录</span><br>                            .commentDate(<span class="hljs-string">&quot;yyyy-MM-dd&quot;</span>) <span class="hljs-comment">// 注释日期格式</span><br>                            .dateType(DateType.TIME_PACK); <span class="hljs-comment">// 时间类型策略 DateType.ONLY_DATE (java.util.Date) / TIME_PACK (java.time.*) / SQL_PACK (java.sql.*)</span><br>                            <span class="hljs-comment">// .disableOpenDir(); // 禁止生成完成后打开输出目录</span><br>                &#125;)<br>                <span class="hljs-comment">// 3. 包配置</span><br>                .packageConfig(builder -&gt; &#123;<br>                    builder.parent(<span class="hljs-string">&quot;com.example.yourproject&quot;</span>) <span class="hljs-comment">// 设置父包名</span><br>                            .moduleName(<span class="hljs-string">&quot;module_name&quot;</span>) <span class="hljs-comment">// 设置父包模块名 (可选，会在父包下再创建一级)</span><br>                            .entity(<span class="hljs-string">&quot;entity&quot;</span>) <span class="hljs-comment">// Entity 包名</span><br>                            .mapper(<span class="hljs-string">&quot;mapper&quot;</span>) <span class="hljs-comment">// Mapper 包名</span><br>                            .service(<span class="hljs-string">&quot;service&quot;</span>) <span class="hljs-comment">// Service 包名</span><br>                            .serviceImpl(<span class="hljs-string">&quot;service.impl&quot;</span>) <span class="hljs-comment">// Service Impl 包名</span><br>                            .controller(<span class="hljs-string">&quot;controller&quot;</span>) <span class="hljs-comment">// Controller 包名 (可选)</span><br>                            .xml(<span class="hljs-string">&quot;mapper.xml&quot;</span>); <span class="hljs-comment">// Mapper XML 文件路径 (相对于 resources 目录)</span><br>                            <span class="hljs-comment">// .pathInfo(Collections.singletonMap(OutputFile.xml, System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/resources/mapper/module_name&quot;)); // 自定义 Mapper XML 输出路径</span><br>                &#125;)<br>                <span class="hljs-comment">// 4. 策略配置</span><br>                .strategyConfig(builder -&gt; &#123;<br>                    builder.addInclude(<span class="hljs-string">&quot;user_info&quot;</span>, <span class="hljs-string">&quot;product_orders&quot;</span>) <span class="hljs-comment">// 设置需要生成的表名 (可多个)</span><br>                            <span class="hljs-comment">// .addExclude(&quot;flyway_schema_history&quot;) // 设置需要排除的表名 (可多个)</span><br>                            <span class="hljs-comment">// .addTablePrefix(&quot;t_&quot;, &quot;c_&quot;) // 设置过滤表前缀 (生成实体时会去掉这些前缀)</span><br>                            <span class="hljs-comment">// .addTableSuffix(&quot;_db&quot;) // 设置过滤表后缀</span><br>                            <span class="hljs-comment">// .addFieldPrefix(&quot;f_&quot;, &quot;field_&quot;) // 设置过滤字段前缀</span><br>                            <span class="hljs-comment">// .addFieldSuffix(&quot;_col&quot;) // 设置过滤字段后缀</span><br><br>                            <span class="hljs-comment">// Entity 策略配置</span><br>                            .entityBuilder()<br>                            .enableLombok() <span class="hljs-comment">// 开启 Lombok 模型</span><br>                            <span class="hljs-comment">// .disableSerialVersionUID() // (可选) 禁止生成 serialVersionUID (如果开启了Lombok @Data，通常Lombok会处理)</span><br>                            .enableTableFieldAnnotation() <span class="hljs-comment">// (可选) 开启生成实体时生成字段注解 (标记 @TableField)</span><br>                            .naming(NamingStrategy.underline_to_camel) <span class="hljs-comment">// 数据库表名下划线转驼峰命名</span><br>                            .columnNaming(NamingStrategy.underline_to_camel) <span class="hljs-comment">// 数据库表字段下划线转驼峰命名</span><br>                            <span class="hljs-comment">// .addSuperEntityClass(BaseEntity.class) // (可选) 设置父类</span><br>                            <span class="hljs-comment">// .addSuperEntityColumns(&quot;id&quot;, &quot;create_time&quot;, &quot;update_time&quot;) // (可选) 父类公共字段</span><br>                            .idType(com.baomidou.mybatisplus.annotation.IdType.ASSIGN_ID) <span class="hljs-comment">// 全局主键策略</span><br>                            <span class="hljs-comment">// .formatFileName(&quot;%sEntity&quot;) // (可选) 自定义实体类文件名格式，%s 会替换为表名转换后的实体名</span><br><br>                            <span class="hljs-comment">// Mapper 策略配置</span><br>                            .mapperBuilder()<br>                            .superClass(com.baomidou.mybatisplus.core.mapper.BaseMapper.class) <span class="hljs-comment">// 设置父类</span><br>                            .enableMapperAnnotation() <span class="hljs-comment">// 开启 @Mapper 注解</span><br>                            .enableBaseResultMap() <span class="hljs-comment">// (可选) 启用 BaseResultMap 生成</span><br>                            .enableBaseColumnList() <span class="hljs-comment">// (可选) 启用 BaseColumnList 生成</span><br>                            .formatMapperFileName(<span class="hljs-string">&quot;%sMapper&quot;</span>) <span class="hljs-comment">// Mapper 文件名格式</span><br>                            .formatXmlFileName(<span class="hljs-string">&quot;%sMapper&quot;</span>) <span class="hljs-comment">// XML 文件名格式</span><br><br>                            <span class="hljs-comment">// Service 策略配置</span><br>                            .serviceBuilder()<br>                            .superServiceClass(com.baomidou.mybatisplus.extension.service.IService.class) <span class="hljs-comment">// Service 接口父类</span><br>                            .superServiceImplClass(com.baomidou.mybatisplus.extension.service.impl.ServiceImpl.class) <span class="hljs-comment">// Service 实现类父类</span><br>                            .formatServiceFileName(<span class="hljs-string">&quot;I%sService&quot;</span>) <span class="hljs-comment">// Service 接口文件名格式 (例如 IUserService)</span><br>                            .formatServiceImplFileName(<span class="hljs-string">&quot;%sServiceImpl&quot;</span>) <span class="hljs-comment">// Service 实现类文件名格式</span><br><br>                            <span class="hljs-comment">// Controller 策略配置 (可选)</span><br>                            .controllerBuilder()<br>                            .enableRestStyle(); <span class="hljs-comment">// 开启生成 @RestController 控制器</span><br>                            <span class="hljs-comment">// .formatFileName(&quot;%sController&quot;);</span><br>                &#125;)<br>                <span class="hljs-comment">// 5. 模板引擎配置 (可选，默认 Velocity)</span><br>                <span class="hljs-comment">// .templateEngine(new FreemarkerTemplateEngine()) // 使用 Freemarker 引擎</span><br>                .templateEngine(<span class="hljs-keyword">new</span> <span class="hljs-title class_">VelocityTemplateEngine</span>()) <span class="hljs-comment">// 显式指定 Velocity</span><br>                <span class="hljs-comment">// 6. 注入自定义配置 (可选，用于在模板中通过 cfg 对象访问)</span><br>                <span class="hljs-comment">/*</span><br><span class="hljs-comment">                .injectionConfig(builder -&gt; &#123;</span><br><span class="hljs-comment">                    builder.beforeOutputFile((tableInfo, objectMap) -&gt; &#123;</span><br><span class="hljs-comment">                        System.out.println(&quot;tableInfo: &quot; + tableInfo.getEntityName() + &quot; objectMap: &quot; + objectMap.size());</span><br><span class="hljs-comment">                    &#125;)</span><br><span class="hljs-comment">                    .customMap(Collections.singletonMap(&quot;my_config_key&quot;, &quot;my_config_value&quot;))</span><br><span class="hljs-comment">                    .customFile(Collections.singletonMap(&quot;DTO.java&quot;, &quot;/templates/dto.java.vm&quot;)) // 自定义输出文件</span><br><span class="hljs-comment">                    .build();</span><br><span class="hljs-comment">                &#125;)</span><br><span class="hljs-comment">                */</span><br>                <span class="hljs-comment">// 7. 执行生成</span><br>                .execute();<br><br>        System.out.println(<span class="hljs-string">&quot;代码生成完毕！&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// (可选) 辅助方法：获取表名列表 (如果不想写死)</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> List&lt;String&gt; <span class="hljs-title function_">getTables</span><span class="hljs-params">(String tables)</span> &#123;<br>        <span class="hljs-keyword">return</span> Arrays.asList(tables.split(<span class="hljs-string">&quot;,&quot;</span>));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p><strong>配置项详解：</strong></p>
 <ul>
 <li><strong><code>FastAutoGenerator.create(url, username, password)</code></strong>: 创建生成器实例并传入数据库连接信息。</li>
-<li><strong><code>.globalConfig(builder -&gt; &#123;&#125;)</code> (全局配置)</strong>:<ul>
+<li><strong><code>.globalConfig(builder -&gt; &#123;&#125;)</code> (全局配置)</strong>:
+<ul>
 <li><code>author(String author)</code>: 生成的类注释中的作者名。</li>
 <li><code>enableSwagger()</code>: 如果实体类属性需要 Swagger 注解 (<code>@ApiModelProperty</code>)，则开启。</li>
 <li><code>outputDir(String outputDir)</code>: <strong>非常重要</strong>。所有生成文件的根输出目录。通常是 <code>System.getProperty(&quot;user.dir&quot;) + &quot;/src/main/java&quot;</code>。</li>
 <li><code>commentDate(String pattern)</code>: 注释中日期的格式。</li>
-<li><code>dateType(DateType dateType)</code>: 数据库中日期时间类型映射到 Java 中的类型策略。<ul>
+<li><code>dateType(DateType dateType)</code>: 数据库中日期时间类型映射到 Java 中的类型策略。
+<ul>
 <li><code>DateType.ONLY_DATE</code>: <code>java.util.Date</code></li>
 <li><code>DateType.SQL_PACK</code>: <code>java.sql.Timestamp</code> 或 <code>java.sql.Date</code></li>
 <li><code>DateType.TIME_PACK</code>: <code>java.time.LocalDateTime</code>, <code>java.time.LocalDate</code>, <code>java.time.LocalTime</code> (<strong>推荐，Java 8+</strong>)</li>
@@ -334,7 +337,8 @@
 </li>
 </ul>
 </li>
-<li><strong><code>.packageConfig(builder -&gt; &#123;&#125;)</code> (包配置)</strong>:<ul>
+<li><strong><code>.packageConfig(builder -&gt; &#123;&#125;)</code> (包配置)</strong>:
+<ul>
 <li><code>parent(String parent)</code>: 所有生成类的父包名。</li>
 <li><code>moduleName(String moduleName)</code>: (可选) 模块名，会在 <code>parent</code> 包下再创建一级目录。</li>
 <li><code>entity(String entity)</code>: Entity (POJO) 类的包名 (相对于 <code>parent</code> 或 <code>parent.moduleName</code>)。</li>
@@ -346,8 +350,10 @@
 <li><code>pathInfo(Map&lt;OutputFile, String&gt; pathInfo)</code>: 可以更精细地控制每种类型文件的输出路径，覆盖默认规则。<code>OutputFile</code> 是一个枚举，包含 <code>entity</code>, <code>mapper</code>, <code>mapperXml</code>, <code>service</code>, <code>serviceImpl</code>, <code>controller</code> 等。</li>
 </ul>
 </li>
-<li><strong><code>.strategyConfig(builder -&gt; &#123;&#125;)</code> (策略配置)</strong>: 这是最核心的配置部分。<ul>
-<li><strong>表过滤</strong>:<ul>
+<li><strong><code>.strategyConfig(builder -&gt; &#123;&#125;)</code> (策略配置)</strong>: 这是最核心的配置部分。
+<ul>
+<li><strong>表过滤</strong>:
+<ul>
 <li><code>addInclude(String... include)</code>: 指定要生成代码的表名。</li>
 <li><code>addExclude(String... exclude)</code>: 指定要排除的表名。</li>
 <li><code>addTablePrefix(String... tablePrefix)</code>: 生成实体类名时，会自动移除这些表前缀。例如，表名 <code>t_user</code>，配置 <code>addTablePrefix(&quot;t_&quot;)</code>，则实体类名为 <code>User</code>。</li>
@@ -356,10 +362,12 @@
 <li><code>addFieldSuffix(String... fieldSuffix)</code>: 移除字段后缀。</li>
 </ul>
 </li>
-<li><strong>Entity 策略 (<code>.entityBuilder()</code>)</strong>:<ul>
-<li><code>enableLombok()</code>: 生成的实体类会添加 Lombok 注解 (如 <code>@Data</code>, <code>@TableName</code>, <code>@TableId</code> 等)，从而省略 getter&#x2F;setter 等样板代码。</li>
+<li><strong>Entity 策略 (<code>.entityBuilder()</code>)</strong>:
+<ul>
+<li><code>enableLombok()</code>: 生成的实体类会添加 Lombok 注解 (如 <code>@Data</code>, <code>@TableName</code>, <code>@TableId</code> 等)，从而省略 getter/setter 等样板代码。</li>
 <li><code>enableTableFieldAnnotation()</code>: 在实体字段上生成 <code>@TableField</code> 注解（即使字段名和属性名能通过驼峰转换匹配）。</li>
-<li><code>naming(NamingStrategy namingStrategy)</code>: 数据库表名到实体类名的转换策略。<ul>
+<li><code>naming(NamingStrategy namingStrategy)</code>: 数据库表名到实体类名的转换策略。
+<ul>
 <li><code>NamingStrategy.underline_to_camel</code>: 下划线转驼峰 (常用)。</li>
 <li><code>NamingStrategy.no_change</code>: 不改变。</li>
 </ul>
@@ -371,7 +379,8 @@
 <li><code>formatFileName(String format)</code>: 自定义实体类文件名，<code>%s</code> 代表表名按规则转换后的名称。</li>
 </ul>
 </li>
-<li><strong>Mapper 策略 (<code>.mapperBuilder()</code>)</strong>:<ul>
+<li><strong>Mapper 策略 (<code>.mapperBuilder()</code>)</strong>:
+<ul>
 <li><code>superClass(Class&lt;?&gt; superClass)</code>: 指定 Mapper 接口的父接口，通常是 <code>com.baomidou.mybatisplus.core.mapper.BaseMapper.class</code>。</li>
 <li><code>enableMapperAnnotation()</code>: 在生成的 Mapper 接口上添加 <code>@Mapper</code> 注解。</li>
 <li><code>enableBaseResultMap()</code>: 在生成的 Mapper XML 文件中，自动创建一个基础的 <code>ResultMap</code> (包含所有字段的映射)。</li>
@@ -380,24 +389,28 @@
 <li><code>formatXmlFileName(String format)</code>: Mapper XML 文件名格式。</li>
 </ul>
 </li>
-<li><strong>Service 策略 (<code>.serviceBuilder()</code>)</strong>:<ul>
+<li><strong>Service 策略 (<code>.serviceBuilder()</code>)</strong>:
+<ul>
 <li><code>superServiceClass(Class&lt;?&gt; superClass)</code>: Service 接口的父接口，通常是 <code>com.baomidou.mybatisplus.extension.service.IService.class</code>。</li>
 <li><code>superServiceImplClass(Class&lt;?&gt; superClass)</code>: Service 实现类的父类，通常是 <code>com.baomidou.mybatisplus.extension.service.impl.ServiceImpl.class</code>。</li>
 <li><code>formatServiceFileName(String format)</code>: Service 接口文件名格式 (如 <code>I%sService</code> -&gt; <code>IUserService</code>)。</li>
 <li><code>formatServiceImplFileName(String format)</code>: Service 实现类文件名格式。</li>
 </ul>
 </li>
-<li><strong>Controller 策略 (<code>.controllerBuilder()</code>)</strong>: (如果需要生成 Controller)<ul>
+<li><strong>Controller 策略 (<code>.controllerBuilder()</code>)</strong>: (如果需要生成 Controller)
+<ul>
 <li><code>enableRestStyle()</code>: 生成的 Controller 会使用 <code>@RestController</code> 注解。</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong><code>.templateEngine(ITemplateEngine templateEngine)</code></strong>:<ul>
+<li><strong><code>.templateEngine(ITemplateEngine templateEngine)</code></strong>:
+<ul>
 <li>指定使用的模板引擎。可以是 <code>new VelocityTemplateEngine()</code> (默认), <code>new FreemarkerTemplateEngine()</code>, <code>new BeetlTemplateEngine()</code>。</li>
 </ul>
 </li>
-<li><strong><code>.injectionConfig(builder -&gt; &#123;&#125;)</code> (注入配置)</strong>:<ul>
+<li><strong><code>.injectionConfig(builder -&gt; &#123;&#125;)</code> (注入配置)</strong>:
+<ul>
 <li>允许你在代码生成过程中注入自定义的配置数据 (<code>customMap</code>)，这些数据可以在模板文件中通过 <code>cfg.key</code> 的方式访问。</li>
 <li>可以注册 <code>beforeOutputFile</code> 回调，在文件输出前进行一些处理。</li>
 <li><code>customFile</code>: 可以指定自定义的模板文件和输出文件名，用于生成额外的、非标准的文件 (如 DTO, VO)。</li>
@@ -405,10 +418,11 @@
 </li>
 <li><strong><code>.execute()</code></strong>: 执行代码生成过程。</li>
 </ul>
-<h4 id="4-3-生成-Entity-Mapper-Service-Controller"><a href="#4-3-生成-Entity-Mapper-Service-Controller" class="headerlink" title="4.3 生成 Entity, Mapper, Service, Controller"></a>4.3 生成 Entity, Mapper, Service, Controller</h4><p>运行配置好的 <code>CodeGenerator</code> 的 <code>main</code> 方法后，MPG 会连接数据库，读取指定表的元数据 (表名、列名、类型、注释等)，然后根据策略配置和模板文件，在指定的输出目录下生成相应的 Java 类和 XML 文件。</p>
+<h4 id="4-3-生成-Entity-Mapper-Service-Controller">4.3 生成 Entity, Mapper, Service, Controller</h4>
+<p>运行配置好的 <code>CodeGenerator</code> 的 <code>main</code> 方法后，MPG 会连接数据库，读取指定表的元数据 (表名、列名、类型、注释等)，然后根据策略配置和模板文件，在指定的输出目录下生成相应的 Java 类和 XML 文件。</p>
 <p><strong>生成的文件通常包括：</strong></p>
 <ul>
-<li><strong>Entity 类</strong>: 包含属性、getter&#x2F;setter (或 Lombok 注解)、以及 MP 的实体注解。</li>
+<li><strong>Entity 类</strong>: 包含属性、getter/setter (或 Lombok 注解)、以及 MP 的实体注解。</li>
 <li><strong>Mapper 接口</strong>: 继承 <code>BaseMapper</code>，带有 <code>@Mapper</code> 注解。</li>
 <li><strong>Mapper XML 文件</strong>: (如果配置生成) 可能包含 <code>BaseResultMap</code> 和 <code>BaseColumnList</code>。自定义的 SQL 之后可以添加到这里。</li>
 <li><strong>Service 接口</strong>: 继承 <code>IService</code>。</li>
@@ -418,10 +432,12 @@
 <p><strong>首次生成与后续生成：</strong></p>
 <ul>
 <li><strong>首次生成</strong>: MPG 会创建所有指定的文件。</li>
-<li><strong>后续生成 (文件已存在)</strong>:<ul>
+<li><strong>后续生成 (文件已存在)</strong>:
+<ul>
 <li>默认情况下，如果目标文件已存在，MPG <strong>不会覆盖</strong>它，以防止你手动修改的代码丢失。它会在控制台打印提示。</li>
 <li>可以通过全局配置 <code>globalConfig(builder -&gt; builder.fileOverride())</code> 来强制覆盖已存在的文件。<strong>使用此选项务必小心！</strong></li>
-<li>通常的做法是：<ol>
+<li>通常的做法是：
+<ol>
 <li>首次生成全部代码。</li>
 <li>对于 Entity、Mapper 接口、Service 接口，如果表结构发生较大变化，可以考虑删除后重新生成 (注意备份自定义内容)。</li>
 <li>对于 Service 实现类、Controller 类、Mapper XML 中的自定义 SQL，这些是业务逻辑的主要承载者，<strong>不应该被自动生成覆盖</strong>。如果需要根据新表结构调整，通常是手动修改。</li>
@@ -431,12 +447,14 @@
 </ul>
 </li>
 </ul>
-<h4 id="4-4-自定义模板与策略"><a href="#4-4-自定义模板与策略" class="headerlink" title="4.4 自定义模板与策略"></a>4.4 自定义模板与策略</h4><p>MPG 的强大之处在于其高度的可定制性。你可以修改内置的模板，或者提供全新的模板来生成完全符合你项目规范的代码。</p>
+<h4 id="4-4-自定义模板与策略">4.4 自定义模板与策略</h4>
+<p>MPG 的强大之处在于其高度的可定制性。你可以修改内置的模板，或者提供全新的模板来生成完全符合你项目规范的代码。</p>
 <p><strong>模板文件：</strong></p>
 <ul>
 <li>MPG 内置了 Velocity 模板 (<code>.vm</code> 文件) 用于生成各种代码。</li>
 <li>这些模板文件位于 <code>mybatis-plus-generator.jar</code> 包的 <code>templates</code> 目录下 (如 <code>entity.java.vm</code>, <code>mapper.java.vm</code>, <code>service.java.vm</code>, <code>controller.java.vm</code>, <code>mapper.xml.vm</code> 等)。</li>
-<li><strong>如何自定义模板</strong>:<ol>
+<li><strong>如何自定义模板</strong>:
+<ol>
 <li>从 JAR 包中复制出你想要修改的模板文件。</li>
 <li>将它们放到你项目的 <code>src/main/resources/templates</code> 目录下 (或者通过 <code>.templateConfig()</code> 指定其他自定义模板路径)。</li>
 <li>修改这些 <code>.vm</code> (或 <code>.ftl</code> for Freemarker) 文件。模板中可以使用预定义的变量 (如 <code>table</code> 对象包含表信息，<code>entity</code> 对象包含实体信息，<code>cfg</code> 对象包含注入的自定义配置等) 来动态生成内容。</li>

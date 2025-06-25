@@ -302,19 +302,24 @@
                 
                 <p>Spring AI 中的 <code>ChatModel</code> API。这是与大语言模型（LLM）进行<strong>对话式交互</strong>的核心接口。</p>
 <p><code>ChatModel</code> API 设计的目标是提供一个统一、简洁的方式来与各种底层聊天模型（如 OpenAI 的 GPT 系列、Azure OpenAI、Google Vertex AI Gemini、Ollama 本地模型、Anthropic Claude 等）进行交互，而无需关心它们各自 SDK 的复杂性。</p>
-<h3 id="核心概念-Core-Concept"><a href="#核心概念-Core-Concept" class="headerlink" title="核心概念 (Core Concept)"></a>核心概念 (Core Concept)</h3><p><code>ChatModel</code> 是 Spring AI 中用于<strong>生成基于聊天完成（Chat Completion）的文本响应</strong>的抽象。与简单的文本补全（text completion）不同，聊天完成通常涉及到多轮对话历史（context），使得模型能够理解上下文并给出更连贯和相关的回答。</p>
+<h3 id="核心概念-Core-Concept">核心概念 (Core Concept)</h3>
+<p><code>ChatModel</code> 是 Spring AI 中用于<strong>生成基于聊天完成（Chat Completion）的文本响应</strong>的抽象。与简单的文本补全（text completion）不同，聊天完成通常涉及到多轮对话历史（context），使得模型能够理解上下文并给出更连贯和相关的回答。</p>
 <p>你可以把它想象成一个<strong>通用的对话引擎接口</strong>。</p>
-<h3 id="主要接口方法-Key-API-Methods"><a href="#主要接口方法-Key-API-Methods" class="headerlink" title="主要接口方法 (Key API Methods)"></a>主要接口方法 (Key API Methods)</h3><p><code>ChatModel</code> 接口本身非常简洁，主要定义了以下几个核心方法（位于 <code>org.springframework.ai.chat.model.ChatModel</code>）：</p>
+<h3 id="主要接口方法-Key-API-Methods">主要接口方法 (Key API Methods)</h3>
+<p><code>ChatModel</code> 接口本身非常简洁，主要定义了以下几个核心方法（位于 <code>org.springframework.ai.chat.model.ChatModel</code>）：</p>
 <ol>
-<li><p><strong><code>ChatResponse call(Prompt prompt)</code></strong>:</p>
+<li>
+<p><strong><code>ChatResponse call(Prompt prompt)</code></strong>:</p>
 <ul>
 <li><strong>功能</strong>: 这是最常用的方法，发送一个<strong>单个提示（Prompt）<strong>给聊天模型，并同步获取一个</strong>聊天响应（ChatResponse）</strong>。</li>
-<li><strong>输入 (<code>Prompt</code>):</strong><ul>
+<li><strong>输入 (<code>Prompt</code>):</strong>
+<ul>
 <li>包含一个 <code>List&lt;Message&gt;</code> 对象，代表了当前的对话历史和用户最新的输入。</li>
 <li>可以包含 <code>PromptOptions</code>，用于传递特定于模型的配置参数（如 <code>temperature</code>, <code>topP</code>, <code>maxTokens</code>, <code>model</code> 等）。</li>
 </ul>
 </li>
-<li><strong>输出 (<code>ChatResponse</code>):</strong><ul>
+<li><strong>输出 (<code>ChatResponse</code>):</strong>
+<ul>
 <li>包含一个 <code>List&lt;Generation&gt;</code> 对象，每个 <code>Generation</code> 代表模型生成的一个候选回复。通常情况下，这个列表只有一个元素，但如果请求多个候选回复（例如通过设置 <code>n</code> 参数），则可能包含多个。</li>
 <li>每个 <code>Generation</code> 内部包含一个 <code>Message</code> 对象（通常是 <code>AssistantMessage</code> 类型，代表模型的回复）和可选的元数据（如 <code>finishReason</code>）。</li>
 <li><code>ChatResponse</code> 还可能包含全局的元数据（<code>ChatResponseMetadata</code>），如 token 使用情况、请求 ID 等。</li>
@@ -323,12 +328,14 @@
 <li><strong>使用场景</strong>: 单次请求-响应交互，或者当你需要完整响应后才能进行下一步操作时。</li>
 </ul>
 </li>
-<li><p><strong><code>Flux&lt;ChatResponse&gt; stream(Prompt prompt)</code></strong>:</p>
+<li>
+<p><strong><code>Flux&lt;ChatResponse&gt; stream(Prompt prompt)</code></strong>:</p>
 <ul>
 <li><strong>功能</strong>: 发送一个提示给聊天模型，并以**流式（Streaming）**的方式异步接收响应。这意味着模型的响应会以小块（chunks）的形式逐步返回，而不是等待整个响应生成完毕。</li>
 <li><strong>输入 (<code>Prompt</code>):</strong> 与 <code>call</code> 方法相同。</li>
 <li><strong>输出 (<code>Flux&lt;ChatResponse&gt;</code>):</strong> 这是一个 Project Reactor 的 <code>Flux</code> 对象。每个发出的 <code>ChatResponse</code> 对象通常包含部分生成的文本内容。你需要聚合这些 <code>ChatResponse</code> 中的内容来获得完整的回复。流的最后一个 <code>ChatResponse</code> 通常包含完整的元数据（如 token 使用情况）。</li>
-<li><strong>使用场景</strong>:<ul>
+<li><strong>使用场景</strong>:
+<ul>
 <li>需要实时显示模型生成过程的场景，如聊天机器人界面。</li>
 <li>处理可能非常长的响应，避免长时间等待。</li>
 <li>提高用户体验，让用户感觉交互更即时。</li>
@@ -336,7 +343,8 @@
 </li>
 </ul>
 </li>
-<li><p><strong><code>default ChatResponse call(String text)</code></strong>: (便利方法)</p>
+<li>
+<p><strong><code>default ChatResponse call(String text)</code></strong>: (便利方法)</p>
 <ul>
 <li><strong>功能</strong>: 这是一个基于 <code>call(Prompt prompt)</code> 的便利方法，允许你快速发送一个简单的字符串作为用户消息。</li>
 <li><strong>输入 (<code>String text</code>):</strong> 用户的单轮输入文本。</li>
@@ -345,9 +353,11 @@
 </ul>
 </li>
 </ol>
-<h3 id="核心数据结构-Core-Data-Structures"><a href="#核心数据结构-Core-Data-Structures" class="headerlink" title="核心数据结构 (Core Data Structures)"></a>核心数据结构 (Core Data Structures)</h3><p>理解 <code>ChatModel</code> API 离不开以下几个核心数据结构：</p>
+<h3 id="核心数据结构-Core-Data-Structures">核心数据结构 (Core Data Structures)</h3>
+<p>理解 <code>ChatModel</code> API 离不开以下几个核心数据结构：</p>
 <ol>
-<li><p><strong><code>Message&lt;T&gt;</code></strong>: (位于 <code>org.springframework.messaging.Message</code>，Spring Framework 核心组件)</p>
+<li>
+<p><strong><code>Message&lt;T&gt;</code></strong>: (位于 <code>org.springframework.messaging.Message</code>，Spring Framework 核心组件)</p>
 <ul>
 <li>Spring AI 利用了 Spring Messaging 的 <code>Message</code> 抽象。</li>
 <li><code>T</code> 是消息的载荷 (payload)。</li>
@@ -355,31 +365,38 @@
 <li>它还包含 <code>MessageHeaders</code>，可以存储元数据。</li>
 </ul>
 </li>
-<li><p><strong>Spring AI 特有的 <code>Message</code> 类型</strong>: (位于 <code>org.springframework.ai.chat.messages</code>)<br>这些类继承自 <code>AbstractMessage</code>，而 <code>AbstractMessage</code> 实现了 Spring Framework 的 <code>Message&lt;String&gt;</code>。</p>
+<li>
+<p><strong>Spring AI 特有的 <code>Message</code> 类型</strong>: (位于 <code>org.springframework.ai.chat.messages</code>)<br>
+这些类继承自 <code>AbstractMessage</code>，而 <code>AbstractMessage</code> 实现了 Spring Framework 的 <code>Message&lt;String&gt;</code>。</p>
 <ul>
 <li><strong><code>UserMessage(String content)</code></strong>: 代表用户的输入。</li>
-<li><strong><code>UserMessage(String text, List&lt;Media&gt; media)</code></strong>: (最新特性) 代表用户的多模态输入，可以包含文本和媒体数据（如图片）。<ul>
+<li><strong><code>UserMessage(String text, List&lt;Media&gt; media)</code></strong>: (最新特性) 代表用户的多模态输入，可以包含文本和媒体数据（如图片）。
+<ul>
 <li><code>Media(MimeType mimeType, Object data)</code>: <code>data</code> 可以是 <code>Resource</code> 或 <code>byte[]</code>。</li>
 </ul>
 </li>
 <li><strong><code>AssistantMessage(String content)</code></strong>: 代表 AI 助手的回复。</li>
 <li><strong><code>AssistantMessage(String content, Map&lt;String, Object&gt; properties, List&lt;ToolCall&gt; toolCalls)</code></strong>: (最新特性) 代表 AI 助手的回复，可以包含工具调用请求（Function Calling）。</li>
 <li><strong><code>SystemMessage(String content)</code></strong>: 用于给模型设定行为、角色或提供全局指令。通常放在对话列表的开头。</li>
-<li><strong><code>ToolResponseMessage(List&lt;ToolResponse&gt; responses)</code></strong>: (最新特性) 用于将工具（函数）执行的结果返回给模型。<ul>
+<li><strong><code>ToolResponseMessage(List&lt;ToolResponse&gt; responses)</code></strong>: (最新特性) 用于将工具（函数）执行的结果返回给模型。
+<ul>
 <li><code>ToolResponse(String id, String name, String responseData)</code></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p><strong><code>Prompt</code></strong>: (位于 <code>org.springframework.ai.chat.prompt.Prompt</code>)</p>
+<li>
+<p><strong><code>Prompt</code></strong>: (位于 <code>org.springframework.ai.chat.prompt.Prompt</code>)</p>
 <ul>
 <li><strong><code>List&lt;Message&gt; getInstructions()</code></strong>: 获取消息列表，即对话历史和当前用户输入。</li>
 <li><strong><code>PromptOptions getOptions()</code></strong>: 获取特定于模型的选项。</li>
 </ul>
 </li>
-<li><p><strong><code>PromptOptions</code></strong>: (位于 <code>org.springframework.ai.chat.prompt.PromptOptions</code>)</p>
+<li>
+<p><strong><code>PromptOptions</code></strong>: (位于 <code>org.springframework.ai.chat.prompt.PromptOptions</code>)</p>
 <ul>
-<li>这是一个标记接口，具体的实现由各个模型提供者定义，例如：<ul>
+<li>这是一个标记接口，具体的实现由各个模型提供者定义，例如：
+<ul>
 <li><code>OpenAiChatOptions</code>: 包含 <code>model</code>, <code>temperature</code>, <code>topP</code>, <code>maxTokens</code>, <code>presencePenalty</code>, <code>frequencyPenalty</code>, <code>stop</code>, <code>functions</code> (用于 Function Calling), <code>tools</code>, <code>toolChoice</code> 等。</li>
 <li><code>AzureOpenAiChatOptions</code>: 类似 OpenAI。</li>
 <li><code>OllamaOptions</code>: 包含 <code>model</code>, <code>temperature</code> 等。</li>
@@ -388,59 +405,73 @@
 <li>通常通过 <code>builder</code> 模式创建，例如 <code>OpenAiChatOptions.builder().withModel(&quot;gpt-4o&quot;).withTemperature(0.7f).build()</code>。</li>
 </ul>
 </li>
-<li><p><strong><code>ChatResponse</code></strong>: (位于 <code>org.springframework.ai.chat.model.ChatResponse</code>)</p>
+<li>
+<p><strong><code>ChatResponse</code></strong>: (位于 <code>org.springframework.ai.chat.model.ChatResponse</code>)</p>
 <ul>
-<li><strong><code>List&lt;Generation&gt; getResults()</code></strong>: 获取模型生成的多个结果&#x2F;候选。</li>
+<li><strong><code>List&lt;Generation&gt; getResults()</code></strong>: 获取模型生成的多个结果/候选。</li>
 <li><strong><code>ChatResponseMetadata getMetadata()</code></strong>: 获取响应的元数据，如 <code>Usage</code> (token 统计), <code>RateLimit</code> 等。</li>
 </ul>
 </li>
-<li><p><strong><code>Generation</code></strong>: (位于 <code>org.springframework.ai.chat.model.Generation</code>)</p>
+<li>
+<p><strong><code>Generation</code></strong>: (位于 <code>org.springframework.ai.chat.model.Generation</code>)</p>
 <ul>
 <li><strong><code>Message getOutput()</code></strong>: 获取模型生成的具体消息内容（通常是一个 <code>AssistantMessage</code>）。</li>
 <li><strong><code>GenerationMetadata getMetadata()</code></strong>: 获取此 <code>Generation</code> 的元数据，如 <code>finishReason</code>。</li>
 </ul>
 </li>
 </ol>
-<h3 id="如何使用-How-to-Use-简要示例"><a href="#如何使用-How-to-Use-简要示例" class="headerlink" title="如何使用 (How to Use - 简要示例)"></a>如何使用 (How to Use - 简要示例)</h3><p>假设你已经配置好了 OpenAI 的 <code>ChatModel</code> Bean。</p>
+<h3 id="如何使用-How-to-Use-简要示例">如何使用 (How to Use - 简要示例)</h3>
+<p>假设你已经配置好了 OpenAI 的 <code>ChatModel</code> Bean。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.ai.chat.messages.UserMessage;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.messages.AssistantMessage;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.model.ChatModel;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.model.ChatResponse;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.prompt.Prompt;<br><span class="hljs-keyword">import</span> org.springframework.ai.openai.OpenAiChatOptions; <span class="hljs-comment">// 具体模型的 Options</span><br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><br><span class="hljs-keyword">import</span> java.util.ArrayList;<br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> java.util.Map;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyChatService</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ChatModel chatModel;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyChatService</span><span class="hljs-params">(ChatModel chatModel)</span> &#123; <span class="hljs-comment">// 依赖注入 ChatModel</span><br>        <span class="hljs-built_in">this</span>.chatModel = chatModel;<br>    &#125;<br><br>    <span class="hljs-comment">// 简单单轮对话</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">simpleChat</span><span class="hljs-params">(String userInput)</span> &#123;<br>        <span class="hljs-comment">// 使用便利方法</span><br>        <span class="hljs-comment">// ChatResponse response = chatModel.call(userInput);</span><br>        <span class="hljs-comment">// return response.getResult().getOutput().getContent();</span><br><br>        <span class="hljs-comment">// 或者标准方式</span><br>        <span class="hljs-type">UserMessage</span> <span class="hljs-variable">userMessage</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserMessage</span>(userInput);<br>        <span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompt</span>(userMessage);<br>        <span class="hljs-type">ChatResponse</span> <span class="hljs-variable">response</span> <span class="hljs-operator">=</span> chatModel.call(prompt);<br>        <span class="hljs-keyword">return</span> response.getResult().getOutput().getContent();<br>    &#125;<br><br>    <span class="hljs-comment">// 带上下文的多轮对话</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">multiTurnChat</span><span class="hljs-params">(List&lt;Message&gt; conversationHistory, String newUserInput)</span> &#123;<br>        List&lt;Message&gt; messages = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(conversationHistory);<br>        messages.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">UserMessage</span>(newUserInput));<br><br>        <span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompt</span>(messages);<br>        <span class="hljs-type">ChatResponse</span> <span class="hljs-variable">response</span> <span class="hljs-operator">=</span> chatModel.call(prompt);<br><br>        <span class="hljs-comment">// 更新对话历史</span><br>        <span class="hljs-comment">// conversationHistory.add(new UserMessage(newUserInput)); // 实际应用中，这里的 conversationHistory 应由调用者管理</span><br>        <span class="hljs-comment">// conversationHistory.add(response.getResult().getOutput());</span><br><br>        <span class="hljs-keyword">return</span> response.getResult().getOutput().getContent();<br>    &#125;<br><br>    <span class="hljs-comment">// 使用特定模型选项 (如温度)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">chatWithOptions</span><span class="hljs-params">(String userInput)</span> &#123;<br>        <span class="hljs-type">UserMessage</span> <span class="hljs-variable">userMessage</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserMessage</span>(userInput);<br><br>        <span class="hljs-type">OpenAiChatOptions</span> <span class="hljs-variable">options</span> <span class="hljs-operator">=</span> OpenAiChatOptions.builder()<br>                .withModel(<span class="hljs-string">&quot;gpt-4o&quot;</span>) <span class="hljs-comment">// 可以指定模型，如果默认配置不是这个</span><br>                .withTemperature(<span class="hljs-number">0.7f</span>)<br>                .withMaxTokens(<span class="hljs-number">150</span>)<br>                .build();<br><br>        <span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompt</span>(userMessage, options);<br>        <span class="hljs-type">ChatResponse</span> <span class="hljs-variable">response</span> <span class="hljs-operator">=</span> chatModel.call(prompt);<br>        <span class="hljs-keyword">return</span> response.getResult().getOutput().getContent();<br>    &#125;<br><br>    <span class="hljs-comment">// 流式响应</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">streamChat</span><span class="hljs-params">(String userInput)</span> &#123;<br>        <span class="hljs-type">UserMessage</span> <span class="hljs-variable">userMessage</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserMessage</span>(userInput);<br>        <span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompt</span>(userMessage);<br><br>        chatModel.stream(prompt)<br>            .flatMap(chatResponse -&gt; Flux.fromIterable(chatResponse.getResults()))<br>            .map(generation -&gt; generation.getOutput().getContent())<br>            .doOnNext(System.out::print) <span class="hljs-comment">// 实时打印每个 token/chunk</span><br>            .doOnError(error -&gt; System.err.println(<span class="hljs-string">&quot;Error streaming: &quot;</span> + error.getMessage()))<br>            .doOnComplete(() -&gt; System.out.println(<span class="hljs-string">&quot;\nStreaming complete.&quot;</span>))<br>            .subscribe(); <span class="hljs-comment">// 实际应用中会传递给客户端，例如通过 SSE</span><br>    &#125;<br><br>    <span class="hljs-comment">// 多模态示例 (需要模型支持，如 gpt-4o)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">describeImage</span><span class="hljs-params">(String textPrompt, org.springframework.core.io.Resource imageResource)</span> &#123;<br>        <span class="hljs-type">var</span> <span class="hljs-variable">userMessage</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserMessage</span>(<br>            textPrompt,<br>            List.of(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Media</span>(MimeTypeUtils.IMAGE_PNG, imageResource)) <span class="hljs-comment">// 假设是 PNG 图片</span><br>        );<br>        <span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompt</span>(List.of(userMessage), OpenAiChatOptions.builder()<br>            .withModel(<span class="hljs-string">&quot;gpt-4o&quot;</span>) <span class="hljs-comment">// 确保模型支持图像</span><br>            .build());<br>        <span class="hljs-type">ChatResponse</span> <span class="hljs-variable">response</span> <span class="hljs-operator">=</span> chatModel.call(prompt);<br>        <span class="hljs-keyword">return</span> response.getResult().getOutput().getContent();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="关键特性与扩展-Key-Features-and-Extensions"><a href="#关键特性与扩展-Key-Features-and-Extensions" class="headerlink" title="关键特性与扩展 (Key Features and Extensions)"></a>关键特性与扩展 (Key Features and Extensions)</h3><ol>
+<h3 id="关键特性与扩展-Key-Features-and-Extensions">关键特性与扩展 (Key Features and Extensions)</h3>
+<ol>
 <li><strong>统一抽象</strong>: 开发者使用一套 API 与不同 LLM 服务商交互。更换底层模型通常只需要修改配置和少量特定选项代码。</li>
-<li><strong>配置驱动</strong>:<ul>
+<li><strong>配置驱动</strong>:
+<ul>
 <li>通过 <code>application.properties</code> 或 <code>application.yml</code> 配置 API Key、模型名称、默认选项等。</li>
-<li>例如:<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">ai:</span><br>    <span class="hljs-attr">openai:</span><br>      <span class="hljs-attr">api-key:</span> <span class="hljs-string">$&#123;OPENAI_API_KEY&#125;</span><br>      <span class="hljs-attr">chat:</span><br>        <span class="hljs-attr">options:</span><br>          <span class="hljs-attr">model:</span> <span class="hljs-string">gpt-3.5-turbo</span><br>          <span class="hljs-attr">temperature:</span> <span class="hljs-number">0.7</span><br></code></pre></td></tr></table></figure></li>
+<li>例如:<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">ai:</span><br>    <span class="hljs-attr">openai:</span><br>      <span class="hljs-attr">api-key:</span> <span class="hljs-string">$&#123;OPENAI_API_KEY&#125;</span><br>      <span class="hljs-attr">chat:</span><br>        <span class="hljs-attr">options:</span><br>          <span class="hljs-attr">model:</span> <span class="hljs-string">gpt-3.5-turbo</span><br>          <span class="hljs-attr">temperature:</span> <span class="hljs-number">0.7</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><strong>Prompt Templating</strong>: 虽然不是 <code>ChatModel</code> API 的一部分，但 <code>PromptTemplate</code> (位于 <code>org.springframework.ai.chat.prompt.PromptTemplate</code>) 是构建 <code>Prompt</code> 对象的重要辅助工具，它允许你使用占位符动态生成消息内容。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">templateString</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;告诉我关于&#123;topic&#125;的三个笑话。&quot;</span>;<br><span class="hljs-type">PromptTemplate</span> <span class="hljs-variable">promptTemplate</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PromptTemplate</span>(templateString);<br><span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> promptTemplate.create(Map.of(<span class="hljs-string">&quot;topic&quot;</span>, <span class="hljs-string">&quot;猫&quot;</span>));<br><span class="hljs-comment">// 然后 chatModel.call(prompt);</span><br></code></pre></td></tr></table></figure></li>
+<li><strong>Prompt Templating</strong>: 虽然不是 <code>ChatModel</code> API 的一部分，但 <code>PromptTemplate</code> (位于 <code>org.springframework.ai.chat.prompt.PromptTemplate</code>) 是构建 <code>Prompt</code> 对象的重要辅助工具，它允许你使用占位符动态生成消息内容。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">templateString</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;告诉我关于&#123;topic&#125;的三个笑话。&quot;</span>;<br><span class="hljs-type">PromptTemplate</span> <span class="hljs-variable">promptTemplate</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PromptTemplate</span>(templateString);<br><span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> promptTemplate.create(Map.of(<span class="hljs-string">&quot;topic&quot;</span>, <span class="hljs-string">&quot;猫&quot;</span>));<br><span class="hljs-comment">// 然后 chatModel.call(prompt);</span><br></code></pre></td></tr></table></figure>
+</li>
 <li><strong>Output Parsers</strong>: (例如 <code>BeanOutputParser</code>, <code>MapOutputParser</code>, <code>ListOutputParser</code>) 用于将模型的文本输出转换为结构化的 Java 对象，使得处理 LLM 的响应更加方便。通常与 <code>PromptTemplate</code> 结合使用。</li>
-<li><strong>Function Calling &#x2F; Tool Usage</strong>: (最新且重要)<ul>
+<li><strong>Function Calling / Tool Usage</strong>: (最新且重要)
+<ul>
 <li>允许模型请求调用外部工具或函数来获取额外信息或执行操作。</li>
-<li><strong>流程</strong>:<ol>
-<li>在 <code>PromptOptions</code> (如 <code>OpenAiChatOptions</code>) 中定义可用的函数&#x2F;工具（名称、描述、参数模式）。</li>
+<li><strong>流程</strong>:
+<ol>
+<li>在 <code>PromptOptions</code> (如 <code>OpenAiChatOptions</code>) 中定义可用的函数/工具（名称、描述、参数模式）。</li>
 <li>模型如果认为需要调用函数，会在 <code>AssistantMessage</code> 的 <code>toolCalls</code> 字段中返回一个或多个 <code>ToolCall</code> 请求。</li>
-<li>你的应用代码检查 <code>toolCalls</code>，如果存在：<br>a.  根据 <code>ToolCall</code> 中的函数名和参数，执行相应的 Java 方法。<br>b.  将执行结果构造成 <code>ToolResponseMessage</code>。<br>c.  将这个 <code>ToolResponseMessage</code>（连同之前的对话历史和模型的函数调用请求消息）再次发送给模型。</li>
+<li>你的应用代码检查 <code>toolCalls</code>，如果存在：<br>
+a.  根据 <code>ToolCall</code> 中的函数名和参数，执行相应的 Java 方法。<br>
+b.  将执行结果构造成 <code>ToolResponseMessage</code>。<br>
+c.  将这个 <code>ToolResponseMessage</code>（连同之前的对话历史和模型的函数调用请求消息）再次发送给模型。</li>
 <li>模型利用函数返回的结果生成最终的用户可见的回复。</li>
 </ol>
 </li>
 <li>Spring AI 提供了 <code>@Bean</code> 声明的函数自动注册和调用的机制，简化了这一流程。通常使用 <code>ChatClient.builder(chatModel).build().prompt().tools(...)</code> 等方式进行更高级的封装。</li>
 </ul>
 </li>
-<li><strong>多模态输入</strong>: (最新进展)<ul>
+<li><strong>多模态输入</strong>: (最新进展)
+<ul>
 <li>如上例所示，<code>UserMessage</code> 现在可以包含 <code>List&lt;Media&gt;</code>，允许发送图像等多媒体数据给支持多模态输入的模型（如 <code>gpt-4o</code>, <code>gemini-1.5-pro</code>）。</li>
 <li>Spring AI 负责将 <code>Resource</code> 或 <code>byte[]</code> 形式的媒体数据正确编码并传递给模型。</li>
 </ul>
 </li>
 </ol>
-<h3 id="应用场景-Application-Scenarios"><a href="#应用场景-Application-Scenarios" class="headerlink" title="应用场景 (Application Scenarios)"></a>应用场景 (Application Scenarios)</h3><p><code>ChatModel</code> API 是构建以下类型应用的基础：</p>
+<h3 id="应用场景-Application-Scenarios">应用场景 (Application Scenarios)</h3>
+<p><code>ChatModel</code> API 是构建以下类型应用的基础：</p>
 <ul>
 <li><strong>智能聊天机器人 (Chatbots)</strong>: 提供客服、问答、闲聊等功能。</li>
 <li><strong>内容生成 (Content Generation)</strong>: 撰写文章、邮件、代码、广告词等。</li>
 <li><strong>文本摘要 (Summarization)</strong>: 从长文本中提取核心内容。</li>
 <li><strong>问答系统 (Q&amp;A Systems)</strong>: 基于提供的上下文或通用知识回答问题。</li>
 <li><strong>代码助手 (Coding Assistant)</strong>: 生成代码、解释代码、调试建议。</li>
-<li><strong>需要与外部系统交互的智能体 (AI Agents)</strong>: 通过 Function Calling&#x2F;Tool Usage 与 API、数据库等交互。</li>
+<li><strong>需要与外部系统交互的智能体 (AI Agents)</strong>: 通过 Function Calling/Tool Usage 与 API、数据库等交互。</li>
 </ul>
-<h3 id="总结-Summary"><a href="#总结-Summary" class="headerlink" title="总结 (Summary)"></a>总结 (Summary)</h3><p>Spring AI 的 <code>ChatModel</code> API 提供了一个强大而灵活的抽象层，用于与各种大语言模型进行对话式交互。它的核心优势在于<strong>统一性、简洁性、可扩展性以及与 Spring 生态的无缝集成</strong>。通过 <code>Prompt</code>、<code>Message</code> 等核心数据结构，以及 <code>call</code> 和 <code>stream</code> 方法，开发者可以轻松实现从简单问答到复杂的多轮对话、流式响应乃至高级的 Function Calling 和多模态交互。</p>
+<h3 id="总结-Summary">总结 (Summary)</h3>
+<p>Spring AI 的 <code>ChatModel</code> API 提供了一个强大而灵活的抽象层，用于与各种大语言模型进行对话式交互。它的核心优势在于<strong>统一性、简洁性、可扩展性以及与 Spring 生态的无缝集成</strong>。通过 <code>Prompt</code>、<code>Message</code> 等核心数据结构，以及 <code>call</code> 和 <code>stream</code> 方法，开发者可以轻松实现从简单问答到复杂的多轮对话、流式响应乃至高级的 Function Calling 和多模态交互。</p>
 <p>随着 Spring AI 的不断发展，<code>ChatModel</code> API 及其周边生态（如 Prompt Templating, Output Parsers, Function Calling 支持）会持续增强，为 Java 开发者构建下一代 AI 应用提供坚实的基础。始终关注 Spring AI 的官方文档和 GitHub 仓库以获取最新信息。</p>
 
                 

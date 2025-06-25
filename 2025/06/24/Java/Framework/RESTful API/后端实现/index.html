@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="后端在实现 RESTful API 时，需要设计和开发一个能够满足 RESTful 原则的服务。这包括资源建模、路由定义、请求处理、业务逻辑实现以及响应返回。以下是后端处理 RESTful API 的详细指南：  1. RESTful API 的设计步骤 资源建模  确定系统中的核心资源及其关系（如用户、订单、商品等）。 每个资源都用一个唯一的 URI 表示。   示例：  用户资源：&#x2F;users">
+    <meta name="description" content="后端在实现 RESTful API 时，需要设计和开发一个能够满足 RESTful 原则的服务。这包括资源建模、路由定义、请求处理、业务逻辑实现以及响应返回。以下是后端处理 RESTful API 的详细指南：  1. RESTful API 的设计步骤   资源建模  确定系统中的核心资源及其关系（如用户、订单、商品等）。 每个资源都用一个唯一的 URI 表示。  示例：  用户资源：&#x2F;user">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/RESTful%20API/%E5%90%8E%E7%AB%AF%E5%AE%9E%E7%8E%B0/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="后端在实现 RESTful API 时，需要设计和开发一个能够满足 RESTful 原则的服务。这包括资源建模、路由定义、请求处理、业务逻辑实现以及响应返回。以下是后端处理 RESTful API 的详细指南：  1. RESTful API 的设计步骤 资源建模  确定系统中的核心资源及其关系（如用户、订单、商品等）。 每个资源都用一个唯一的 URI 表示。   示例：  用户资源：&#x2F;users">
+<meta property="og:description" content="后端在实现 RESTful API 时，需要设计和开发一个能够满足 RESTful 原则的服务。这包括资源建模、路由定义、请求处理、业务逻辑实现以及响应返回。以下是后端处理 RESTful API 的详细指南：  1. RESTful API 的设计步骤   资源建模  确定系统中的核心资源及其关系（如用户、订单、商品等）。 每个资源都用一个唯一的 URI 表示。  示例：  用户资源：&#x2F;user">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:26.904Z">
 <meta property="article:modified_time" content="2024-12-07T12:27:28.639Z">
@@ -302,22 +302,26 @@
                 
                 <p>后端在实现 RESTful API 时，需要设计和开发一个能够满足 RESTful 原则的服务。这包括资源建模、路由定义、请求处理、业务逻辑实现以及响应返回。以下是后端处理 RESTful API 的详细指南：</p>
 <hr>
-<h3 id="1-RESTful-API-的设计步骤"><a href="#1-RESTful-API-的设计步骤" class="headerlink" title="1. RESTful API 的设计步骤"></a><strong>1. RESTful API 的设计步骤</strong></h3><ol>
-<li><p><strong>资源建模</strong></p>
+<h3 id="1-RESTful-API-的设计步骤"><strong>1. RESTful API 的设计步骤</strong></h3>
+<ol>
+<li>
+<p><strong>资源建模</strong></p>
 <ul>
 <li>确定系统中的核心资源及其关系（如用户、订单、商品等）。</li>
 <li>每个资源都用一个唯一的 URI 表示。</li>
 </ul>
-<p> <strong>示例：</strong></p>
+<p><strong>示例：</strong></p>
 <ul>
 <li>用户资源：<code>/users</code></li>
 <li>订单资源：<code>/orders</code></li>
 <li>用户的订单：<code>/users/&#123;id&#125;/orders</code></li>
 </ul>
 </li>
-<li><p><strong>确定操作方法</strong></p>
+<li>
+<p><strong>确定操作方法</strong></p>
 <ul>
-<li>使用 HTTP 方法定义资源的操作：<ul>
+<li>使用 HTTP 方法定义资源的操作：
+<ul>
 <li><code>GET</code>：获取资源。</li>
 <li><code>POST</code>：创建资源。</li>
 <li><code>PUT</code>：更新整个资源。</li>
@@ -327,9 +331,11 @@
 </li>
 </ul>
 </li>
-<li><p><strong>状态码与响应格式</strong></p>
+<li>
+<p><strong>状态码与响应格式</strong></p>
 <ul>
-<li><p>使用标准的 HTTP 状态码传递操作结果。</p>
+<li>
+<p>使用标准的 HTTP 状态码传递操作结果。</p>
 <ul>
 <li><code>200 OK</code>：成功。</li>
 <li><code>201 Created</code>：创建成功。</li>
@@ -339,13 +345,17 @@
 <li><code>500 Internal Server Error</code>：服务器错误。</li>
 </ul>
 </li>
-<li><p>返回 JSON 格式的数据： <strong>示例响应：</strong></p>
-  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;John Doe&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;email&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;john.doe@example.com&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>
+<p>返回 JSON 格式的数据： <strong>示例响应：</strong></p>
+  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;John Doe&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;email&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;john.doe@example.com&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>支持过滤、排序、分页</strong></p>
+<li>
+<p><strong>支持过滤、排序、分页</strong></p>
 <ul>
-<li>通过查询参数支持复杂查询需求：<ul>
+<li>通过查询参数支持复杂查询需求：
+<ul>
 <li><strong>过滤</strong>：<code>GET /users?role=admin</code></li>
 <li><strong>排序</strong>：<code>GET /users?sort=age,desc</code></li>
 <li><strong>分页</strong>：<code>GET /users?page=2&amp;size=20</code></li>
@@ -353,7 +363,8 @@
 </li>
 </ul>
 </li>
-<li><p><strong>安全性</strong></p>
+<li>
+<p><strong>安全性</strong></p>
 <ul>
 <li>使用 HTTPS 保护数据传输。</li>
 <li>使用 Token（如 JWT）进行身份认证和授权。</li>
@@ -362,64 +373,74 @@
 </li>
 </ol>
 <hr>
-<h3 id="2-RESTful-API-的实现技术"><a href="#2-RESTful-API-的实现技术" class="headerlink" title="2. RESTful API 的实现技术"></a><strong>2. RESTful API 的实现技术</strong></h3><p>不同的后端框架和语言都可以实现 RESTful API，这里以几种常见语言为例。</p>
-<h4 id="1）Node-js（Express-框架）"><a href="#1）Node-js（Express-框架）" class="headerlink" title="1）Node.js（Express 框架）"></a><strong>1）Node.js（Express 框架）</strong></h4><p>Express 是一个轻量的 Web 框架，适合快速开发 RESTful API。</p>
+<h3 id="2-RESTful-API-的实现技术"><strong>2. RESTful API 的实现技术</strong></h3>
+<p>不同的后端框架和语言都可以实现 RESTful API，这里以几种常见语言为例。</p>
+<h4 id="1）Node-js（Express-框架）"><strong>1）Node.js（Express 框架）</strong></h4>
+<p>Express 是一个轻量的 Web 框架，适合快速开发 RESTful API。</p>
 <p><strong>示例：</strong></p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> express = <span class="hljs-built_in">require</span>(<span class="hljs-string">&#x27;express&#x27;</span>);<br><span class="hljs-keyword">const</span> app = <span class="hljs-title function_">express</span>();<br><br>app.<span class="hljs-title function_">use</span>(express.<span class="hljs-title function_">json</span>()); <span class="hljs-comment">// 解析 JSON 请求体</span><br><br><span class="hljs-comment">// 获取所有用户</span><br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/users&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  res.<span class="hljs-title function_">json</span>([&#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John Doe&#x27;</span> &#125;]);<br>&#125;);<br><br><span class="hljs-comment">// 创建用户</span><br>app.<span class="hljs-title function_">post</span>(<span class="hljs-string">&#x27;/users&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> user = req.<span class="hljs-property">body</span>;<br>  <span class="hljs-comment">// 假设保存到数据库成功</span><br>  res.<span class="hljs-title function_">status</span>(<span class="hljs-number">201</span>).<span class="hljs-title function_">json</span>(user);<br>&#125;);<br><br><span class="hljs-comment">// 获取用户详情</span><br>app.<span class="hljs-title function_">get</span>(<span class="hljs-string">&#x27;/users/:id&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> userId = req.<span class="hljs-property">params</span>.<span class="hljs-property">id</span>;<br>  res.<span class="hljs-title function_">json</span>(&#123; <span class="hljs-attr">id</span>: userId, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John Doe&#x27;</span> &#125;);<br>&#125;);<br><br><span class="hljs-comment">// 更新用户</span><br>app.<span class="hljs-title function_">put</span>(<span class="hljs-string">&#x27;/users/:id&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> userId = req.<span class="hljs-property">params</span>.<span class="hljs-property">id</span>;<br>  <span class="hljs-keyword">const</span> updatedUser = req.<span class="hljs-property">body</span>;<br>  res.<span class="hljs-title function_">json</span>(&#123; <span class="hljs-attr">id</span>: userId, ...updatedUser &#125;);<br>&#125;);<br><br><span class="hljs-comment">// 删除用户</span><br>app.<span class="hljs-title function_">delete</span>(<span class="hljs-string">&#x27;/users/:id&#x27;</span>, <span class="hljs-function">(<span class="hljs-params">req, res</span>) =&gt;</span> &#123;<br>  res.<span class="hljs-title function_">status</span>(<span class="hljs-number">204</span>).<span class="hljs-title function_">send</span>(); <span class="hljs-comment">// 成功无内容</span><br>&#125;);<br><br>app.<span class="hljs-title function_">listen</span>(<span class="hljs-number">3000</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Server running on http://localhost:3000&#x27;</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h4 id="2）Java（Spring-Boot）"><a href="#2）Java（Spring-Boot）" class="headerlink" title="2）Java（Spring Boot）"></a><strong>2）Java（Spring Boot）</strong></h4><p>Spring Boot 是一个流行的 Java 框架，内置对 RESTful API 的支持。</p>
+<h4 id="2）Java（Spring-Boot）"><strong>2）Java（Spring Boot）</strong></h4>
+<p>Spring Boot 是一个流行的 Java 框架，内置对 RESTful API 的支持。</p>
 <p><strong>示例：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/users&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserController</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping</span><br>    <span class="hljs-keyword">public</span> List&lt;User&gt; <span class="hljs-title function_">getAllUsers</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> userService.findAll();<br>    &#125;<br><br>    <span class="hljs-meta">@PostMapping</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;User&gt; <span class="hljs-title function_">createUser</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> User user)</span> &#123;<br>        <span class="hljs-type">User</span> <span class="hljs-variable">createdUser</span> <span class="hljs-operator">=</span> userService.save(user);<br>        <span class="hljs-keyword">return</span> ResponseEntity.status(HttpStatus.CREATED).body(createdUser);<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;User&gt; <span class="hljs-title function_">getUser</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long id)</span> &#123;<br>        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userService.findById(id);<br>        <span class="hljs-keyword">return</span> ResponseEntity.ok(user);<br>    &#125;<br><br>    <span class="hljs-meta">@PutMapping(&quot;/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;User&gt; <span class="hljs-title function_">updateUser</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long id, <span class="hljs-meta">@RequestBody</span> User user)</span> &#123;<br>        <span class="hljs-type">User</span> <span class="hljs-variable">updatedUser</span> <span class="hljs-operator">=</span> userService.update(id, user);<br>        <span class="hljs-keyword">return</span> ResponseEntity.ok(updatedUser);<br>    &#125;<br><br>    <span class="hljs-meta">@DeleteMapping(&quot;/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;Void&gt; <span class="hljs-title function_">deleteUser</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long id)</span> &#123;<br>        userService.delete(id);<br>        <span class="hljs-keyword">return</span> ResponseEntity.noContent().build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h4 id="3）Python（Django-Rest-Framework）"><a href="#3）Python（Django-Rest-Framework）" class="headerlink" title="3）Python（Django Rest Framework）"></a><strong>3）Python（Django Rest Framework）</strong></h4><p>Django Rest Framework 是一个功能丰富的框架，用于快速构建 RESTful API。</p>
+<h4 id="3）Python（Django-Rest-Framework）"><strong>3）Python（Django Rest Framework）</strong></h4>
+<p>Django Rest Framework 是一个功能丰富的框架，用于快速构建 RESTful API。</p>
 <p><strong>示例：</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">from</span> rest_framework.decorators <span class="hljs-keyword">import</span> api_view<br><span class="hljs-keyword">from</span> rest_framework.response <span class="hljs-keyword">import</span> Response<br><br><span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_users</span>(<span class="hljs-params">request</span>):<br>    users = [&#123;<span class="hljs-string">&#x27;id&#x27;</span>: <span class="hljs-number">1</span>, <span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;John Doe&#x27;</span>&#125;]<br>    <span class="hljs-keyword">return</span> Response(users)<br><br><span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;POST&#x27;</span>]</span>)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">create_user</span>(<span class="hljs-params">request</span>):<br>    user = request.data<br>    <span class="hljs-keyword">return</span> Response(user, status=<span class="hljs-number">201</span>)<br><br><span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;GET&#x27;</span>]</span>)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">get_user</span>(<span class="hljs-params">request, user_id</span>):<br>    user = &#123;<span class="hljs-string">&#x27;id&#x27;</span>: user_id, <span class="hljs-string">&#x27;name&#x27;</span>: <span class="hljs-string">&#x27;John Doe&#x27;</span>&#125;<br>    <span class="hljs-keyword">return</span> Response(user)<br><br><span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;PUT&#x27;</span>]</span>)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">update_user</span>(<span class="hljs-params">request, user_id</span>):<br>    updated_user = request.data<br>    <span class="hljs-keyword">return</span> Response(&#123;<span class="hljs-string">&#x27;id&#x27;</span>: user_id, **updated_user&#125;)<br><br><span class="hljs-meta">@api_view(<span class="hljs-params">[<span class="hljs-string">&#x27;DELETE&#x27;</span>]</span>)</span><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">delete_user</span>(<span class="hljs-params">request, user_id</span>):<br>    <span class="hljs-keyword">return</span> Response(status=<span class="hljs-number">204</span>)<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="3-RESTful-API-的优化"><a href="#3-RESTful-API-的优化" class="headerlink" title="3. RESTful API 的优化"></a><strong>3. RESTful API 的优化</strong></h3><ol>
-<li><p><strong>性能优化</strong></p>
+<h3 id="3-RESTful-API-的优化"><strong>3. RESTful API 的优化</strong></h3>
+<ol>
+<li>
+<p><strong>性能优化</strong></p>
 <ul>
 <li><strong>缓存</strong>：为 GET 请求的资源提供缓存。</li>
 <li><strong>压缩</strong>：启用 Gzip 压缩以减少响应数据量。</li>
 <li><strong>分页</strong>：避免一次性返回过多数据。</li>
 </ul>
 </li>
-<li><p><strong>日志和监控</strong></p>
+<li>
+<p><strong>日志和监控</strong></p>
 <ul>
 <li>记录每次 API 请求和响应的日志，便于排查问题。</li>
 <li>使用工具（如 Prometheus 或 ELK）监控 API 性能。</li>
 </ul>
 </li>
-<li><p><strong>异常处理</strong></p>
+<li>
+<p><strong>异常处理</strong></p>
 <ul>
 <li>捕获并处理所有错误，返回一致的错误信息。 <strong>示例：</strong></li>
 </ul>
  <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>        <span class="hljs-attr">&quot;code&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">400</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Invalid request data&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>文档</strong></p>
+<li>
+<p><strong>文档</strong></p>
 <ul>
-<li>使用 Swagger&#x2F;OpenAPI 自动生成 API 文档，方便开发者参考。</li>
+<li>使用 Swagger/OpenAPI 自动生成 API 文档，方便开发者参考。</li>
 <li><strong>示例工具</strong>：<code>Swagger UI</code>、<code>Postman</code>。</li>
 </ul>
 </li>
 </ol>
 <hr>
-<h3 id="4-RESTful-API-的最佳实践"><a href="#4-RESTful-API-的最佳实践" class="headerlink" title="4. RESTful API 的最佳实践"></a><strong>4. RESTful API 的最佳实践</strong></h3><ol>
-<li><p><strong>遵循 RESTful 原则</strong></p>
+<h3 id="4-RESTful-API-的最佳实践"><strong>4. RESTful API 的最佳实践</strong></h3>
+<ol>
+<li>
+<p><strong>遵循 RESTful 原则</strong></p>
 <ul>
 <li>避免在 URI 中使用动词，保持资源导向。</li>
 <li>合理使用 HTTP 方法和状态码。</li>
 </ul>
 </li>
-<li><p><strong>版本化 API</strong></p>
+<li>
+<p><strong>版本化 API</strong></p>
 <ul>
 <li>在 URI 中添加版本号：<code>/v1/users</code></li>
 <li>或在请求头中声明版本：<code>Accept: application/vnd.example.v1+json</code></li>
 </ul>
 </li>
-<li><p><strong>安全性</strong></p>
+<li>
+<p><strong>安全性</strong></p>
 <ul>
 <li>验证所有输入数据，防止注入攻击。</li>
 <li>使用 HTTPS 传输数据。</li>

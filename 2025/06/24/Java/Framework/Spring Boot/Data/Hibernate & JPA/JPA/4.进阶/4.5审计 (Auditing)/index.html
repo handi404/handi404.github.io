@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="探讨 Spring Data JPA 提供的审计 (Auditing) 功能。这是一个非常实用的特性，可以帮助你自动记录实体的创建者、创建时间、最后修改者和最后修改时间，而无需在每个实体或 Service 方法中手动编写这些逻辑。  4.5 审计 (Auditing)审计功能的核心目标是追踪数据的变更历史，特别是谁在什么时候创建或修改了数据。Spring Data JPA 通过结合 JPA 实体监">
+    <meta name="description" content="探讨 Spring Data JPA 提供的审计 (Auditing) 功能。这是一个非常实用的特性，可以帮助你自动记录实体的创建者、创建时间、最后修改者和最后修改时间，而无需在每个实体或 Service 方法中手动编写这些逻辑。  4.5 审计 (Auditing) 审计功能的核心目标是追踪数据的变更历史，特别是谁在什么时候创建或修改了数据。Spring Data JPA 通过结合 JPA 实体">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/JPA/4.%E8%BF%9B%E9%98%B6/4.5%E5%AE%A1%E8%AE%A1%20(Auditing)/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="探讨 Spring Data JPA 提供的审计 (Auditing) 功能。这是一个非常实用的特性，可以帮助你自动记录实体的创建者、创建时间、最后修改者和最后修改时间，而无需在每个实体或 Service 方法中手动编写这些逻辑。  4.5 审计 (Auditing)审计功能的核心目标是追踪数据的变更历史，特别是谁在什么时候创建或修改了数据。Spring Data JPA 通过结合 JPA 实体监">
+<meta property="og:description" content="探讨 Spring Data JPA 提供的审计 (Auditing) 功能。这是一个非常实用的特性，可以帮助你自动记录实体的创建者、创建时间、最后修改者和最后修改时间，而无需在每个实体或 Service 方法中手动编写这些逻辑。  4.5 审计 (Auditing) 审计功能的核心目标是追踪数据的变更历史，特别是谁在什么时候创建或修改了数据。Spring Data JPA 通过结合 JPA 实体">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.063Z">
 <meta property="article:modified_time" content="2025-06-16T08:50:26.153Z">
@@ -302,26 +302,31 @@
                 
                 <p>探讨 Spring Data JPA 提供的<strong>审计 (Auditing)</strong> 功能。这是一个非常实用的特性，可以帮助你自动记录实体的创建者、创建时间、最后修改者和最后修改时间，而无需在每个实体或 Service 方法中手动编写这些逻辑。</p>
 <hr>
-<h4 id="4-5-审计-Auditing"><a href="#4-5-审计-Auditing" class="headerlink" title="4.5 审计 (Auditing)"></a>4.5 审计 (Auditing)</h4><p>审计功能的核心目标是追踪数据的变更历史，特别是谁在什么时候创建或修改了数据。Spring Data JPA 通过结合 JPA 实体监听器机制和一些特定的注解与接口，优雅地实现了这一功能。</p>
+<h4 id="4-5-审计-Auditing">4.5 审计 (Auditing)</h4>
+<p>审计功能的核心目标是追踪数据的变更历史，特别是谁在什么时候创建或修改了数据。Spring Data JPA 通过结合 JPA 实体监听器机制和一些特定的注解与接口，优雅地实现了这一功能。</p>
 <p><strong>核心注解：</strong></p>
 <p>Spring Data JPA 在 <code>org.springframework.data.annotation</code> 包下提供了以下用于审计的注解，可以将它们应用在实体类的属性上：</p>
 <ol>
-<li><strong><code>@CreatedBy</code></strong>:<ul>
+<li><strong><code>@CreatedBy</code></strong>:
+<ul>
 <li>标记一个属性，用于存储创建该实体的用户的标识 (例如，用户名、用户 ID)。</li>
 <li>属性类型通常是 <code>String</code> 或 <code>Long</code> (或其他能代表用户标识的类型)。</li>
 </ul>
 </li>
-<li><strong><code>@CreatedDate</code></strong>:<ul>
+<li><strong><code>@CreatedDate</code></strong>:
+<ul>
 <li>标记一个属性，用于存储实体被创建的时间戳。</li>
 <li>属性类型通常是 Java 8 的 <code>java.time.LocalDateTime</code>, <code>java.time.Instant</code>, <code>java.time.OffsetDateTime</code>，或者是旧的 <code>java.util.Date</code>, <code>long</code>。推荐使用 <code>java.time</code> 类型。</li>
 </ul>
 </li>
-<li><strong><code>@LastModifiedBy</code></strong>:<ul>
+<li><strong><code>@LastModifiedBy</code></strong>:
+<ul>
 <li>标记一个属性，用于存储最后修改该实体的用户的标识。</li>
 <li>属性类型与 <code>@CreatedBy</code> 类似。</li>
 </ul>
 </li>
-<li><strong><code>@LastModifiedDate</code></strong>:<ul>
+<li><strong><code>@LastModifiedDate</code></strong>:
+<ul>
 <li>标记一个属性，用于存储实体最后被修改的时间戳。</li>
 <li>属性类型与 <code>@CreatedDate</code> 类似。</li>
 </ul>
@@ -329,21 +334,29 @@
 </ol>
 <p><strong>如何启用和配置审计：</strong></p>
 <ol>
-<li><p><strong>在 Spring Boot 主应用类或配置类上添加 <code>@EnableJpaAuditing</code> 注解</strong>:<br>这个注解会启用 Spring Data JPA 的审计功能，并配置相关的实体监听器。</p>
+<li>
+<p><strong>在 Spring Boot 主应用类或配置类上添加 <code>@EnableJpaAuditing</code> 注解</strong>:<br>
+这个注解会启用 Spring Data JPA 的审计功能，并配置相关的实体监听器。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject;<br><br><span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;<br><span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;<br><span class="hljs-keyword">import</span> org.springframework.data.jpa.repository.config.EnableJpaAuditing; <span class="hljs-comment">// 导入注解</span><br><br><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-meta">@EnableJpaAuditing</span> <span class="hljs-comment">// ① 启用 JPA 审计功能</span><br><span class="hljs-comment">// (可选) 如果 AuditorAware Bean 不在当前包或子包，可能需要指定 auditorAwareRef</span><br><span class="hljs-comment">// @EnableJpaAuditing(auditorAwareRef = &quot;myAuditorAware&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">YourApplication</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SpringApplication.run(YourApplication.class, args);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>在实体类中使用审计注解</strong>:<br>你可以直接在实体类中使用这些注解，或者创建一个抽象的基类 (通常使用 <code>@MappedSuperclass</code>) 来包含这些审计字段，然后让你的实体继承它。</p>
+<li>
+<p><strong>在实体类中使用审计注解</strong>:<br>
+你可以直接在实体类中使用这些注解，或者创建一个抽象的基类 (通常使用 <code>@MappedSuperclass</code>) 来包含这些审计字段，然后让你的实体继承它。</p>
 <p><strong>方式一：直接在实体类中添加审计字段</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.entity;<br><br><span class="hljs-keyword">import</span> jakarta.persistence.*;<br><span class="hljs-keyword">import</span> org.springframework.data.annotation.CreatedBy;<br><span class="hljs-keyword">import</span> org.springframework.data.annotation.CreatedDate;<br><span class="hljs-keyword">import</span> org.springframework.data.annotation.LastModifiedBy;<br><span class="hljs-keyword">import</span> org.springframework.data.annotation.LastModifiedDate;<br><span class="hljs-keyword">import</span> org.springframework.data.jpa.domain.support.AuditingEntityListener; <span class="hljs-comment">// ② JPA 实体监听器</span><br><br><span class="hljs-keyword">import</span> java.time.LocalDateTime;<br><br><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@EntityListeners(AuditingEntityListener.class)</span> <span class="hljs-comment">// ② 将审计监听器关联到实体</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Book</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-keyword">private</span> String title;<br>    <span class="hljs-keyword">private</span> String author;<br><br>    <span class="hljs-meta">@CreatedBy</span> <span class="hljs-comment">// 创建者</span><br>    <span class="hljs-meta">@Column(name = &quot;created_by&quot;, updatable = false)</span> <span class="hljs-comment">// 通常创建者和创建时间不应被更新</span><br>    <span class="hljs-keyword">private</span> String createdBy;<br><br>    <span class="hljs-meta">@CreatedDate</span> <span class="hljs-comment">// 创建时间</span><br>    <span class="hljs-meta">@Column(name = &quot;created_date&quot;, updatable = false)</span><br>    <span class="hljs-keyword">private</span> LocalDateTime createdDate;<br><br>    <span class="hljs-meta">@LastModifiedBy</span> <span class="hljs-comment">// 最后修改者</span><br>    <span class="hljs-meta">@Column(name = &quot;last_modified_by&quot;)</span><br>    <span class="hljs-keyword">private</span> String lastModifiedBy;<br><br>    <span class="hljs-meta">@LastModifiedDate</span> <span class="hljs-comment">// 最后修改时间</span><br>    <span class="hljs-meta">@Column(name = &quot;last_modified_date&quot;)</span><br>    <span class="hljs-keyword">private</span> LocalDateTime lastModifiedDate;<br><br>    <span class="hljs-comment">// getters, setters</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>② <code>@EntityListeners(AuditingEntityListener.class)</code></strong>: <strong>非常重要</strong>。这个注解将 Spring Data JPA 提供的 <code>AuditingEntityListener</code> 关联到你的实体类上。这个监听器负责在实体持久化或更新时，根据 <code>@CreatedBy</code>, <code>@CreatedDate</code> 等注解自动填充相应的属性值。</li>
 </ul>
-<p><strong>方式二：使用 <code>@MappedSuperclass</code> 创建可审计的基类 (推荐)</strong><br>这是一种更 DRY (Don’t Repeat Yourself) 的方式，避免在每个实体中重复定义审计字段。<br><code>AuditableBaseEntity.java</code>:</p>
+<p><strong>方式二：使用 <code>@MappedSuperclass</code> 创建可审计的基类 (推荐)</strong><br>
+这是一种更 DRY (Don’t Repeat Yourself) 的方式，避免在每个实体中重复定义审计字段。<br>
+<code>AuditableBaseEntity.java</code>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.entity.base; <span class="hljs-comment">// 放在一个通用的包下</span><br><br><span class="hljs-keyword">import</span> jakarta.persistence.Column;<br><span class="hljs-keyword">import</span> jakarta.persistence.EntityListeners;<br><span class="hljs-keyword">import</span> jakarta.persistence.MappedSuperclass;<br><span class="hljs-keyword">import</span> lombok.Getter; <span class="hljs-comment">// Lombok</span><br><span class="hljs-keyword">import</span> lombok.Setter;<br><span class="hljs-keyword">import</span> org.springframework.data.annotation.CreatedBy;<br><span class="hljs-keyword">import</span> org.springframework.data.annotation.CreatedDate;<br><span class="hljs-keyword">import</span> org.springframework.data.annotation.LastModifiedBy;<br><span class="hljs-keyword">import</span> org.springframework.data.annotation.LastModifiedDate;<br><span class="hljs-keyword">import</span> org.springframework.data.jpa.domain.support.AuditingEntityListener;<br><br><span class="hljs-keyword">import</span> java.time.LocalDateTime;<br><br><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@MappedSuperclass</span> <span class="hljs-comment">// ① 标记为映射的父类，其属性会映射到子实体的表中</span><br><span class="hljs-meta">@EntityListeners(AuditingEntityListener.class)</span> <span class="hljs-comment">// ② 审计监听器放在父类上，对所有子类生效</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AuditableBaseEntity</span>&lt;U&gt; &#123; <span class="hljs-comment">// U 是用户标识的类型 (如 String, Long)</span><br><br>    <span class="hljs-meta">@CreatedBy</span><br>    <span class="hljs-meta">@Column(name = &quot;created_by&quot;, updatable = false)</span><br>    <span class="hljs-keyword">protected</span> U createdBy; <span class="hljs-comment">// 使用泛型 U</span><br><br>    <span class="hljs-meta">@CreatedDate</span><br>    <span class="hljs-meta">@Column(name = &quot;created_date&quot;, updatable = false)</span><br>    <span class="hljs-keyword">protected</span> LocalDateTime createdDate;<br><br>    <span class="hljs-meta">@LastModifiedBy</span><br>    <span class="hljs-meta">@Column(name = &quot;last_modified_by&quot;)</span><br>    <span class="hljs-keyword">protected</span> U lastModifiedBy;<br><br>    <span class="hljs-meta">@LastModifiedDate</span><br>    <span class="hljs-meta">@Column(name = &quot;last_modified_date&quot;)</span><br>    <span class="hljs-keyword">protected</span> LocalDateTime lastModifiedDate;<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>让你的实体类继承这个基类：<br><code>Product.java</code>:</p>
+<p>让你的实体类继承这个基类：<br>
+<code>Product.java</code>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.entity;<br><br><span class="hljs-keyword">import</span> com.example.yourproject.entity.base.AuditableBaseEntity;<br><span class="hljs-keyword">import</span> jakarta.persistence.Entity;<br><span class="hljs-keyword">import</span> jakarta.persistence.GeneratedValue;<br><span class="hljs-keyword">import</span> jakarta.persistence.Id;<br><span class="hljs-keyword">import</span> lombok.Getter;<br><span class="hljs-keyword">import</span> lombok.Setter;<br><br><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@Entity</span><br><span class="hljs-comment">// 不需要再写 @EntityListeners(AuditingEntityListener.class)，已从父类继承</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AuditableBaseEntity</span>&lt;String&gt; &#123; <span class="hljs-comment">// 假设用户标识是 String 类型</span><br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> Double price;<br><br>    <span class="hljs-comment">// createdBy, createdDate, lastModifiedBy, lastModifiedDate 字段已从 AuditableBaseEntity 继承</span><br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>实现并配置 <code>org.springframework.data.domain.AuditorAware&lt;T&gt;</code> 接口</strong>:</p>
+<li>
+<p><strong>实现并配置 <code>org.springframework.data.domain.AuditorAware&lt;T&gt;</code> 接口</strong>:</p>
 <ul>
 <li><code>AuditorAware&lt;T&gt;</code> 接口用于告诉 Spring Data JPA <strong>如何获取当前操作的用户 (auditor)</strong>。<code>T</code> 是用户标识的类型 (与实体中 <code>@CreatedBy</code> 和 <code>@LastModifiedBy</code> 属性的类型一致)。</li>
 <li>你需要创建一个实现此接口的 Bean，并将其注册到 Spring 容器中。</li>
@@ -351,7 +364,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.config; <span class="hljs-comment">// 或 service, component 包</span><br><br><span class="hljs-keyword">import</span> org.springframework.data.domain.AuditorAware;<br><span class="hljs-keyword">import</span> org.springframework.security.core.Authentication; <span class="hljs-comment">// 假设使用 Spring Security</span><br><span class="hljs-keyword">import</span> org.springframework.security.core.context.SecurityContextHolder;<br><span class="hljs-keyword">import</span> org.springframework.security.core.userdetails.User; <span class="hljs-comment">// Spring Security 的 User</span><br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-keyword">import</span> java.util.Optional;<br><br><span class="hljs-meta">@Component(&quot;myAuditorAware&quot;)</span> <span class="hljs-comment">// ① 给 Bean 一个名字 (可选，如果 @EnableJpaAuditing 中指定了 auditorAwareRef)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AuditorAwareImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AuditorAware</span>&lt;String&gt; &#123; <span class="hljs-comment">// 假设用户标识是 String (用户名)</span><br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Optional&lt;String&gt; <span class="hljs-title function_">getCurrentAuditor</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// ② 实现获取当前用户逻辑</span><br>        <span class="hljs-comment">// 通常与你的安全框架集成 (如 Spring Security)</span><br>        <span class="hljs-type">Authentication</span> <span class="hljs-variable">authentication</span> <span class="hljs-operator">=</span> SecurityContextHolder.getContext().getAuthentication();<br><br>        <span class="hljs-keyword">if</span> (authentication == <span class="hljs-literal">null</span> || !authentication.isAuthenticated() || authentication.getPrincipal().equals(<span class="hljs-string">&quot;anonymousUser&quot;</span>)) &#123;<br>            <span class="hljs-comment">// 如果用户未认证，或者希望对于匿名操作记录特定值</span><br>            <span class="hljs-keyword">return</span> Optional.of(<span class="hljs-string">&quot;SYSTEM&quot;</span>); <span class="hljs-comment">// 或者 Optional.empty() 如果允许审计字段为空</span><br>        &#125;<br><br>        <span class="hljs-comment">// 假设 principal 是 UserDetails 对象或用户名字符串</span><br>        <span class="hljs-type">Object</span> <span class="hljs-variable">principal</span> <span class="hljs-operator">=</span> authentication.getPrincipal();<br>        <span class="hljs-keyword">if</span> (principal <span class="hljs-keyword">instanceof</span> User) &#123; <span class="hljs-comment">// Spring Security 的 UserDetails 实现</span><br>            <span class="hljs-keyword">return</span> Optional.of(((User) principal).getUsername());<br>        &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (principal <span class="hljs-keyword">instanceof</span> String) &#123;<br>            <span class="hljs-keyword">return</span> Optional.of((String) principal);<br>        &#125;<br><br>        <span class="hljs-comment">// 对于其他情况或无法获取用户，返回一个默认值或 Optional.empty()</span><br>        <span class="hljs-keyword">return</span> Optional.of(<span class="hljs-string">&quot;UNKNOWN_USER&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>① <code>@Component(&quot;myAuditorAware&quot;)</code></strong>: 将实现类注册为 Spring Bean。如果 <code>@EnableJpaAuditing</code> 注解中没有指定 <code>auditorAwareRef</code>，Spring Data JPA 会尝试查找一个类型为 <code>AuditorAware</code> 的唯一 Bean。如果指定了 <code>auditorAwareRef = &quot;myAuditorAware&quot;</code>，则会查找名为 <code>myAuditorAware</code> 的 Bean。</li>
-<li><strong>② <code>getCurrentAuditor()</code> 方法</strong>:<ul>
+<li><strong>② <code>getCurrentAuditor()</code> 方法</strong>:
+<ul>
 <li>这是核心逻辑，你需要在这里返回当前操作用户的标识。</li>
 <li><strong>通常与 Spring Security 集成</strong>: 从 <code>SecurityContextHolder.getContext().getAuthentication()</code> 获取当前认证的用户信息。</li>
 <li><strong>如果你的应用没有使用安全框架</strong>: 你可能需要从 <code>ThreadLocal</code>、请求参数或其他方式获取当前用户。</li>
@@ -363,14 +377,16 @@
 </ol>
 <p><strong>工作流程：</strong></p>
 <ol>
-<li>当一个被 <code>@EntityListeners(AuditingEntityListener.class)</code> 标记的实体将要被持久化 (<code>persist</code>) 时：<ul>
+<li>当一个被 <code>@EntityListeners(AuditingEntityListener.class)</code> 标记的实体将要被持久化 (<code>persist</code>) 时：
+<ul>
 <li><code>AuditingEntityListener</code> 会被触发。</li>
 <li>它会检查实体是否有 <code>@CreatedDate</code> 注解的属性，如果有，则设置当前时间。</li>
 <li>它会调用 <code>AuditorAware</code> Bean 的 <code>getCurrentAuditor()</code> 方法获取当前用户。</li>
 <li>如果实体有 <code>@CreatedBy</code> 注解的属性，并且 <code>getCurrentAuditor()</code> 返回了用户，则设置该属性。</li>
 </ul>
 </li>
-<li>当一个已存在的、被审计的实体将要被更新 (<code>merge</code> 或 Managed 状态下属性被修改后 <code>flush</code>) 时：<ul>
+<li>当一个已存在的、被审计的实体将要被更新 (<code>merge</code> 或 Managed 状态下属性被修改后 <code>flush</code>) 时：
+<ul>
 <li><code>AuditingEntityListener</code> 会被触发。</li>
 <li>它会检查实体是否有 <code>@LastModifiedDate</code> 注解的属性，如果有，则设置当前时间。</li>
 <li>它会调用 <code>AuditorAware</code> Bean 的 <code>getCurrentAuditor()</code> 方法。</li>
@@ -386,7 +402,7 @@
 </ul>
 <p><strong>优点：</strong></p>
 <ul>
-<li><strong>自动化</strong>: 无需手动设置创建&#x2F;修改时间和用户，减少了样板代码和出错的可能。</li>
+<li><strong>自动化</strong>: 无需手动设置创建/修改时间和用户，减少了样板代码和出错的可能。</li>
 <li><strong>代码整洁</strong>: 审计逻辑与业务逻辑分离。</li>
 <li><strong>标准化</strong>: 提供了一种通用的审计实现方式。</li>
 </ul>

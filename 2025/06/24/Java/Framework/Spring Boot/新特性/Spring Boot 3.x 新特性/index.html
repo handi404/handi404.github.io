@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Spring Boot 3.x 是一个重要的主版本升级，带来了许多令人兴奋的新特性和显著的变化。它基于 Spring Framework 6.x 构建，并要求 Java 17 或更高版本作为基线。这使得 Spring Boot 能够充分利用 Java 语言的最新特性。 以下是 Spring Boot 3.x 的一些关键新特性和重要变化：  1. Java 17 基线 强制要求: Spring Bo">
+    <meta name="description" content="Spring Boot 3.x 是一个重要的主版本升级，带来了许多令人兴奋的新特性和显著的变化。它基于 Spring Framework 6.x 构建，并要求 Java 17 或更高版本作为基线。这使得 Spring Boot 能够充分利用 Java 语言的最新特性。 以下是 Spring Boot 3.x 的一些关键新特性和重要变化：  1. Java 17 基线  强制要求: Spring B">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/%E6%96%B0%E7%89%B9%E6%80%A7/Spring%20Boot%203.x%20%E6%96%B0%E7%89%B9%E6%80%A7/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="Spring Boot 3.x 是一个重要的主版本升级，带来了许多令人兴奋的新特性和显著的变化。它基于 Spring Framework 6.x 构建，并要求 Java 17 或更高版本作为基线。这使得 Spring Boot 能够充分利用 Java 语言的最新特性。 以下是 Spring Boot 3.x 的一些关键新特性和重要变化：  1. Java 17 基线 强制要求: Spring Bo">
+<meta property="og:description" content="Spring Boot 3.x 是一个重要的主版本升级，带来了许多令人兴奋的新特性和显著的变化。它基于 Spring Framework 6.x 构建，并要求 Java 17 或更高版本作为基线。这使得 Spring Boot 能够充分利用 Java 语言的最新特性。 以下是 Spring Boot 3.x 的一些关键新特性和重要变化：  1. Java 17 基线  强制要求: Spring B">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.355Z">
 <meta property="article:modified_time" content="2025-05-21T02:02:24.966Z">
@@ -303,19 +303,24 @@
                 <p>Spring Boot 3.x 是一个重要的主版本升级，带来了许多令人兴奋的新特性和显著的变化。它基于 <strong>Spring Framework 6.x</strong> 构建，并要求 <strong>Java 17 或更高版本</strong>作为基线。这使得 Spring Boot 能够充分利用 Java 语言的最新特性。</p>
 <p>以下是 Spring Boot 3.x 的一些关键新特性和重要变化：</p>
 <hr>
-<h3 id="1-Java-17-基线"><a href="#1-Java-17-基线" class="headerlink" title="1. Java 17 基线"></a>1. Java 17 基线</h3><ul>
+<h3 id="1-Java-17-基线">1. Java 17 基线</h3>
+<ul>
 <li><strong>强制要求</strong>: Spring Boot 3.0 及更高版本要求 Java 17 作为最低 JDK 版本。这意味着你不能在低于 Java 17 的环境中使用 Spring Boot 3.x。</li>
-<li><strong>好处</strong>:<ul>
+<li><strong>好处</strong>:
+<ul>
 <li>可以使用 Java 17 的语言特性，如 Records、Sealed Classes、Pattern Matching for <code>instanceof</code> 等，来编写更简洁、更安全的代码。</li>
 <li>受益于 Java 17 及其后续版本在性能、安全性和 API 方面的改进。</li>
 </ul>
 </li>
 </ul>
 <hr>
-<h3 id="2-Jakarta-EE-9-迁移"><a href="#2-Jakarta-EE-9-迁移" class="headerlink" title="2. Jakarta EE 9+ 迁移"></a>2. Jakarta EE 9+ 迁移</h3><ul>
+<h3 id="2-Jakarta-EE-9-迁移">2. Jakarta EE 9+ 迁移</h3>
+<ul>
 <li><strong>核心变化</strong>: 这是 Spring Boot 3.x 和 Spring Framework 6.x 最显著的变化之一。所有之前使用 Java EE API 的依赖都已迁移到相应的 Jakarta EE API。</li>
-<li><strong>包名变更</strong>: 最直接的影响是包名从 <code>javax.*</code> 更改为 <code>jakarta.*</code>。<ul>
-<li>例如：<ul>
+<li><strong>包名变更</strong>: 最直接的影响是包名从 <code>javax.*</code> 更改为 <code>jakarta.*</code>。
+<ul>
+<li>例如：
+<ul>
 <li><code>javax.servlet.*</code> -&gt; <code>jakarta.servlet.*</code> (用于 Web 应用)</li>
 <li><code>javax.persistence.*</code> -&gt; <code>jakarta.persistence.*</code> (用于 JPA)</li>
 <li><code>javax.validation.*</code> -&gt; <code>jakarta.validation.*</code> (用于 Bean Validation)</li>
@@ -324,7 +329,8 @@
 </li>
 </ul>
 </li>
-<li><strong>影响</strong>:<ul>
+<li><strong>影响</strong>:
+<ul>
 <li>如果你的项目直接使用了这些 <code>javax.*</code> 包下的 API，你需要更新你的 <code>import</code> 语句和依赖。</li>
 <li>许多第三方库也需要升级到支持 Jakarta EE 的版本。Spring Boot 3.x 会尽可能管理这些兼容的依赖版本。</li>
 <li>例如，如果你使用 Servlet API，你需要将 <code>javax.servlet-api</code> 依赖替换为 <code>jakarta.servlet-api</code>。<code>spring-boot-starter-web</code> 会自动处理这个问题。</li>
@@ -332,52 +338,62 @@
 </li>
 </ul>
 <hr>
-<h3 id="3-对-GraalVM-原生镜像的全面支持-Ahead-of-Time-AOT"><a href="#3-对-GraalVM-原生镜像的全面支持-Ahead-of-Time-AOT" class="headerlink" title="3. 对 GraalVM 原生镜像的全面支持 (Ahead-of-Time - AOT)"></a>3. 对 GraalVM 原生镜像的全面支持 (Ahead-of-Time - AOT)</h3><ul>
+<h3 id="3-对-GraalVM-原生镜像的全面支持-Ahead-of-Time-AOT">3. 对 GraalVM 原生镜像的全面支持 (Ahead-of-Time - AOT)</h3>
+<ul>
 <li><strong>里程碑特性</strong>: Spring Boot 3.x 将对 GraalVM 原生镜像的支持提升到了一个新的水平，使其成为一等公民。</li>
-<li><strong>目标</strong>:<ul>
+<li><strong>目标</strong>:
+<ul>
 <li><strong>极速启动</strong>: 原生镜像应用可以实现毫秒级启动。</li>
 <li><strong>更小内存占用</strong>: 运行时内存占用显著降低。</li>
 <li><strong>优化部署</strong>: 特别适合 Serverless、容器化等对资源敏感的场景。</li>
 </ul>
 </li>
-<li><strong>工作原理</strong>:<ul>
+<li><strong>工作原理</strong>:
+<ul>
 <li><strong>AOT (Ahead-of-Time) 编译</strong>: Spring 应用程序在<strong>构建时</strong>（而不是运行时）进行大部分的分析和处理。这包括 Bean 的发现、依赖注入的解析、配置的处理等。</li>
 <li><strong>GraalVM Native Image</strong>: 利用 GraalVM 的 <code>native-image</code> 工具将 Spring Boot 应用（包括其所有依赖和 JVM 本身的一部分）编译成一个独立的原生可执行文件。这个文件不依赖外部 JVM，直接运行在操作系统上。</li>
 </ul>
 </li>
-<li><strong>如何使用</strong>:<ul>
+<li><strong>如何使用</strong>:
+<ul>
 <li>需要 GraalVM JDK。</li>
 <li>Spring Boot 提供了 Maven 和 Gradle 插件 (例如 <code>org.graalvm.buildtools:native-maven-plugin</code> 和 Spring Boot 自身的构建插件集成) 来简化原生镜像的构建过程。</li>
 <li>命令示例 (Maven): <code>mvn -Pnative spring-boot:build-image</code></li>
 </ul>
 </li>
-<li><strong><code>native</code> Profile 和 <code>*-native</code> 依赖</strong>: Spring Boot 3.x 引入了 <code>native</code> profile 的概念，并在其 Maven&#x2F;Gradle 插件中支持。同时，一些库可能需要特定的 <code>-native</code> 后缀的依赖版本以更好地支持原生镜像（尽管 Spring 团队在努力减少这种需求）。</li>
+<li><strong><code>native</code> Profile 和 <code>*-native</code> 依赖</strong>: Spring Boot 3.x 引入了 <code>native</code> profile 的概念，并在其 Maven/Gradle 插件中支持。同时，一些库可能需要特定的 <code>-native</code> 后缀的依赖版本以更好地支持原生镜像（尽管 Spring 团队在努力减少这种需求）。</li>
 <li><strong><code>@NativeHint</code></strong>: Spring Framework 6 引入了 <code>@NativeHint</code> 注解，用于向 GraalVM <code>native-image</code> 工具提供关于反射、资源、序列化、代理等方面的提示，因为这些动态特性在 AOT 编译时难以完全推断。Spring Boot 的自动配置也大量使用了这些提示。</li>
 </ul>
 <hr>
-<h3 id="4-Micrometer-Tracing-替代-Spring-Cloud-Sleuth"><a href="#4-Micrometer-Tracing-替代-Spring-Cloud-Sleuth" class="headerlink" title="4. Micrometer Tracing (替代 Spring Cloud Sleuth)"></a>4. Micrometer Tracing (替代 Spring Cloud Sleuth)</h3><ul>
+<h3 id="4-Micrometer-Tracing-替代-Spring-Cloud-Sleuth">4. Micrometer Tracing (替代 Spring Cloud Sleuth)</h3>
+<ul>
 <li><strong>统一的可观测性</strong>: Spring Boot 3.x 引入了 Micrometer Tracing 作为其官方的分布式追踪解决方案，取代了之前广泛使用的 Spring Cloud Sleuth。</li>
 <li><strong>Micrometer 生态系统</strong>: Micrometer 是一个流行的 JVM 应用指标收集库。Micrometer Tracing 将追踪能力也整合到了这个生态系统中。</li>
 <li><strong>抽象层</strong>: Micrometer Tracing 提供了一个通用的追踪 API 抽象，底层可以对接多种追踪系统，如 OpenZipkin, OpenTelemetry, Jaeger, Wavefront 等。</li>
-<li><strong>自动配置</strong>: Spring Boot 3.x 提供了对 Micrometer Tracing 的自动配置，可以轻松集成各种追踪后端。<ul>
+<li><strong>自动配置</strong>: Spring Boot 3.x 提供了对 Micrometer Tracing 的自动配置，可以轻松集成各种追踪后端。
+<ul>
 <li>例如，添加 <code>micrometer-tracing-bridge-brave</code> (用于 Zipkin) 或 <code>micrometer-tracing-bridge-otel</code> (用于 OpenTelemetry) 依赖，并配置相应的导出器。</li>
 </ul>
 </li>
 <li><strong>平滑过渡</strong>: 对于从 Spring Cloud Sleuth 迁移过来的用户，Micrometer Tracing 旨在提供相似的功能和概念。</li>
 </ul>
 <hr>
-<h3 id="5-Log-4-j-2-扩展和改进"><a href="#5-Log-4-j-2-扩展和改进" class="headerlink" title="5. Log 4 j 2 扩展和改进"></a>5. Log 4 j 2 扩展和改进</h3><ul>
-<li>Spring Boot 3.x 增强了对 Log 4 j 2 的支持，包括：<ul>
+<h3 id="5-Log-4-j-2-扩展和改进">5. Log 4 j 2 扩展和改进</h3>
+<ul>
+<li>Spring Boot 3.x 增强了对 Log 4 j 2 的支持，包括：
+<ul>
 <li><strong>Profile-specific 配置</strong>: 更方便地为不同的 Spring Profile (如 <code>dev</code>, <code>prod</code>) 定义不同的 Log 4 j 2 配置。</li>
 <li><strong>环境属性查找</strong>: 在 Log 4 j 2 配置中可以直接引用 Spring Environment 中的属性。</li>
 </ul>
 </li>
 </ul>
 <hr>
-<h3 id="6-对虚拟线程-Virtual-Threads-Project-Loom-的初步支持和展望"><a href="#6-对虚拟线程-Virtual-Threads-Project-Loom-的初步支持和展望" class="headerlink" title="6. 对虚拟线程 (Virtual Threads - Project Loom) 的初步支持和展望"></a>6. 对虚拟线程 (Virtual Threads - Project Loom) 的初步支持和展望</h3><ul>
+<h3 id="6-对虚拟线程-Virtual-Threads-Project-Loom-的初步支持和展望">6. 对虚拟线程 (Virtual Threads - Project Loom) 的初步支持和展望</h3>
+<ul>
 <li>虽然 Spring Boot 3.0 发布时 Java 19 (引入虚拟线程预览版) 刚刚发布，但 Spring Framework 6 和 Spring Boot 3.x 在设计上已经考虑了对虚拟线程的兼容性。</li>
 <li><strong>目标</strong>: 使得 Spring 应用能够更容易地利用虚拟线程来提高并发应用的吞吐量和可伸缩性，而无需对现有代码进行大规模重写。</li>
-<li><strong>当前状态 (截至 Spring Boot 3.x 系列)</strong>:<ul>
+<li><strong>当前状态 (截至 Spring Boot 3.x 系列)</strong>:
+<ul>
 <li>Tomcat, Jetty, Undertow 等内嵌 Web 服务器的最新版本开始支持在配置后使用虚拟线程来处理请求。Spring Boot 3.2 引入了简单的配置属性 <code>spring.threads.virtual.enabled=true</code> 来为内嵌 Web 服务器启用虚拟线程（如果服务器支持）。</li>
 <li>Spring 框架的核心组件在逐步适配虚拟线程，确保在虚拟线程环境下能正确工作（例如，避免不必要的 <code>synchronized</code> 块，正确处理 <code>ThreadLocal</code> 等）。</li>
 <li>这是一个持续演进的领域，随着 JDK 对虚拟线程支持的成熟 (Java 21 已正式发布虚拟线程)，Spring Boot 会提供更深入和广泛的支持。</li>
@@ -385,17 +401,20 @@
 </li>
 </ul>
 <hr>
-<h3 id="7-HTTP-Interface-客户端-HttpExchange"><a href="#7-HTTP-Interface-客户端-HttpExchange" class="headerlink" title="7. HTTP Interface 客户端 (@HttpExchange)"></a>7. HTTP Interface 客户端 (<code>@HttpExchange</code>)</h3><ul>
+<h3 id="7-HTTP-Interface-客户端-HttpExchange">7. HTTP Interface 客户端 (<code>@HttpExchange</code>)</h3>
+<ul>
 <li>Spring Framework 6 引入了一种新的声明式 HTTP 客户端方式，通过接口和注解来定义 HTTP 服务调用。</li>
 <li><strong><code>@HttpExchange</code></strong>: 类似于 Feign 或 Retrofit，你可以定义一个 Java 接口，并使用 <code>@HttpExchange</code> (或更具体的 <code>@GetExchange</code>, <code>@PostExchange</code> 等) 注解其方法来描述 HTTP 请求。</li>
 <li>Spring Boot 3.x 提供了对这类 HTTP Interface 客户端的自动配置，可以轻松地创建和注入这些接口的代理实现。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 定义一个 HTTP 服务接口</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MyApiClient</span> &#123;<br>    <span class="hljs-meta">@GetExchange(&quot;/users/&#123;id&#125;&quot;)</span><br>    User <span class="hljs-title function_">getUserById</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long id)</span>;<br>&#125;<br><br><span class="hljs-comment">// 在配置类中创建代理实例</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ApiClientConfig</span> &#123;<br>    <span class="hljs-meta">@Bean</span><br>    MyApiClient <span class="hljs-title function_">myApiClient</span><span class="hljs-params">(WebClient.Builder builder)</span> &#123;<br>        <span class="hljs-type">WebClient</span> <span class="hljs-variable">webClient</span> <span class="hljs-operator">=</span> builder.baseUrl(<span class="hljs-string">&quot;https://api.example.com&quot;</span>).build();<br>        <span class="hljs-type">HttpServiceProxyFactory</span> <span class="hljs-variable">factory</span> <span class="hljs-operator">=</span> HttpServiceProxyFactory.builder(WebClientAdapter.forClient(webClient)).build();<br>        <span class="hljs-keyword">return</span> factory.createClient(MyApiClient.class);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 Spring Boot 会进一步简化这个创建过程。</li>
 </ul>
 <hr>
-<h3 id="8-移除的特性和重要的依赖升级"><a href="#8-移除的特性和重要的依赖升级" class="headerlink" title="8. 移除的特性和重要的依赖升级"></a>8. 移除的特性和重要的依赖升级</h3><ul>
+<h3 id="8-移除的特性和重要的依赖升级">8. 移除的特性和重要的依赖升级</h3>
+<ul>
 <li><strong>移除了 <code>spring.factories</code> 对自动配置的支持</strong>: 如前所述，自动配置类现在通过 <code>META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports</code> 文件注册。<code>spring.factories</code> 仍然用于其他类型的组件注册 (如 <code>EnvironmentPostProcessor</code>, <code>FailureAnalyzer</code> 等)，但其用于自动配置的键 <code>org.springframework.boot.autoconfigure.EnableAutoConfiguration</code> 已被移除。</li>
 <li><strong>不再支持某些旧的或不常用的技术</strong>: 例如，移除了对 Apache ActiveMQ “Classic” 的 <code>spring-boot-starter-activemq</code> 中的 PooledConnectionFactory 的自动配置。</li>
-<li><strong>依赖升级</strong>: 大量的第三方依赖都升级到了最新版本，以兼容 Java 17 和 Jakarta EE。例如：<ul>
+<li><strong>依赖升级</strong>: 大量的第三方依赖都升级到了最新版本，以兼容 Java 17 和 Jakarta EE。例如：
+<ul>
 <li>Hibernate 6.x</li>
 <li>Flyway 9.x</li>
 <li>R 2 DBC 1.0</li>
@@ -407,27 +426,32 @@ Spring Boot 会进一步简化这个创建过程。</li>
 </li>
 </ul>
 <hr>
-<h3 id="9-其他值得注意的改进"><a href="#9-其他值得注意的改进" class="headerlink" title="9. 其他值得注意的改进"></a>9. 其他值得注意的改进</h3><ul>
-<li><strong><code>@ConfigurationProperties</code> 改进</strong>:<ul>
+<h3 id="9-其他值得注意的改进">9. 其他值得注意的改进</h3>
+<ul>
+<li><strong><code>@ConfigurationProperties</code> 改进</strong>:
+<ul>
 <li>更好的构造器绑定支持。</li>
 <li>可以通过 <code>@NestedConfigurationProperty</code> 注解来更好地处理嵌套配置对象的元数据。</li>
 </ul>
 </li>
 <li><strong>Spring Data 2022.0 (代号 Turing)</strong>: 带来了许多 JPA、MongoDB、Redis 等模块的增强。</li>
-<li><strong>Actuator 端点改进</strong>:<ul>
+<li><strong>Actuator 端点改进</strong>:
+<ul>
 <li><code>/actuator/startup</code> 端点 (Spring Boot 2.6 引入，3.x 持续改进) 提供了应用启动步骤的详细信息，有助于分析和优化启动时间。</li>
 <li>对可观测性的整体增强。</li>
 </ul>
 </li>
-<li><strong>测试改进</strong>:<ul>
+<li><strong>测试改进</strong>:
+<ul>
 <li><code>@SpringBootTest</code> 的集成测试对 AOT 和原生镜像更加友好。</li>
 <li>对 JUnit 5 的持续优化支持。</li>
 </ul>
 </li>
-<li><strong>Spring Batch 5.0</strong>: 与 Spring Boot 3.x 集成，也基于 Java 17 和 Jakarta EE，并带来了注解驱动的 Job&#x2F;Step 配置等新特性。</li>
+<li><strong>Spring Batch 5.0</strong>: 与 Spring Boot 3.x 集成，也基于 Java 17 和 Jakarta EE，并带来了注解驱动的 Job/Step 配置等新特性。</li>
 </ul>
 <hr>
-<h3 id="迁移到-Spring-Boot-3-x-的注意事项："><a href="#迁移到-Spring-Boot-3-x-的注意事项：" class="headerlink" title="迁移到 Spring Boot 3.x 的注意事项："></a>迁移到 Spring Boot 3.x 的注意事项：</h3><ul>
+<h3 id="迁移到-Spring-Boot-3-x-的注意事项：">迁移到 Spring Boot 3.x 的注意事项：</h3>
+<ul>
 <li><strong>JDK 版本</strong>: 必须升级到 Java 17 或更高。</li>
 <li><strong>Jakarta EE</strong>: 这是最大的迁移工作，需要检查并更新所有 <code>javax.*</code> 包的引用。Spring Boot 提供了迁移指南和工具（如 <code>spring-boot-properties-migrator</code> 和 OpenRewrite 脚本）来帮助这个过程。</li>
 <li><strong>依赖兼容性</strong>: 确保你项目中的所有第三方依赖都有支持 Jakarta EE 和 Java 17 的版本。</li>

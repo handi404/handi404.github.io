@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Keycloak介绍Keycloak是一个开源的身份认证和授权管理系统，它提供了一系列的功能，包括单点登录（SSO）、身份验证、社交登录、用户管理、角色管理、权限管理等等。Keycloak可以被集成到各种应用程序中，包括Web应用程序、移动应用程序和服务。它支持OpenID Connect、OAuth 2.0、SAML 2.0标准协议，拥有简单易用的管理控制台，并提供对LDAP、Active Di">
+    <meta name="description" content="Keycloak介绍 Keycloak是一个开源的身份认证和授权管理系统，它提供了一系列的功能，包括单点登录（SSO）、身份验证、社交登录、用户管理、角色管理、权限管理等等。Keycloak可以被集成到各种应用程序中，包括Web应用程序、移动应用程序和服务。它支持OpenID Connect、OAuth 2.0、SAML 2.0标准协议，拥有简单易用的管理控制台，并提供对LDAP、Active D">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/Keycloak%20%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%90%AF%E5%8A%A8/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="Keycloak介绍Keycloak是一个开源的身份认证和授权管理系统，它提供了一系列的功能，包括单点登录（SSO）、身份验证、社交登录、用户管理、角色管理、权限管理等等。Keycloak可以被集成到各种应用程序中，包括Web应用程序、移动应用程序和服务。它支持OpenID Connect、OAuth 2.0、SAML 2.0标准协议，拥有简单易用的管理控制台，并提供对LDAP、Active Di">
+<meta property="og:description" content="Keycloak介绍 Keycloak是一个开源的身份认证和授权管理系统，它提供了一系列的功能，包括单点登录（SSO）、身份验证、社交登录、用户管理、角色管理、权限管理等等。Keycloak可以被集成到各种应用程序中，包括Web应用程序、移动应用程序和服务。它支持OpenID Connect、OAuth 2.0、SAML 2.0标准协议，拥有简单易用的管理控制台，并提供对LDAP、Active D">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/b3fb803b5a661cdef3dbbf3c91ef305a.png">
 <meta property="og:image" content="https://i-blog.csdnimg.cn/blog_migrate/758cd163a6b2db84b798df93e4a66472.png">
@@ -312,28 +312,47 @@
             
               <div class="markdown-body">
                 
-                <h2 id="Keycloak介绍"><a href="#Keycloak介绍" class="headerlink" title="Keycloak介绍"></a><a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=Keycloak&spm=1001.2101.3001.7020">Keycloak</a>介绍</h2><p>Keycloak是一个开源的<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81&spm=1001.2101.3001.7020">身份认证</a>和授权管理系统，它提供了一系列的功能，包括单点登录（SSO）、身份验证、社交登录、用户管理、角色管理、权限管理等等。Keycloak可以被集成到各种应用程序中，包括Web应用程序、移动应用程序和服务。它支持OpenID Connect、OAuth 2.0、SAML 2.0标准协议，拥有简单易用的管理控制台，并提供对LDAP、Active Directory以及Github、Google等社交账号登录的支持，做到了非常简单的开箱即用。</p>
+                <h2 id="Keycloak介绍"><a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=Keycloak&amp;spm=1001.2101.3001.7020">Keycloak</a>介绍</h2>
+<p>Keycloak是一个开源的<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E8%BA%AB%E4%BB%BD%E8%AE%A4%E8%AF%81&amp;spm=1001.2101.3001.7020">身份认证</a>和授权管理系统，它提供了一系列的功能，包括单点登录（SSO）、身份验证、社交登录、用户管理、角色管理、权限管理等等。Keycloak可以被集成到各种应用程序中，包括Web应用程序、移动应用程序和服务。它支持OpenID Connect、OAuth 2.0、SAML 2.0标准协议，拥有简单易用的管理控制台，并提供对LDAP、Active Directory以及Github、Google等社交账号登录的支持，做到了非常简单的开箱即用。</p>
 <p>Keycloak近两年更新非常频繁，功能和bug也在逐步修复和完善。他在国外非常受欢迎，但在国内相关资料非常少。故此，留下一些内容，希望能够帮助到后来的人。</p>
 <p><a target="_blank" rel="noopener" href="https://www.keycloak.org/">Keycloak官网</a></p>
-<h3 id="Keycloak-服务搭建与启动"><a href="#Keycloak-服务搭建与启动" class="headerlink" title="Keycloak 服务搭建与启动"></a>Keycloak 服务搭建与启动</h3><p>本文使用环境和版本号如下：</p>
+<h3 id="Keycloak-服务搭建与启动">Keycloak 服务搭建与启动</h3>
+<p>本文使用环境和版本号如下：</p>
 <blockquote>
-<p>Keycloak 版本：22.0.1 （目前最新版本，其他版本大同小异）<br>平台：Windows 11<br>数据库： PostgreSQL 15.3 64-bit</p>
+<p>Keycloak 版本：22.0.1 （目前最新版本，其他版本大同小异）<br>
+平台：Windows 11<br>
+数据库： PostgreSQL 15.3 64-bit</p>
 </blockquote>
-<h3 id="设置Keycloak配置文件"><a href="#设置Keycloak配置文件" class="headerlink" title="设置Keycloak配置文件"></a>设置Keycloak配置文件</h3><p>从官网下载keycloak压缩包后直接解压，得到文件如下：<br><img src="https://i-blog.csdnimg.cn/blog_migrate/b3fb803b5a661cdef3dbbf3c91ef305a.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
-<p>打开<code>./conf/keycloak.conf</code> 文件，修改默认配置：<br><img src="https://i-blog.csdnimg.cn/blog_migrate/758cd163a6b2db84b798df93e4a66472.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<h3 id="设置Keycloak配置文件">设置Keycloak配置文件</h3>
+<p>从官网下载keycloak压缩包后直接解压，得到文件如下：<br>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/b3fb803b5a661cdef3dbbf3c91ef305a.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>打开<code>./conf/keycloak.conf</code> 文件，修改默认配置：<br>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/758cd163a6b2db84b798df93e4a66472.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
 <p>主要的配置及说明如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 设置数据库类型，这里用的是postgres</span><br>db=postgres<br><span class="hljs-comment"># 设置数据库的用户名</span><br>db-username=postgres<br><span class="hljs-comment"># 设置数据库用户密码</span><br>db-password=admin<br><span class="hljs-comment"># 设置数据库连接地址及实例</span><br>db-url=jdbc:postgresql://localhost/keycloak<br><span class="hljs-comment"># 设置服务端口（不写的时候，使用默认端口8080）</span><br>http-port=8080<br><br>12345678910<br></code></pre></td></tr></table></figure>
-
-<h3 id="创建空的数据库"><a href="#创建空的数据库" class="headerlink" title="创建空的数据库"></a>创建空的数据库</h3><p>Keycloak首次启动时会自动创建数据库表和基础数据，但仍然有个前提：在启动之前需要我们手动创建一个空的Database，供keycloak使用。<br><img src="https://i-blog.csdnimg.cn/blog_migrate/e8e2675c206f861fbc4ee7299de61d84.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br><img src="https://i-blog.csdnimg.cn/blog_migrate/a344caacdeb6aef93441bf89c9336dac.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>这里我们创建一个名为 <code>keycloak</code> 的空数据库，点击<code>Save</code>即可。</p>
-<h3 id="启动Keycloak服务"><a href="#启动Keycloak服务" class="headerlink" title="启动Keycloak服务"></a>启动Keycloak服务</h3><p>启动 Windows PowerShell ，将路径cd到 <code>\bin\</code>文件夹中，输入命令（开发模式）：</p>
+<h3 id="创建空的数据库">创建空的数据库</h3>
+<p>Keycloak首次启动时会自动创建数据库表和基础数据，但仍然有个前提：在启动之前需要我们手动创建一个空的Database，供keycloak使用。<br>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/e8e2675c206f861fbc4ee7299de61d84.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/a344caacdeb6aef93441bf89c9336dac.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+这里我们创建一个名为 <code>keycloak</code> 的空数据库，点击<code>Save</code>即可。</p>
+<h3 id="启动Keycloak服务">启动Keycloak服务</h3>
+<p>启动 Windows PowerShell ，将路径cd到 <code>\bin\</code>文件夹中，输入命令（开发模式）：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">kc.bat start-dev<br><br>1<br></code></pre></td></tr></table></figure>
-
 <p><img src="https://i-blog.csdnimg.cn/blog_migrate/dda6452d171eee12758d626959b81e0e.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
-<p>输出如下信息后，表示启动成功。<br><img src="https://i-blog.csdnimg.cn/blog_migrate/b3ac088ba6a3531f63b2da79fdd8bad5.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
-<p>接下来打开浏览器，输入 <code>http://localhost:8080/</code>，会看到 Keycloak 界面。<br><img src="https://i-blog.csdnimg.cn/blog_migrate/25cfd8f3c9b6d15c50d163734fcb5a4b.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
-<p>初次启动服务时，需要先注册一个管理员账号，作为超级管理员，管理整个Keycloak。<br>输入用户名、密码后，点击<code>Create</code>，完成创建。<br><img src="https://i-blog.csdnimg.cn/blog_migrate/8836f5e3f38247f20b8ae25ebea4570e.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>创建成功后，点击 <code>Administration Console </code>，登录用户，进入Keycloak控制台。<br><img src="https://i-blog.csdnimg.cn/blog_migrate/7e2efc8f1b23cb4cc8ac3cccaa0fd57d.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
-<p>Keycloak控制台如下：<br><img src="https://i-blog.csdnimg.cn/blog_migrate/9869494081860558222c19f9b3368450.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
-<p>至此，Keycloak 服务搭建与启动完成。让我们反过来看一看数据库里的内容。<br><img src="https://i-blog.csdnimg.cn/blog_migrate/12a266757defd597bd72489c28447a8e.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>这些就是Keycloak启动时，自动创建的表和基础数据。</p>
+<p>输出如下信息后，表示启动成功。<br>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/b3ac088ba6a3531f63b2da79fdd8bad5.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>接下来打开浏览器，输入 <code>http://localhost:8080/</code>，会看到 Keycloak 界面。<br>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/25cfd8f3c9b6d15c50d163734fcb5a4b.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>初次启动服务时，需要先注册一个管理员账号，作为超级管理员，管理整个Keycloak。<br>
+输入用户名、密码后，点击<code>Create</code>，完成创建。<br>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/8836f5e3f38247f20b8ae25ebea4570e.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+创建成功后，点击 <code>Administration Console </code>，登录用户，进入Keycloak控制台。<br>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/7e2efc8f1b23cb4cc8ac3cccaa0fd57d.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>Keycloak控制台如下：<br>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/9869494081860558222c19f9b3368450.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"></p>
+<p>至此，Keycloak 服务搭建与启动完成。让我们反过来看一看数据库里的内容。<br>
+<img src="https://i-blog.csdnimg.cn/blog_migrate/12a266757defd597bd72489c28447a8e.png" srcset="/img/loading.gif" lazyload alt="在这里插入图片描述"><br>
+这些就是Keycloak启动时，自动创建的表和基础数据。</p>
 <p>好了，以上就是关于Keycloak服务的搭建与启动。</p>
 <p>后续会介绍Keycloak与Spring 项目的结合。</p>
 

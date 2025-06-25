@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="深入探讨 MyBatis 的这些核心功能。这些是掌握 MyBatis 的关键所在，能够让你更灵活、更高效地使用它。  3. MyBatis 核心功能详解3.1 SQL 映射：select, insert, update, delete这四个是最基本的 CRUD (Create, Read, Update, Delete) 操作映射标签，我们在之前的示例中已经接触过了。这里再强调一些它们共有的和各自">
+    <meta name="description" content="深入探讨 MyBatis 的这些核心功能。这些是掌握 MyBatis 的关键所在，能够让你更灵活、更高效地使用它。  3. MyBatis 核心功能详解 3.1 SQL 映射：select, insert, update, delete 这四个是最基本的 CRUD (Create, Read, Update, Delete) 操作映射标签，我们在之前的示例中已经接触过了。这里再强调一些它们共有的和">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="深入探讨 MyBatis 的这些核心功能。这些是掌握 MyBatis 的关键所在，能够让你更灵活、更高效地使用它。  3. MyBatis 核心功能详解3.1 SQL 映射：select, insert, update, delete这四个是最基本的 CRUD (Create, Read, Update, Delete) 操作映射标签，我们在之前的示例中已经接触过了。这里再强调一些它们共有的和各自">
+<meta property="og:description" content="深入探讨 MyBatis 的这些核心功能。这些是掌握 MyBatis 的关键所在，能够让你更灵活、更高效地使用它。  3. MyBatis 核心功能详解 3.1 SQL 映射：select, insert, update, delete 这四个是最基本的 CRUD (Create, Read, Update, Delete) 操作映射标签，我们在之前的示例中已经接触过了。这里再强调一些它们共有的和">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.125Z">
 <meta property="article:modified_time" content="2025-06-16T07:14:38.293Z">
@@ -302,7 +302,9 @@
                 
                 <p>深入探讨 MyBatis 的这些核心功能。这些是掌握 MyBatis 的关键所在，能够让你更灵活、更高效地使用它。</p>
 <hr>
-<h3 id="3-MyBatis-核心功能详解"><a href="#3-MyBatis-核心功能详解" class="headerlink" title="3. MyBatis 核心功能详解"></a>3. MyBatis 核心功能详解</h3><h4 id="3-1-SQL-映射：select-insert-update-delete"><a href="#3-1-SQL-映射：select-insert-update-delete" class="headerlink" title="3.1 SQL 映射：select, insert, update, delete"></a>3.1 SQL 映射：<code>select</code>, <code>insert</code>, <code>update</code>, <code>delete</code></h4><p>这四个是最基本的 CRUD (Create, Read, Update, Delete) 操作映射标签，我们在之前的示例中已经接触过了。这里再强调一些它们共有的和各自特有的重要属性：</p>
+<h3 id="3-MyBatis-核心功能详解">3. MyBatis 核心功能详解</h3>
+<h4 id="3-1-SQL-映射：select-insert-update-delete">3.1 SQL 映射：<code>select</code>, <code>insert</code>, <code>update</code>, <code>delete</code></h4>
+<p>这四个是最基本的 CRUD (Create, Read, Update, Delete) 操作映射标签，我们在之前的示例中已经接触过了。这里再强调一些它们共有的和各自特有的重要属性：</p>
 <p><strong>通用属性 (适用于所有四个标签)：</strong></p>
 <ul>
 <li><strong><code>id</code> (必需)</strong>: 映射语句的唯一标识符，通常与 Mapper 接口中的方法名一致。</li>
@@ -326,41 +328,49 @@
 <li><strong><code>useGeneratedKeys</code> (可选, 默认为 <code>false</code>)</strong>: 是否使用JDBC的 <code>getGeneratedKeys</code> 方法来获取数据库生成的主键（通常是自增 ID）。</li>
 <li><strong><code>keyProperty</code> (可选)</strong>: 当 <code>useGeneratedKeys=&quot;true&quot;</code> 时，指定将生成的主键值设置到参数对象的哪个属性上。</li>
 <li><strong><code>keyColumn</code> (可选)</strong>: 当 <code>useGeneratedKeys=&quot;true&quot;</code> 时，如果主键列名与 <code>keyProperty</code> 指定的 Java 属性不一致，用此属性指定数据库中的主键列名。</li>
-<li><strong><code>&lt;selectKey&gt;</code> 子元素</strong>: 用于不支持自增主键或需要其他方式生成主键的数据库（如 Oracle 的序列）。它会在 <code>insert</code> 语句执行之前或之后执行一个查询来获取主键。<ul>
+<li><strong><code>&lt;selectKey&gt;</code> 子元素</strong>: 用于不支持自增主键或需要其他方式生成主键的数据库（如 Oracle 的序列）。它会在 <code>insert</code> 语句执行之前或之后执行一个查询来获取主键。
+<ul>
 <li><code>keyProperty</code>: 同上。</li>
 <li><code>resultType</code>: <code>selectKey</code> 查询返回的主键类型。</li>
 <li><code>order</code>: <code>BEFORE</code> 或 <code>AFTER</code>，表示在 <code>insert</code> 语句之前还是之后执行。</li>
 <li><code>statementType</code>: 同上。</li>
 </ul>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- Oracle Sequence Example --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">insert</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;insertUserWithSequence&quot;</span> <span class="hljs-attr">parameterType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">selectKey</span> <span class="hljs-attr">keyProperty</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;long&quot;</span> <span class="hljs-attr">order</span>=<span class="hljs-string">&quot;BEFORE&quot;</span>&gt;</span><br>        SELECT USER_SEQ.NEXTVAL FROM DUAL<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">selectKey</span>&gt;</span><br>    INSERT INTO users (id, username, email)<br>    VALUES (#&#123;id&#125;, #&#123;username&#125;, #&#123;email&#125;)<br><span class="hljs-tag">&lt;/<span class="hljs-name">insert</span>&gt;</span><br></code></pre></td></tr></table></figure></li>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- Oracle Sequence Example --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">insert</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;insertUserWithSequence&quot;</span> <span class="hljs-attr">parameterType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">selectKey</span> <span class="hljs-attr">keyProperty</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;long&quot;</span> <span class="hljs-attr">order</span>=<span class="hljs-string">&quot;BEFORE&quot;</span>&gt;</span><br>        SELECT USER_SEQ.NEXTVAL FROM DUAL<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">selectKey</span>&gt;</span><br>    INSERT INTO users (id, username, email)<br>    VALUES (#&#123;id&#125;, #&#123;username&#125;, #&#123;email&#125;)<br><span class="hljs-tag">&lt;/<span class="hljs-name">insert</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
 <li><strong><code>flushCache</code> (可选, 默认为 <code>true</code> for <code>&lt;insert&gt;</code>)</strong>: 执行此 <code>insert</code> 语句后是否清空一级和二级缓存。因为插入操作改变了数据，通常需要清空缓存。</li>
 </ul>
 <p><strong><code>&lt;update&gt;</code> 和 <code>&lt;delete&gt;</code> 标签特有属性：</strong></p>
 <ul>
-<li><strong><code>flushCache</code> (可选, 默认为 <code>true</code> for <code>&lt;update&gt;</code> &#x2F; <code>&lt;delete&gt;</code>)</strong>: 执行此语句后是否清空一级和二级缓存。</li>
+<li><strong><code>flushCache</code> (可选, 默认为 <code>true</code> for <code>&lt;update&gt;</code> / <code>&lt;delete&gt;</code>)</strong>: 执行此语句后是否清空一级和二级缓存。</li>
 <li>这两个标签通常返回一个 <code>int</code> 类型的值，表示受影响的行数。</li>
 </ul>
 <hr>
-<h4 id="3-2-动态-SQL"><a href="#3-2-动态-SQL" class="headerlink" title="3.2 动态 SQL"></a>3.2 动态 SQL</h4><p>动态 SQL 是 MyBatis 非常强大和灵活的功能，它允许你根据不同的条件动态地构建 SQL 语句。这避免了在 Java 代码中拼接 SQL 字符串的麻烦和风险。</p>
+<h4 id="3-2-动态-SQL">3.2 动态 SQL</h4>
+<p>动态 SQL 是 MyBatis 非常强大和灵活的功能，它允许你根据不同的条件动态地构建 SQL 语句。这避免了在 Java 代码中拼接 SQL 字符串的麻烦和风险。</p>
 <p>常用的动态 SQL 元素：</p>
 <ol>
-<li><p><strong><code>if</code></strong>: 用于简单的条件判断。</p>
+<li>
+<p><strong><code>if</code></strong>: 用于简单的条件判断。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findActiveUsersByName&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    SELECT * FROM users<br>    WHERE status = &#x27;ACTIVE&#x27;<br>    <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;username != null and username != &#x27;&#x27;&quot;</span>&gt;</span><br>        AND username LIKE CONCAT(&#x27;%&#x27;, #&#123;username&#125;, &#x27;%&#x27;)<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
 <ul>
 <li><code>test</code> 属性的值是一个 OGNL (Object-Graph Navigation Language) 表达式，用于进行条件判断。</li>
 <li>如果 <code>username</code> 参数不为 <code>null</code> 且不为空字符串，则 <code>AND username LIKE ...</code> 这部分 SQL 会被包含。</li>
 </ul>
 </li>
-<li><p><strong><code>choose</code>, <code>when</code>, <code>otherwise</code></strong>: 类似于 Java 中的 <code>switch</code> 语句，只选择一个条件分支执行。</p>
+<li>
+<p><strong><code>choose</code>, <code>when</code>, <code>otherwise</code></strong>: 类似于 Java 中的 <code>switch</code> 语句，只选择一个条件分支执行。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findUsersByCriteria&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    SELECT * FROM users<br>    WHERE<br>    <span class="hljs-tag">&lt;<span class="hljs-name">choose</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">when</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;id != null&quot;</span>&gt;</span><br>            id = #&#123;id&#125;<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">when</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">when</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;email != null and email != &#x27;&#x27;&quot;</span>&gt;</span><br>            email = #&#123;email&#125;<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">when</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">otherwise</span>&gt;</span><br>            status = &#x27;ACTIVE&#x27;<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">otherwise</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">choose</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>where</code></strong>: 用于智能地处理 <code>AND</code> 或 <code>OR</code> 前缀。如果 <code>where</code> 元素内的任何条件成立，它会自动插入 <code>WHERE</code> 关键字，并且会移除多余的 <code>AND</code> 或 <code>OR</code>。</p>
+<li>
+<p><strong><code>where</code></strong>: 用于智能地处理 <code>AND</code> 或 <code>OR</code> 前缀。如果 <code>where</code> 元素内的任何条件成立，它会自动插入 <code>WHERE</code> 关键字，并且会移除多余的 <code>AND</code> 或 <code>OR</code>。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findUsersDynamically&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    SELECT * FROM users<br>    <span class="hljs-tag">&lt;<span class="hljs-name">where</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;username != null and username != &#x27;&#x27;&quot;</span>&gt;</span><br>            AND username = #&#123;username&#125;<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;email != null and email != &#x27;&#x27;&quot;</span>&gt;</span><br>            AND email = #&#123;email&#125;<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;status != null&quot;</span>&gt;</span><br>            AND status = #&#123;status&#125;<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">where</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br><span class="hljs-comment">&lt;!-- 如果 username 和 email 都为 null, 但 status 不为 null, 生成: WHERE status = #&#123;status&#125; --&gt;</span><br><span class="hljs-comment">&lt;!-- 如果 username 不为 null, 其他为 null, 生成: WHERE username = #&#123;username&#125; (自动去掉开头的 AND) --&gt;</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>set</code></strong>: 用于动态 <code>UPDATE</code> 语句。它会自动插入 <code>SET</code> 关键字，并移除任何多余的逗号。</p>
+<li>
+<p><strong><code>set</code></strong>: 用于动态 <code>UPDATE</code> 语句。它会自动插入 <code>SET</code> 关键字，并移除任何多余的逗号。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">update</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;updateUserDynamically&quot;</span> <span class="hljs-attr">parameterType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    UPDATE users<br>    <span class="hljs-tag">&lt;<span class="hljs-name">set</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;username != null and username != &#x27;&#x27;&quot;</span>&gt;</span><br>            username = #&#123;username&#125;,<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;email != null and email != &#x27;&#x27;&quot;</span>&gt;</span><br>            email = #&#123;email&#125;,<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;password != null and password != &#x27;&#x27;&quot;</span>&gt;</span><br>            password = #&#123;password&#125;,<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">set</span>&gt;</span><br>    WHERE id = #&#123;id&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">update</span>&gt;</span><br><span class="hljs-comment">&lt;!-- 如果只更新 email, 生成: UPDATE users SET email = #&#123;email&#125; WHERE id = #&#123;id&#125; (自动去掉末尾逗号) --&gt;</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>foreach</code></strong>: 用于迭代集合（如 <code>List</code>, <code>Set</code>, <code>Array</code>）或 <code>Map</code>，常用于构建 <code>IN</code> 条件或批量插入&#x2F;更新。</p>
+<li>
+<p><strong><code>foreach</code></strong>: 用于迭代集合（如 <code>List</code>, <code>Set</code>, <code>Array</code>）或 <code>Map</code>，常用于构建 <code>IN</code> 条件或批量插入/更新。</p>
 <ul>
 <li><code>collection</code> (必需): 指定要迭代的集合参数的名称。如果参数是 <code>List</code> 类型，默认为 <code>list</code>；如果是数组类型，默认为 <code>array</code>。如果使用了 <code>@Param</code> 注解，则使用注解的名称。</li>
 <li><code>item</code> (必需): 迭代过程中当前元素的变量名。</li>
@@ -371,7 +381,8 @@
 </ul>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- IN 条件示例 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findUsersByIds&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    SELECT * FROM users<br>    WHERE id IN<br>    <span class="hljs-tag">&lt;<span class="hljs-name">foreach</span> <span class="hljs-attr">item</span>=<span class="hljs-string">&quot;userId&quot;</span> <span class="hljs-attr">collection</span>=<span class="hljs-string">&quot;idList&quot;</span> <span class="hljs-attr">open</span>=<span class="hljs-string">&quot;(&quot;</span> <span class="hljs-attr">separator</span>=<span class="hljs-string">&quot;,&quot;</span> <span class="hljs-attr">close</span>=<span class="hljs-string">&quot;)&quot;</span>&gt;</span><br>        #&#123;userId&#125;<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">foreach</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 假设 idList 是 [1, 2, 3], 生成: WHERE id IN (1,2,3) --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- 批量插入示例 (MySQL) --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">insert</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;batchInsertUsers&quot;</span> <span class="hljs-attr">parameterType</span>=<span class="hljs-string">&quot;list&quot;</span>&gt;</span><br>    INSERT INTO users (username, email) VALUES<br>    <span class="hljs-tag">&lt;<span class="hljs-name">foreach</span> <span class="hljs-attr">item</span>=<span class="hljs-string">&quot;user&quot;</span> <span class="hljs-attr">collection</span>=<span class="hljs-string">&quot;list&quot;</span> <span class="hljs-attr">separator</span>=<span class="hljs-string">&quot;,&quot;</span>&gt;</span><br>        (#&#123;user.username&#125;, #&#123;user.email&#125;)<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">foreach</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">insert</span>&gt;</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>trim</code></strong>: 一个更通用的元素，用于添加前缀&#x2F;后缀，并移除指定的前缀&#x2F;后缀覆盖。<code>where</code> 和 <code>set</code> 标签实际上是 <code>trim</code> 的特例。</p>
+<li>
+<p><strong><code>trim</code></strong>: 一个更通用的元素，用于添加前缀/后缀，并移除指定的前缀/后缀覆盖。<code>where</code> 和 <code>set</code> 标签实际上是 <code>trim</code> 的特例。</p>
 <ul>
 <li><code>prefix</code> (可选): 当内部有内容时，在前面添加的前缀。</li>
 <li><code>suffix</code> (可选): 当内部有内容时，在后面添加的后缀。</li>
@@ -380,22 +391,27 @@
 </ul>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 使用 trim 实现类似 where 的效果 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findUsersWithTrim&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    SELECT * FROM users<br>    <span class="hljs-tag">&lt;<span class="hljs-name">trim</span> <span class="hljs-attr">prefix</span>=<span class="hljs-string">&quot;WHERE&quot;</span> <span class="hljs-attr">prefixOverrides</span>=<span class="hljs-string">&quot;AND |OR &quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;username != null and username != &#x27;&#x27;&quot;</span>&gt;</span><br>            AND username = #&#123;username&#125;<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;email != null and email != &#x27;&#x27;&quot;</span>&gt;</span><br>            OR email = #&#123;email&#125; <span class="hljs-comment">&lt;!-- 注意这里可以是 OR --&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">trim</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>bind</code></strong>: 允许你在 OGNL 表达式中创建一个变量，并在后续的 SQL 中使用它。常用于模糊查询时拼接 <code>%</code>。</p>
+<li>
+<p><strong><code>bind</code></strong>: 允许你在 OGNL 表达式中创建一个变量，并在后续的 SQL 中使用它。常用于模糊查询时拼接 <code>%</code>。</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findUsersByUsernameLike&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">bind</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;pattern&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;&#x27;%&#x27; + _parameter.getUsername() + &#x27;%&#x27;&quot;</span> /&gt;</span><br>    <span class="hljs-comment">&lt;!-- 或者 &lt;bind name=&quot;pattern&quot; value=&quot;&#x27;%&#x27; + username + &#x27;%&#x27;&quot; /&gt; 如果 username 是直接参数 --&gt;</span><br>    SELECT * FROM users<br>    WHERE username LIKE #&#123;pattern&#125;<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br><span class="hljs-comment">&lt;!-- 或者在 SQL 中直接使用 CONCAT (数据库函数) --&gt;</span><br><span class="hljs-comment">&lt;!-- WHERE username LIKE CONCAT(&#x27;%&#x27;, #&#123;username&#125;, &#x27;%&#x27;) --&gt;</span><br></code></pre></td></tr></table></figure>
 <p>注意：<code>_parameter</code> 是一个内置变量，如果参数是一个简单类型或没有用 <code>@Param</code> 的单个对象，它指向这个参数对象。如果参数是 Map 或 JavaBean，可以直接访问其属性。</p>
 </li>
-<li><p><strong><code>&lt;sql&gt;</code> 和 <code>&lt;include&gt;</code></strong>: 用于定义可重用的 SQL 片段。</p>
+<li>
+<p><strong><code>&lt;sql&gt;</code> 和 <code>&lt;include&gt;</code></strong>: 用于定义可重用的 SQL 片段。</p>
 <ul>
 <li><code>&lt;sql id=&quot;columns&quot;&gt;id, username, email, created_at&lt;/sql&gt;</code></li>
 <li><code>&lt;select id=&quot;findUserById&quot; resultType=&quot;User&quot;&gt; SELECT &lt;include refid=&quot;columns&quot;/&gt; FROM users WHERE id = #&#123;id&#125; &lt;/select&gt;</code></li>
-<li><code>&lt;include&gt;</code> 还可以传递属性：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">sql</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;userColumns&quot;</span>&gt;</span><br>    $&#123;alias&#125;.id, $&#123;alias&#125;.username, $&#123;alias&#125;.email<br><span class="hljs-tag">&lt;/<span class="hljs-name">sql</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectUsers&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    SELECT<br>        <span class="hljs-tag">&lt;<span class="hljs-name">include</span> <span class="hljs-attr">refid</span>=<span class="hljs-string">&quot;userColumns&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;alias&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;u&quot;</span>/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">include</span>&gt;</span><br>    FROM users u<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure></li>
+<li><code>&lt;include&gt;</code> 还可以传递属性：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">sql</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;userColumns&quot;</span>&gt;</span><br>    $&#123;alias&#125;.id, $&#123;alias&#125;.username, $&#123;alias&#125;.email<br><span class="hljs-tag">&lt;/<span class="hljs-name">sql</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;selectUsers&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;User&quot;</span>&gt;</span><br>    SELECT<br>        <span class="hljs-tag">&lt;<span class="hljs-name">include</span> <span class="hljs-attr">refid</span>=<span class="hljs-string">&quot;userColumns&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;alias&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;u&quot;</span>/&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">include</span>&gt;</span><br>    FROM users u<br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
 </ol>
 <hr>
-<h4 id="3-3-参数处理"><a href="#3-3-参数处理" class="headerlink" title="3.3 参数处理"></a>3.3 参数处理</h4><p>MyBatis 如何处理传入 SQL 语句的参数。</p>
+<h4 id="3-3-参数处理">3.3 参数处理</h4>
+<p>MyBatis 如何处理传入 SQL 语句的参数。</p>
 <ol>
-<li><p><strong><code>#&#123;&#125; (预编译参数)</code></strong>:</p>
+<li>
+<p><strong><code>#&#123;&#125; (预编译参数)</code></strong>:</p>
 <ul>
 <li>这是<strong>推荐的参数占位符</strong>。</li>
 <li>MyBatis 会将其替换为 <code>?</code>，并使用 <code>PreparedStatement</code> 安全地设置参数值。</li>
@@ -404,7 +420,8 @@
 <li>可以指定 <code>jdbcType</code> 和 <code>typeHandler</code>：<code>#&#123;propertyName, jdbcType=VARCHAR, typeHandler=MyTypeHandler&#125;</code>。<code>jdbcType</code> 有时是必要的，比如当参数值为 <code>null</code> 时，JDBC 需要知道目标列的类型。</li>
 </ul>
 </li>
-<li><p><strong><code>$&#123;&#125; (字符串替换)</code></strong>:</p>
+<li>
+<p><strong><code>$&#123;&#125; (字符串替换)</code></strong>:</p>
 <ul>
 <li>MyBatis 会将 <code>$&#123;propertyName&#125;</code> 直接替换为参数的值，<strong>不做任何转义或预编译处理</strong>。</li>
 <li><strong>存在 SQL 注入风险，务必谨慎使用</strong>，并且不要用于接收用户输入的值。</li>
@@ -413,15 +430,17 @@
 <li>如果你确定传入的值是安全的（比如来自程序内部定义的常量或枚举），可以考虑使用。</li>
 </ul>
 </li>
-<li><p><strong><code>@Param</code> 注解</strong>:</p>
+<li>
+<p><strong><code>@Param</code> 注解</strong>:</p>
 <ul>
 <li>当 Mapper 接口的方法有多个参数时，强烈建议使用 <code>@Param(&quot;name&quot;)</code> 为每个参数命名。</li>
 <li>XML 中就可以通过 <code>#&#123;name&#125;</code> 或 <code>$&#123;name&#125;</code> 来引用。</li>
-<li>如果只有一个参数且是 JavaBean 或集合&#x2F;数组，可以不使用 <code>@Param</code>，MyBatis 会尝试直接使用属性名或默认名称 (<code>list</code>, <code>array</code>)。但为了清晰和避免潜在问题，对于非 JavaBean 的单个参数也推荐使用 <code>@Param</code>。</li>
+<li>如果只有一个参数且是 JavaBean 或集合/数组，可以不使用 <code>@Param</code>，MyBatis 会尝试直接使用属性名或默认名称 (<code>list</code>, <code>array</code>)。但为了清晰和避免潜在问题，对于非 JavaBean 的单个参数也推荐使用 <code>@Param</code>。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Mapper 接口</span><br>List&lt;User&gt; <span class="hljs-title function_">findUsers</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;status&quot;)</span> String status, <span class="hljs-meta">@Param(&quot;orderByColumn&quot;)</span> String orderByColumn)</span>;<br><br><span class="hljs-comment">// XML</span><br><span class="hljs-comment">// &lt;select id=&quot;findUsers&quot; resultType=&quot;User&quot;&gt;</span><br><span class="hljs-comment">//     SELECT * FROM users WHERE status = #&#123;status&#125; ORDER BY $&#123;orderByColumn&#125;</span><br><span class="hljs-comment">// &lt;/select&gt;</span><br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong><code>ParameterMap</code> (已不推荐)</strong>:</p>
+<li>
+<p><strong><code>ParameterMap</code> (已不推荐)</strong>:</p>
 <ul>
 <li>早期 MyBatis (iBATIS) 版本中用于定义参数映射的方式，类似 <code>ResultMap</code>。</li>
 <li>现在几乎不再使用，因为 <code>@Param</code> 和 JavaBean 参数更简单直观。</li>
@@ -430,16 +449,18 @@
 </ol>
 <p><strong>参数对象的类型：</strong></p>
 <ul>
-<li><strong>基本类型&#x2F;包装类型</strong>: <code>int</code>, <code>String</code>, <code>Long</code>, etc.<ul>
+<li><strong>基本类型/包装类型</strong>: <code>int</code>, <code>String</code>, <code>Long</code>, etc.
+<ul>
 <li>如果只有一个这样的参数，XML 中可以直接用 <code>#&#123;_parameter&#125;</code> 或 <code>#&#123;anyName&#125;</code> (在某些 MyBatis 版本和配置下)。推荐使用 <code>@Param</code>。</li>
 </ul>
 </li>
 <li><strong>JavaBean (POJO)</strong>: MyBatis 会自动读取其属性。XML 中用 <code>#&#123;propertyName&#125;</code>。</li>
 <li><strong>Map</strong>: XML 中用 <code>#&#123;keyName&#125;</code>。</li>
-<li><strong>集合&#x2F;数组 (List, Set, Array)</strong>: 通常用于 <code>foreach</code> 标签。如果作为整体参数（不常见），默认名称是 <code>list</code> 或 <code>array</code>。</li>
+<li><strong>集合/数组 (List, Set, Array)</strong>: 通常用于 <code>foreach</code> 标签。如果作为整体参数（不常见），默认名称是 <code>list</code> 或 <code>array</code>。</li>
 </ul>
 <hr>
-<h4 id="3-4-结果映射：resultMap"><a href="#3-4-结果映射：resultMap" class="headerlink" title="3.4 结果映射：resultMap"></a>3.4 结果映射：<code>resultMap</code></h4><p><code>resultMap</code> 是 MyBatis 中处理复杂结果集映射的强大工具。当 <code>resultType</code> 无法满足需求时（如列名与属性名不一致且未开启驼峰转换、关联查询、嵌套结果、鉴别器等），就需要使用 <code>resultMap</code>。</p>
+<h4 id="3-4-结果映射：resultMap">3.4 结果映射：<code>resultMap</code></h4>
+<p><code>resultMap</code> 是 MyBatis 中处理复杂结果集映射的强大工具。当 <code>resultType</code> 无法满足需求时（如列名与属性名不一致且未开启驼峰转换、关联查询、嵌套结果、鉴别器等），就需要使用 <code>resultMap</code>。</p>
 <p><strong>基本 <code>&lt;resultMap&gt;</code> 结构：</strong></p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;UserResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.example.yourproject.model.User&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">constructor</span>&gt;</span> <span class="hljs-comment">&lt;!-- 可选, 用于构造器注入 --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">idArg</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">javaType</span>=<span class="hljs-string">&quot;long&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;BIGINT&quot;</span>/&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">arg</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">javaType</span>=<span class="hljs-string">&quot;string&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">constructor</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_id&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;BIGINT&quot;</span>/&gt;</span> <span class="hljs-comment">&lt;!-- 主键映射 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_name&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span>/&gt;</span> <span class="hljs-comment">&lt;!-- 普通列映射 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;emailAddress&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;email&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;VARCHAR&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;isActive&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;status&quot;</span> <span class="hljs-attr">javaType</span>=<span class="hljs-string">&quot;boolean&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;TINYINT&quot;</span> <span class="hljs-attr">typeHandler</span>=<span class="hljs-string">&quot;org.apache.ibatis.type.BooleanTypeHandler&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br></code></pre></td></tr></table></figure>
 <ul>
@@ -447,7 +468,8 @@
 <li><code>type</code>: 映射的目标 Java 类型。</li>
 <li><code>&lt;constructor&gt;</code>: 用于通过构造方法实例化对象。<code>&lt;idArg&gt;</code> 用于主键参数，<code>&lt;arg&gt;</code> 用于普通参数。</li>
 <li><code>&lt;id&gt;</code>: 定义主键属性的映射。有助于性能提升，特别是在嵌套查询和缓存中。</li>
-<li><code>&lt;result&gt;</code>: 定义普通属性的映射。<ul>
+<li><code>&lt;result&gt;</code>: 定义普通属性的映射。
+<ul>
 <li><code>property</code>: Java 对象的属性名。</li>
 <li><code>column</code>: 数据库结果集的列名。</li>
 <li><code>javaType</code>: Java 属性的类型 (通常 MyBatis 可以推断，但显式指定更精确)。</li>
@@ -458,26 +480,30 @@
 </ul>
 <p><strong>高级映射：</strong></p>
 <ol>
-<li><p><strong>关联 (Association) - 一对一 &#x2F; 多对一</strong></p>
+<li>
+<p><strong>关联 (Association) - 一对一 / 多对一</strong></p>
 <ul>
 <li>用于映射一个复杂类型的属性 (即一个对象嵌套在另一个对象中)。</li>
 <li>例如：一个 <code>Order</code> 对象包含一个 <code>User</code> 对象。</li>
-<li>实现方式：<ul>
+<li>实现方式：
+<ul>
 <li><strong>嵌套 <code>resultMap</code></strong>: 在一个 <code>resultMap</code> 内部定义另一个 <code>resultMap</code> 或引用一个已有的 <code>resultMap</code>。</li>
-<li><strong>嵌套查询 (Nested Select &#x2F; N+1 问题)</strong>: 先查询主对象，然后根据主对象的 ID 再去查询关联对象。<strong>可能会导致 N+1 查询问题，需要谨慎使用或优化。</strong></li>
+<li><strong>嵌套查询 (Nested Select / N+1 问题)</strong>: 先查询主对象，然后根据主对象的 ID 再去查询关联对象。<strong>可能会导致 N+1 查询问题，需要谨慎使用或优化。</strong></li>
 </ul>
 </li>
 </ul>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- Order 实体类包含 User user 属性 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;OrderResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.example.model.Order&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_id&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;orderNumber&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_no&quot;</span>/&gt;</span><br>    <span class="hljs-comment">&lt;!-- 方式一：嵌套 resultMap (JOIN 查询) --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">association</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;customer&quot;</span> <span class="hljs-attr">javaType</span>=<span class="hljs-string">&quot;com.example.model.User&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_id&quot;</span>/&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;username&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_name&quot;</span>/&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;email&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_email&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">association</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- SQL 示例 (JOIN):</span><br><span class="hljs-comment">         SELECT o.id as order_id, o.order_no, u.id as user_id, u.username as user_name, u.email as user_email</span><br><span class="hljs-comment">         FROM orders o JOIN users u ON o.user_id = u.id</span><br><span class="hljs-comment">         WHERE o.id = #&#123;id&#125;</span><br><span class="hljs-comment">    --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;OrderWithNestedSelectMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;com.example.model.Order&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_id&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;orderNumber&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_no&quot;</span>/&gt;</span><br>    <span class="hljs-comment">&lt;!-- 方式二：嵌套查询 (N+1 风险) --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">association</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;customer&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_id&quot;</span> <span class="hljs-attr">javaType</span>=<span class="hljs-string">&quot;com.example.model.User&quot;</span></span><br><span class="hljs-tag">                 <span class="hljs-attr">select</span>=<span class="hljs-string">&quot;com.example.mapper.UserMapper.findById&quot;</span> <span class="hljs-attr">fetchType</span>=<span class="hljs-string">&quot;lazy&quot;</span>/&gt;</span><br>    <span class="hljs-comment">&lt;!-- &#x27;column=&quot;user_id&quot;&#x27; 会作为参数传递给 UserMapper.findById 方法 --&gt;</span><br>    <span class="hljs-comment">&lt;!-- &#x27;fetchType=&quot;lazy&quot;&#x27; (或 eager): 开启延迟加载 --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br></code></pre></td></tr></table></figure>
 <ul>
-<li><code>fetchType</code>: <code>lazy</code> (延迟加载) 或 <code>eager</code> (立即加载)。延迟加载可以提高初始查询性能，但如果总是需要访问关联对象，可能会导致多次查询。<ul>
+<li><code>fetchType</code>: <code>lazy</code> (延迟加载) 或 <code>eager</code> (立即加载)。延迟加载可以提高初始查询性能，但如果总是需要访问关联对象，可能会导致多次查询。
+<ul>
 <li>全局延迟加载开关: <code>mybatis.configuration.lazy-loading-enabled=true</code></li>
 <li>积极的延迟加载: <code>mybatis.configuration.aggressive-lazy-loading=true</code> (默认为 false) 如果开启，访问对象任何属性都会触发所有懒加载属性的加载。</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p><strong>集合 (Collection) - 一对多</strong></p>
+<li>
+<p><strong>集合 (Collection) - 一对多</strong></p>
 <ul>
 <li>用于映射一个集合类型的属性 (如 <code>List&lt;OrderItem&gt;</code>)。</li>
 <li>例如：一个 <code>Order</code> 对象包含一个 <code>List&lt;OrderItem&gt;</code> 列表。</li>
@@ -488,7 +514,8 @@
 <li><code>ofType</code>: 指定集合中元素的类型。</li>
 </ul>
 </li>
-<li><p><strong>鉴别器 (Discriminator)</strong></p>
+<li>
+<p><strong>鉴别器 (Discriminator)</strong></p>
 <ul>
 <li>用于根据某个列的值来决定使用哪个 <code>resultMap</code> 或如何映射。类似于 Java 中的 <code>switch</code> 或 <code>if-else if-else</code>。</li>
 <li>例如：一个 <code>Vehicle</code> 表可能存储了 <code>Car</code> 和 <code>Truck</code> 两种类型的数据，它们有共享的属性，也有各自特有的属性。</li>
@@ -497,7 +524,8 @@
 <ul>
 <li><code>column</code>: 用于判断的列。</li>
 <li><code>javaType</code>: 该列在 Java 中的类型。</li>
-<li><code>&lt;case value=&quot;...&quot;&gt;</code>: 当列的值匹配 <code>value</code> 时应用的映射。<ul>
+<li><code>&lt;case value=&quot;...&quot;&gt;</code>: 当列的值匹配 <code>value</code> 时应用的映射。
+<ul>
 <li><code>resultMap</code>: 引用另一个 <code>resultMap</code>。</li>
 <li>可以直接在 <code>&lt;case&gt;</code> 内部定义 <code>&lt;result&gt;</code> 等映射。</li>
 </ul>
@@ -507,14 +535,17 @@
 </li>
 </ol>
 <hr>
-<h4 id="3-5-一级缓存与二级缓存"><a href="#3-5-一级缓存与二级缓存" class="headerlink" title="3.5 一级缓存与二级缓存"></a>3.5 一级缓存与二级缓存</h4><p>MyBatis 内建了两级缓存机制，用于提升查询性能，减少对数据库的直接访问。</p>
+<h4 id="3-5-一级缓存与二级缓存">3.5 一级缓存与二级缓存</h4>
+<p>MyBatis 内建了两级缓存机制，用于提升查询性能，减少对数据库的直接访问。</p>
 <ol>
-<li><p><strong>一级缓存 (Local Cache &#x2F; Session Cache)</strong>:</p>
+<li>
+<p><strong>一级缓存 (Local Cache / Session Cache)</strong>:</p>
 <ul>
 <li><strong>作用域</strong>: <code>SqlSession</code> 级别。默认开启且无法关闭。</li>
 <li><strong>生命周期</strong>: 当 <code>SqlSession</code> 被创建时，一个新的一级缓存被创建。当 <code>SqlSession</code> 关闭或清空 (flush) 时，缓存被清除。</li>
 <li><strong>工作原理</strong>: 在同一个 <code>SqlSession</code> 中，如果执行完全相同的 SQL 查询（相同的语句 ID，相同的参数，相同的 <code>RowBounds</code> 等），MyBatis 会直接从一级缓存中返回结果，而不会再次查询数据库。</li>
-<li><strong>失效情况</strong>:<ul>
+<li><strong>失效情况</strong>:
+<ul>
 <li>执行 <code>commit()</code> (如果 <code>autoCommit=false</code>)。</li>
 <li>执行任何 <code>insert</code>, <code>update</code>, <code>delete</code> 操作会清空该 <code>SqlSession</code> 的一级缓存（为了防止脏读）。</li>
 <li>调用 <code>sqlSession.clearCache()</code> 方法。</li>
@@ -524,31 +555,39 @@
 <li><strong>Spring 集成</strong>: 在 Spring 集成中，每个数据库操作通常都在一个新的 <code>SqlSession</code> 中执行（由 <code>SqlSessionTemplate</code> 管理），因此一级缓存的跨方法共享效果不明显，主要在同一个事务方法内的多次相同查询中起作用。</li>
 </ul>
 </li>
-<li><p><strong>二级缓存 (Global Cache &#x2F; Namespace Cache)</strong>:</p>
+<li>
+<p><strong>二级缓存 (Global Cache / Namespace Cache)</strong>:</p>
 <ul>
 <li><strong>作用域</strong>: <code>Mapper Namespace</code> 级别。多个 <code>SqlSession</code> 可以共享同一个 Namespace 下的二级缓存。</li>
 <li><strong>生命周期</strong>: 应用级别，只要应用在运行，缓存就可能存在，直到被清除。</li>
-<li><strong>开启方式</strong>:<ol>
-<li>全局配置开启二级缓存 (默认是开启的，但需要进一步配置才生效)：<br><code>application.yml</code>: <code>mybatis.configuration.cache-enabled: true</code> (默认值)</li>
+<li><strong>开启方式</strong>:
+<ol>
+<li>全局配置开启二级缓存 (默认是开启的，但需要进一步配置才生效)：<br>
+<code>application.yml</code>: <code>mybatis.configuration.cache-enabled: true</code> (默认值)</li>
 <li>在 Mapper XML 文件中使用 <code>&lt;cache/&gt;</code> 标签声明该 Namespace 使用二级缓存：<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;com.example.mapper.UserMapper&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">cache</span></span><br><span class="hljs-tag">        <span class="hljs-attr">eviction</span>=<span class="hljs-string">&quot;FIFO&quot;</span>   <span class="hljs-attr">atributos</span> <span class="hljs-attr">de</span> <span class="hljs-attr">la</span> <span class="hljs-attr">caché</span> <span class="hljs-attr">LRU</span> (<span class="hljs-attr">Least</span> <span class="hljs-attr">Recently</span> <span class="hljs-attr">Used</span>), <span class="hljs-attr">FIFO</span> (<span class="hljs-attr">First</span> <span class="hljs-attr">In</span> <span class="hljs-attr">First</span> <span class="hljs-attr">Out</span>), <span class="hljs-attr">SOFT</span>, <span class="hljs-attr">WEAK</span></span><br><span class="hljs-tag">        <span class="hljs-attr">flushInterval</span>=<span class="hljs-string">&quot;60000&quot;</span>  <span class="hljs-attr">limpia</span> <span class="hljs-attr">el</span> <span class="hljs-attr">caché</span> <span class="hljs-attr">cada</span> <span class="hljs-attr">60</span> <span class="hljs-attr">segundos</span></span><br><span class="hljs-tag">        <span class="hljs-attr">size</span>=<span class="hljs-string">&quot;512&quot;</span>  <span class="hljs-attr">numero</span> <span class="hljs-attr">máximo</span> <span class="hljs-attr">de</span> <span class="hljs-attr">objetos</span> <span class="hljs-attr">que</span> <span class="hljs-attr">puede</span> <span class="hljs-attr">guardar</span> <span class="hljs-attr">la</span> <span class="hljs-attr">caché</span></span><br><span class="hljs-tag">        <span class="hljs-attr">readOnly</span>=<span class="hljs-string">&quot;true&quot;</span>  <span class="hljs-attr">si</span> <span class="hljs-attr">es</span> <span class="hljs-attr">true</span>, <span class="hljs-attr">devuelve</span> <span class="hljs-attr">la</span> <span class="hljs-attr">misma</span> <span class="hljs-attr">instancia</span> <span class="hljs-attr">del</span> <span class="hljs-attr">objeto</span> <span class="hljs-attr">cacheado.</span> <span class="hljs-attr">Si</span> <span class="hljs-attr">es</span> <span class="hljs-attr">false</span>, <span class="hljs-attr">devuelve</span> <span class="hljs-attr">una</span> <span class="hljs-attr">copia</span> (<span class="hljs-attr">más</span> <span class="hljs-attr">seguro</span>, <span class="hljs-attr">pero</span> <span class="hljs-attr">más</span> <span class="hljs-attr">lento</span>)</span><br><span class="hljs-tag">        <span class="hljs-attr">blocking</span>=<span class="hljs-string">&quot;false&quot;</span> <span class="hljs-attr">si</span> <span class="hljs-attr">es</span> <span class="hljs-attr">true</span>, <span class="hljs-attr">en</span> <span class="hljs-attr">caso</span> <span class="hljs-attr">de</span> <span class="hljs-attr">cache</span> <span class="hljs-attr">miss</span>, <span class="hljs-attr">solo</span> <span class="hljs-attr">un</span> <span class="hljs-attr">hilo</span> <span class="hljs-attr">irá</span> <span class="hljs-attr">a</span> <span class="hljs-attr">la</span> <span class="hljs-attr">DB</span>, <span class="hljs-attr">los</span> <span class="hljs-attr">demás</span> <span class="hljs-attr">esperarán.</span></span><br><span class="hljs-tag">    /&gt;</span><br>    <span class="hljs-comment">&lt;!-- ...你的 SQL 语句... --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">mapper</span>&gt;</span><br></code></pre></td></tr></table></figure>
-或者使用更复杂的自定义缓存实现，如 Ehcache, Redis：<br><code>&lt;cache type=&quot;org.mybatis.caches.ehcache.EhcacheCache&quot;/&gt;</code> (需要引入 <code>mybatis-ehcache</code> 依赖)<br><code>&lt;cache type=&quot;org.mybatis.caches.redis.RedisCache&quot;/&gt;</code> (需要引入 <code>mybatis-redis</code> 依赖)</li>
+或者使用更复杂的自定义缓存实现，如 Ehcache, Redis：<br>
+<code>&lt;cache type=&quot;org.mybatis.caches.ehcache.EhcacheCache&quot;/&gt;</code> (需要引入 <code>mybatis-ehcache</code> 依赖)<br>
+<code>&lt;cache type=&quot;org.mybatis.caches.redis.RedisCache&quot;/&gt;</code> (需要引入 <code>mybatis-redis</code> 依赖)</li>
 <li>被缓存的 Java 对象必须实现 <code>java.io.Serializable</code> 接口。</li>
 <li><code>select</code> 语句的 <code>useCache</code> 属性必须为 <code>true</code> (默认值)。</li>
 </ol>
 </li>
 <li><strong>工作原理</strong>: 当一个 <code>SqlSession</code> 提交 (<code>commit()</code>) 或关闭 (<code>close()</code>) 时，它的一级缓存中的数据如果配置了二级缓存，并且符合条件，会被刷新到对应的 Namespace 的二级缓存中。后续其他 <code>SqlSession</code> 执行相同查询时，可以从二级缓存获取数据。</li>
-<li><strong>失效&#x2F;清空情况</strong>:<ul>
+<li><strong>失效/清空情况</strong>:
+<ul>
 <li>执行同一个 Namespace 下的 <code>insert</code>, <code>update</code>, <code>delete</code> 操作（默认会清空该 Namespace 的二级缓存，<code>flushCache=&quot;true&quot;</code>）。</li>
 <li><code>select</code> 语句的 <code>flushCache</code> 属性设置为 <code>true</code>。</li>
 <li>达到 <code>&lt;cache&gt;</code> 标签中配置的 <code>eviction</code> 策略（如 LRU）、<code>flushInterval</code> 时间间隔、<code>size</code> 限制等。</li>
 </ul>
 </li>
-<li><strong><code>readOnly</code> 属性</strong>:<ul>
+<li><strong><code>readOnly</code> 属性</strong>:
+<ul>
 <li><code>true</code> (默认对于非序列化缓存如 HashMap): 缓存返回的是对象的同一实例。性能好，但如果对象被修改，可能会影响其他使用者（线程不安全）。</li>
-<li><code>false</code> (默认对于序列化缓存如 Ehcache&#x2F;Redis): 缓存返回的是对象的副本（通过序列化和反序列化）。线程安全，但性能稍差。</li>
+<li><code>false</code> (默认对于序列化缓存如 Ehcache/Redis): 缓存返回的是对象的副本（通过序列化和反序列化）。线程安全，但性能稍差。</li>
 </ul>
 </li>
-<li><strong>注意事项</strong>:<ul>
+<li><strong>注意事项</strong>:
+<ul>
 <li>二级缓存适用于<strong>读多写少</strong>且数据一致性要求不是极端严格的场景。</li>
 <li>对于经常变化的数据，使用二级缓存可能导致缓存命中率低，甚至因频繁刷新缓存而降低性能。</li>
 <li>在分布式环境中，默认的基于 JVM 内存的二级缓存 (如 MyBatis 内置的 <code>PerpetualCache</code> 使用 <code>HashMap</code>) 是无法共享的，每个应用实例都有自己的缓存。需要使用集中的分布式缓存方案（如 Redis, Memcached, Ehcache 分布式模式）。</li>
@@ -558,7 +597,8 @@
 </li>
 </ol>
 <hr>
-<h4 id="3-6-插件-Plugins-Interceptors"><a href="#3-6-插件-Plugins-Interceptors" class="headerlink" title="3.6 插件 (Plugins &#x2F; Interceptors)"></a>3.6 插件 (Plugins &#x2F; Interceptors)</h4><p>MyBatis 允许你通过插件（拦截器）在 SQL 执行过程的特定点进行拦截和修改，这为扩展 MyBatis 功能提供了强大的机制。</p>
+<h4 id="3-6-插件-Plugins-Interceptors">3.6 插件 (Plugins / Interceptors)</h4>
+<p>MyBatis 允许你通过插件（拦截器）在 SQL 执行过程的特定点进行拦截和修改，这为扩展 MyBatis 功能提供了强大的机制。</p>
 <p><strong>可拦截的方法签名 (四大对象)：</strong></p>
 <ol>
 <li><strong><code>Executor</code> (执行器)</strong>: 拦截执行器的方法，如 <code>update</code>, <code>query</code>, <code>commit</code>, <code>rollback</code> 等。这是最常用的拦截点，可以修改 SQL、参数、结果等。</li>
@@ -569,8 +609,10 @@
 <p><strong>如何编写一个插件：</strong></p>
 <ol>
 <li>实现 <code>org.apache.ibatis.plugin.Interceptor</code> 接口。</li>
-<li>使用 <code>@Intercepts</code> 注解声明要拦截的方法签名。<ul>
-<li><code>@Signature</code> 注解定义了具体的拦截点：<ul>
+<li>使用 <code>@Intercepts</code> 注解声明要拦截的方法签名。
+<ul>
+<li><code>@Signature</code> 注解定义了具体的拦截点：
+<ul>
 <li><code>type</code>: 要拦截的四大对象之一 (<code>Executor.class</code>, <code>ParameterHandler.class</code>, etc.)。</li>
 <li><code>method</code>: 要拦截的方法名。</li>
 <li><code>args</code>: 要拦截的方法的参数类型列表。</li>
@@ -580,21 +622,23 @@
 </li>
 </ol>
 <figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> org.<span class="hljs-property">apache</span>.<span class="hljs-property">ibatis</span>.<span class="hljs-property">executor</span>.<span class="hljs-property">Executor</span>;<br><span class="hljs-keyword">import</span> org.<span class="hljs-property">apache</span>.<span class="hljs-property">ibatis</span>.<span class="hljs-property">mapping</span>.<span class="hljs-property">MappedStatement</span>;<br><span class="hljs-keyword">import</span> org.<span class="hljs-property">apache</span>.<span class="hljs-property">ibatis</span>.<span class="hljs-property">plugin</span>.*;<br><span class="hljs-keyword">import</span> org.<span class="hljs-property">apache</span>.<span class="hljs-property">ibatis</span>.<span class="hljs-property">session</span>.<span class="hljs-property">ResultHandler</span>;<br><span class="hljs-keyword">import</span> org.<span class="hljs-property">apache</span>.<span class="hljs-property">ibatis</span>.<span class="hljs-property">session</span>.<span class="hljs-property">RowBounds</span>;<br><br><span class="hljs-keyword">import</span> java.<span class="hljs-property">util</span>.<span class="hljs-property">Properties</span>;<br><br><span class="hljs-comment">// 示例：一个简单的查询耗时打印插件</span><br><span class="hljs-meta">@Intercepts</span>(&#123;<br>    <span class="hljs-meta">@Signature</span>(<br>        <span class="hljs-keyword">type</span> = <span class="hljs-title class_">Executor</span>.<span class="hljs-property">class</span>,<br>        method = <span class="hljs-string">&quot;query&quot;</span>,<br>        args = &#123;<span class="hljs-title class_">MappedStatement</span>.<span class="hljs-property">class</span>, <span class="hljs-title class_">Object</span>.<span class="hljs-property">class</span>, <span class="hljs-title class_">RowBounds</span>.<span class="hljs-property">class</span>, <span class="hljs-title class_">ResultHandler</span>.<span class="hljs-property">class</span>&#125;<br>    ),<br>    <span class="hljs-meta">@Signature</span>( <span class="hljs-comment">// 也可以拦截 update, commit 等</span><br>        <span class="hljs-keyword">type</span> = <span class="hljs-title class_">Executor</span>.<span class="hljs-property">class</span>,<br>        method = <span class="hljs-string">&quot;update&quot;</span>,<br>        args = &#123;<span class="hljs-title class_">MappedStatement</span>.<span class="hljs-property">class</span>, <span class="hljs-title class_">Object</span>.<span class="hljs-property">class</span>&#125;<br>    )<br>&#125;)<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ExecutionTimeInterceptor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Interceptor</span> &#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title class_">Object</span> <span class="hljs-title function_">intercept</span>(<span class="hljs-title class_">Invocation</span> invocation) throws <span class="hljs-title class_">Throwable</span> &#123;<br>        long startTime = <span class="hljs-title class_">System</span>.<span class="hljs-title function_">currentTimeMillis</span>();<br>        <span class="hljs-title class_">Object</span> result = invocation.<span class="hljs-title function_">proceed</span>(); <span class="hljs-comment">// 执行原始方法</span><br>        long endTime = <span class="hljs-title class_">System</span>.<span class="hljs-title function_">currentTimeMillis</span>();<br>        long executionTime = endTime - startTime;<br><br>        <span class="hljs-title class_">MappedStatement</span> mappedStatement = (<span class="hljs-title class_">MappedStatement</span>) invocation.<span class="hljs-title function_">getArgs</span>()[<span class="hljs-number">0</span>];<br>        <span class="hljs-title class_">String</span> sqlId = mappedStatement.<span class="hljs-title function_">getId</span>();<br>        <span class="hljs-title class_">System</span>.<span class="hljs-property">out</span>.<span class="hljs-title function_">println</span>(<span class="hljs-string">&quot;[ExecutionTimeInterceptor] SQL ID [&quot;</span> + sqlId + <span class="hljs-string">&quot;] executed in &quot;</span> + executionTime + <span class="hljs-string">&quot;ms&quot;</span>);<br><br>        <span class="hljs-keyword">return</span> result;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title class_">Object</span> <span class="hljs-title function_">plugin</span>(<span class="hljs-params"><span class="hljs-title class_">Object</span> target</span>) &#123;<br>        <span class="hljs-comment">// 使用 MyBatis 提供的 Plugin.wrap 方法创建代理对象</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-title class_">Plugin</span>.<span class="hljs-title function_">wrap</span>(target, <span class="hljs-variable language_">this</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-built_in">void</span> <span class="hljs-title function_">setProperties</span>(<span class="hljs-params"><span class="hljs-title class_">Properties</span> properties</span>) &#123;<br>        <span class="hljs-comment">// 可以从 MyBatis 配置文件中获取插件的属性</span><br>        <span class="hljs-comment">// String propValue = properties.getProperty(&quot;someProperty&quot;);</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p><strong>注册插件：</strong></p>
 <ul>
-<li><p><strong>XML 配置 (<code>mybatis-config.xml</code>)</strong>:</p>
+<li>
+<p><strong>XML 配置 (<code>mybatis-config.xml</code>)</strong>:</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span> <span class="hljs-attr">interceptor</span>=<span class="hljs-string">&quot;com.example.yourproject.plugin.ExecutionTimeInterceptor&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;someProperty&quot;</span> <span class="hljs-attr">value</span>=<span class="hljs-string">&quot;someValue&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span><br></code></pre></td></tr></table></figure>
 <p>然后在 <code>application.yml</code> 中指定 <code>mybatis.config-location: classpath:mybatis-config.xml</code>。</p>
 </li>
-<li><p><strong>Java Config (Spring Boot 推荐方式)</strong>: 创建一个 <code>ConfigurationCustomizer</code> Bean。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.example.yourproject.plugin.ExecutionTimeInterceptor;<br><span class="hljs-keyword">import</span> org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyBatisPluginConfig</span> &#123;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> ConfigurationCustomizer <span class="hljs-title function_">mybatisConfigurationCustomizer</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> configuration -&gt; &#123;<br>            <span class="hljs-type">ExecutionTimeInterceptor</span> <span class="hljs-variable">interceptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ExecutionTimeInterceptor</span>();<br>            <span class="hljs-comment">// 如果插件需要属性:</span><br>            <span class="hljs-comment">// Properties props = new Properties();</span><br>            <span class="hljs-comment">// props.setProperty(&quot;someProperty&quot;, &quot;someValue&quot;);</span><br>            <span class="hljs-comment">// interceptor.setProperties(props);</span><br>            configuration.addInterceptor(interceptor);<br>        &#125;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li>
+<p><strong>Java Config (Spring Boot 推荐方式)</strong>: 创建一个 <code>ConfigurationCustomizer</code> Bean。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.example.yourproject.plugin.ExecutionTimeInterceptor;<br><span class="hljs-keyword">import</span> org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyBatisPluginConfig</span> &#123;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> ConfigurationCustomizer <span class="hljs-title function_">mybatisConfigurationCustomizer</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> configuration -&gt; &#123;<br>            <span class="hljs-type">ExecutionTimeInterceptor</span> <span class="hljs-variable">interceptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ExecutionTimeInterceptor</span>();<br>            <span class="hljs-comment">// 如果插件需要属性:</span><br>            <span class="hljs-comment">// Properties props = new Properties();</span><br>            <span class="hljs-comment">// props.setProperty(&quot;someProperty&quot;, &quot;someValue&quot;);</span><br>            <span class="hljs-comment">// interceptor.setProperties(props);</span><br>            configuration.addInterceptor(interceptor);<br>        &#125;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 <p><strong>常用插件示例：</strong></p>
 <ul>
 <li><strong>分页插件 (PageHelper)</strong>: 非常流行的第三方插件，简化分页查询。</li>
 <li><strong>性能监控插件</strong>: 记录 SQL 执行时间、慢查询等。</li>
-<li><strong>数据权限插件</strong>: 根据用户权限动态修改 SQL，实现数据行&#x2F;列级别过滤。</li>
+<li><strong>数据权限插件</strong>: 根据用户权限动态修改 SQL，实现数据行/列级别过滤。</li>
 <li><strong>乐观锁插件</strong>: 自动处理版本号的更新和检查。</li>
 <li><strong>加解密插件</strong>: 对特定字段进行自动加解密。</li>
 </ul>

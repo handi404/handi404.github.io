@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="BigDecimal详细讲解什么是BigDecimal？BigDecimal是Java提供的一个用于精确表示十进制数的类。它可以处理任意大小的数字，并且能够精确地进行算术运算，避免了浮点数在精度上的损失。 为什么使用BigDecimal？  精确计算: 浮点数在进行多次计算后，可能会出现精度损失，导致结果不准确。BigDecimal可以避免这个问题，保证计算结果的精确性。 货币计算: 在金融领域，">
+    <meta name="description" content="BigDecimal详细讲解 什么是BigDecimal？ BigDecimal是Java提供的一个用于精确表示十进制数的类。它可以处理任意大小的数字，并且能够精确地进行算术运算，避免了浮点数在精度上的损失。 为什么使用BigDecimal？  精确计算: 浮点数在进行多次计算后，可能会出现精度损失，导致结果不准确。BigDecimal可以避免这个问题，保证计算结果的精确性。 货币计算: 在金融领">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BigDecimal">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/%E5%9F%BA%E7%A1%80/Class/BigDecimal/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="BigDecimal详细讲解什么是BigDecimal？BigDecimal是Java提供的一个用于精确表示十进制数的类。它可以处理任意大小的数字，并且能够精确地进行算术运算，避免了浮点数在精度上的损失。 为什么使用BigDecimal？  精确计算: 浮点数在进行多次计算后，可能会出现精度损失，导致结果不准确。BigDecimal可以避免这个问题，保证计算结果的精确性。 货币计算: 在金融领域，">
+<meta property="og:description" content="BigDecimal详细讲解 什么是BigDecimal？ BigDecimal是Java提供的一个用于精确表示十进制数的类。它可以处理任意大小的数字，并且能够精确地进行算术运算，避免了浮点数在精度上的损失。 为什么使用BigDecimal？  精确计算: 浮点数在进行多次计算后，可能会出现精度损失，导致结果不准确。BigDecimal可以避免这个问题，保证计算结果的精确性。 货币计算: 在金融领">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.753Z">
 <meta property="article:modified_time" content="2025-06-25T02:54:47.727Z">
@@ -301,24 +301,29 @@
             
               <div class="markdown-body">
                 
-                <h2 id="BigDecimal详细讲解"><a href="#BigDecimal详细讲解" class="headerlink" title="BigDecimal详细讲解"></a>BigDecimal详细讲解</h2><h3 id="什么是BigDecimal？"><a href="#什么是BigDecimal？" class="headerlink" title="什么是BigDecimal？"></a>什么是BigDecimal？</h3><p>BigDecimal是Java提供的一个用于精确表示十进制数的类。它可以处理任意大小的数字，并且能够精确地进行算术运算，避免了浮点数在精度上的损失。</p>
+                <h2 id="BigDecimal详细讲解">BigDecimal详细讲解</h2>
+<h3 id="什么是BigDecimal？">什么是BigDecimal？</h3>
+<p>BigDecimal是Java提供的一个用于精确表示十进制数的类。它可以处理任意大小的数字，并且能够精确地进行算术运算，避免了浮点数在精度上的损失。</p>
 <p><strong>为什么使用BigDecimal？</strong></p>
 <ul>
 <li><strong>精确计算:</strong> 浮点数在进行多次计算后，可能会出现精度损失，导致结果不准确。BigDecimal可以避免这个问题，保证计算结果的精确性。</li>
 <li><strong>货币计算:</strong> 在金融领域，货币计算要求非常高的精度。BigDecimal是处理货币计算的理想选择。</li>
 <li><strong>科学计算:</strong> 在一些科学计算中，也需要高精度的数值表示，BigDecimal可以满足这些需求。</li>
 </ul>
-<h3 id="BigDecimal的组成"><a href="#BigDecimal的组成" class="headerlink" title="BigDecimal的组成"></a>BigDecimal的组成</h3><p>一个BigDecimal对象由两个部分组成：</p>
+<h3 id="BigDecimal的组成">BigDecimal的组成</h3>
+<p>一个BigDecimal对象由两个部分组成：</p>
 <ul>
 <li><strong>unscaledValue:</strong> 一个任意精度的整数，表示数字的有效数字。</li>
 <li><strong>scale:</strong> 一个32位的整数，表示小数点后有多少位。</li>
 </ul>
-<h3 id="创建BigDecimal对象"><a href="#创建BigDecimal对象" class="headerlink" title="创建BigDecimal对象"></a>创建BigDecimal对象</h3><p>有几种方式可以创建一个BigDecimal对象：</p>
+<h3 id="创建BigDecimal对象">创建BigDecimal对象</h3>
+<p>有几种方式可以创建一个BigDecimal对象：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-comment">// 从字符串创建</span><br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bd1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;123.45&quot;</span>);<br><br><span class="hljs-comment">// 从double值创建（注意精度损失）</span><br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bd2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-number">123.45</span>);<br><br><span class="hljs-comment">// 从long值创建</span><br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">bd3</span> <span class="hljs-operator">=</span> BigDecimal.valueOf(<span class="hljs-number">12345</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// 表示123.45</span><br></code></pre></td></tr></table></figure>
-
 <p><strong>注意:</strong> 从double值创建BigDecimal时，可能会由于double类型的精度限制导致精度损失。因此，建议从字符串创建BigDecimal。</p>
-<h3 id="BigDecimal的常用方法"><a href="#BigDecimal的常用方法" class="headerlink" title="BigDecimal的常用方法"></a>BigDecimal的常用方法</h3><ul>
-<li><p><strong>算术运算:</strong></p>
+<h3 id="BigDecimal的常用方法">BigDecimal的常用方法</h3>
+<ul>
+<li>
+<p><strong>算术运算:</strong></p>
 <ul>
 <li>add(BigDecimal): 加法</li>
 <li>subtract(BigDecimal): 减法</li>
@@ -327,13 +332,15 @@
 <li>divide(BigDecimal, RoundingMode): 除法并指定舍入模式</li>
 </ul>
 </li>
-<li><p><strong>比较:</strong></p>
+<li>
+<p><strong>比较:</strong></p>
 <ul>
 <li>compareTo(BigDecimal): 比较大小</li>
 <li>equals(Object): 判断两个BigDecimal对象是否相等</li>
 </ul>
 </li>
-<li><p><strong>其他方法:</strong></p>
+<li>
+<p><strong>其他方法:</strong></p>
 <ul>
 <li>scale(): 获取小数点后的位数</li>
 <li>setScale(int newScale, RoundingMode roundingMode): 设置小数点后的位数并指定舍入模式</li>
@@ -342,7 +349,8 @@
 </ul>
 </li>
 </ul>
-<h3 id="舍入模式"><a href="#舍入模式" class="headerlink" title="舍入模式"></a>舍入模式</h3><p>BigDecimal提供了多种舍入模式，用于控制除法和设置scale时的舍入方式。常用的舍入模式有：</p>
+<h3 id="舍入模式">舍入模式</h3>
+<p>BigDecimal提供了多种舍入模式，用于控制除法和设置scale时的舍入方式。常用的舍入模式有：</p>
 <ul>
 <li><strong>RoundingMode.UP:</strong> 向上舍入</li>
 <li><strong>RoundingMode.DOWN:</strong> 向下舍入</li>
@@ -351,19 +359,23 @@
 <li><strong>RoundingMode.HALF_UP:</strong> 四舍五入</li>
 <li><strong>RoundingMode.HALF_DOWN:</strong> 五舍六入</li>
 </ul>
-<h3 id="示例"><a href="#示例" class="headerlink" title="示例"></a>示例</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">num1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;1.23&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">num2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;0.5&quot;</span>);<br><br><span class="hljs-comment">// 加法</span><br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> num1.add(num2);<br>System.out.println(sum); <span class="hljs-comment">// 输出：1.73</span><br><br><span class="hljs-comment">// 除法，保留两位小数，四舍五入</span><br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">quotient</span> <span class="hljs-operator">=</span> num1.divide(num2, <span class="hljs-number">2</span>, RoundingMode.HALF_UP);<br>System.out.println(quotient); <span class="hljs-comment">// 输出：2.46</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><ul>
+<h3 id="示例">示例</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">num1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;1.23&quot;</span>);<br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">num2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BigDecimal</span>(<span class="hljs-string">&quot;0.5&quot;</span>);<br><br><span class="hljs-comment">// 加法</span><br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> num1.add(num2);<br>System.out.println(sum); <span class="hljs-comment">// 输出：1.73</span><br><br><span class="hljs-comment">// 除法，保留两位小数，四舍五入</span><br><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">quotient</span> <span class="hljs-operator">=</span> num1.divide(num2, <span class="hljs-number">2</span>, RoundingMode.HALF_UP);<br>System.out.println(quotient); <span class="hljs-comment">// 输出：2.46</span><br></code></pre></td></tr></table></figure>
+<h3 id="注意事项">注意事项</h3>
+<ul>
 <li>BigDecimal是不可变的，每次运算都会产生一个新的BigDecimal对象。</li>
 <li>在进行大量计算时，为了提高性能，可以考虑使用BigDecimal的静态方法。</li>
 <li>BigDecimal的性能比原生数据类型要慢，因此在对性能要求较高的场景下，需要谨慎使用。</li>
 </ul>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>BigDecimal是Java中用于精确表示十进制数的类，它在金融、科学计算等领域有着广泛的应用。通过合理使用BigDecimal，可以避免浮点数计算带来的精度损失，保证计算结果的准确性。</p>
-<p> 解读 <code>BigDecimal progress = new BigDecimal(String.format(&quot;%.2f&quot;, 0.0));</code> 这行代码</p>
-<h3 id="代码拆解"><a href="#代码拆解" class="headerlink" title="代码拆解"></a>代码拆解</h3><ul>
+<h3 id="总结">总结</h3>
+<p>BigDecimal是Java中用于精确表示十进制数的类，它在金融、科学计算等领域有着广泛的应用。通过合理使用BigDecimal，可以避免浮点数计算带来的精度损失，保证计算结果的准确性。</p>
+<p>解读 <code>BigDecimal progress = new BigDecimal(String.format(&quot;%.2f&quot;, 0.0));</code> 这行代码</p>
+<h3 id="代码拆解">代码拆解</h3>
+<ul>
 <li><strong><code>BigDecimal progress = ...</code></strong>: 声明了一个名为 <code>progress</code> 的变量，类型为 <code>BigDecimal</code>。这个变量将用来存储一个高精度的十进制数。</li>
 <li><strong><code>new BigDecimal(...)</code></strong>: 创建一个新的 <code>BigDecimal</code> 对象。</li>
-<li><strong><code>String.format(&quot;%.2f&quot;, 0.0)</code></strong>:<ul>
+<li><strong><code>String.format(&quot;%.2f&quot;, 0.0)</code></strong>:
+<ul>
 <li><code>String.format</code> 是一个格式化字符串的方法。</li>
 <li><code>%.2f</code> 是格式化模式，表示保留两位小数。</li>
 <li><code>0.0</code> 是要格式化的数字。</li>
@@ -371,23 +383,27 @@
 </ul>
 </li>
 </ul>
-<h3 id="代码含义"><a href="#代码含义" class="headerlink" title="代码含义"></a>代码含义</h3><p>综合起来，这行代码的作用是：</p>
+<h3 id="代码含义">代码含义</h3>
+<p>综合起来，这行代码的作用是：</p>
 <ol>
 <li><strong>格式化数字:</strong> 将 <code>0.0</code> 格式化为保留两位小数的字符串 “0.00”。</li>
 <li><strong>创建BigDecimal对象:</strong> 用格式化后的字符串 “0.00” 创建一个 <code>BigDecimal</code> 对象，并将其赋值给 <code>progress</code> 变量。</li>
 </ol>
-<h3 id="为什么这么做？"><a href="#为什么这么做？" class="headerlink" title="为什么这么做？"></a>为什么这么做？</h3><ul>
+<h3 id="为什么这么做？">为什么这么做？</h3>
+<ul>
 <li><strong>精度保证:</strong> 使用 <code>BigDecimal</code> 可以确保数值计算的精度，避免浮点数运算带来的误差。</li>
 <li><strong>明确初始化:</strong> 将 <code>progress</code> 初始化为 <code>0.00</code>，明确了初始值，方便后续的计算和操作。</li>
 <li><strong>格式化输出:</strong> <code>String.format</code> 保证了输出的格式统一，便于展示和比较。</li>
 </ul>
-<h3 id="潜在问题与优化"><a href="#潜在问题与优化" class="headerlink" title="潜在问题与优化"></a>潜在问题与优化</h3><ul>
+<h3 id="潜在问题与优化">潜在问题与优化</h3>
+<ul>
 <li><strong>性能:</strong> <code>String.format</code> 和 <code>new BigDecimal</code> 操作会有一定的性能开销。如果需要频繁创建 <code>BigDecimal</code> 对象，可以考虑使用 <code>BigDecimal.valueOf</code> 方法，它可以从 long 值创建 <code>BigDecimal</code> 对象，性能更高。</li>
 <li><strong>冗余:</strong> 如果 <code>progress</code> 的初始值总是 <code>0.0</code>，可以直接写成 <code>BigDecimal progress = BigDecimal.ZERO</code>。</li>
 </ul>
-<h3 id="改进建议"><a href="#改进建议" class="headerlink" title="改进建议"></a>改进建议</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">progress</span> <span class="hljs-operator">=</span> BigDecimal.ZERO; <span class="hljs-comment">// 更简洁，性能更高</span><br></code></pre></td></tr></table></figure>
-
-<h3 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h3><p>这行代码通过 <code>String.format</code> 将 <code>0.0</code> 格式化为字符串，然后用该字符串创建一个 <code>BigDecimal</code> 对象，以确保数值计算的精度。虽然可以简化，但这种写法在某些场景下可以提高代码的可读性。</p>
+<h3 id="改进建议">改进建议</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">BigDecimal</span> <span class="hljs-variable">progress</span> <span class="hljs-operator">=</span> BigDecimal.ZERO; <span class="hljs-comment">// 更简洁，性能更高</span><br></code></pre></td></tr></table></figure>
+<h3 id="总结-2">总结</h3>
+<p>这行代码通过 <code>String.format</code> 将 <code>0.0</code> 格式化为字符串，然后用该字符串创建一个 <code>BigDecimal</code> 对象，以确保数值计算的精度。虽然可以简化，但这种写法在某些场景下可以提高代码的可读性。</p>
 
                 
               </div>

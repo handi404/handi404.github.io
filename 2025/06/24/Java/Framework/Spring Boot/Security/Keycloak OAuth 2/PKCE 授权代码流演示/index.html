@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="以下是一个简化的 PKCE 授权代码流的分步演示，使用 伪代码 和 HTTP 请求示例，展示 PKCE 的核心流程：  1. 生成 Code Verifier 和 Challenge123456# 生成 code_verifier（随机 64 位字符串，Base64 安全字符）code_verifier &#x3D; &quot;w2bXx59qE8Kp7LzSfT3rA1vYyZ4uI6oO0jGkHlN">
+    <meta name="description" content="以下是一个简化的 PKCE 授权代码流的分步演示，使用 伪代码 和 HTTP 请求示例，展示 PKCE 的核心流程：  1. 生成 Code Verifier 和 Challenge 123456# 生成 code_verifier（随机 64 位字符串，Base64 安全字符）code_verifier &#x3D; &quot;w2bXx59qE8Kp7LzSfT3rA1vYyZ4uI6oO0jGkHl">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/PKCE%20%E6%8E%88%E6%9D%83%E4%BB%A3%E7%A0%81%E6%B5%81%E6%BC%94%E7%A4%BA/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="以下是一个简化的 PKCE 授权代码流的分步演示，使用 伪代码 和 HTTP 请求示例，展示 PKCE 的核心流程：  1. 生成 Code Verifier 和 Challenge123456# 生成 code_verifier（随机 64 位字符串，Base64 安全字符）code_verifier &#x3D; &quot;w2bXx59qE8Kp7LzSfT3rA1vYyZ4uI6oO0jGkHlN">
+<meta property="og:description" content="以下是一个简化的 PKCE 授权代码流的分步演示，使用 伪代码 和 HTTP 请求示例，展示 PKCE 的核心流程：  1. 生成 Code Verifier 和 Challenge 123456# 生成 code_verifier（随机 64 位字符串，Base64 安全字符）code_verifier &#x3D; &quot;w2bXx59qE8Kp7LzSfT3rA1vYyZ4uI6oO0jGkHl">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.275Z">
 <meta property="article:modified_time" content="2025-03-20T07:26:49.476Z">
@@ -230,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          705 字
+          703 字
         
       </span>
     
@@ -302,50 +302,55 @@
                 
                 <p>以下是一个简化的 <strong>PKCE 授权代码流</strong>的分步演示，使用 <strong>伪代码</strong> 和 <strong>HTTP 请求示例</strong>，展示 PKCE 的核心流程：</p>
 <hr>
-<h3 id="1-生成-Code-Verifier-和-Challenge"><a href="#1-生成-Code-Verifier-和-Challenge" class="headerlink" title="1. 生成 Code Verifier 和 Challenge"></a><strong>1. 生成 Code Verifier 和 Challenge</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 生成 code_verifier（随机 64 位字符串，Base64 安全字符）</span><br>code_verifier = <span class="hljs-string">&quot;w2bXx59qE8Kp7LzSfT3rA1vYyZ4uI6oO0jGkHlNqBmC5dP...（示例）&quot;</span><br><br><span class="hljs-comment"># 计算 code_challenge（SHA-256 哈希 + Base64 URL 安全编码）</span><br>code_challenge = base64url(sha256(code_verifier))<br><span class="hljs-comment"># 结果示例：E9Melhoa2OwvWEM...（固定长度 43 字符）</span><br></code></pre></td></tr></table></figure>
-
+<h3 id="1-生成-Code-Verifier-和-Challenge"><strong>1. 生成 Code Verifier 和 Challenge</strong></h3>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 生成 code_verifier（随机 64 位字符串，Base64 安全字符）</span><br>code_verifier = <span class="hljs-string">&quot;w2bXx59qE8Kp7LzSfT3rA1vYyZ4uI6oO0jGkHlNqBmC5dP...（示例）&quot;</span><br><br><span class="hljs-comment"># 计算 code_challenge（SHA-256 哈希 + Base64 URL 安全编码）</span><br>code_challenge = base64url(sha256(code_verifier))<br><span class="hljs-comment"># 结果示例：E9Melhoa2OwvWEM...（固定长度 43 字符）</span><br></code></pre></td></tr></table></figure>
 <hr>
-<h3 id="2-用户发起授权请求"><a href="#2-用户发起授权请求" class="headerlink" title="2. 用户发起授权请求"></a><strong>2. 用户发起授权请求</strong></h3><p>用户点击登录按钮，客户端构造授权 URL 并重定向到授权服务器：  </p>
+<h3 id="2-用户发起授权请求"><strong>2. 用户发起授权请求</strong></h3>
+<p>用户点击登录按钮，客户端构造授权 URL 并重定向到授权服务器：</p>
 <figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs http">GET https://auth-server.com/authorize?<br>  response_type=code<br>  &amp;client_id=my-mobile-app<br>  &amp;redirect_uri=com.myapp://callback<br>  &amp;scope=openid profile<br>  &amp;code_challenge=E9Melhoa2OwvWEM...<br>  &amp;code_challenge_method=S256<br>  &amp;state=abc123（防 CSRF）<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="3-用户登录并授权"><a href="#3-用户登录并授权" class="headerlink" title="3. 用户登录并授权"></a><strong>3. 用户登录并授权</strong></h3><ul>
-<li>用户跳转到授权服务器的登录页面，输入账号密码。  </li>
-<li>授权服务器验证用户身份，询问用户是否同意授权（如访问头像、邮箱）。  </li>
+<h3 id="3-用户登录并授权"><strong>3. 用户登录并授权</strong></h3>
+<ul>
+<li>用户跳转到授权服务器的登录页面，输入账号密码。</li>
+<li>授权服务器验证用户身份，询问用户是否同意授权（如访问头像、邮箱）。</li>
 <li>用户点击 <strong>“允许”</strong>。</li>
 </ul>
 <hr>
-<h3 id="4-授权服务器返回授权码"><a href="#4-授权服务器返回授权码" class="headerlink" title="4. 授权服务器返回授权码"></a><strong>4. 授权服务器返回授权码</strong></h3><p>授权服务器生成授权码（<code>code</code>）并重定向回客户端回调地址：  </p>
+<h3 id="4-授权服务器返回授权码"><strong>4. 授权服务器返回授权码</strong></h3>
+<p>授权服务器生成授权码（<code>code</code>）并重定向回客户端回调地址：</p>
 <figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs http">HTTP 302 Redirect<br><span class="hljs-attribute">Location</span><span class="hljs-punctuation">: </span>com.myapp://callback?<br>  code=xyz789（授权码）<br>  &amp;state=abc123（与请求中的 state 一致）<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="5-客户端用-Code-Verifier-换取令牌"><a href="#5-客户端用-Code-Verifier-换取令牌" class="headerlink" title="5. 客户端用 Code Verifier 换取令牌"></a><strong>5. 客户端用 Code Verifier 换取令牌</strong></h3><p>客户端向授权服务器的令牌端点发送请求，携带 <code>code_verifier</code>：  </p>
+<h3 id="5-客户端用-Code-Verifier-换取令牌"><strong>5. 客户端用 Code Verifier 换取令牌</strong></h3>
+<p>客户端向授权服务器的令牌端点发送请求，携带 <code>code_verifier</code>：</p>
 <figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs http">POST https://auth-server.com/token<br><span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>application/x-www-form-urlencoded<br><br>grant_type=authorization_code<br>&amp;code=xyz789<br>&amp;redirect_uri=com.myapp://callback<br>&amp;client_id=my-mobile-app<br>&amp;code_verifier=w2bXx59qE8Kp7LzSfT3rA1vYyZ4uI6oO0jGkHlNqBmC5dP...<br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="6-授权服务器验证并返回令牌"><a href="#6-授权服务器验证并返回令牌" class="headerlink" title="6. 授权服务器验证并返回令牌"></a><strong>6. 授权服务器验证并返回令牌</strong></h3><p>授权服务器执行以下验证：  </p>
+<h3 id="6-授权服务器验证并返回令牌"><strong>6. 授权服务器验证并返回令牌</strong></h3>
+<p>授权服务器执行以下验证：</p>
 <ol>
-<li>检查 <code>code</code> 是否有效且未过期。  </li>
-<li>用 <code>code_verifier</code> 重新计算 <code>code_challenge</code>，与授权请求中的值比对。  </li>
+<li>检查 <code>code</code> 是否有效且未过期。</li>
+<li>用 <code>code_verifier</code> 重新计算 <code>code_challenge</code>，与授权请求中的值比对。</li>
 <li>验证 <code>redirect_uri</code> 和 <code>client_id</code> 是否匹配。</li>
 </ol>
-<p><strong>响应示例（成功）：</strong>  </p>
+<p><strong>响应示例（成功）：</strong></p>
 <figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;access_token&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;eyJhbGciOi...&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;token_type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Bearer&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;expires_in&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">3600</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;refresh_token&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;def456...&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;id_token&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;eyJ0eXAiOi...&quot;</span>  <span class="hljs-comment">// OIDC 场景下返回</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
-
 <hr>
-<h3 id="关键安全验证点"><a href="#关键安全验证点" class="headerlink" title="关键安全验证点"></a><strong>关键安全验证点</strong></h3><ul>
-<li><strong>Code Verifier 绑定</strong>：攻击者截获 <code>code</code> 后，因缺少 <code>code_verifier</code> 无法换取令牌。  </li>
-<li><strong>动态 Challenge</strong>：每次请求生成新的 <code>code_verifier</code>，防止重放攻击。  </li>
+<h3 id="关键安全验证点"><strong>关键安全验证点</strong></h3>
+<ul>
+<li><strong>Code Verifier 绑定</strong>：攻击者截获 <code>code</code> 后，因缺少 <code>code_verifier</code> 无法换取令牌。</li>
+<li><strong>动态 Challenge</strong>：每次请求生成新的 <code>code_verifier</code>，防止重放攻击。</li>
 <li><strong>无 client_secret</strong>：公共客户端（如移动端）无需存储密钥，依赖动态 PKCE 保护。</li>
 </ul>
 <hr>
-<h3 id="实际工具演示（以-Keycloak-为例）"><a href="#实际工具演示（以-Keycloak-为例）" class="headerlink" title="实际工具演示（以 Keycloak 为例）"></a><strong>实际工具演示（以 Keycloak 为例）</strong></h3><ol start="4">
-<li><strong>注册客户端</strong>：在 Keycloak 控制台创建客户端，启用 <code>PKCE</code> 选项。  </li>
-<li><strong>生成 Verifier&#x2F;Challenge</strong>：使用前端库（如 <code>react-oauth2-pkce</code>）自动处理密钥生成。  </li>
-<li><strong>完整流程代码示例</strong>：  <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 前端（React）</span><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">AuthProvider</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-oauth2-pkce&#x27;</span>;<br><br><span class="hljs-keyword">const</span> authService = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AuthProvider</span>(&#123;<br>  <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;my-mobile-app&#x27;</span>,<br>  <span class="hljs-attr">location</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>,<br>  <span class="hljs-attr">provider</span>: <span class="hljs-string">&#x27;https://auth-server.com&#x27;</span>,<br>  <span class="hljs-attr">redirectUri</span>: <span class="hljs-string">&#x27;com.myapp://callback&#x27;</span>,<br>  <span class="hljs-attr">scopes</span>: [<span class="hljs-string">&#x27;openid&#x27;</span>, <span class="hljs-string">&#x27;profile&#x27;</span>]<br>&#125;);<br><br><span class="hljs-comment">// 触发登录</span><br>authService.<span class="hljs-title function_">authorize</span>();<br><br><span class="hljs-comment">// 处理回调（自动用 code_verifier 换令牌）</span><br>authService.<span class="hljs-title function_">getToken</span>().<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">token</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(token));<br></code></pre></td></tr></table></figure></li>
+<h3 id="实际工具演示（以-Keycloak-为例）"><strong>实际工具演示（以 Keycloak 为例）</strong></h3>
+<ol start="4">
+<li><strong>注册客户端</strong>：在 Keycloak 控制台创建客户端，启用 <code>PKCE</code> 选项。</li>
+<li><strong>生成 Verifier/Challenge</strong>：使用前端库（如 <code>react-oauth2-pkce</code>）自动处理密钥生成。</li>
+<li><strong>完整流程代码示例</strong>：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 前端（React）</span><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">AuthProvider</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;react-oauth2-pkce&#x27;</span>;<br><br><span class="hljs-keyword">const</span> authService = <span class="hljs-keyword">new</span> <span class="hljs-title class_">AuthProvider</span>(&#123;<br>  <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;my-mobile-app&#x27;</span>,<br>  <span class="hljs-attr">location</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>,<br>  <span class="hljs-attr">provider</span>: <span class="hljs-string">&#x27;https://auth-server.com&#x27;</span>,<br>  <span class="hljs-attr">redirectUri</span>: <span class="hljs-string">&#x27;com.myapp://callback&#x27;</span>,<br>  <span class="hljs-attr">scopes</span>: [<span class="hljs-string">&#x27;openid&#x27;</span>, <span class="hljs-string">&#x27;profile&#x27;</span>]<br>&#125;);<br><br><span class="hljs-comment">// 触发登录</span><br>authService.<span class="hljs-title function_">authorize</span>();<br><br><span class="hljs-comment">// 处理回调（自动用 code_verifier 换令牌）</span><br>authService.<span class="hljs-title function_">getToken</span>().<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">token</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(token));<br></code></pre></td></tr></table></figure>
+</li>
 </ol>
 <hr>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a><strong>总结</strong></h3><p>PKCE 授权代码流通过 <strong>动态密钥对</strong>（Verifier + Challenge）和 <strong>无 client_secret 依赖</strong>，为移动端&#x2F;SPA 等公共客户端提供安全的 OAuth 2.0 实现。开发者只需确保正确生成和传递 <code>code_verifier</code>，即可防御授权码劫持攻击。</p>
+<h3 id="总结"><strong>总结</strong></h3>
+<p>PKCE 授权代码流通过 <strong>动态密钥对</strong>（Verifier + Challenge）和 <strong>无 client_secret 依赖</strong>，为移动端/SPA 等公共客户端提供安全的 OAuth 2.0 实现。开发者只需确保正确生成和传递 <code>code_verifier</code>，即可防御授权码劫持攻击。</p>
 
                 
               </div>

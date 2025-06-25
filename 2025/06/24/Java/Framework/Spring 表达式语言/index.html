@@ -230,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.8k 字
+          1.7k 字
         
       </span>
     
@@ -311,37 +311,47 @@
 <p><strong>基本语法与核心特性</strong></p>
 <p>SpEL的表达式通常被包裹在 <code>#&#123; expressionString &#125;</code> 中。</p>
 <ol>
-<li><p><strong>字面量 (Literals)</strong>：</p>
+<li>
+<p><strong>字面量 (Literals)</strong>：</p>
 <ul>
-<li>字符串: <code>#&#123;&#39;Hello World&#39;&#125;</code> (单引号或双引号均可，但单引号更常见)</li>
+<li>字符串: <code>#&#123;'Hello World'&#125;</code> (单引号或双引号均可，但单引号更常见)</li>
 <li>数字: <code>#&#123;100&#125;</code>, <code>#&#123;3.14&#125;</code></li>
 <li>布尔值: <code>#&#123;true&#125;</code>, <code>#&#123;false&#125;</code></li>
 <li>Null: <code>#&#123;null&#125;</code></li>
 </ul>
 </li>
-<li><p><strong>属性访问 (Property Access)</strong>：</p>
+<li>
+<p><strong>属性访问 (Property Access)</strong>：</p>
 <ul>
 <li>点符号: <code>#&#123;myBean.propertyName&#125;</code></li>
-<li>方括号 (用于特殊字符或动态属性名): <code>#&#123;myBean[&#39;propertyName&#39;]&#125;</code></li>
+<li>方括号 (用于特殊字符或动态属性名): <code>#&#123;myBean['propertyName']&#125;</code></li>
 <li>安全导航操作符 (避免NullPointerException): <code>#&#123;myBean?.propertyName?.anotherProperty&#125;</code> (如果 <code>myBean</code> 或 <code>propertyName</code> 为 null，表达式结果为 null，不抛异常)</li>
 </ul>
 </li>
-<li><p><strong>方法调用 (Method Invocation)</strong>：</p>
+<li>
+<p><strong>方法调用 (Method Invocation)</strong>：</p>
 <ul>
 <li><code>#&#123;myBean.someMethod()&#125;</code></li>
-<li><code>#&#123;myBean.anotherMethod(&#39;argument&#39;, 123)&#125;</code></li>
+<li><code>#&#123;myBean.anotherMethod('argument', 123)&#125;</code></li>
 </ul>
 </li>
-<li><p><strong>操作符 (Operators)</strong>：</p>
+<li>
+<p><strong>操作符 (Operators)</strong>：</p>
 <ul>
-<li><strong>算术操作符</strong>: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code> (取模)<br><code>#&#123;1 + 2&#125;</code></li>
-<li><strong>关系操作符</strong>: <code>==</code> (eq), <code>!=</code> (ne), <code>&lt;</code> (lt), <code>&lt;=</code> (le), <code>&gt;</code> (gt), <code>&gt;=</code> (ge)<br><code>#&#123;counter.total == 10&#125;</code> 或 <code>#&#123;counter.total eq 10&#125;</code></li>
-<li><strong>逻辑操作符</strong>: <code>and</code> (&amp;&amp;), <code>or</code> (||), <code>not</code> (!)<br><code>#&#123;user.isAdmin() and user.isActive()&#125;</code></li>
-<li><strong>三元操作符 (Ternary Operator)</strong>: <code>condition ? valueIfTrue : valueIfFalse</code><br><code>#&#123;user.age &gt; 18 ? &#39;Adult&#39; : &#39;Minor&#39;&#125;</code></li>
-<li><strong>Elvis 操作符</strong>: <code>expression ?: defaultValue</code> (如果 <code>expression</code> 的结果不为 <code>null</code>，则返回其结果；否则返回 <code>defaultValue</code>)<br><code>#&#123;user.name ?: &#39;Guest&#39;&#125;</code> (如果 <code>user.name</code> 为 null，则显示’Guest’)</li>
+<li><strong>算术操作符</strong>: <code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code> (取模)<br>
+<code>#&#123;1 + 2&#125;</code></li>
+<li><strong>关系操作符</strong>: <code>==</code> (eq), <code>!=</code> (ne), <code>&lt;</code> (lt), <code>&lt;=</code> (le), <code>&gt;</code> (gt), <code>&gt;=</code> (ge)<br>
+<code>#&#123;counter.total == 10&#125;</code> 或 <code>#&#123;counter.total eq 10&#125;</code></li>
+<li><strong>逻辑操作符</strong>: <code>and</code> (&amp;&amp;), <code>or</code> (||), <code>not</code> (!)<br>
+<code>#&#123;user.isAdmin() and user.isActive()&#125;</code></li>
+<li><strong>三元操作符 (Ternary Operator)</strong>: <code>condition ? valueIfTrue : valueIfFalse</code><br>
+<code>#&#123;user.age &gt; 18 ? 'Adult' : 'Minor'&#125;</code></li>
+<li><strong>Elvis 操作符</strong>: <code>expression ?: defaultValue</code> (如果 <code>expression</code> 的结果不为 <code>null</code>，则返回其结果；否则返回 <code>defaultValue</code>)<br>
+<code>#&#123;user.name ?: 'Guest'&#125;</code> (如果 <code>user.name</code> 为 null，则显示’Guest’)</li>
 </ul>
 </li>
-<li><p><strong>变量引用 (Variables)</strong>：</p>
+<li>
+<p><strong>变量引用 (Variables)</strong>：</p>
 <ul>
 <li>在特定上下文中，可以定义和引用变量，通常以 <code>#</code> 开头。</li>
 <li>例如，在方法参数注解中: <code>#&#123;#argumentName&#125;</code></li>
@@ -349,14 +359,16 @@
 <li><code>#&#123;#this&#125;</code>: 引用当前求值上下文对象。</li>
 </ul>
 </li>
-<li><p><strong>Bean 引用 (Bean References)</strong>：</p>
+<li>
+<p><strong>Bean 引用 (Bean References)</strong>：</p>
 <ul>
 <li>这是 SpEL 在 Spring 中最常用的功能之一，可以直接引用 Spring 容器中管理的其他 Bean。</li>
 <li><code>#&#123;@myBeanName&#125;</code> 或 <code>#&#123;myBeanName&#125;</code> (在某些上下文中，<code>@</code> 可以省略，但推荐使用 <code>@</code> 以明确表示是 Bean 引用)</li>
 <li><code>#&#123;@myBeanName.someProperty&#125;</code></li>
 </ul>
 </li>
-<li><p><strong>类型操作符 (Type Operator - T())</strong>：</p>
+<li>
+<p><strong>类型操作符 (Type Operator - T())</strong>：</p>
 <ul>
 <li>允许你引用类（包括调用静态方法和静态字段）。</li>
 <li><code>#&#123;T(java.lang.Math).random()&#125;</code></li>
@@ -364,26 +376,33 @@
 <li><code>#&#123;T(com.example.MyConstants).SOME_VALUE&#125;</code></li>
 </ul>
 </li>
-<li><p><strong>构造器调用 (Constructor Invocation)</strong>：</p>
+<li>
+<p><strong>构造器调用 (Constructor Invocation)</strong>：</p>
 <ul>
-<li><code>#&#123;new String(&#39;Hello&#39;)&#125;</code></li>
+<li><code>#&#123;new String('Hello')&#125;</code></li>
 <li><code>#&#123;new java.util.Date()&#125;</code></li>
 </ul>
 </li>
-<li><p><strong>集合操作 (Collections&#x2F;Maps)</strong>：</p>
+<li>
+<p><strong>集合操作 (Collections/Maps)</strong>：</p>
 <ul>
-<li><strong>访问</strong>: <code>#&#123;myList[0]&#125;</code>, <code>#&#123;myMap[&#39;key&#39;]&#125;</code></li>
-<li><strong>投影 (Projection)</strong>: 从集合中每个元素提取属性，形成新集合。<br><code>#&#123;myListOfUsers.![name]&#125;</code> (获取所有用户的 <code>name</code> 属性列表)</li>
-<li><strong>选择 (Selection)</strong>: 根据条件过滤集合。<br><code>#&#123;myListOfUsers.?[age &gt; 18]&#125;</code> (选择所有年龄大于 18 的用户)<br><code>#&#123;myMap.?[value &gt; 100]&#125;</code> (选择 Map 中值大于 100 的条目)</li>
-<li><strong>集合&#x2F;数组&#x2F;Map字面量</strong>: <code>#&#123; &#123;1, 2, 3&#125; &#125;</code> (List), <code>#&#123; &#123;name:&#39;Alice&#39;, age:30&#125; &#125;</code> (Map)</li>
+<li><strong>访问</strong>: <code>#&#123;myList[0]&#125;</code>, <code>#&#123;myMap['key']&#125;</code></li>
+<li><strong>投影 (Projection)</strong>: 从集合中每个元素提取属性，形成新集合。<br>
+<code>#&#123;myListOfUsers.![name]&#125;</code> (获取所有用户的 <code>name</code> 属性列表)</li>
+<li><strong>选择 (Selection)</strong>: 根据条件过滤集合。<br>
+<code>#&#123;myListOfUsers.?[age &gt; 18]&#125;</code> (选择所有年龄大于 18 的用户)<br>
+<code>#&#123;myMap.?[value &gt; 100]&#125;</code> (选择 Map 中值大于 100 的条目)</li>
+<li><strong>集合/数组/Map字面量</strong>: <code>#&#123; &#123;1, 2, 3&#125; &#125;</code> (List), <code>#&#123; &#123;name:'Alice', age:30&#125; &#125;</code> (Map)</li>
 </ul>
 </li>
-<li><p><strong>赋值 (Assignment)</strong>：</p>
+<li>
+<p><strong>赋值 (Assignment)</strong>：</p>
 <ul>
-<li><code>#&#123;myBean.propertyName = &#39;newValue&#39;&#125;</code> (谨慎使用，通常在特定场景如测试或脚本化中有用)</li>
+<li><code>#&#123;myBean.propertyName = 'newValue'&#125;</code> (谨慎使用，通常在特定场景如测试或脚本化中有用)</li>
 </ul>
 </li>
-<li><p><strong>模板表达式 (Templated Expressions)</strong>：</p>
+<li>
+<p><strong>模板表达式 (Templated Expressions)</strong>：</p>
 <ul>
 <li>用于将字面量文本与一个或多个求值块组合起来。</li>
 <li><code>&quot;Random number is #&#123;T(java.lang.Math).random()&#125;&quot;</code> (注意，这种形式的引号是Java字符串引号，内部的 <code>#&#123;&#125;</code> 是 SpEL)</li>
@@ -392,52 +411,61 @@
 </ol>
 <p><strong>SpEL 在 Spring Boot 中的常见应用场景</strong></p>
 <ol>
-<li><p><strong><code>@Value</code> 注解</strong>：</p>
+<li>
+<p><strong><code>@Value</code> 注解</strong>：</p>
 <ul>
-<li>从配置文件 (<code>application.properties</code> &#x2F; <code>application.yml</code>) 注入值，并可以使用 SpEL 进行简单处理。</li>
-<li><code>@Value(&quot;#&#123;systemProperties[&#39;user.home&#39;]&#125;&quot;) private String userHome;</code></li>
+<li>从配置文件 (<code>application.properties</code> / <code>application.yml</code>) 注入值，并可以使用 SpEL 进行简单处理。</li>
+<li><code>@Value(&quot;#&#123;systemProperties['user.home']&#125;&quot;) private String userHome;</code></li>
 <li><code>@Value(&quot;#&#123;@anotherBean.someProperty&#125;&quot;) private String anotherValue;</code></li>
 <li><code>@Value(&quot;#&#123;1 + 2&#125;&quot;) private int result;</code></li>
-<li><code>@Value(&quot;#&#123;&#39;$&#123;my.property:defaultValue&#125;&#39;.toUpperCase()&#125;&quot;) private String processedProperty;</code> (先进行属性占位符解析，再进行 SpEL 评估)</li>
+<li><code>@Value(&quot;#&#123;'$&#123;my.property:defaultValue&#125;'.toUpperCase()&#125;&quot;) private String processedProperty;</code> (先进行属性占位符解析，再进行 SpEL 评估)</li>
 </ul>
 </li>
-<li><p><strong><code>@ConditionalOnExpression</code> 注解</strong>：</p>
+<li>
+<p><strong><code>@ConditionalOnExpression</code> 注解</strong>：</p>
 <ul>
 <li>基于 SpEL 表达式的结果来条件化地创建 Bean。</li>
 <li><code>@ConditionalOnExpression(&quot;$&#123;my.feature.enabled:true&#125; and $&#123;another.condition:false&#125;&quot;)</code></li>
 </ul>
 </li>
-<li><p><strong>Spring Security</strong>：</p>
+<li>
+<p><strong>Spring Security</strong>：</p>
 <ul>
 <li>在 <code>@PreAuthorize</code>, <code>@PostAuthorize</code>, <code>@PreFilter</code>, <code>@PostFilter</code> 注解中定义安全访问规则。</li>
-<li><code>@PreAuthorize(&quot;hasRole(&#39;ADMIN&#39;) or #username == authentication.principal.username&quot;)</code></li>
+<li><code>@PreAuthorize(&quot;hasRole('ADMIN') or #username == authentication.principal.username&quot;)</code></li>
 <li><code>@PreAuthorize(&quot;@mySecurityService.checkAccess(authentication, #id)&quot;)</code></li>
 </ul>
 </li>
-<li><p><strong>Spring Cache</strong>：</p>
+<li>
+<p><strong>Spring Cache</strong>：</p>
 <ul>
 <li>在 <code>@Cacheable</code>, <code>@CachePut</code>, <code>@CacheEvict</code> 注解中动态生成缓存的 key 或设置条件。</li>
 <li><code>@Cacheable(value=&quot;users&quot;, key=&quot;#user.id&quot;)</code></li>
 <li><code>@CacheEvict(value=&quot;users&quot;, condition=&quot;#user.inactive&quot;)</code></li>
 </ul>
 </li>
-<li><p><strong><code>@Scheduled</code> 注解 (cron 表达式)</strong>：</p>
+<li>
+<p><strong><code>@Scheduled</code> 注解 (cron 表达式)</strong>：</p>
 <ul>
 <li>虽然cron表达式本身不是SpEL，但其属性如 <code>zone</code> 可以接受 SpEL 表达式从配置中动态获取时区。</li>
 <li><code>@Scheduled(cron = &quot;$&#123;myapp.schedule.cron&#125;&quot;, zone = &quot;$&#123;myapp.schedule.timezone&#125;&quot;)</code> (这里是属性占位符，但如果需要更复杂的逻辑，可以结合 SpEL)</li>
 </ul>
 </li>
-<li><p><strong>Spring MVC &#x2F; WebFlux (数据绑定和校验)</strong>：</p>
+<li>
+<p><strong>Spring MVC / WebFlux (数据绑定和校验)</strong>：</p>
 <ul>
 <li>在某些高级场景下，SpEL 可以用于自定义数据绑定或校验逻辑，但更常见的是通过专用 API。</li>
 </ul>
 </li>
-<li><p><strong>Programmatic Usage (编程式使用)</strong>：</p>
+<li>
+<p><strong>Programmatic Usage (编程式使用)</strong>：</p>
 <ul>
-<li><p>虽然不常见于日常应用开发，但你可以通过 <code>ExpressionParser</code> 和 <code>EvaluationContext</code> 来在 Java 代码中直接解析和执行 SpEL 表达式。</p>
+<li>
+<p>虽然不常见于日常应用开发，但你可以通过 <code>ExpressionParser</code> 和 <code>EvaluationContext</code> 来在 Java 代码中直接解析和执行 SpEL 表达式。</p>
 </li>
-<li><pre><code class="language-java">*   ExpressionParser parser = new SpelExpressionParser();
-*   Expression exp = parser.parseExpression(&quot;&#39;Hello World&#39;.concat(&#39;!&#39;)&quot;);
+<li>
+<pre><code class="language-java">*   ExpressionParser parser = new SpelExpressionParser();
+*   Expression exp = parser.parseExpression(&quot;'Hello World'.concat('!')&quot;);
 *   String message = (String) exp.getValue(); // &quot;Hello World!&quot;
 *
 *   StandardEvaluationContext context = new StandardEvaluationContext();

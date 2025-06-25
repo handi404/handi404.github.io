@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="探讨 JPA 中的二级缓存 (L2 Cache)。二级缓存是提升 JPA 应用性能的重要手段之一，它通过在 EntityManagerFactory 层面缓存实体数据，来减少对数据库的直接访问。  4.3 二级缓存 (L 2 Cache)回顾一级缓存 (Persistence Context Cache &#x2F; First-Level Cache)：  范围：EntityManager 实例">
+    <meta name="description" content="探讨 JPA 中的二级缓存 (L2 Cache)。二级缓存是提升 JPA 应用性能的重要手段之一，它通过在 EntityManagerFactory 层面缓存实体数据，来减少对数据库的直接访问。  4.3 二级缓存 (L 2 Cache) 回顾一级缓存 (Persistence Context Cache &#x2F; First-Level Cache)：  范围：EntityManager 实例级别（通">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/JPA/4.%E8%BF%9B%E9%98%B6/4.3%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%20(L2%20Cache)/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="探讨 JPA 中的二级缓存 (L2 Cache)。二级缓存是提升 JPA 应用性能的重要手段之一，它通过在 EntityManagerFactory 层面缓存实体数据，来减少对数据库的直接访问。  4.3 二级缓存 (L 2 Cache)回顾一级缓存 (Persistence Context Cache &#x2F; First-Level Cache)：  范围：EntityManager 实例">
+<meta property="og:description" content="探讨 JPA 中的二级缓存 (L2 Cache)。二级缓存是提升 JPA 应用性能的重要手段之一，它通过在 EntityManagerFactory 层面缓存实体数据，来减少对数据库的直接访问。  4.3 二级缓存 (L 2 Cache) 回顾一级缓存 (Persistence Context Cache &#x2F; First-Level Cache)：  范围：EntityManager 实例级别（通">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.060Z">
 <meta property="article:modified_time" content="2025-06-16T08:47:07.580Z">
@@ -230,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.5k 字
+          3.4k 字
         
       </span>
     
@@ -302,14 +302,15 @@
                 
                 <p>探讨 JPA 中的<strong>二级缓存 (L2 Cache)</strong>。二级缓存是提升 JPA 应用性能的重要手段之一，它通过在 <code>EntityManagerFactory</code> 层面缓存实体数据，来减少对数据库的直接访问。</p>
 <hr>
-<h4 id="4-3-二级缓存-L-2-Cache"><a href="#4-3-二级缓存-L-2-Cache" class="headerlink" title="4.3 二级缓存 (L 2 Cache)"></a>4.3 二级缓存 (L 2 Cache)</h4><p><strong>回顾一级缓存 (Persistence Context Cache &#x2F; First-Level Cache)：</strong></p>
+<h4 id="4-3-二级缓存-L-2-Cache">4.3 二级缓存 (L 2 Cache)</h4>
+<p><strong>回顾一级缓存 (Persistence Context Cache / First-Level Cache)：</strong></p>
 <ul>
 <li>范围：<code>EntityManager</code> 实例级别（通常对应一个事务）。</li>
 <li>生命周期：与 <code>EntityManager</code> 或事务共存亡。</li>
 <li>作用：在单个事务内避免重复查询同一实体，保证实体唯一性。</li>
 <li><strong>不能跨事务或跨 <code>EntityManager</code> 共享。</strong></li>
 </ul>
-<p><strong>二级缓存 (Shared Cache &#x2F; Second-Level Cache)：</strong></p>
+<p><strong>二级缓存 (Shared Cache / Second-Level Cache)：</strong></p>
 <ul>
 <li><strong>范围</strong>: <code>EntityManagerFactory</code> 级别。这意味着它可以被同一应用中由同一个 <code>EntityManagerFactory</code> 创建的<strong>所有 <code>EntityManager</code> 实例共享</strong>。</li>
 <li><strong>生命周期</strong>: 通常与应用程序的生命周期一致 (从 <code>EntityManagerFactory</code> 创建到关闭)。</li>
@@ -318,18 +319,21 @@
 </ul>
 <p><strong>JPA 二级缓存的工作流程 (简化)：</strong></p>
 <ol>
-<li>当通过 <code>entityManager.find(Entity.class, id)</code> (或某些查询) 加载实体时：<ul>
+<li>当通过 <code>entityManager.find(Entity.class, id)</code> (或某些查询) 加载实体时：
+<ul>
 <li>首先检查当前事务的一级缓存。如果命中，直接返回。</li>
 <li>如果一级缓存未命中，则检查二级缓存。</li>
 <li>如果二级缓存命中，从中获取数据，组装成实体对象，放入一级缓存变为 Managed 状态，然后返回。</li>
 <li>如果二级缓存也未命中，则从数据库查询数据，将结果放入二级缓存 (如果该实体配置为可缓存)，再放入一级缓存，然后返回。</li>
 </ul>
 </li>
-<li>当事务提交时，如果事务中修改了已缓存的实体数据：<ul>
+<li>当事务提交时，如果事务中修改了已缓存的实体数据：
+<ul>
 <li>JPA 提供者会负责更新二级缓存中的对应条目，或使其失效 (取决于缓存并发策略)。</li>
 </ul>
 </li>
-<li>当执行批量更新&#x2F;删除 (JPQL <code>UPDATE</code> &#x2F; <code>DELETE</code> 或原生 SQL) 时：<ul>
+<li>当执行批量更新/删除 (JPQL <code>UPDATE</code> / <code>DELETE</code> 或原生 SQL) 时：
+<ul>
 <li>这些操作通常会绕过 JPA 的缓存管理机制，可能导致二级缓存与数据库数据不一致。需要特别注意并可能有策略地使相关缓存失效。</li>
 </ul>
 </li>
@@ -337,44 +341,59 @@
 <p><strong>如何启用和配置二级缓存：</strong></p>
 <p>启用二级缓存通常涉及以下步骤：</p>
 <ol>
-<li><p><strong>选择并引入二级缓存提供者 (L 2 Cache Provider) 的依赖</strong>:<br>JPA 规范本身不提供二级缓存的实现，它依赖第三方缓存产品。常见的选择有：</p>
+<li>
+<p><strong>选择并引入二级缓存提供者 (L 2 Cache Provider) 的依赖</strong>:<br>
+JPA 规范本身不提供二级缓存的实现，它依赖第三方缓存产品。常见的选择有：</p>
 <ul>
 <li><strong>Ehcache</strong>: 成熟的 Java 缓存框架，支持内存、磁盘、分布式缓存。<code>org.ehcache:ehcache</code> (Ehcache 3.x) 或 <code>net.sf.ehcache:ehcache</code> (Ehcache 2.x)。Hibernate 对其有良好支持。</li>
-<li><strong>Infinispan</strong>: 开源的分布式内存数据网格&#x2F;键值 NoSQL 数据存储，也可用作 Hibernate L 2 缓存。</li>
+<li><strong>Infinispan</strong>: 开源的分布式内存数据网格/键值 NoSQL 数据存储，也可用作 Hibernate L 2 缓存。</li>
 <li><strong>Hazelcast</strong>: 开源的内存数据网格，也提供 L 2 缓存实现。</li>
 <li><strong>JCache (JSR-107)</strong>: Java 缓存 API 规范。许多缓存框架 (如 Ehcache 3, Hazelcast, Infinispan) 都提供了 JCache 实现。Hibernate 5.2+ 推荐使用 JCache 作为 L 2 缓存的集成方式。</li>
 </ul>
-<p><strong>示例 (使用 Ehcache 3.x via JCache with Spring Boot):</strong><br><code>pom.xml</code>:</p>
+<p><strong>示例 (使用 Ehcache 3.x via JCache with Spring Boot):</strong><br>
+<code>pom.xml</code>:</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- Spring Boot Data JPA Starter (已包含 Hibernate) --&gt;</span><br><span class="hljs-comment">&lt;!-- ... --&gt;</span><br><br><span class="hljs-comment">&lt;!-- JCache API --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>javax.cache<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>cache-api<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- Ehcache 3 as JCache Provider --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.ehcache<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>ehcache<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">classifier</span>&gt;</span>jakarta<span class="hljs-tag">&lt;/<span class="hljs-name">classifier</span>&gt;</span> <span class="hljs-comment">&lt;!-- For Jakarta EE 9+ (Spring Boot 3.x) --&gt;</span><br>    <span class="hljs-comment">&lt;!-- &lt;classifier&gt;javax&lt;/classifier&gt; for older javax.cache --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br><span class="hljs-comment">&lt;!-- (可选) Hibernate JCache Integration (通常Hibernate核心已包含或starter会带) --&gt;</span><br><span class="hljs-comment">&lt;!-- &lt;dependency&gt;</span><br><span class="hljs-comment">    &lt;groupId&gt;org.hibernate.orm&lt;/groupId&gt;</span><br><span class="hljs-comment">    &lt;artifactId&gt;hibernate-jcache&lt;/artifactId&gt;</span><br><span class="hljs-comment">&lt;/dependency&gt; --&gt;</span><br></code></pre></td></tr></table></figure>
 <p><em>(注意: <code>ehcache</code> 的 <code>classifier</code> 根据你的 JCache API 版本选择，Spring Boot 3.x 使用 Jakarta EE 规范，所以用 <code>jakarta</code>。如果是旧版 Spring Boot 和 <code>javax.cache</code>，则用 <code>javax</code> 或不指定 classifier)</em></p>
 </li>
-<li><p><strong>在 JPA 配置文件 (<code>application.yml</code> for Spring Boot) 中启用二级缓存并配置提供者</strong>:</p>
+<li>
+<p><strong>在 JPA 配置文件 (<code>application.yml</code> for Spring Boot) 中启用二级缓存并配置提供者</strong>:</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">jpa:</span><br>    <span class="hljs-attr">properties:</span><br>      <span class="hljs-attr">hibernate:</span><br>        <span class="hljs-comment"># --- 二级缓存核心配置 ---</span><br>        <span class="hljs-attr">cache:</span><br>          <span class="hljs-attr">use_second_level_cache:</span> <span class="hljs-literal">true</span> <span class="hljs-comment"># ① 启用二级缓存</span><br>          <span class="hljs-attr">region.factory_class:</span> <span class="hljs-string">org.hibernate.cache.jcache.JCacheRegionFactory</span> <span class="hljs-comment"># ② 指定区域工厂类 (使用 JCache)</span><br>          <span class="hljs-comment"># (对于 Hibernate 5.2 之前的版本或直接使用 Ehcache 2.x 时)</span><br>          <span class="hljs-comment"># region.factory_class: org.hibernate.cache.ehcache.EhCacheRegionFactory (Ehcache 2.x)</span><br>          <span class="hljs-comment"># region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory (Ehcache 2.x Singleton)</span><br><br>        <span class="hljs-comment"># --- JCache 特定配置 (如果使用 JCacheRegionFactory) ---</span><br>        <span class="hljs-attr">javax.cache.provider:</span> <span class="hljs-string">org.ehcache.jsr107.EhcacheCachingProvider</span> <span class="hljs-comment"># ③ 指定 JCache 提供者</span><br>        <span class="hljs-attr">javax.cache.uri:</span> <span class="hljs-string">ehcache.xml</span> <span class="hljs-comment"># ④ (可选) 指定 Ehcache (或相应JCache提供者) 的配置文件路径 (通常在 classpath 下)</span><br>                                      <span class="hljs-comment"># 如果不指定，Ehcache 会使用默认配置或尝试加载 classpath:/ehcache.xml</span><br><br>        <span class="hljs-comment"># (可选) 启用查询缓存 (稍后详述)</span><br>        <span class="hljs-comment"># cache.use_query_cache: true</span><br></code></pre></td></tr></table></figure>
 <ul>
 <li><strong>① <code>hibernate.cache.use_second_level_cache: true</code></strong>: 这是开启 Hibernate 二级缓存的总开关。</li>
-<li><strong>② <code>hibernate.cache.region.factory_class</code></strong>: 告诉 Hibernate 使用哪个缓存区域工厂。<ul>
+<li><strong>② <code>hibernate.cache.region.factory_class</code></strong>: 告诉 Hibernate 使用哪个缓存区域工厂。
+<ul>
 <li><code>org.hibernate.cache.jcache.JCacheRegionFactory</code>: Hibernate 5.2+ 推荐，通过 JCache API 与底层缓存框架集成。</li>
-<li><code>org.hibernate.cache.ehcache.EhCacheRegionFactory</code> &#x2F; <code>SingletonEhCacheRegionFactory</code>: 直接与 Ehcache 2.x 集成。</li>
+<li><code>org.hibernate.cache.ehcache.EhCacheRegionFactory</code> / <code>SingletonEhCacheRegionFactory</code>: 直接与 Ehcache 2.x 集成。</li>
 </ul>
 </li>
 <li><strong>③ <code>javax.cache.provider</code> (或 <code>jakarta.cache.provider</code> for Jakarta EE)</strong>: 当使用 <code>JCacheRegionFactory</code> 时，需要指定实际的 JCache 提供者实现类。</li>
 <li><strong>④ <code>javax.cache.uri</code></strong>: 指定底层 JCache 提供者 (如 Ehcache) 的配置文件。</li>
 </ul>
 </li>
-<li><p><strong>创建缓存提供者的配置文件 (如 <code>ehcache.xml</code> for Ehcache)</strong>:<br>将此文件放在 <code>src/main/resources</code> 目录下。<br><code>src/main/resources/ehcache.xml</code> (Ehcache 3.x JCache 示例):</p>
+<li>
+<p><strong>创建缓存提供者的配置文件 (如 <code>ehcache.xml</code> for Ehcache)</strong>:<br>
+将此文件放在 <code>src/main/resources</code> 目录下。<br>
+<code>src/main/resources/ehcache.xml</code> (Ehcache 3.x JCache 示例):</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">config</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://www.ehcache.org/v3&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">xmlns:jsr107</span>=<span class="hljs-string">&quot;http://www.ehcache.org/v3/jsr107&quot;</span></span><br><span class="hljs-tag">        <span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;</span></span><br><span class="hljs-string"><span class="hljs-tag">            http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd</span></span><br><span class="hljs-string"><span class="hljs-tag">            http://www.ehcache.org/v3/jsr107 http://www.ehcache.org/schema/ehcache-107-ext-3.0.xsd&quot;</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 默认缓存模板，可以被具体缓存区域继承或覆盖 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">cache-template</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;defaultTemplate&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">expiry</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">ttl</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">&quot;minutes&quot;</span>&gt;</span>30<span class="hljs-tag">&lt;/<span class="hljs-name">ttl</span>&gt;</span> <span class="hljs-comment">&lt;!-- Time to Live: 30 分钟 --&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">expiry</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">heap</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">&quot;entries&quot;</span>&gt;</span>1000<span class="hljs-tag">&lt;/<span class="hljs-name">heap</span>&gt;</span> <span class="hljs-comment">&lt;!-- 堆内存中最多缓存 1000 条记录 --&gt;</span><br>            <span class="hljs-comment">&lt;!-- &lt;offheap unit=&quot;MB&quot;&gt;100&lt;/offheap&gt; --&gt;</span><br>            <span class="hljs-comment">&lt;!-- &lt;disk unit=&quot;GB&quot; persistent=&quot;false&quot;&gt;1&lt;/disk&gt; --&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br>        <span class="hljs-comment">&lt;!-- (可选) JSR-107 specific configuration for Hibernate statistics --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">jsr107:mbeans</span> <span class="hljs-attr">enable-management</span>=<span class="hljs-string">&quot;true&quot;</span> <span class="hljs-attr">enable-statistics</span>=<span class="hljs-string">&quot;true&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">cache-template</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 为特定实体定义缓存区域 (region) --&gt;</span><br>    <span class="hljs-comment">&lt;!-- 区域名通常是实体的全限定类名 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">cache</span> <span class="hljs-attr">alias</span>=<span class="hljs-string">&quot;com.example.yourproject.entity.Product&quot;</span> <span class="hljs-attr">uses-template</span>=<span class="hljs-string">&quot;defaultTemplate&quot;</span>&gt;</span><br>        <span class="hljs-comment">&lt;!-- 可以覆盖模板配置 --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">expiry</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">ttl</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">&quot;hours&quot;</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">ttl</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">expiry</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">heap</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">&quot;entries&quot;</span>&gt;</span>500<span class="hljs-tag">&lt;/<span class="hljs-name">heap</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">cache</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">cache</span> <span class="hljs-attr">alias</span>=<span class="hljs-string">&quot;com.example.yourproject.entity.Category&quot;</span> <span class="hljs-attr">uses-template</span>=<span class="hljs-string">&quot;defaultTemplate&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">heap</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">&quot;entries&quot;</span>&gt;</span>100<span class="hljs-tag">&lt;/<span class="hljs-name">heap</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">cache</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- (可选) 为集合关联定义缓存区域 --&gt;</span><br>    <span class="hljs-comment">&lt;!-- 区域名通常是 &quot;实体全限定类名.集合属性名&quot; --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">cache</span> <span class="hljs-attr">alias</span>=<span class="hljs-string">&quot;com.example.yourproject.entity.Product.tags&quot;</span> <span class="hljs-attr">uses-template</span>=<span class="hljs-string">&quot;defaultTemplate&quot;</span>/&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- (可选) 查询缓存区域 (如果启用查询缓存) --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">cache</span> <span class="hljs-attr">alias</span>=<span class="hljs-string">&quot;org.hibernate.cache.internal.StandardQueryCache&quot;</span> <span class="hljs-attr">uses-template</span>=<span class="hljs-string">&quot;defaultTemplate&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">expiry</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">ttl</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">&quot;minutes&quot;</span>&gt;</span>5<span class="hljs-tag">&lt;/<span class="hljs-name">ttl</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">expiry</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">resources</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">heap</span> <span class="hljs-attr">unit</span>=<span class="hljs-string">&quot;entries&quot;</span>&gt;</span>2000<span class="hljs-tag">&lt;/<span class="hljs-name">heap</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">resources</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">cache</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">cache</span> <span class="hljs-attr">alias</span>=<span class="hljs-string">&quot;org.hibernate.cache.spi.UpdateTimestampsCache&quot;</span> <span class="hljs-attr">uses-template</span>=<span class="hljs-string">&quot;defaultTemplate&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">expiry</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">none</span>/&gt;</span> <span class="hljs-comment">&lt;!-- 通常不希望时间戳缓存过期 --&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">expiry</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">cache</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">config</span>&gt;</span><br></code></pre></td></tr></table></figure>
 <ul>
 <li>这个配置文件定义了不同的<strong>缓存区域 (cache regions)</strong>。Hibernate 会为每个可缓存的实体类、集合关联以及查询缓存创建不同的区域。</li>
 <li>你可以为每个区域配置过期策略 (TTL - Time To Live, TTI - Time To Idle)、存储容量 (堆内存、堆外内存、磁盘)、持久化等。</li>
 </ul>
 </li>
-<li><p><strong>在实体类上标记为可缓存 (<code>@Cacheable</code>, <code>@Cache</code>)</strong>:</p>
+<li>
+<p><strong>在实体类上标记为可缓存 (<code>@Cacheable</code>, <code>@Cache</code>)</strong>:</p>
 <ul>
-<li><p><strong><code>@jakarta.persistence.Cacheable(true)</code> (或 <code>javax.persistence.Cacheable(true)</code>)</strong>:<br>在实体类上添加此注解，表示该实体可以被二级缓存。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Cacheable</span> <span class="hljs-comment">// 等同于 @Cacheable(true)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
-<li><p><strong><code>@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.XXX, region = &quot;optionalRegionName&quot;)</code></strong>:<br>这是 Hibernate 特有的注解，提供了更细致的缓存并发策略控制。</p>
+<li>
+<p><strong><code>@jakarta.persistence.Cacheable(true)</code> (或 <code>javax.persistence.Cacheable(true)</code>)</strong>:<br>
+在实体类上添加此注解，表示该实体可以被二级缓存。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Cacheable</span> <span class="hljs-comment">// 等同于 @Cacheable(true)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.XXX, region = &quot;optionalRegionName&quot;)</code></strong>:<br>
+这是 Hibernate 特有的注解，提供了更细致的缓存并发策略控制。</p>
 <ul>
-<li><code>usage</code>: 指定<strong>缓存并发策略 (CacheConcurrencyStrategy)</strong>:<ul>
+<li><code>usage</code>: 指定<strong>缓存并发策略 (CacheConcurrencyStrategy)</strong>:
+<ul>
 <li><code>NONE</code>: 不缓存此实体。</li>
 <li><code>READ_ONLY</code>: 适用于几乎不发生变化的数据。缓存的数据是只读的。如果尝试更新，会抛异常。性能最好。</li>
 <li><code>NONSTRICT_READ_WRITE</code>: 非严格读写。对于可能发生并发更新，但不需要绝对事务隔离性的数据。读取时可能读到稍微过时的数据 (在更新后缓存尚未失效或更新前)。更新时会使缓存失效。提供较好的性能和一定的并发性。</li>
@@ -385,21 +404,26 @@
 <li><code>region</code>: (可选) 指定此实体使用的缓存区域名称。如果省略，默认为实体的全限定类名。这需要与 <code>ehcache.xml</code> (或类似配置文件) 中的 <code>cache alias</code> 对应。</li>
 <li><code>include</code>: (可选, 默认 <code>all</code>) 可以配置为 <code>non-lazy</code>，只缓存非懒加载的属性。</li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.hibernate.annotations.Cache;<br><span class="hljs-keyword">import</span> org.hibernate.annotations.CacheConcurrencyStrategy;<br><br><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Cacheable</span> <span class="hljs-comment">// JPA 标准注解</span><br><span class="hljs-meta">@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = &quot;productCache&quot;)</span> <span class="hljs-comment">// Hibernate 注解</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-meta">@OneToMany(mappedBy = &quot;product&quot;, fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = &quot;product_tags_collection&quot;)</span> <span class="hljs-comment">// 缓存集合关联</span><br>    <span class="hljs-keyword">private</span> Set&lt;Tag&gt; tags = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();<br>&#125;<br></code></pre></td></tr></table></figure></li>
-<li><p><strong>同时使用 <code>@Cacheable</code> 和 <code>@Cache</code></strong>: 通常一起使用。<code>@Cacheable</code> 是 JPA 标准，而 <code>@Cache</code> (Hibernate) 提供了更细致的并发策略。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.hibernate.annotations.Cache;<br><span class="hljs-keyword">import</span> org.hibernate.annotations.CacheConcurrencyStrategy;<br><br><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Cacheable</span> <span class="hljs-comment">// JPA 标准注解</span><br><span class="hljs-meta">@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = &quot;productCache&quot;)</span> <span class="hljs-comment">// Hibernate 注解</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-meta">@OneToMany(mappedBy = &quot;product&quot;, fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@Cache(usage = CacheConcurrencyStrategy.READ_WRITE, region = &quot;product_tags_collection&quot;)</span> <span class="hljs-comment">// 缓存集合关联</span><br>    <span class="hljs-keyword">private</span> Set&lt;Tag&gt; tags = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>同时使用 <code>@Cacheable</code> 和 <code>@Cache</code></strong>: 通常一起使用。<code>@Cacheable</code> 是 JPA 标准，而 <code>@Cache</code> (Hibernate) 提供了更细致的并发策略。</p>
 </li>
 </ul>
 </li>
 </ol>
-<h5 id="4-3-1-缓存模式-jakarta-persistence-CacheStoreMode-CacheRetrieveMode"><a href="#4-3-1-缓存模式-jakarta-persistence-CacheStoreMode-CacheRetrieveMode" class="headerlink" title="4.3.1 缓存模式 (jakarta.persistence.CacheStoreMode, CacheRetrieveMode)"></a>4.3.1 缓存模式 (<code>jakarta.persistence.CacheStoreMode</code>, <code>CacheRetrieveMode</code>)</h5><p>JPA 2.0 引入了 <code>CacheStoreMode</code> 和 <code>CacheRetrieveMode</code>，允许在 <code>EntityManagerFactory</code>、<code>EntityManager</code> 或特定查询级别控制缓存的读写行为。</p>
+<h5 id="4-3-1-缓存模式-jakarta-persistence-CacheStoreMode-CacheRetrieveMode">4.3.1 缓存模式 (<code>jakarta.persistence.CacheStoreMode</code>, <code>CacheRetrieveMode</code>)</h5>
+<p>JPA 2.0 引入了 <code>CacheStoreMode</code> 和 <code>CacheRetrieveMode</code>，允许在 <code>EntityManagerFactory</code>、<code>EntityManager</code> 或特定查询级别控制缓存的读写行为。</p>
 <ul>
-<li><strong><code>CacheStoreMode</code></strong>: 控制数据如何写入缓存。<ul>
+<li><strong><code>CacheStoreMode</code></strong>: 控制数据如何写入缓存。
+<ul>
 <li><code>USE</code> (默认): 实体被读取或修改时，会存入或更新缓存。</li>
 <li><code>BYPASS</code>: 操作不写入缓存 (绕过缓存写)。</li>
 <li><code>REFRESH</code>: 操作会写入缓存，并强制刷新缓存中已存在的条目。</li>
 </ul>
 </li>
-<li><strong><code>CacheRetrieveMode</code></strong>: 控制数据如何从缓存读取。<ul>
+<li><strong><code>CacheRetrieveMode</code></strong>: 控制数据如何从缓存读取。
+<ul>
 <li><code>USE</code> (默认): 查询时会尝试从缓存读取。</li>
 <li><code>BYPASS</code>: 查询时不使用缓存，直接访问数据库 (绕过缓存读)。</li>
 </ul>
@@ -408,42 +432,50 @@
 <p>可以通过 <code>EntityManagerFactory.getCache().evictAll()</code> 清空所有二级缓存，或 <code>evict(Class cls)</code> 清空特定实体类的缓存，<code>evict(Class cls, Object primaryKey)</code> 清空特定实体的缓存。</p>
 <p><strong>在 <code>EntityManager</code> 或查询级别设置 (不常用，通常在实体级别或全局配置)：</strong></p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// entityManager.setProperty(&quot;javax.persistence.cache.storeMode&quot;, CacheStoreMode.BYPASS);</span><br><span class="hljs-comment">// query.setHint(&quot;javax.persistence.cache.retrieveMode&quot;, CacheRetrieveMode.BYPASS);</span><br></code></pre></td></tr></table></figure>
-
-<h5 id="4-3-2-查询缓存-Query-Cache"><a href="#4-3-2-查询缓存-Query-Cache" class="headerlink" title="4.3.2 查询缓存 (Query Cache)"></a>4.3.2 查询缓存 (Query Cache)</h5><ul>
-<li><p><strong>作用</strong>: 二级缓存默认只缓存通过主键 <code>find()</code> 方法加载的单个实体。查询缓存用于<strong>缓存 JPQL 或 Criteria API 查询的结果集</strong>。</p>
+<h5 id="4-3-2-查询缓存-Query-Cache">4.3.2 查询缓存 (Query Cache)</h5>
+<ul>
+<li>
+<p><strong>作用</strong>: 二级缓存默认只缓存通过主键 <code>find()</code> 方法加载的单个实体。查询缓存用于<strong>缓存 JPQL 或 Criteria API 查询的结果集</strong>。</p>
 </li>
-<li><p><strong>存储内容</strong>: 它不直接缓存实体对象，而是缓存：</p>
+<li>
+<p><strong>存储内容</strong>: 它不直接缓存实体对象，而是缓存：</p>
 <ol>
 <li>查询语句及其参数。</li>
 <li>与该查询结果对应的<strong>实体的主键 ID 列表</strong>。</li>
 </ol>
 </li>
-<li><p><strong>工作流程</strong>:</p>
+<li>
+<p><strong>工作流程</strong>:</p>
 <ol>
 <li>当执行一个配置为可缓存的查询时，首先检查查询缓存中是否有该查询 (语句+参数) 的结果。</li>
 <li>如果命中，则从缓存中获取主键 ID 列表。</li>
 <li>然后，根据这些 ID 逐个从二级缓存 (或数据库，如果二级缓存未命中) 中加载实体对象。</li>
 </ol>
 </li>
-<li><p><strong>启用查询缓存</strong>:</p>
+<li>
+<p><strong>启用查询缓存</strong>:</p>
 <ol>
 <li>在 JPA 属性中设置 <code>spring.jpa.properties.hibernate.cache.use_query_cache: true</code>。</li>
 <li>确保相关的实体也配置为可被二级缓存 (<code>@Cacheable</code>, <code>@Cache</code>)。</li>
 <li>在 <code>ehcache.xml</code> (或类似) 中为查询缓存区域 (通常是 <code>org.hibernate.cache.internal.StandardQueryCache</code>) 进行配置。</li>
 </ol>
 </li>
-<li><p><strong>标记查询为可缓存</strong>:<br>在 <code>Query</code> 或 <code>TypedQuery</code> 对象上调用 <code>query.setHint(&quot;org.hibernate.cacheable&quot;, true)</code>。</p>
+<li>
+<p><strong>标记查询为可缓存</strong>:<br>
+在 <code>Query</code> 或 <code>TypedQuery</code> 对象上调用 <code>query.setHint(&quot;org.hibernate.cacheable&quot;, true)</code>。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">TypedQuery&lt;Product&gt; query = entityManager.createQuery(<span class="hljs-string">&quot;SELECT p FROM Product p WHERE p.category.name = :catName&quot;</span>, Product.class);<br>query.setParameter(<span class="hljs-string">&quot;catName&quot;</span>, <span class="hljs-string">&quot;Electronics&quot;</span>);<br>query.setHint(<span class="hljs-string">&quot;org.hibernate.cacheable&quot;</span>, <span class="hljs-literal">true</span>); <span class="hljs-comment">// ① 标记此查询结果可缓存</span><br><span class="hljs-comment">// query.setHint(&quot;org.hibernate.cacheRegion&quot;, &quot;myCustomQueryCacheRegion&quot;); // ② (可选) 指定查询缓存区域</span><br>List&lt;Product&gt; products = query.getResultList();<br></code></pre></td></tr></table></figure>
 <p>在 Spring Data JPA Repository 中，可以使用 <code>@QueryHints</code> 注解：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// ProductRepository.java</span><br><span class="hljs-keyword">import</span> org.springframework.data.jpa.repository.QueryHints;<br><span class="hljs-keyword">import</span> jakarta.persistence.QueryHint; <span class="hljs-comment">// 或 javax.persistence.QueryHint</span><br><span class="hljs-comment">// ...</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProductRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;Product, Long&gt; &#123;<br>    <span class="hljs-meta">@QueryHints(&#123; // 应用查询提示</span><br><span class="hljs-meta">        @QueryHint(name = &quot;org.hibernate.cacheable&quot;, value = &quot;true&quot;),</span><br><span class="hljs-meta">        @QueryHint(name = &quot;org.hibernate.cacheRegion&quot;, value = &quot;productQueries&quot;) // (可选)</span><br><span class="hljs-meta">    &#125;)</span><br>    <span class="hljs-meta">@Query(&quot;SELECT p FROM Product p WHERE p.discontinued = false&quot;)</span><br>    List&lt;Product&gt; <span class="hljs-title function_">findAllActiveProducts</span><span class="hljs-params">()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>查询缓存的失效</strong>:</p>
+<li>
+<p><strong>查询缓存的失效</strong>:</p>
 <ul>
 <li>当任何一个<strong>被查询缓存引用的表</strong>中的数据发生更改 (INSERT, UPDATE, DELETE) 时，Hibernate 会自动使所有依赖该表的查询缓存条目<strong>失效</strong>。这是通过 <code>UpdateTimestampsCache</code> 区域来跟踪表的时间戳实现的。</li>
 <li>这意味着查询缓存对于频繁更新的表可能效果不佳，因为缓存会经常失效。</li>
 </ul>
 </li>
-<li><p><strong>适用场景</strong>: 适用于那些结果集相对稳定、参数组合有限、且查询本身开销较大的查询。</p>
+<li>
+<p><strong>适用场景</strong>: 适用于那些结果集相对稳定、参数组合有限、且查询本身开销较大的查询。</p>
 </li>
 </ul>
 <p><strong>二级缓存与查询缓存的注意事项：</strong></p>
@@ -451,7 +483,7 @@
 <li><strong>开销</strong>: 缓存本身有管理开销 (内存、CPU、网络如果是分布式缓存)。不恰当的缓存配置可能反而降低性能。</li>
 <li><strong>数据一致性</strong>: 需要仔细选择缓存并发策略，以平衡性能和数据一致性的需求。</li>
 <li><strong>缓存粒度</strong>: 仔细规划哪些实体、哪些关联、哪些查询需要缓存。不是所有东西都适合缓存。</li>
-<li><strong>缓存污染&#x2F;雪崩&#x2F;穿透</strong>: 需要了解并防范常见的缓存问题。</li>
+<li><strong>缓存污染/雪崩/穿透</strong>: 需要了解并防范常见的缓存问题。</li>
 <li><strong>测试</strong>: 缓存的行为可能很微妙，需要充分测试以确保其按预期工作。</li>
 <li><strong>监控</strong>: 监控缓存的命中率、内存使用等指标，以便调优。</li>
 <li><strong>分布式环境</strong>: 如果应用是集群部署，需要使用分布式二级缓存提供者 (如 Ehcache Terracotta, Hazelcast, Infinispan 的集群模式)，否则每个应用实例都有自己的本地缓存，无法共享。</li>

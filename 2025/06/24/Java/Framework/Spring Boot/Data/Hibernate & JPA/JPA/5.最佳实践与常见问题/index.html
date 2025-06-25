@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="好的，我们来深探讨 JPA 开发中的最佳实践与常见问题。遵循这些实践并理解常见问题的解决方案，对于构建高性能、健壮且易于维护的 JPA 应用至关重要。  5. 最佳实践与常见问题5.1 N+1 查询问题及其解决方案什么是 N+1 查询问题？ N+1 查询是 ORM 框架中非常常见且影响性能的典型问题。它发生在以下情况：  你执行一个查询来获取一个主实体列表 (这通常是 1 次查询)。 然后，对于这">
+    <meta name="description" content="好的，我们来深探讨 JPA 开发中的最佳实践与常见问题。遵循这些实践并理解常见问题的解决方案，对于构建高性能、健壮且易于维护的 JPA 应用至关重要。  5. 最佳实践与常见问题 5.1 N+1 查询问题及其解决方案 什么是 N+1 查询问题？ N+1 查询是 ORM 框架中非常常见且影响性能的典型问题。它发生在以下情况：  你执行一个查询来获取一个主实体列表 (这通常是 1 次查询)。 然后，对">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/JPA/5.%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E4%B8%8E%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="好的，我们来深探讨 JPA 开发中的最佳实践与常见问题。遵循这些实践并理解常见问题的解决方案，对于构建高性能、健壮且易于维护的 JPA 应用至关重要。  5. 最佳实践与常见问题5.1 N+1 查询问题及其解决方案什么是 N+1 查询问题？ N+1 查询是 ORM 框架中非常常见且影响性能的典型问题。它发生在以下情况：  你执行一个查询来获取一个主实体列表 (这通常是 1 次查询)。 然后，对于这">
+<meta property="og:description" content="好的，我们来深探讨 JPA 开发中的最佳实践与常见问题。遵循这些实践并理解常见问题的解决方案，对于构建高性能、健壮且易于维护的 JPA 应用至关重要。  5. 最佳实践与常见问题 5.1 N+1 查询问题及其解决方案 什么是 N+1 查询问题？ N+1 查询是 ORM 框架中非常常见且影响性能的典型问题。它发生在以下情况：  你执行一个查询来获取一个主实体列表 (这通常是 1 次查询)。 然后，对">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.035Z">
 <meta property="article:modified_time" content="2025-06-16T09:02:46.356Z">
@@ -230,7 +230,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          7.1k 字
+          7k 字
         
       </span>
     
@@ -302,7 +302,9 @@
                 
                 <p>好的，我们来深探讨 JPA 开发中的<strong>最佳实践与常见问题</strong>。遵循这些实践并理解常见问题的解决方案，对于构建高性能、健壮且易于维护的 JPA 应用至关重要。</p>
 <hr>
-<h3 id="5-最佳实践与常见问题"><a href="#5-最佳实践与常见问题" class="headerlink" title="5. 最佳实践与常见问题"></a>5. 最佳实践与常见问题</h3><h4 id="5-1-N-1-查询问题及其解决方案"><a href="#5-1-N-1-查询问题及其解决方案" class="headerlink" title="5.1 N+1 查询问题及其解决方案"></a>5.1 N+1 查询问题及其解决方案</h4><p><strong>什么是 N+1 查询问题？</strong></p>
+<h3 id="5-最佳实践与常见问题">5. 最佳实践与常见问题</h3>
+<h4 id="5-1-N-1-查询问题及其解决方案">5.1 N+1 查询问题及其解决方案</h4>
+<p><strong>什么是 N+1 查询问题？</strong></p>
 <p>N+1 查询是 ORM 框架中非常常见且影响性能的典型问题。它发生在以下情况：</p>
 <ol>
 <li>你执行一个查询来获取一个主实体列表 (这通常是 1 次查询)。</li>
@@ -312,10 +314,11 @@
 <p><strong>示例场景：</strong></p>
 <p>假设有 <code>Department</code> (部门) 和 <code>Employee</code> (员工) 两个实体，一个部门有多个员工 (<code>@OneToMany</code> from <code>Department</code> to <code>Employee</code>，且 <code>Department.employees</code> 集合默认是懒加载的)。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;Department&gt; departments = departmentRepository.findAll(); <span class="hljs-comment">// 1 次查询，获取所有部门</span><br><span class="hljs-keyword">for</span> (Department dept : departments) &#123;<br>    <span class="hljs-comment">// 当访问 dept.getEmployees() 时，如果 employees 是懒加载，会为每个 dept 触发一次查询</span><br>    List&lt;Employee&gt; employeesInDept = dept.getEmployees(); <span class="hljs-comment">// N 次查询 (每个部门一次)</span><br>    System.out.println(<span class="hljs-string">&quot;Department: &quot;</span> + dept.getName() + <span class="hljs-string">&quot; has &quot;</span> + employeesInDept.size() + <span class="hljs-string">&quot; employees.&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
-<p>如果数据库中有 10 个部门，那么上述代码可能会执行 1 (查部门) + 10 (查每个部门的员工) &#x3D; 11 次 SQL 查询。当 N 很大时，性能急剧下降。</p>
+<p>如果数据库中有 10 个部门，那么上述代码可能会执行 1 (查部门) + 10 (查每个部门的员工) = 11 次 SQL 查询。当 N 很大时，性能急剧下降。</p>
 <p><strong>解决方案：</strong></p>
 <ol>
-<li><p><strong><code>FETCH JOIN</code> (在 JPQL 或 <code>@Query</code> 中)</strong>:</p>
+<li>
+<p><strong><code>FETCH JOIN</code> (在 JPQL 或 <code>@Query</code> 中)</strong>:</p>
 <ul>
 <li>这是解决 N+1 问题的<strong>最常用且推荐</strong>的方式。</li>
 <li><code>FETCH JOIN</code> 允许你在一次查询中，不仅获取主实体，还<strong>立即加载并初始化</strong>其指定的关联实体或集合。</li>
@@ -323,42 +326,49 @@
 </ul>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs jpql">// JPQL 查询所有部门及其员工 (一次查询)<br>@Query(&quot;SELECT DISTINCT d FROM Department d LEFT JOIN FETCH d.employees e&quot;) // ① LEFT JOIN FETCH<br>List&lt;Department&gt; findAllWithEmployeesFetched();<br></code></pre></td></tr></table></figure>
 <ul>
-<li><strong>① <code>LEFT JOIN FETCH d.employees</code></strong>:<ul>
+<li><strong>① <code>LEFT JOIN FETCH d.employees</code></strong>:
+<ul>
 <li><code>LEFT JOIN</code>: 确保即使部门没有员工，部门本身也会被查询出来。</li>
 <li><code>FETCH</code>: 关键！告诉 JPA 提供者，不仅要连接 <code>employees</code>，还要<strong>立即初始化</strong> <code>d.employees</code> 集合。</li>
 <li><code>DISTINCT d</code>: <strong>非常重要</strong>。当 <code>FETCH JOIN</code> 一个集合关联 (<code>@OneToMany</code>, <code>@ManyToMany</code>) 时，数据库返回的结果可能会因为集合中的每个元素而导致主实体重复 (笛卡尔积)。<code>DISTINCT</code> (在 JPQL 中作用于根实体) 确保返回的 <code>Department</code> 对象列表不包含重复的实例。</li>
 </ul>
 </li>
 <li><strong>优点</strong>: 简单高效，一次查询解决问题。</li>
-<li><strong>缺点</strong>:<ul>
+<li><strong>缺点</strong>:
+<ul>
 <li>如果 <code>FETCH JOIN</code> 多个集合关联，可能导致非常大的笛卡尔积，性能反而下降。</li>
-<li><code>FETCH JOIN</code> 与分页 (<code>setFirstResult</code> &#x2F; <code>setMaxResults</code> 或 <code>Pageable</code>) 一起使用时，对于集合关联，分页可能在内存中进行 (Hibernate 会发出警告)，而不是在数据库层面。</li>
+<li><code>FETCH JOIN</code> 与分页 (<code>setFirstResult</code> / <code>setMaxResults</code> 或 <code>Pageable</code>) 一起使用时，对于集合关联，分页可能在内存中进行 (Hibernate 会发出警告)，而不是在数据库层面。</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p><strong>Entity Graphs (JPA 2.1+)</strong>:</p>
+<li>
+<p><strong>Entity Graphs (JPA 2.1+)</strong>:</p>
 <ul>
 <li>提供了一种更灵活、更细粒度的方式来定义在查询时需要<strong>立即加载</strong>的属性图 (包括基本属性和关联属性)，而无需修改 JPQL 查询本身。</li>
 <li>可以在实体类上使用 <code>@NamedEntityGraph</code> 定义一个命名的实体图，或者在代码中动态创建。</li>
 <li>然后在 Repository 方法上通过 <code>@EntityGraph</code> 注解引用这个图，或者在 <code>EntityManager.find()</code> 或 <code>Query.setHint()</code> 中指定。</li>
 </ul>
-<p><strong>示例：</strong><br><code>Department.java</code>:</p>
+<p><strong>示例：</strong><br>
+<code>Department.java</code>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@NamedEntityGraph(</span><br><span class="hljs-meta">    name = &quot;Department.withEmployees&quot;, // ① 定义一个名为 Department.withEmployees 的实体图</span><br><span class="hljs-meta">    attributeNodes = &#123;</span><br><span class="hljs-meta">        @NamedAttributeNode(&quot;employees&quot;) // ② 指定要 fetch 加载 employees 集合</span><br><span class="hljs-meta">        // @NamedAttributeNode(value = &quot;manager&quot;, subgraph = &quot;User.detail&quot;) // 还可以嵌套子图</span><br><span class="hljs-meta">    &#125;</span><br><span class="hljs-meta">)</span><br><span class="hljs-comment">// @NamedEntityGraph( ... ) // 可以定义多个</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Department</span> &#123;<br>    <span class="hljs-meta">@Id</span> <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-meta">@OneToMany(mappedBy = &quot;department&quot;, fetch = FetchType.LAZY)</span><br>    <span class="hljs-keyword">private</span> List&lt;Employee&gt; employees;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p><code>DepartmentRepository.java</code>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">DepartmentRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;Department, Long&gt; &#123;<br>    <span class="hljs-meta">@EntityGraph(value = &quot;Department.withEmployees&quot;, type = EntityGraph.EntityGraphType.FETCH)</span> <span class="hljs-comment">// ③ 使用实体图</span><br>    <span class="hljs-comment">// @EntityGraph(attributePaths = &#123;&quot;employees&quot;&#125;) // 也可以直接指定属性路径</span><br>    List&lt;Department&gt; <span class="hljs-title function_">findAll</span><span class="hljs-params">()</span>; <span class="hljs-comment">// findAll 方法现在会 eager fetch employees</span><br><br>    <span class="hljs-comment">// 对于 findById 也可以用</span><br>    <span class="hljs-comment">// @EntityGraph(attributePaths = &quot;employees&quot;)</span><br>    <span class="hljs-comment">// Optional&lt;Department&gt; findById(Long id);</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
-<li><strong>③ <code>@EntityGraph</code> 注解</strong>:<ul>
+<li><strong>③ <code>@EntityGraph</code> 注解</strong>:
+<ul>
 <li><code>value</code> (或 <code>name</code>): 引用 <code>@NamedEntityGraph</code> 的名称。</li>
 <li><code>attributePaths</code>: 直接以字符串数组形式指定要 fetch 加载的属性路径 (如 <code>&#123;&quot;employees&quot;, &quot;manager.address&quot;&#125;</code>)。</li>
-<li><code>type</code>: <code>EntityGraph.EntityGraphType</code> 枚举：<ul>
+<li><code>type</code>: <code>EntityGraph.EntityGraphType</code> 枚举：
+<ul>
 <li><code>FETCH</code> (默认): 实体图中指定的属性会被 EAGER 加载，未指定的属性遵循其在实体类中定义的默认 fetch 类型。</li>
 <li><code>LOAD</code>: 实体图中指定的属性会被 EAGER 加载，<strong>未指定的属性会被视为 LAZY 加载</strong> (即使它们在实体类中定义为 EAGER)。</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><strong>优点</strong>:<ul>
+<li><strong>优点</strong>:
+<ul>
 <li>将数据加载策略与 JPQL 查询解耦，更灵活。</li>
 <li>可以为同一个查询方法根据不同需求应用不同的加载策略。</li>
 <li>对于集合关联的分页，Entity Graphs 通常比 <code>FETCH JOIN</code> 有更好的数据库层面分页支持 (Hibernate 会尝试使用更优化的 SQL)。</li>
@@ -367,18 +377,22 @@
 <li><strong>缺点</strong>: 定义和管理 Entity Graphs 可能稍微复杂一些。</li>
 </ul>
 </li>
-<li><p><strong>Batch Fetching (Hibernate 特定)</strong>:</p>
+<li>
+<p><strong>Batch Fetching (Hibernate 特定)</strong>:</p>
 <ul>
 <li>Hibernate 提供了 <code>@BatchSize</code> 注解，可以在实体类或集合关联属性上配置。</li>
 <li>当访问一个懒加载的集合或单点关联时，如果该关联配置了 <code>@BatchSize(size = N)</code>，Hibernate 不会为每个父实体单独发查询，而是会收集一批 (最多 N 个) 父实体的 ID，然后用一个 <code>IN</code> 子句一次性加载这些父实体对应的所有关联对象。</li>
-<li><strong>示例</strong>:<br><code>Department.java</code>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Department</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-meta">@OneToMany(mappedBy = &quot;department&quot;, fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@org</span>.hibernate.annotations.BatchSize(size = <span class="hljs-number">25</span>) <span class="hljs-comment">// ① Hibernate 注解</span><br>    <span class="hljs-keyword">private</span> List&lt;Employee&gt; employees;<br>&#125;<br></code></pre></td></tr></table></figure>
+<li><strong>示例</strong>:<br>
+<code>Department.java</code>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Department</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-meta">@OneToMany(mappedBy = &quot;department&quot;, fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@org</span>.hibernate.annotations.BatchSize(size = <span class="hljs-number">25</span>) <span class="hljs-comment">// ① Hibernate 注解</span><br>    <span class="hljs-keyword">private</span> List&lt;Employee&gt; employees;<br>&#125;<br></code></pre></td></tr></table></figure>
 当遍历一个 <code>Department</code> 列表并访问 <code>dept.getEmployees()</code> 时，Hibernate 不会立即为第一个 <code>dept</code> 发查询。它会等收集到最多 25 个需要加载 <code>employees</code> 集合的 <code>Department</code> ID 后，发一个类似 <code>SELECT ... FROM Employee e WHERE e.department_id IN (?, ?, ..., ?)</code> 的查询。</li>
-<li><strong>优点</strong>:<ul>
+<li><strong>优点</strong>:
+<ul>
 <li>透明地优化懒加载，对代码侵入小。</li>
-<li>将 N+1 查询变成了 1 (主查询) + N&#x2F;batch_size + 1 (批次关联查询) 次查询，显著减少了查询次数。</li>
+<li>将 N+1 查询变成了 1 (主查询) + N/batch_size + 1 (批次关联查询) 次查询，显著减少了查询次数。</li>
 </ul>
 </li>
-<li><strong>缺点</strong>:<ul>
+<li><strong>缺点</strong>:
+<ul>
 <li>是 Hibernate 特有的功能，降低了 JPA 的可移植性。</li>
 <li>需要调整 <code>batch_size</code> 以获得最佳性能。</li>
 </ul>
@@ -386,14 +400,18 @@
 <li><strong>全局配置</strong>: 也可以在 <code>persistence.xml</code> 或 JPA 属性中全局设置 <code>hibernate.default_batch_fetch_size</code>。</li>
 </ul>
 </li>
-<li><p><strong>子查询 (Subselect Fetching - Hibernate 特定)</strong>:</p>
+<li>
+<p><strong>子查询 (Subselect Fetching - Hibernate 特定)</strong>:</p>
 <ul>
 <li>对于集合关联，可以使用 Hibernate 的 <code>@Fetch(FetchMode.SUBSELECT)</code> 注解。</li>
 <li>当加载主实体列表后，如果访问其中任何一个实体的该集合关联，Hibernate 会执行一个额外的子查询来加载<strong>所有</strong>主实体列表对应的<strong>所有</strong>关联集合数据。</li>
-<li><strong>示例</strong>:<br><code>Department.java</code>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Department</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-meta">@OneToMany(mappedBy = &quot;department&quot;, fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@org</span>.hibernate.annotations.Fetch(org.hibernate.annotations.FetchMode.SUBSELECT) <span class="hljs-comment">// ②</span><br>    <span class="hljs-keyword">private</span> List&lt;Employee&gt; employees;<br>&#125;<br></code></pre></td></tr></table></figure>
-当执行 <code>departmentRepository.findAll()</code> 并随后访问任何一个 <code>Department</code> 的 <code>employees</code> 时，Hibernate 会执行类似如下的第二条 SQL:<br><code>SELECT ... FROM Employee e WHERE e.department_id IN (SELECT d.id FROM Department d WHERE ...)</code> (外部查询的条件会代入子查询)。</li>
+<li><strong>示例</strong>:<br>
+<code>Department.java</code>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Department</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-meta">@OneToMany(mappedBy = &quot;department&quot;, fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@org</span>.hibernate.annotations.Fetch(org.hibernate.annotations.FetchMode.SUBSELECT) <span class="hljs-comment">// ②</span><br>    <span class="hljs-keyword">private</span> List&lt;Employee&gt; employees;<br>&#125;<br></code></pre></td></tr></table></figure>
+当执行 <code>departmentRepository.findAll()</code> 并随后访问任何一个 <code>Department</code> 的 <code>employees</code> 时，Hibernate 会执行类似如下的第二条 SQL:<br>
+<code>SELECT ... FROM Employee e WHERE e.department_id IN (SELECT d.id FROM Department d WHERE ...)</code> (外部查询的条件会代入子查询)。</li>
 <li><strong>优点</strong>: 只需要两次查询 (1 + 1)。</li>
-<li><strong>缺点</strong>:<ul>
+<li><strong>缺点</strong>:
+<ul>
 <li>Hibernate 特有。</li>
 <li>第二次查询可能会加载大量数据，如果主实体列表很大。</li>
 <li>子查询的性能也取决于数据库。</li>
@@ -410,7 +428,8 @@
 <li><strong><code>@Fetch(FetchMode.SUBSELECT)</code></strong>: Hibernate 特有，适用于特定场景，需要评估其性能影响。</li>
 <li><strong>避免在循环中访问懒加载集合</strong>: 如果无法使用上述策略，最后的手段是在 Service 层手动分批加载关联数据 (先查主实体，收集 ID，再用 <code>IN</code> 子句查关联实体，然后在内存中组装)。</li>
 </ul>
-<h4 id="5-2-延迟加载-Lazy-Loading-的理解与-LazyInitializationException-处理"><a href="#5-2-延迟加载-Lazy-Loading-的理解与-LazyInitializationException-处理" class="headerlink" title="5.2 延迟加载 (Lazy Loading) 的理解与 LazyInitializationException 处理"></a>5.2 延迟加载 (Lazy Loading) 的理解与 <code>LazyInitializationException</code> 处理</h4><p><strong>回顾延迟加载 (Lazy Loading)：</strong></p>
+<h4 id="5-2-延迟加载-Lazy-Loading-的理解与-LazyInitializationException-处理">5.2 延迟加载 (Lazy Loading) 的理解与 <code>LazyInitializationException</code> 处理</h4>
+<p><strong>回顾延迟加载 (Lazy Loading)：</strong></p>
 <ul>
 <li>当实体的一个关联属性 (如 <code>@OneToMany List&lt;Order&gt; orders</code> 或 <code>@ManyToOne Customer customer</code>) 被标记为 <code>fetch = FetchType.LAZY</code> 时，JPA 在加载主实体时不会立即加载这个关联属性的数据。</li>
 <li>而是为该属性设置一个<strong>代理对象 (Proxy)</strong>。</li>
@@ -420,38 +439,44 @@
 <ul>
 <li><strong>发生原因</strong>: 当你尝试访问一个<strong>懒加载</strong>的关联属性，但此时该实体已经<strong>脱离 (Detached)</strong> 了 JPA 持久化上下文 (Persistence Context)，即与之关联的 <code>EntityManager</code> 已经关闭 (通常发生在事务结束后)。</li>
 <li><strong>因为</strong>: 代理对象需要一个活动的持久化上下文来执行数据库查询以加载真实数据。如果上下文已关闭，代理就无法初始化，从而抛出此异常。</li>
-<li><strong>常见场景</strong>:<ul>
+<li><strong>常见场景</strong>:
+<ul>
 <li>在 Spring MVC Controller 中，Service 方法 (<code>@Transactional</code>) 返回了一个实体，事务结束，<code>EntityManager</code> 关闭。然后在 View 层 (如 Thymeleaf, JSP) 或序列化为 JSON 时，尝试访问该实体的懒加载属性。</li>
 </ul>
 </li>
 </ul>
 <p><strong>处理 <code>LazyInitializationException</code> 的方法：</strong></p>
 <ol>
-<li><p><strong>在事务内初始化 (推荐)</strong>:</p>
+<li>
+<p><strong>在事务内初始化 (推荐)</strong>:</p>
 <ul>
 <li><strong>最佳实践</strong>: 确保所有需要访问的懒加载属性都在<strong>同一个事务内</strong>被访问和初始化。</li>
 <li>在 Service 层的 <code>@Transactional</code> 方法内部，显式地调用 getter 方法来触发加载，或者使用前面提到的 N+1 解决方案 (Fetch Join, Entity Graphs, Batch Fetching) 来预先加载数据。</li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional(readOnly = true)</span><br><span class="hljs-keyword">public</span> DepartmentDTO <span class="hljs-title function_">getDepartmentWithEmployees</span><span class="hljs-params">(Long departmentId)</span> &#123;<br>    <span class="hljs-type">Department</span> <span class="hljs-variable">department</span> <span class="hljs-operator">=</span> departmentRepository.findById(departmentId)<br>                                .orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">EntityNotFoundException</span>(<span class="hljs-string">&quot;...&quot;</span>));<br>    <span class="hljs-comment">// 显式初始化懒加载的 employees 集合 (如果未使用 FETCH JOIN 等)</span><br>    <span class="hljs-comment">// Hibernate.initialize(department.getEmployees()); // Hibernate API</span><br>    <span class="hljs-comment">// 或者简单地调用一个会触发加载的方法:</span><br>    department.getEmployees().size(); <span class="hljs-comment">// 触发加载</span><br><br>    <span class="hljs-keyword">return</span> convertToDTO(department); <span class="hljs-comment">// DTO 中只包含需要的数据</span><br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>使用 <code>FETCH JOIN</code> 或 Entity Graphs</strong>:</p>
+<li>
+<p><strong>使用 <code>FETCH JOIN</code> 或 Entity Graphs</strong>:</p>
 <ul>
 <li>在查询时就将需要的关联数据一并加载，这样返回的实体已经是“完全体”，在事务外访问也不会出问题。这是最干净的解决方案。</li>
 </ul>
 </li>
-<li><p><strong>将 <code>fetch</code> 类型改为 <code>EAGER</code> (不推荐作为通用解决方案)</strong>:</p>
+<li>
+<p><strong>将 <code>fetch</code> 类型改为 <code>EAGER</code> (不推荐作为通用解决方案)</strong>:</p>
 <ul>
 <li>可以将实体关联的 <code>fetch</code> 策略改为 <code>FetchType.EAGER</code>。</li>
 <li><strong>缺点</strong>: 可能导致不必要的性能开销和潜在的 N+1 问题 (如果多个 EAGER 关联层叠)，应谨慎使用，只用于那些你确定总是需要立即加载的关联。</li>
 </ul>
 </li>
-<li><p><strong>Spring 的 Open Session in View &#x2F; Open EntityManager in View (OSIV &#x2F; OEMIV)</strong>:</p>
+<li>
+<p><strong>Spring 的 Open Session in View / Open EntityManager in View (OSIV / OEMIV)</strong>:</p>
 <ul>
-<li><strong>原理</strong>: Spring 提供了一个 Filter&#x2F;Interceptor (<code>OpenSessionInViewFilter</code> for Hibernate, <code>OpenEntityManagerInViewInterceptor</code> for JPA)，它会在整个 Web 请求期间保持 JPA <code>EntityManager</code> (和事务，如果配置了事务同步) 开放，直到视图渲染完毕后才关闭。</li>
+<li><strong>原理</strong>: Spring 提供了一个 Filter/Interceptor (<code>OpenSessionInViewFilter</code> for Hibernate, <code>OpenEntityManagerInViewInterceptor</code> for JPA)，它会在整个 Web 请求期间保持 JPA <code>EntityManager</code> (和事务，如果配置了事务同步) 开放，直到视图渲染完毕后才关闭。</li>
 <li><strong>Spring Boot 默认开启 (<code>spring.jpa.open-in-view=true</code>)</strong>。</li>
 <li><strong>优点</strong>: 简单地解决了在 View 层访问懒加载属性时抛出 <code>LazyInitializationException</code> 的问题。</li>
-<li><strong>缺点</strong>:<ul>
-<li><strong>长事务&#x2F;长连接</strong>: 数据库连接被长时间占用，可能导致连接池耗尽，降低系统吞吐量。</li>
+<li><strong>缺点</strong>:
+<ul>
+<li><strong>长事务/长连接</strong>: 数据库连接被长时间占用，可能导致连接池耗尽，降低系统吞吐量。</li>
 <li><strong>性能问题</strong>: 如果 View 层意外触发了大量懒加载查询，性能会很差。</li>
 <li><strong>职责不清</strong>: 将数据获取逻辑延伸到了表现层。</li>
 </ul>
@@ -459,7 +484,8 @@
 <li><strong>建议</strong>: 对于大多数现代应用，<strong>推荐将 <code>spring.jpa.open-in-view</code> 设置为 <code>false</code></strong>，并在 Service 层通过 DTO 模式或显式加载来处理数据，以获得更好的性能和事务控制。如果确实需要 OSIV，要非常清楚其潜在影响。</li>
 </ul>
 </li>
-<li><p><strong>DTO 模式 (Data Transfer Object)</strong>:</p>
+<li>
+<p><strong>DTO 模式 (Data Transfer Object)</strong>:</p>
 <ul>
 <li>在 Service 层查询数据后，不要直接返回 JPA 实体给 Controller 或 View 层。</li>
 <li>而是将实体数据映射到一个或多个专门的 DTO 对象中，DTO 只包含表现层需要的数据。</li>
@@ -468,7 +494,8 @@
 </ul>
 </li>
 </ol>
-<h4 id="5-3-equals-和-hashCode-方法在-JPA-实体中的正确实现"><a href="#5-3-equals-和-hashCode-方法在-JPA-实体中的正确实现" class="headerlink" title="5.3 equals() 和 hashCode() 方法在 JPA 实体中的正确实现"></a>5.3 <code>equals()</code> 和 <code>hashCode()</code> 方法在 JPA 实体中的正确实现</h4><p>正确实现 <code>equals()</code> 和 <code>hashCode()</code> 对于 JPA 实体非常重要，尤其是在将实体放入 <code>Set</code> 集合或作为 <code>Map</code> 的键时，或者在比较实体实例时。</p>
+<h4 id="5-3-equals-和-hashCode-方法在-JPA-实体中的正确实现">5.3 <code>equals()</code> 和 <code>hashCode()</code> 方法在 JPA 实体中的正确实现</h4>
+<p>正确实现 <code>equals()</code> 和 <code>hashCode()</code> 对于 JPA 实体非常重要，尤其是在将实体放入 <code>Set</code> 集合或作为 <code>Map</code> 的键时，或者在比较实体实例时。</p>
 <p><strong>问题所在：</strong></p>
 <ul>
 <li><strong>JPA 生成的主键 (<code>@Id @GeneratedValue</code>)</strong>: 新创建的实体在持久化 (调用 <code>persist()</code>) 之前，其主键通常是 <code>null</code> (或默认值如 0 for long)。持久化后，JPA 提供者会为其分配一个主键值。</li>
@@ -482,7 +509,8 @@
 </ul>
 <p><strong>推荐的实现策略：</strong></p>
 <ol>
-<li><p><strong>基于业务键 (Business Key &#x2F; Natural ID)</strong>:</p>
+<li>
+<p><strong>基于业务键 (Business Key / Natural ID)</strong>:</p>
 <ul>
 <li>如果实体有一个或一组稳定且唯一的业务属性 (不依赖于数据库生成的 ID)，可以使用这些属性来实现 <code>equals()</code> 和 <code>hashCode()</code>。</li>
 <li>例如，<code>User</code> 实体的 <code>username</code> 或 <code>email</code> (如果它们是唯一的)。</li>
@@ -491,10 +519,12 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> &#123;<br>    <span class="hljs-meta">@Id</span> <span class="hljs-meta">@GeneratedValue</span> <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-meta">@Column(unique = true, nullable = false)</span> <span class="hljs-keyword">private</span> String productCode; <span class="hljs-comment">// 业务键</span><br>    <span class="hljs-keyword">private</span> String name;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">equals</span><span class="hljs-params">(Object o)</span> &#123;<br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span> == o) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>        <span class="hljs-keyword">if</span> (!(o <span class="hljs-keyword">instanceof</span> Product)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// 注意：有些人建议用 o.getClass() != getClass() 来处理代理问题，但更通用的做法是 instanceof</span><br>        <span class="hljs-type">Product</span> <span class="hljs-variable">product</span> <span class="hljs-operator">=</span> (Product) o;<br>        <span class="hljs-comment">// 只比较业务键，并且确保业务键不为 null</span><br>        <span class="hljs-keyword">return</span> productCode != <span class="hljs-literal">null</span> &amp;&amp; productCode.equals(product.productCode);<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hashCode</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> productCode != <span class="hljs-literal">null</span> ? productCode.hashCode() : <span class="hljs-number">0</span>; <span class="hljs-comment">// 或者一个固定的非零值</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>基于数据库生成的主键 (<code>@Id</code>)，并处理 <code>null</code> ID</strong>:</p>
+<li>
+<p><strong>基于数据库生成的主键 (<code>@Id</code>)，并处理 <code>null</code> ID</strong>:</p>
 <ul>
 <li>这是更常见的做法，但需要小心处理 ID 为 <code>null</code> 的情况 (新实体)。</li>
-<li><strong>规则</strong>:<ul>
+<li><strong>规则</strong>:
+<ul>
 <li>如果两个对象的 ID 都不为 <code>null</code>，则比较 ID。</li>
 <li>如果一个对象的 ID 为 <code>null</code>，另一个不为 <code>null</code>，则它们不相等。</li>
 <li>如果两个对象的 ID 都为 <code>null</code>，则它们不相等 (或者根据业务含义判断，但通常认为新对象之间不相等，除非它们是同一个内存实例)。</li>
@@ -508,24 +538,29 @@
 <p><strong>关于 <code>hashCode()</code> 的进一步说明</strong>:</p>
 <ul>
 <li>如果 <code>equals()</code> 比较的是 ID，那么 <code>hashCode()</code> 也应该基于 ID。</li>
-<li><strong>当 ID 为 <code>null</code> 时 (新实体)</strong>:<ul>
+<li><strong>当 ID 为 <code>null</code> 时 (新实体)</strong>:
+<ul>
 <li>如果 <code>equals()</code> 认为所有 ID 为 <code>null</code> 的实体都不相等 (除非是 <code>this == o</code>)，那么它们的 <code>hashCode()</code> 应该返回不同的值 (通常依赖于父类的 <code>Object.hashCode()</code>，即基于内存地址)。</li>
 <li>如果 <code>equals()</code> 认为 ID 为 <code>null</code> 的实体基于其他业务键相等，则 <code>hashCode()</code> 也应基于这些业务键。</li>
 <li>如果 <code>equals()</code> 中对于 ID 为 <code>null</code> 的情况直接返回 <code>false</code> (除非 <code>this == o</code>)，那么 <code>hashCode()</code> 对于 ID 为 <code>null</code> 时返回一个固定的常量 (如 <code>getClass().hashCode()</code> 或一个素数) 是可接受的，但这会导致所有新实体具有相同的哈希码。</li>
 </ul>
 </li>
 <li><strong>一个常见的简单做法 (如果 ID 是唯一比较依据)</strong>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hashCode</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> Objects.hash(id); <span class="hljs-comment">// Java 7+, id 为 null 时返回 0</span><br>&#125;<br><span class="hljs-comment">// 这个实现简单，但所有 id 为 null 的新对象 hashCode 都是 0。</span><br><br><span class="hljs-comment">// 或者，对于 Hibernate，如果 ID 由数据库生成：</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hashCode</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-comment">// 如果实体是 transient 状态（id 为 null），使用 Object.hashCode()</span><br>    <span class="hljs-comment">// 如果实体是 persistent 状态（id 非 null），使用 id.hashCode()</span><br>    <span class="hljs-comment">// 但这要求 hashCode 的值在对象从 transient 变为 persistent 后不能改变，这通常难以保证。</span><br>    <span class="hljs-comment">// 因此，一个固定的策略更好。</span><br><br>    <span class="hljs-comment">// Thorben Janssen 推荐 (对于 Hibernate 生成 ID):</span><br>    <span class="hljs-comment">// private static final int getClassHashCode = YourEntity.class.hashCode();</span><br>    <span class="hljs-comment">// @Override</span><br>    <span class="hljs-comment">// public int hashCode() &#123;</span><br>    <span class="hljs-comment">//     if (id != null) &#123;</span><br>    <span class="hljs-comment">//         return id.hashCode();</span><br>    <span class="hljs-comment">//     &#125;</span><br>    <span class="hljs-comment">//     return getClassHashCode; // 所有新实例 hashCode 相同</span><br>    <span class="hljs-comment">// &#125;</span><br>&#125;<br></code></pre></td></tr></table></figure>
-<strong>总结 <code>equals</code> &#x2F; <code>hashCode</code> for JPA Entities:</strong><ul>
+<strong>总结 <code>equals</code> / <code>hashCode</code> for JPA Entities:</strong>
+<ul>
 <li><strong>如果存在稳定的业务键</strong>: 优先使用业务键。Lombok 的 <code>@EqualsAndHashCode(of = &#123;&quot;businessKey1&quot;, &quot;businessKey2&quot;&#125;)</code> 很方便。</li>
-<li><strong>如果依赖数据库生成的 ID</strong>:<ul>
-<li><code>equals()</code>:<ul>
+<li><strong>如果依赖数据库生成的 ID</strong>:
+<ul>
+<li><code>equals()</code>:
+<ul>
 <li><code>if (this == o) return true;</code></li>
-<li><code>if (o == null || !(o instanceof YourEntityClass)) return false;</code> &#x2F;&#x2F; 或 Hibernate.getClass(this) !&#x3D; Hibernate.getClass(o)</li>
+<li><code>if (o == null || !(o instanceof YourEntityClass)) return false;</code> // 或 Hibernate.getClass(this) != Hibernate.getClass(o)</li>
 <li><code>YourEntityClass other = (YourEntityClass) o;</code></li>
-<li><code>return id != null &amp;&amp; id.equals(other.id);</code> &#x2F;&#x2F; 核心比较</li>
+<li><code>return id != null &amp;&amp; id.equals(other.id);</code> // 核心比较</li>
 </ul>
 </li>
-<li><code>hashCode()</code>:<ul>
+<li><code>hashCode()</code>:
+<ul>
 <li><code>return getClass().hashCode();</code> (Vlad Mihalcea) - 所有实例（新旧）基于类哈希，确保一致性，但可能哈希冲突多。</li>
 <li>或者一个固定的素数（如果类是 <code>final</code>）。</li>
 <li>或者 <code>id != null ? id.hashCode() : some_constant_or_super_hashcode;</code> - 需要小心处理常量部分。</li>
@@ -533,10 +568,11 @@
 </li>
 </ul>
 </li>
-<li><strong>Lombok 的 <code>@EqualsAndHashCode</code></strong>:<ul>
+<li><strong>Lombok 的 <code>@EqualsAndHashCode</code></strong>:
+<ul>
 <li>默认情况下，它会使用所有非静态、非 transient 字段。对于 JPA 实体，这通常不合适，因为关联属性和主键可能会导致问题。</li>
 <li>如果使用，务必通过 <code>of = &#123;&quot;field1&quot;, &quot;field2&quot;&#125;</code> 指定用于比较的字段 (如业务键)，或者通过 <code>exclude = &#123;&quot;transientField&quot;, &quot;lazyLoadedCollection&quot;&#125;</code> 排除不应参与比较的字段。</li>
-<li>对于主键是数据库生成的实体，Lombok 默认的 <code>equals</code> &#x2F; <code>hashCode</code> 可能不满足所有最佳实践，需要谨慎评估或自定义。</li>
+<li>对于主键是数据库生成的实体，Lombok 默认的 <code>equals</code> / <code>hashCode</code> 可能不满足所有最佳实践，需要谨慎评估或自定义。</li>
 </ul>
 </li>
 </ul>
@@ -550,150 +586,183 @@
 <li><code>equals()</code> 必须满足自反性、对称性、传递性、一致性。</li>
 <li><code>hashCode()</code> 在对象未被修改期间，多次调用必须返回相同的值。</li>
 </ol>
-<h4 id="5-4-DTO-模式的使用与投影查询"><a href="#5-4-DTO-模式的使用与投影查询" class="headerlink" title="5.4 DTO 模式的使用与投影查询"></a>5.4 DTO 模式的使用与投影查询</h4><p><strong>为什么要使用 DTO (Data Transfer Object)？</strong></p>
+<h4 id="5-4-DTO-模式的使用与投影查询">5.4 DTO 模式的使用与投影查询</h4>
+<p><strong>为什么要使用 DTO (Data Transfer Object)？</strong></p>
 <ul>
-<li><strong>解耦</strong>: 将持久层实体 (Entity) 与表现层 (Controller&#x2F;View) 或 Service 层之间的数据传输解耦。实体类通常包含 JPA 注解、关联关系、懒加载等持久化细节，这些不应该暴露给上层或外部。</li>
-<li><strong>性能</strong>: 只传输需要的数据。JPA 实体可能包含很多字段和懒加载的关联，如果直接返回实体，可能会：<ul>
-<li>传输不必要的数据，增加网络开销和序列化&#x2F;反序列化成本。</li>
+<li><strong>解耦</strong>: 将持久层实体 (Entity) 与表现层 (Controller/View) 或 Service 层之间的数据传输解耦。实体类通常包含 JPA 注解、关联关系、懒加载等持久化细节，这些不应该暴露给上层或外部。</li>
+<li><strong>性能</strong>: 只传输需要的数据。JPA 实体可能包含很多字段和懒加载的关联，如果直接返回实体，可能会：
+<ul>
+<li>传输不必要的数据，增加网络开销和序列化/反序列化成本。</li>
 <li>意外触发懒加载查询，导致性能问题或 <code>LazyInitializationException</code> (如果事务已关闭)。</li>
 </ul>
 </li>
 <li><strong>API 设计</strong>: DTO 可以根据特定的 API 需求定制数据结构，更灵活。一个实体可能对应多个不同的 DTO，用于不同的场景。</li>
-<li><strong>数据转换&#x2F;聚合</strong>: DTO 可以包含经过计算、格式化或从多个实体聚合而来的数据。</li>
+<li><strong>数据转换/聚合</strong>: DTO 可以包含经过计算、格式化或从多个实体聚合而来的数据。</li>
 <li><strong>安全性</strong>: 避免意外暴露实体的所有属性。</li>
 </ul>
 <p><strong>如何使用 DTO 和投影查询：</strong></p>
 <ol>
-<li><p><strong>定义 DTO 类</strong>:<br>一个普通的 Java POJO，只包含需要传输的属性，以及 getter&#x2F;setter 和构造函数。</p>
+<li>
+<p><strong>定义 DTO 类</strong>:<br>
+一个普通的 Java POJO，只包含需要传输的属性，以及 getter/setter 和构造函数。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.dto;<br><br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> lombok.NoArgsConstructor;<br><span class="hljs-keyword">import</span> lombok.AllArgsConstructor;<br><span class="hljs-keyword">import</span> java.time.LocalDateTime;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserSummaryDTO</span> &#123;<br>    <span class="hljs-keyword">private</span> Long userId;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String emailAddress;<br>    <span class="hljs-keyword">private</span> String departmentName; <span class="hljs-comment">// 可能来自关联的 Department 实体</span><br>    <span class="hljs-keyword">private</span> LocalDateTime registrationDate;<br>&#125;<br></code></pre></td></tr></table></figure>
 </li>
-<li><p><strong>在 Repository 中使用投影查询返回 DTO</strong>:</p>
+<li>
+<p><strong>在 Repository 中使用投影查询返回 DTO</strong>:</p>
 <ul>
-<li><p><strong>JPQL 构造函数表达式 (推荐)</strong>:</p>
+<li>
+<p><strong>JPQL 构造函数表达式 (推荐)</strong>:</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// UserRepository.java</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;User, Long&gt; &#123;<br>    <span class="hljs-meta">@Query(&quot;SELECT new com.example.yourproject.dto.UserSummaryDTO(&quot; +</span><br><span class="hljs-meta">           &quot;u.id, u.username, u.email, d.name, u.dateCreated) &quot; +</span><br><span class="hljs-meta">           &quot;FROM User u LEFT JOIN u.department d &quot; + // 假设 User 有 department 关联</span><br><span class="hljs-meta">           &quot;WHERE u.status = :status&quot;)</span><br>    List&lt;UserSummaryDTO&gt; <span class="hljs-title function_">findUserSummariesByStatus</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;status&quot;)</span> String status)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
 <ul>
 <li>DTO 类必须有一个匹配参数类型和顺序的<strong>公共构造函数</strong>。</li>
 <li>这是类型安全且高效的方式。</li>
 </ul>
 </li>
-<li><p><strong>Spring Data JPA 接口投影 (Interface-based Projections)</strong>:<br>定义一个接口，其中包含与实体属性对应的 getter 方法。</p>
+<li>
+<p><strong>Spring Data JPA 接口投影 (Interface-based Projections)</strong>:<br>
+定义一个接口，其中包含与实体属性对应的 getter 方法。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// UserProjections.java (可以是一个内部接口或单独文件)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserBasicProjection</span> &#123;<br>    Long <span class="hljs-title function_">getId</span><span class="hljs-params">()</span>;<br>    String <span class="hljs-title function_">getUsername</span><span class="hljs-params">()</span>;<br>    String <span class="hljs-title function_">getEmail</span><span class="hljs-params">()</span>; <span class="hljs-comment">// 对应 User 实体的 email 属性</span><br><br>    <span class="hljs-comment">// 可以使用 @Value 注解进行 SpEL 表达式计算或访问嵌套属性</span><br>    <span class="hljs-meta">@Value(&quot;#&#123;target.department.name&#125;&quot;)</span> <span class="hljs-comment">// target 指向 User 实体实例</span><br>    String <span class="hljs-title function_">getDepartmentName</span><span class="hljs-params">()</span>;<br><br>    <span class="hljs-comment">// 也可以有默认方法</span><br>    <span class="hljs-keyword">default</span> String <span class="hljs-title function_">getDisplayName</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> getUsername() + <span class="hljs-string">&quot; (&quot;</span> + getEmail() + <span class="hljs-string">&quot;)&quot;</span>;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// UserRepository.java</span><br><span class="hljs-comment">// List&lt;UserBasicProjection&gt; findByStatus(String status);</span><br><span class="hljs-comment">// Page&lt;UserBasicProjection&gt; findByAgeGreaterThan(int age, Pageable pageable);</span><br></code></pre></td></tr></table></figure>
 <p>Spring Data JPA 会自动为这个接口创建代理实现，并只查询接口中定义的属性（以及 <code>@Value</code> 表达式中需要的属性）。</p>
 </li>
-<li><p><strong>Spring Data JPA 类投影 (Class-based Projections &#x2F; DTO Projections)</strong>:<br>DTO 类需要有一个<strong>所有参数的构造函数</strong>，参数名与实体属性名匹配 (或者 getter&#x2F;setter 与实体属性名匹配，但构造函数更可靠)。</p>
+<li>
+<p><strong>Spring Data JPA 类投影 (Class-based Projections / DTO Projections)</strong>:<br>
+DTO 类需要有一个<strong>所有参数的构造函数</strong>，参数名与实体属性名匹配 (或者 getter/setter 与实体属性名匹配，但构造函数更可靠)。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// UserDTO.java (假设有构造函数 UserDTO(Long id, String username, String email))</span><br><span class="hljs-comment">// UserRepository.java</span><br><span class="hljs-comment">// List&lt;UserDTO&gt; findByStatusOrderByUsername(String status);</span><br></code></pre></td></tr></table></figure>
 <p>Spring Data JPA 会尝试将查询结果映射到 DTO 的构造函数或属性。</p>
 </li>
-<li><p><strong>原生 SQL 与 <code>@SqlResultSetMapping</code></strong>: 前面已讨论过，可以将原生 SQL 查询结果映射到 DTO。</p>
+<li>
+<p><strong>原生 SQL 与 <code>@SqlResultSetMapping</code></strong>: 前面已讨论过，可以将原生 SQL 查询结果映射到 DTO。</p>
 </li>
-<li><p><strong>Querydsl 的 <code>Projections</code></strong>: Querydsl 提供了 <code>Projections.bean()</code>, <code>Projections.constructor()</code>, <code>Projections.fields()</code> 等工具来将 Querydsl 查询结果映射到 DTO。</p>
+<li>
+<p><strong>Querydsl 的 <code>Projections</code></strong>: Querydsl 提供了 <code>Projections.bean()</code>, <code>Projections.constructor()</code>, <code>Projections.fields()</code> 等工具来将 Querydsl 查询结果映射到 DTO。</p>
 </li>
 </ul>
 </li>
-<li><p><strong>在 Service 层进行手动映射 (如果查询返回实体)</strong>:<br>如果 Repository 方法返回的是实体对象，你可以在 Service 层将实体手动转换为 DTO。</p>
+<li>
+<p><strong>在 Service 层进行手动映射 (如果查询返回实体)</strong>:<br>
+如果 Repository 方法返回的是实体对象，你可以在 Service 层将实体手动转换为 DTO。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-meta">@Autowired</span> <span class="hljs-keyword">private</span> UserRepository userRepository;<br>    <span class="hljs-comment">// @Autowired private ModelMapper modelMapper; // 或者 MapStruct 等映射库</span><br><br>    <span class="hljs-meta">@Transactional(readOnly = true)</span><br>    <span class="hljs-keyword">public</span> UserSummaryDTO <span class="hljs-title function_">getUserSummary</span><span class="hljs-params">(Long userId)</span> &#123;<br>        <span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userRepository.findById(userId)<br>                          .orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">EntityNotFoundException</span>(<span class="hljs-string">&quot;User not found&quot;</span>));<br>        <span class="hljs-comment">// 手动映射或使用映射库</span><br>        <span class="hljs-type">UserSummaryDTO</span> <span class="hljs-variable">dto</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UserSummaryDTO</span>();<br>        dto.setUserId(user.getId());<br>        dto.setUsername(user.getUsername());<br>        dto.setEmail(user.getEmail());<br>        <span class="hljs-keyword">if</span> (user.getDepartment() != <span class="hljs-literal">null</span>) &#123; <span class="hljs-comment">// 处理懒加载</span><br>            dto.setDepartmentName(user.getDepartment().getName());<br>        &#125;<br>        dto.setRegistrationDate(user.getDateCreated());<br>        <span class="hljs-keyword">return</span> dto;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>使用 ModelMapper, MapStruct 等对象映射库可以简化这个转换过程。</p>
 </li>
 </ol>
 <p><strong>最佳实践：</strong></p>
 <ul>
-<li><strong>优先使用投影查询 (JPQL 构造函数表达式或 Spring Data JPA 接口&#x2F;类投影)</strong>，直接从数据库获取 DTO 所需的数据，避免加载整个实体和不必要的字段。</li>
+<li><strong>优先使用投影查询 (JPQL 构造函数表达式或 Spring Data JPA 接口/类投影)</strong>，直接从数据库获取 DTO 所需的数据，避免加载整个实体和不必要的字段。</li>
 <li>DTO 应该是简单的 POJO，不包含业务逻辑或持久化注解。</li>
 <li>根据不同的使用场景定义不同的 DTO。</li>
 <li>在 Service 层完成实体到 DTO 的转换，Controller 层只处理 DTO。</li>
 </ul>
-<h4 id="5-5-性能调优考量"><a href="#5-5-性能调优考量" class="headerlink" title="5.5 性能调优考量"></a>5.5 性能调优考量</h4><p>JPA 应用的性能调优是一个系统性工程，涉及多个方面：</p>
+<h4 id="5-5-性能调优考量">5.5 性能调优考量</h4>
+<p>JPA 应用的性能调优是一个系统性工程，涉及多个方面：</p>
 <ol>
 <li><strong>N+1 查询</strong>: 始终是首要关注点，使用 Fetch Join, Entity Graphs, Batch Fetching 解决。</li>
-<li><strong>懒加载 vs 立即加载</strong>:<ul>
+<li><strong>懒加载 vs 立即加载</strong>:
+<ul>
 <li>默认使用懒加载 (<code>FetchType.LAZY</code>)，按需加载数据。</li>
 <li>只在确定总是需要关联数据时才考虑立即加载 (<code>FetchType.EAGER</code>)，并警惕其连锁效应。</li>
 </ul>
 </li>
 <li><strong>投影查询</strong>: 只查询真正需要的字段，减少数据传输和内存占用。</li>
-<li><strong>SQL 日志与分析</strong>:<ul>
+<li><strong>SQL 日志与分析</strong>:
+<ul>
 <li>开启 <code>spring.jpa.show-sql=true</code> 和 <code>format_sql=true</code> 进行开发调试。</li>
 <li>使用 Hibernate Statistics (<code>spring.jpa.properties.hibernate.generate_statistics=true</code>) 或 JMX 监控。</li>
 <li>使用数据库的 <code>EXPLAIN</code> 分析慢查询的执行计划。</li>
 <li>集成 P 6 Spy 或 APM 工具 (SkyWalking, Pinpoint) 进行更深入的 SQL 监控。</li>
 </ul>
 </li>
-<li><strong>索引优化</strong>:<ul>
+<li><strong>索引优化</strong>:
+<ul>
 <li>确保 <code>WHERE</code> 子句、<code>JOIN ON</code> 子句、<code>ORDER BY</code> 子句中用到的列都建立了合适的数据库索引。</li>
 <li>避免在索引列上使用函数或运算导致索引失效。</li>
 </ul>
 </li>
-<li><strong>批量操作</strong>:<ul>
-<li>对于大量数据的插入、更新、删除，使用 JPA 的批量操作 API (如 <code>entityManager.joinTransaction()</code> 后循环 <code>persist</code> 然后 <code>flush/clear</code>，或者 Hibernate 的 <code>StatelessSession</code>)，或者 JPQL&#x2F;Native SQL 的批量更新&#x2F;删除。</li>
+<li><strong>批量操作</strong>:
+<ul>
+<li>对于大量数据的插入、更新、删除，使用 JPA 的批量操作 API (如 <code>entityManager.joinTransaction()</code> 后循环 <code>persist</code> 然后 <code>flush/clear</code>，或者 Hibernate 的 <code>StatelessSession</code>)，或者 JPQL/Native SQL 的批量更新/删除。</li>
 <li>Spring Data JPA 的 <code>saveAll()</code> 对于大量数据，内部可能不是真正的 JDBC batching，需要看 JPA Provider 的实现和配置 (<code>spring.jpa.properties.hibernate.jdbc.batch_size</code>)。</li>
 </ul>
 </li>
-<li><strong>二级缓存</strong>:<ul>
+<li><strong>二级缓存</strong>:
+<ul>
 <li>对于读多写少的、不经常变化的实体数据，合理配置二级缓存可以显著提升性能。</li>
 <li>注意缓存的并发策略、失效机制和分布式环境下的选择。</li>
 </ul>
 </li>
-<li><strong>只读事务</strong>:<ul>
+<li><strong>只读事务</strong>:
+<ul>
 <li>为所有只读操作的 Service 方法添加 <code>@Transactional(readOnly = true)</code>。</li>
 </ul>
 </li>
-<li><strong>数据库连接池</strong>:<ul>
+<li><strong>数据库连接池</strong>:
+<ul>
 <li>合理配置数据库连接池的大小 (如 HikariCP 的 <code>maximum-pool-size</code>, <code>minimum-idle</code>) 以匹配应用负载。</li>
 </ul>
 </li>
 <li><strong>避免在循环中执行数据库操作</strong>: 尽可能将操作聚合成批量或一次查询。</li>
-<li><strong>理解持久化上下文 (一级缓存)</strong>:<ul>
+<li><strong>理解持久化上下文 (一级缓存)</strong>:
+<ul>
 <li>它有助于减少对同一事务内相同实体的重复查询。</li>
 <li>但如果加载了大量实体而不及时 <code>clear()</code> 或 <code>detach()</code>，可能会消耗过多内存。</li>
 </ul>
 </li>
-<li><strong>JPA Provider 特定优化 (如 Hibernate)</strong>:<ul>
+<li><strong>JPA Provider 特定优化 (如 Hibernate)</strong>:
+<ul>
 <li>调整 Hibernate 的 fetch 策略、缓存设置、方言特定优化等。</li>
 </ul>
 </li>
 </ol>
-<h4 id="5-6-JPA-Provider-Hibernate-特定配置与优化"><a href="#5-6-JPA-Provider-Hibernate-特定配置与优化" class="headerlink" title="5.6 JPA Provider (Hibernate) 特定配置与优化"></a>5.6 JPA Provider (Hibernate) 特定配置与优化</h4><p>由于 Spring Boot 默认使用 Hibernate 作为 JPA 提供者，了解一些 Hibernate 特有的配置和优化技巧很有用。</p>
+<h4 id="5-6-JPA-Provider-Hibernate-特定配置与优化">5.6 JPA Provider (Hibernate) 特定配置与优化</h4>
+<p>由于 Spring Boot 默认使用 Hibernate 作为 JPA 提供者，了解一些 Hibernate 特有的配置和优化技巧很有用。</p>
 <ul>
-<li><strong><code>hibernate.jdbc.batch_size</code></strong>:<ul>
+<li><strong><code>hibernate.jdbc.batch_size</code></strong>:
+<ul>
 <li><code>spring.jpa.properties.hibernate.jdbc.batch_size=50</code> (示例)</li>
 <li>配置 JDBC 批量操作的大小。当执行多个 <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> 时，Hibernate 会尝试将它们分批提交给 JDBC 驱动，可以显著提高写入性能。</li>
 <li>需要数据库驱动支持 batch update。</li>
 <li>与 <code>hibernate.order_inserts=true</code> 和 <code>hibernate.order_updates=true</code> 配合使用效果更佳 (让 Hibernate 对 SQL 语句排序以最大化批处理效果)。</li>
 </ul>
 </li>
-<li><strong><code>hibernate.order_inserts</code> 和 <code>hibernate.order_updates</code></strong>:<ul>
+<li><strong><code>hibernate.order_inserts</code> 和 <code>hibernate.order_updates</code></strong>:
+<ul>
 <li><code>spring.jpa.properties.hibernate.order_inserts=true</code></li>
 <li><code>spring.jpa.properties.hibernate.order_updates=true</code></li>
 <li>让 Hibernate 在 flush 时对 INSERT 和 UPDATE 语句进行排序，使得相同类型的操作可以被 JDBC 驱动更有效地批处理。</li>
 </ul>
 </li>
-<li><strong><code>hibernate.jdbc.fetch_size</code></strong>:<ul>
+<li><strong><code>hibernate.jdbc.fetch_size</code></strong>:
+<ul>
 <li><code>spring.jpa.properties.hibernate.jdbc.fetch_size=100</code> (示例)</li>
 <li>JDBC 驱动从数据库一次获取的记录行数。对于大的结果集，调整此参数可能影响性能。</li>
 </ul>
 </li>
-<li><strong><code>hibernate.default_batch_fetch_size</code></strong>: (前面已提过，用于优化懒加载)<ul>
+<li><strong><code>hibernate.default_batch_fetch_size</code></strong>: (前面已提过，用于优化懒加载)
+<ul>
 <li><code>spring.jpa.properties.hibernate.default_batch_fetch_size=10</code> (示例)</li>
 <li>全局配置懒加载关联的批处理大小。</li>
 </ul>
 </li>
-<li><strong>StatelessSession (Hibernate 特有)</strong>:<ul>
+<li><strong>StatelessSession (Hibernate 特有)</strong>:
+<ul>
 <li><code>org.hibernate.StatelessSession</code> 是 Hibernate 提供的一个轻量级的会话接口，它<strong>没有持久化上下文 (一级缓存)</strong>，也不进行脏检查、级联等操作。</li>
-<li>适用于大批量数据的只读查询或插入&#x2F;更新操作，可以减少内存开销和 ORM 框架的干预。</li>
+<li>适用于大批量数据的只读查询或插入/更新操作，可以减少内存开销和 ORM 框架的干预。</li>
 <li>使用它需要直接获取 Hibernate <code>SessionFactory</code> 并创建 <code>StatelessSession</code>，Spring Data JPA Repository 不直接支持。</li>
 </ul>
 </li>
-<li><strong>Hibernate Envers</strong>:<ul>
+<li><strong>Hibernate Envers</strong>:
+<ul>
 <li>一个用于实体历史版本审计的 Hibernate 模块，可以自动记录实体的变更历史到单独的审计表中。</li>
 <li>集成需要额外配置。</li>
 </ul>
 </li>
-<li><strong>Hibernate specific caching annotations</strong>:<ul>
+<li><strong>Hibernate specific caching annotations</strong>:
+<ul>
 <li>如 <code>@org.hibernate.annotations.Cache</code> (前面已讨论) 提供了比 JPA 标准 <code>@Cacheable</code> 更细致的缓存并发策略。</li>
 <li><code>@NaturalIdCache</code>: 缓存通过自然ID (<code>@NaturalId</code> 注解) 查询的实体。</li>
 </ul>
 </li>
-<li><strong>Hibernate Filters</strong>:<ul>
+<li><strong>Hibernate Filters</strong>:
+<ul>
 <li>允许在 Session 级别动态地添加过滤条件到实体查询中，常用于软删除、多租户等场景 (虽然 MP 的逻辑删除和多租户插件更方便)。</li>
 </ul>
 </li>

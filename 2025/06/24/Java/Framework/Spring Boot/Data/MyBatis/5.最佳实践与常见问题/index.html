@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="探讨 MyBatis 的最佳实践与常见问题。遵循这些实践可以帮助你编写出更高效、更易维护、更健壮的 MyBatis 应用。  5. 最佳实践与常见问题5.1 XML vs 注解我们在前面已经对比过 XML 和注解。这里总结一下最佳实践：  简单、固定、CRUD 操作： 注解可以胜任，代码更集中，有时更直观。 例如：findById, findAll (无动态条件), 简单 insert, upda">
+    <meta name="description" content="探讨 MyBatis 的最佳实践与常见问题。遵循这些实践可以帮助你编写出更高效、更易维护、更健壮的 MyBatis 应用。  5. 最佳实践与常见问题 5.1 XML vs 注解 我们在前面已经对比过 XML 和注解。这里总结一下最佳实践：  简单、固定、CRUD 操作：  注解可以胜任，代码更集中，有时更直观。 例如：findById, findAll (无动态条件), 简单 insert, u">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/5.%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E4%B8%8E%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="探讨 MyBatis 的最佳实践与常见问题。遵循这些实践可以帮助你编写出更高效、更易维护、更健壮的 MyBatis 应用。  5. 最佳实践与常见问题5.1 XML vs 注解我们在前面已经对比过 XML 和注解。这里总结一下最佳实践：  简单、固定、CRUD 操作： 注解可以胜任，代码更集中，有时更直观。 例如：findById, findAll (无动态条件), 简单 insert, upda">
+<meta property="og:description" content="探讨 MyBatis 的最佳实践与常见问题。遵循这些实践可以帮助你编写出更高效、更易维护、更健壮的 MyBatis 应用。  5. 最佳实践与常见问题 5.1 XML vs 注解 我们在前面已经对比过 XML 和注解。这里总结一下最佳实践：  简单、固定、CRUD 操作：  注解可以胜任，代码更集中，有时更直观。 例如：findById, findAll (无动态条件), 简单 insert, u">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.076Z">
 <meta property="article:modified_time" content="2025-06-16T07:25:02.023Z">
@@ -241,7 +241,7 @@
         
         
         
-          40 分钟
+          39 分钟
         
       </span>
     
@@ -302,22 +302,28 @@
                 
                 <p>探讨 MyBatis 的最佳实践与常见问题。遵循这些实践可以帮助你编写出更高效、更易维护、更健壮的 MyBatis 应用。</p>
 <hr>
-<h3 id="5-最佳实践与常见问题"><a href="#5-最佳实践与常见问题" class="headerlink" title="5. 最佳实践与常见问题"></a>5. 最佳实践与常见问题</h3><h4 id="5-1-XML-vs-注解"><a href="#5-1-XML-vs-注解" class="headerlink" title="5.1 XML vs 注解"></a>5.1 XML vs 注解</h4><p>我们在前面已经对比过 XML 和注解。这里总结一下最佳实践：</p>
+<h3 id="5-最佳实践与常见问题">5. 最佳实践与常见问题</h3>
+<h4 id="5-1-XML-vs-注解">5.1 XML vs 注解</h4>
+<p>我们在前面已经对比过 XML 和注解。这里总结一下最佳实践：</p>
 <ul>
-<li><strong>简单、固定、CRUD 操作</strong>：<ul>
+<li><strong>简单、固定、CRUD 操作</strong>：
+<ul>
 <li><strong>注解</strong>可以胜任，代码更集中，有时更直观。</li>
 <li>例如：<code>findById</code>, <code>findAll</code> (无动态条件), 简单 <code>insert</code>, <code>update</code>, <code>delete</code>。</li>
 </ul>
 </li>
-<li><strong>复杂 SQL、动态 SQL、需要精细控制的 SQL</strong>：<ul>
+<li><strong>复杂 SQL、动态 SQL、需要精细控制的 SQL</strong>：
+<ul>
 <li><strong>XML 映射文件</strong>是首选。</li>
 <li>XML 提供了强大的动态 SQL 标签 (<code>&lt;if&gt;</code>, <code>&lt;foreach&gt;</code>, <code>&lt;choose&gt;</code>, <code>&lt;where&gt;</code>, <code>&lt;set&gt;</code>, <code>&lt;trim&gt;</code>)，使得构建复杂的动态查询更为清晰和易于管理。</li>
 <li>SQL 语句与 Java 代码分离，便于 DBA 或 SQL 专家进行审查、优化，也更利于 SQL 的复用 (<code>&lt;sql&gt;</code> 和 <code>&lt;include&gt;</code>)。</li>
 <li>对于非常长的 SQL 语句，放在 XML 中可读性远胜于注解。</li>
 </ul>
 </li>
-<li><strong>团队协作与一致性</strong>：<ul>
-<li>团队内部应达成共识，制定使用规范。例如：<ul>
+<li><strong>团队协作与一致性</strong>：
+<ul>
+<li>团队内部应达成共识，制定使用规范。例如：
+<ul>
 <li>“默认使用 XML，除非是非常简单的单行固定 SQL 且无复杂映射，方可使用注解。”</li>
 <li>或者“动态 SQL 必须使用 XML。”</li>
 </ul>
@@ -325,42 +331,52 @@
 <li>避免项目中 XML 和注解随意混用导致维护困难。</li>
 </ul>
 </li>
-<li><strong>可维护性</strong>：<ul>
+<li><strong>可维护性</strong>：
+<ul>
 <li>长远来看，对于需要长期维护和迭代的项目，将 SQL 集中在 XML 文件中通常更容易管理和查找。</li>
 <li>注解方式的 SQL 如果分散在大量 Mapper 接口中，当需要批量修改或分析 SQL 时会比较麻烦。</li>
 </ul>
 </li>
-<li><strong>混合使用</strong>：<ul>
+<li><strong>混合使用</strong>：
+<ul>
 <li>MyBatis 允许混合使用。你可以为一个 Mapper 接口同时使用注解和 XML 文件中定义的语句。MyBatis 会优先查找注解，如果找不到再查找 XML (通常是根据 namespace 和 id 匹配)。但为了清晰，建议一个方法要么用注解定义 SQL，要么在 XML 中定义。</li>
 </ul>
 </li>
 </ul>
 <p><strong>常见问题：</strong></p>
 <ul>
-<li><strong>Q: 我应该完全放弃 XML，只用注解吗？</strong><ul>
+<li><strong>Q: 我应该完全放弃 XML，只用注解吗？</strong>
+<ul>
 <li>A: 不建议。虽然注解对于简单场景很方便，但它处理复杂动态 SQL 的能力远不如 XML。完全依赖注解可能会在遇到复杂需求时变得非常棘手。</li>
 </ul>
 </li>
-<li><strong>Q: 注解中的动态 SQL (<code>@XXXProvider</code>) 是否能完全替代 XML 动态 SQL？</strong><ul>
+<li><strong>Q: 注解中的动态 SQL (<code>@XXXProvider</code>) 是否能完全替代 XML 动态 SQL？</strong>
+<ul>
 <li>A: 理论上可以，但 Provider 类中的 SQL 构建逻辑（即使使用 <code>SQL</code> 工具类）通常不如 XML 标签直观和易于维护，尤其是对于非常复杂的逻辑。XML 的标签化动态 SQL 是 MyBatis 的一大特色和优势。</li>
 </ul>
 </li>
 </ul>
 <hr>
-<h4 id="5-2-Mapper-接口设计"><a href="#5-2-Mapper-接口设计" class="headerlink" title="5.2 Mapper 接口设计"></a>5.2 Mapper 接口设计</h4><p>良好的 Mapper 接口设计能提升代码的可读性和可维护性。</p>
+<h4 id="5-2-Mapper-接口设计">5.2 Mapper 接口设计</h4>
+<p>良好的 Mapper 接口设计能提升代码的可读性和可维护性。</p>
 <ul>
-<li><strong>清晰的命名</strong>：<ul>
+<li><strong>清晰的命名</strong>：
+<ul>
 <li>方法名应清晰表达其操作意图，例如：<code>findUserById</code>, <code>insertUser</code>, <code>updateUserStatus</code>, <code>deleteUsersByCreationDateBefore</code>。</li>
 <li>保持一致的命名约定（如动词在前：<code>find...</code>, <code>get...</code>, <code>save...</code>, <code>update...</code>, <code>delete...</code>）。</li>
 </ul>
 </li>
-<li><strong>参数处理</strong>：<ul>
+<li><strong>参数处理</strong>：
+<ul>
 <li><strong>单个简单参数</strong>：可以直接使用，如 <code>User findById(Long id);</code>。</li>
-<li><strong>多个参数</strong>：<strong>强烈建议使用 <code>@Param(&quot;paramName&quot;)</code> 注解</strong>为每个参数命名，以提高 XML 中引用的明确性和健壮性。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;User&gt; <span class="hljs-title function_">findByStatusAndRole</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;status&quot;)</span> String status, <span class="hljs-meta">@Param(&quot;roleId&quot;)</span> Long roleId)</span>;<br></code></pre></td></tr></table></figure></li>
-<li><strong>复杂参数&#x2F;多个条件</strong>：考虑使用一个<strong>参数对象 (Parameter Object &#x2F; DTO)</strong> 来封装查询条件，使接口更简洁。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// DTO</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserQueryCriteria</span> &#123;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String email;<br>    <span class="hljs-keyword">private</span> String status;<br>    <span class="hljs-comment">// getters and setters</span><br>&#125;<br><span class="hljs-comment">// Mapper</span><br>List&lt;User&gt; <span class="hljs-title function_">findUsersByCriteria</span><span class="hljs-params">(UserQueryCriteria criteria)</span>;<br></code></pre></td></tr></table></figure></li>
+<li><strong>多个参数</strong>：<strong>强烈建议使用 <code>@Param(&quot;paramName&quot;)</code> 注解</strong>为每个参数命名，以提高 XML 中引用的明确性和健壮性。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;User&gt; <span class="hljs-title function_">findByStatusAndRole</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;status&quot;)</span> String status, <span class="hljs-meta">@Param(&quot;roleId&quot;)</span> Long roleId)</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>复杂参数/多个条件</strong>：考虑使用一个<strong>参数对象 (Parameter Object / DTO)</strong> 来封装查询条件，使接口更简洁。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// DTO</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserQueryCriteria</span> &#123;<br>    <span class="hljs-keyword">private</span> String username;<br>    <span class="hljs-keyword">private</span> String email;<br>    <span class="hljs-keyword">private</span> String status;<br>    <span class="hljs-comment">// getters and setters</span><br>&#125;<br><span class="hljs-comment">// Mapper</span><br>List&lt;User&gt; <span class="hljs-title function_">findUsersByCriteria</span><span class="hljs-params">(UserQueryCriteria criteria)</span>;<br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><strong>返回值</strong>：<ul>
+<li><strong>返回值</strong>：
+<ul>
 <li>查询单个对象：返回该对象类型，如 <code>User findById(Long id);</code>。如果查不到，MyBatis 默认返回 <code>null</code>。</li>
 <li>查询多个对象：返回 <code>List&lt;T&gt;</code>，如 <code>List&lt;User&gt; findAll();</code>。如果查不到，MyBatis 默认返回空列表 (empty list)，而不是 <code>null</code>，这通常是好的实践，避免了调用方不必要的 <code>null</code> 检查。</li>
 <li><code>insert</code>, <code>update</code>, <code>delete</code> 操作：通常返回 <code>int</code>，表示受影响的行数。</li>
@@ -368,16 +384,20 @@
 <li>对于批量操作，可以考虑返回 <code>int[]</code> (如果数据库驱动支持并配置了) 或自定义的批量操作结果对象。</li>
 </ul>
 </li>
-<li><strong>接口职责单一</strong>：<ul>
+<li><strong>接口职责单一</strong>：
+<ul>
 <li>尽量让一个 Mapper 接口对应一个主要的业务实体或数据表的操作。避免创建过于庞大、包含各种不相关操作的 Mapper 接口。</li>
 </ul>
 </li>
-<li><strong>避免在 Mapper 接口中定义业务逻辑</strong>：<ul>
+<li><strong>避免在 Mapper 接口中定义业务逻辑</strong>：
+<ul>
 <li>Mapper 接口应该只负责数据访问。业务逻辑、事务控制等应放在 Service 层。</li>
 </ul>
 </li>
-<li><strong>使用 <code>@Mapper</code> 或 <code>@MapperScan</code></strong>：<ul>
-<li>确保 Mapper 接口能被 Spring Boot 正确扫描和注册。<ul>
+<li><strong>使用 <code>@Mapper</code> 或 <code>@MapperScan</code></strong>：
+<ul>
+<li>确保 Mapper 接口能被 Spring Boot 正确扫描和注册。
+<ul>
 <li><code>@Mapper</code>：在每个 Mapper 接口上添加。</li>
 <li><code>@MapperScan(&quot;com.example.yourproject.mapper&quot;)</code>：在配置类或启动类上指定扫描包，更集中管理。</li>
 </ul>
@@ -387,58 +407,70 @@
 </ul>
 <p><strong>常见问题：</strong></p>
 <ul>
-<li><strong>Q: Mapper 接口方法可以重载吗？</strong><ul>
+<li><strong>Q: Mapper 接口方法可以重载吗？</strong>
+<ul>
 <li>A: 可以，但对应的 XML 中的 SQL 语句 <code>id</code> 必须唯一。MyBatis 是通过 <code>namespace + id</code> 来唯一定位 SQL 语句的。如果 XML <code>id</code> 不唯一，MyBatis 启动会报错。通常不建议过度依赖重载，因为 XML <code>id</code> 无法重载。</li>
 </ul>
 </li>
-<li><strong>Q: Mapper 接口可以继承吗？</strong><ul>
+<li><strong>Q: Mapper 接口可以继承吗？</strong>
+<ul>
 <li>A: 可以。子接口可以继承父接口的方法。对应的 SQL 语句可以在父接口的 XML 中定义，也可以在子接口自己的 XML 中定义（如果 namespace 对应子接口）。这可以用于定义一些通用的 CRUD 方法。一些增强工具如 <code>MyBatis-Plus</code> 就大量使用了这种方式提供通用 Mapper。</li>
 </ul>
 </li>
 </ul>
 <hr>
-<h4 id="5-3-SQL-优化考量"><a href="#5-3-SQL-优化考量" class="headerlink" title="5.3 SQL 优化考量"></a>5.3 SQL 优化考量</h4><p>MyBatis 将 SQL 的控制权交给了开发者，因此 SQL 优化非常重要。</p>
+<h4 id="5-3-SQL-优化考量">5.3 SQL 优化考量</h4>
+<p>MyBatis 将 SQL 的控制权交给了开发者，因此 SQL 优化非常重要。</p>
 <ul>
-<li><strong>使用索引 (Indexes)</strong>：<ul>
+<li><strong>使用索引 (Indexes)</strong>：
+<ul>
 <li>确保查询条件中的列（<code>WHERE</code> 子句、<code>JOIN ON</code> 子句、<code>ORDER BY</code> 子句）建立了合适的索引。</li>
 <li>使用数据库的 <code>EXPLAIN</code> (或类似命令) 分析查询计划，检查索引是否被有效利用。</li>
 </ul>
 </li>
-<li><strong>避免 <code>SELECT *</code></strong>：<ul>
+<li><strong>避免 <code>SELECT *</code></strong>：
+<ul>
 <li>只查询你需要的列。<code>SELECT *</code> 会增加网络传输开销、内存消耗，并且如果表结构发生变化（如增加列），可能会导致不必要的兼容性问题或数据冗余。它还可能阻止某些数据库优化（如覆盖索引）。</li>
 </ul>
 </li>
-<li><strong>合理使用 JOIN</strong>：<ul>
+<li><strong>合理使用 JOIN</strong>：
+<ul>
 <li>避免不必要的 <code>JOIN</code>。<code>JOIN</code> 操作会增加查询复杂度。</li>
 <li>确保 <code>JOIN</code> 条件的列上有索引。</li>
 <li>考虑是否可以将复杂的 <code>JOIN</code> 拆分成多个简单查询，然后在应用层组装数据（需要权衡，有时 <code>JOIN</code> 更高效）。</li>
 </ul>
 </li>
-<li><strong>优化 <code>WHERE</code> 子句</strong>：<ul>
-<li>尽量避免在 <code>WHERE</code> 子句中对索引列使用函数或进行运算，这可能导致索引失效。例如，<code>WHERE SUBSTRING(column, 1, 3) = &#39;abc&#39;</code> 可能比 <code>WHERE column LIKE &#39;abc%&#39;</code> 效率低（如果 <code>column</code> 上有索引）。</li>
+<li><strong>优化 <code>WHERE</code> 子句</strong>：
+<ul>
+<li>尽量避免在 <code>WHERE</code> 子句中对索引列使用函数或进行运算，这可能导致索引失效。例如，<code>WHERE SUBSTRING(column, 1, 3) = 'abc'</code> 可能比 <code>WHERE column LIKE 'abc%'</code> 效率低（如果 <code>column</code> 上有索引）。</li>
 <li>注意 <code>OR</code> 条件的使用，有时 <code>UNION ALL</code> 可能比 <code>OR</code> 更高效（具体取决于数据库和查询计划）。</li>
 <li>对于模糊查询 <code>LIKE</code>，尽量避免使用前导通配符 (<code>%keyword</code>)，因为它通常会导致索引失效。如果业务需要，考虑使用全文索引或其他技术。</li>
 </ul>
 </li>
-<li><strong>批量操作 (Batch Operations)</strong>：<ul>
+<li><strong>批量操作 (Batch Operations)</strong>：
+<ul>
 <li>对于大量数据的插入、更新、删除，使用批量操作远比单条执行高效。</li>
 <li>MyBatis 的 <code>&lt;foreach&gt;</code> 标签可以用于构建批量 <code>INSERT</code> 或 <code>UPDATE</code> 语句。</li>
 <li>也可以通过 <code>SqlSession</code> 的 <code>ExecutorType.BATCH</code> 模式执行批量操作（这需要在创建 <code>SqlSession</code> 时指定，Spring 集成中可能需要自定义 <code>SqlSessionTemplate</code> 或 <code>SqlSessionFactory</code>）。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 示例：使用 BATCH 模式 (更底层的方式)</span><br><span class="hljs-comment">// SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH);</span><br><span class="hljs-comment">// try &#123;</span><br><span class="hljs-comment">//     YourMapper mapper = sqlSession.getMapper(YourMapper.class);</span><br><span class="hljs-comment">//     for (YourObject obj : list) &#123;</span><br><span class="hljs-comment">//         mapper.insertObject(obj);</span><br><span class="hljs-comment">//     &#125;</span><br><span class="hljs-comment">//     sqlSession.commit(); // 或者 sqlSession.flushStatements() 来批量执行</span><br><span class="hljs-comment">// &#125; finally &#123;</span><br><span class="hljs-comment">//     sqlSession.close();</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure>
-在 Spring Boot 中，使用 <code>@Transactional</code> 时，通常 <code>SqlSession</code> 的生命周期由 Spring 管理。要使用 <code>BATCH</code> 模式，一种方式是在 <code>SqlSessionFactoryBean</code> 中设置 <code>defaultExecutorType</code>，或者为特定操作创建一个单独的 <code>SqlSessionTemplate</code> 配置为 <code>BATCH</code> 模式。<br>不过，对于大多数场景，使用 <code>&lt;foreach&gt;</code> 构建批量 SQL 语句更为常见和方便。</li>
+在 Spring Boot 中，使用 <code>@Transactional</code> 时，通常 <code>SqlSession</code> 的生命周期由 Spring 管理。要使用 <code>BATCH</code> 模式，一种方式是在 <code>SqlSessionFactoryBean</code> 中设置 <code>defaultExecutorType</code>，或者为特定操作创建一个单独的 <code>SqlSessionTemplate</code> 配置为 <code>BATCH</code> 模式。<br>
+不过，对于大多数场景，使用 <code>&lt;foreach&gt;</code> 构建批量 SQL 语句更为常见和方便。</li>
 </ul>
 </li>
-<li><strong>分页查询优化</strong>：<ul>
+<li><strong>分页查询优化</strong>：
+<ul>
 <li>使用物理分页插件（如 <code>PageHelper</code>）而不是 <code>RowBounds</code> 逻辑分页。</li>
 <li>确保分页查询利用了索引，特别是 <code>ORDER BY</code> 的列。</li>
 <li>对于深度分页（如查询第10000页），MySQL 的 <code>LIMIT offset, count</code> 性能会下降，因为需要扫描 <code>offset + count</code> 条记录。可以考虑使用“书签”或“延迟关联”等优化技巧。</li>
 </ul>
 </li>
-<li><strong>合理使用缓存</strong>：<ul>
+<li><strong>合理使用缓存</strong>：
+<ul>
 <li>对于不经常变化且查询频繁的数据，合理配置二级缓存可以显著提升性能。</li>
 <li>注意缓存的失效策略和数据一致性问题。</li>
 </ul>
 </li>
-<li><strong>监控和分析</strong>：<ul>
+<li><strong>监控和分析</strong>：
+<ul>
 <li>使用数据库性能监控工具 (如 PMM for MySQL, pgAdmin for PostgreSQL) 或 APM (Application Performance Management) 工具 (如 SkyWalking, Pinpoint, New Relic) 来监控慢查询和数据库负载。</li>
 <li>定期审查和优化慢 SQL。</li>
 </ul>
@@ -446,26 +478,31 @@
 </ul>
 <p><strong>常见问题：</strong></p>
 <ul>
-<li><strong>Q: MyBatis 会自动帮我优化 SQL 吗？</strong><ul>
+<li><strong>Q: MyBatis 会自动帮我优化 SQL 吗？</strong>
+<ul>
 <li>A: 不会。MyBatis 忠实地执行你编写的 SQL。SQL 优化的责任在于开发者。</li>
 </ul>
 </li>
-<li><strong>Q: 如何在 MyBatis 中执行 <code>EXPLAIN</code>？</strong><ul>
+<li><strong>Q: 如何在 MyBatis 中执行 <code>EXPLAIN</code>？</strong>
+<ul>
 <li>A: 你可以创建一个 Mapper 方法，其 SQL 就是 <code>EXPLAIN SELECT ...</code>，然后执行这个方法并查看结果。或者直接在数据库客户端执行。</li>
 </ul>
 </li>
 </ul>
 <hr>
-<h4 id="5-4-避免-N-1-查询"><a href="#5-4-避免-N-1-查询" class="headerlink" title="5.4 避免 N+1 查询"></a>5.4 避免 N+1 查询</h4><p>N+1 查询是 ORM 和持久层框架中常见的性能问题，MyBatis 中也可能出现，尤其是在处理关联对象时。</p>
+<h4 id="5-4-避免-N-1-查询">5.4 避免 N+1 查询</h4>
+<p>N+1 查询是 ORM 和持久层框架中常见的性能问题，MyBatis 中也可能出现，尤其是在处理关联对象时。</p>
 <p><strong>什么是 N+1 查询？</strong></p>
 <p>当你查询一个主对象列表（1 次查询），然后对于列表中的每个主对象，又单独去查询其关联的子对象（N 次查询），总共执行了 1 + N 次查询，这就是 N+1 问题。</p>
 <p><strong>MyBatis 中 N+1 产生的常见场景：</strong></p>
 <ul>
-<li>在使用 <code>&lt;association&gt;</code> 或 <code>&lt;collection&gt;</code> 进行嵌套查询 (Nested Select) 并且<strong>没有开启或合理使用延迟加载 (Lazy Loading)</strong> 时。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 假设 OrderMapper.xml --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;OrderWithUserMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;Order&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_id&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;orderNumber&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_no&quot;</span>/&gt;</span><br>    <span class="hljs-comment">&lt;!-- 嵌套查询，如果 fetchType 不是 lazy 或者被立即访问 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">association</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;customer&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_id&quot;</span> <span class="hljs-attr">javaType</span>=<span class="hljs-string">&quot;User&quot;</span></span><br><span class="hljs-tag">                 <span class="hljs-attr">select</span>=<span class="hljs-string">&quot;com.example.mapper.UserMapper.findById&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><span class="hljs-comment">&lt;!-- 当查询 List&lt;Order&gt; 时，如果每个 Order 的 customer 属性被访问，就会触发对 UserMapper.findById 的 N 次调用 --&gt;</span><br></code></pre></td></tr></table></figure></li>
+<li>在使用 <code>&lt;association&gt;</code> 或 <code>&lt;collection&gt;</code> 进行嵌套查询 (Nested Select) 并且<strong>没有开启或合理使用延迟加载 (Lazy Loading)</strong> 时。<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- 假设 OrderMapper.xml --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;OrderWithUserMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;Order&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">id</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;id&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_id&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;orderNumber&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;order_no&quot;</span>/&gt;</span><br>    <span class="hljs-comment">&lt;!-- 嵌套查询，如果 fetchType 不是 lazy 或者被立即访问 --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">association</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;customer&quot;</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;user_id&quot;</span> <span class="hljs-attr">javaType</span>=<span class="hljs-string">&quot;User&quot;</span></span><br><span class="hljs-tag">                 <span class="hljs-attr">select</span>=<span class="hljs-string">&quot;com.example.mapper.UserMapper.findById&quot;</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><span class="hljs-comment">&lt;!-- 当查询 List&lt;Order&gt; 时，如果每个 Order 的 customer 属性被访问，就会触发对 UserMapper.findById 的 N 次调用 --&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 <p><strong>避免和解决 N+1 的方法：</strong></p>
 <ol>
-<li><p><strong>使用 JOIN 查询 (Eager Fetching)</strong>：</p>
+<li>
+<p><strong>使用 JOIN 查询 (Eager Fetching)</strong>：</p>
 <ul>
 <li>在一次 SQL 查询中通过 <code>JOIN</code> 将主对象和关联对象的数据一起查出来，然后通过 <code>&lt;resultMap&gt;</code> 的 <code>&lt;association&gt;</code> 和 <code>&lt;collection&gt;</code> 进行映射。</li>
 <li>这是最直接有效避免 N+1 的方法。</li>
@@ -475,30 +512,35 @@
 <li><strong>缺点</strong>：如果关联对象过多或层级过深，JOIN 语句可能变得复杂，且可能产生笛卡尔积（对于一对多和多对多），需要注意去重和数据冗余。</li>
 </ul>
 </li>
-<li><p><strong>合理使用延迟加载 (Lazy Loading)</strong>：</p>
+<li>
+<p><strong>合理使用延迟加载 (Lazy Loading)</strong>：</p>
 <ul>
 <li><strong>全局配置</strong>：<code>mybatis.configuration.lazy-loading-enabled: true</code></li>
 <li><strong>局部配置</strong>：在 <code>&lt;association&gt;</code> 或 <code>&lt;collection&gt;</code> 上设置 <code>fetchType=&quot;lazy&quot;</code>。</li>
 <li>当开启延迟加载后，关联对象只有在<strong>实际被访问时</strong>才会触发查询。如果某些场景下你不需要访问关联对象，就可以避免不必要的查询。</li>
 <li><strong>触发延迟加载的条件</strong>：当调用关联对象的 getter 方法，或者 <code>equals()</code>, <code>hashCode()</code>, <code>toString()</code>, <code>clone()</code> 等方法时，会触发加载。</li>
 <li><strong><code>aggressiveLazyLoading</code></strong> (默认为 <code>false</code>)：如果设为 <code>true</code>，访问主对象的任何一个属性都会导致其所有懒加载的关联对象被加载。通常保持 <code>false</code>。</li>
-<li><strong>注意</strong>：延迟加载依赖于 MyBatis 创建的代理对象。如果对象在 <code>SqlSession</code> 关闭后才访问懒加载属性，会抛出 <code>LazyLoadException</code>。在 Spring 集成中，如果事务结束 (<code>SqlSession</code> 关闭)，之后访问懒加载属性就会出问题。<ul>
-<li><strong>解决方案</strong>：确保在 <code>SqlSession</code> 开启的范围内（通常是 <code>@Transactional</code> 方法内）访问懒加载属性，或者使用 <code>OpenSessionInViewFilter</code> &#x2F; <code>Interceptor</code> (对于 Web 应用，但这有其自身的优缺点，可能导致长事务或意外的数据库访问)。</li>
+<li><strong>注意</strong>：延迟加载依赖于 MyBatis 创建的代理对象。如果对象在 <code>SqlSession</code> 关闭后才访问懒加载属性，会抛出 <code>LazyLoadException</code>。在 Spring 集成中，如果事务结束 (<code>SqlSession</code> 关闭)，之后访问懒加载属性就会出问题。
+<ul>
+<li><strong>解决方案</strong>：确保在 <code>SqlSession</code> 开启的范围内（通常是 <code>@Transactional</code> 方法内）访问懒加载属性，或者使用 <code>OpenSessionInViewFilter</code> / <code>Interceptor</code> (对于 Web 应用，但这有其自身的优缺点，可能导致长事务或意外的数据库访问)。</li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p><strong>分批查询 (Batch Fetching &#x2F; IN Clause)</strong>：</p>
+<li>
+<p><strong>分批查询 (Batch Fetching / IN Clause)</strong>：</p>
 <ul>
 <li>先查询出主对象列表 (1 次查询)。</li>
 <li>收集所有主对象的 ID。</li>
 <li>根据这些 ID，使用 <code>IN</code> 子句一次性查询出所有相关的子对象 (1 次查询)。</li>
 <li>在应用层将子对象与主对象进行匹配和组装。</li>
-<li>总共执行 1 + 1 &#x3D; 2 次查询。</li>
-<li>MyBatis 本身没有直接提供这种模式的自动化支持（不像 JPA 的 <code>@BatchSize</code>），需要开发者手动实现这种逻辑。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Service 层逻辑</span><br><span class="hljs-comment">// List&lt;Order&gt; orders = orderMapper.findOrders(...); // 查询主订单</span><br><span class="hljs-comment">// if (!orders.isEmpty()) &#123;</span><br><span class="hljs-comment">//     List&lt;Long&gt; userIds = orders.stream().map(Order::getUserId).distinct().collect(Collectors.toList());</span><br><span class="hljs-comment">//     List&lt;User&gt; users = userMapper.findUsersByIds(userIds); // IN 查询用户</span><br><span class="hljs-comment">//     Map&lt;Long, User&gt; userMap = users.stream().collect(Collectors.toMap(User::getId, u -&gt; u));</span><br><span class="hljs-comment">//     orders.forEach(order -&gt; order.setCustomer(userMap.get(order.getUserId())));</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure></li>
+<li>总共执行 1 + 1 = 2 次查询。</li>
+<li>MyBatis 本身没有直接提供这种模式的自动化支持（不像 JPA 的 <code>@BatchSize</code>），需要开发者手动实现这种逻辑。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Service 层逻辑</span><br><span class="hljs-comment">// List&lt;Order&gt; orders = orderMapper.findOrders(...); // 查询主订单</span><br><span class="hljs-comment">// if (!orders.isEmpty()) &#123;</span><br><span class="hljs-comment">//     List&lt;Long&gt; userIds = orders.stream().map(Order::getUserId).distinct().collect(Collectors.toList());</span><br><span class="hljs-comment">//     List&lt;User&gt; users = userMapper.findUsersByIds(userIds); // IN 查询用户</span><br><span class="hljs-comment">//     Map&lt;Long, User&gt; userMap = users.stream().collect(Collectors.toMap(User::getId, u -&gt; u));</span><br><span class="hljs-comment">//     orders.forEach(order -&gt; order.setCustomer(userMap.get(order.getUserId())));</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 </li>
-<li><p><strong>对于一对多&#x2F;多对多，使用 <code>resultMap</code> 的 <code>&lt;collection&gt;</code> 结合 JOIN</strong>：</p>
+<li>
+<p><strong>对于一对多/多对多，使用 <code>resultMap</code> 的 <code>&lt;collection&gt;</code> 结合 JOIN</strong>：</p>
 <ul>
 <li>MyBatis 在处理 <code>JOIN</code> 带来的一对多结果集时，会自动将多行子对象数据聚合到主对象的集合属性中，避免了 N+1。</li>
 </ul>
@@ -514,29 +556,37 @@
 <li>通过日志监控 SQL 执行数量，及时发现潜在的 N+1 问题。</li>
 </ul>
 <hr>
-<h4 id="5-5-日志与调试"><a href="#5-5-日志与调试" class="headerlink" title="5.5 日志与调试"></a>5.5 日志与调试</h4><p>有效的日志和调试手段对于开发和排查 MyBatis 问题至关重要。</p>
+<h4 id="5-5-日志与调试">5.5 日志与调试</h4>
+<p>有效的日志和调试手段对于开发和排查 MyBatis 问题至关重要。</p>
 <p><strong>1. 配置 MyBatis SQL 日志 (Spring Boot <code>application.yml</code>)</strong>：</p>
 <ul>
-<li><p><strong>打印执行的 SQL 和参数 (推荐)</strong>:</p>
+<li>
+<p><strong>打印执行的 SQL 和参数 (推荐)</strong>:</p>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">logging:</span><br>  <span class="hljs-attr">level:</span><br>    <span class="hljs-comment"># 将 com.example.yourproject.mapper 替换为你的 Mapper 接口所在的包路径</span><br>    <span class="hljs-attr">com.example.yourproject.mapper:</span> <span class="hljs-string">DEBUG</span><br>    <span class="hljs-comment"># 或者更精细地控制 (通常上面的就够了)</span><br>    <span class="hljs-comment"># java.sql.Connection: DEBUG</span><br>    <span class="hljs-comment"># java.sql.Statement: DEBUG</span><br>    <span class="hljs-comment"># java.sql.PreparedStatement: DEBUG # 这个能看到 PrepareStatement 的 SQL 和绑定的参数值</span><br>    <span class="hljs-comment"># java.sql.ResultSet: TRACE      # (非常详细，显示结果集，生产环境谨慎开启)</span><br></code></pre></td></tr></table></figure>
 <p>当 Mapper 包的日志级别设为 <code>DEBUG</code> 时，MyBatis 会通过 SLF 4 J (通常由 Logback 实现) 输出类似以下格式的日志：</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs routeros"><span class="hljs-built_in">DEBUG</span> c.e.y.mapper.UserMapper.findById - ==&gt;  Preparing: SELECT id, username, email <span class="hljs-keyword">FROM</span><span class="hljs-built_in"> users </span>WHERE id = ?<br><span class="hljs-built_in">DEBUG</span> c.e.y.mapper.UserMapper.findById - ==&gt; Parameters: 1(Long)<br>TRACE c.e.y.mapper.UserMapper.findById - &lt;==      Total: 1<br></code></pre></td></tr></table></figure>
 <ul>
 <li><code>Preparing</code>: 显示预编译的 SQL 语句。</li>
 <li><code>Parameters</code>: 显示绑定的参数值和类型。</li>
-<li><code>Total</code>: 显示查询结果的行数 (对于 <code>select</code>) 或影响的行数 (对于 <code>update</code> &#x2F; <code>insert</code> &#x2F; <code>delete</code>)。</li>
+<li><code>Total</code>: 显示查询结果的行数 (对于 <code>select</code>) 或影响的行数 (对于 <code>update</code> / <code>insert</code> / <code>delete</code>)。</li>
 </ul>
 </li>
-<li><p><strong>配置 MyBatis 内部日志实现 (可选，通常 Spring Boot 会自动处理好 SLF 4 J)</strong>:<br><code>mybatis.configuration.log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl</code><br>MyBatis 支持多种日志实现：<code>SLF4J</code>, <code>LOG4J</code>, <code>LOG4J2</code>, <code>JDK_LOGGING</code>, <code>COMMONS_LOGGING</code>, <code>STDOUT_LOGGING</code> (直接输出到控制台), <code>NO_LOGGING</code>。</p>
+<li>
+<p><strong>配置 MyBatis 内部日志实现 (可选，通常 Spring Boot 会自动处理好 SLF 4 J)</strong>:<br>
+<code>mybatis.configuration.log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl</code><br>
+MyBatis 支持多种日志实现：<code>SLF4J</code>, <code>LOG4J</code>, <code>LOG4J2</code>, <code>JDK_LOGGING</code>, <code>COMMONS_LOGGING</code>, <code>STDOUT_LOGGING</code> (直接输出到控制台), <code>NO_LOGGING</code>。</p>
 </li>
 </ul>
-<p><strong>2. 使用 Logback &#x2F; Log 4 j 2 进行更细致的日志配置</strong>：</p>
+<p><strong>2. 使用 Logback / Log 4 j 2 进行更细致的日志配置</strong>：</p>
 <ul>
-<li>如果你需要更复杂的日志配置 (如输出到文件、不同级别不同输出、异步日志等)，可以在 <code>src/main/resources</code> 下创建 <code>logback-spring.xml</code> (推荐) 或 <code>log4j2-spring.xml</code>。<br><strong><code>logback-spring.xml</code> 示例：</strong><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">include</span> <span class="hljs-attr">resource</span>=<span class="hljs-string">&quot;org/springframework/boot/logging/logback/base.xml&quot;</span>/&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- Console Appender --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">encoder</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">pattern</span>&gt;</span>%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n<span class="hljs-tag">&lt;/<span class="hljs-name">pattern</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">encoder</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">appender</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- MyBatis Mapper SQL Log --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">logger</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;com.example.yourproject.mapper&quot;</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;DEBUG&quot;</span> <span class="hljs-attr">additivity</span>=<span class="hljs-string">&quot;false&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span>/&gt;</span><br>        <span class="hljs-comment">&lt;!-- &lt;appender-ref ref=&quot;FILE_SQL&quot;/&gt; 可以配置一个专门输出 SQL 的文件 Appender --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">logger</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- MyBatis PreparedStatement 参数日志 (如果上面的 DEBUG 不够详细) --&gt;</span><br>    <span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">    &lt;logger name=&quot;java.sql.PreparedStatement&quot; level=&quot;DEBUG&quot; additivity=&quot;false&quot;&gt;</span><br><span class="hljs-comment">        &lt;appender-ref ref=&quot;CONSOLE&quot;/&gt;</span><br><span class="hljs-comment">    &lt;/logger&gt;</span><br><span class="hljs-comment">    &lt;logger name=&quot;java.sql.Statement&quot; level=&quot;DEBUG&quot; additivity=&quot;false&quot;&gt;</span><br><span class="hljs-comment">        &lt;appender-ref ref=&quot;CONSOLE&quot;/&gt;</span><br><span class="hljs-comment">    &lt;/logger&gt;</span><br><span class="hljs-comment">    --&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">root</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;INFO&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br></code></pre></td></tr></table></figure></li>
+<li>如果你需要更复杂的日志配置 (如输出到文件、不同级别不同输出、异步日志等)，可以在 <code>src/main/resources</code> 下创建 <code>logback-spring.xml</code> (推荐) 或 <code>log4j2-spring.xml</code>。<br>
+<strong><code>logback-spring.xml</code> 示例：</strong><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">include</span> <span class="hljs-attr">resource</span>=<span class="hljs-string">&quot;org/springframework/boot/logging/logback/base.xml&quot;</span>/&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- Console Appender --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">appender</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;ch.qos.logback.core.ConsoleAppender&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">encoder</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">pattern</span>&gt;</span>%d&#123;yyyy-MM-dd HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n<span class="hljs-tag">&lt;/<span class="hljs-name">pattern</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">encoder</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">appender</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- MyBatis Mapper SQL Log --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">logger</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;com.example.yourproject.mapper&quot;</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;DEBUG&quot;</span> <span class="hljs-attr">additivity</span>=<span class="hljs-string">&quot;false&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span>/&gt;</span><br>        <span class="hljs-comment">&lt;!-- &lt;appender-ref ref=&quot;FILE_SQL&quot;/&gt; 可以配置一个专门输出 SQL 的文件 Appender --&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">logger</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- MyBatis PreparedStatement 参数日志 (如果上面的 DEBUG 不够详细) --&gt;</span><br>    <span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">    &lt;logger name=&quot;java.sql.PreparedStatement&quot; level=&quot;DEBUG&quot; additivity=&quot;false&quot;&gt;</span><br><span class="hljs-comment">        &lt;appender-ref ref=&quot;CONSOLE&quot;/&gt;</span><br><span class="hljs-comment">    &lt;/logger&gt;</span><br><span class="hljs-comment">    &lt;logger name=&quot;java.sql.Statement&quot; level=&quot;DEBUG&quot; additivity=&quot;false&quot;&gt;</span><br><span class="hljs-comment">        &lt;appender-ref ref=&quot;CONSOLE&quot;/&gt;</span><br><span class="hljs-comment">    &lt;/logger&gt;</span><br><span class="hljs-comment">    --&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">root</span> <span class="hljs-attr">level</span>=<span class="hljs-string">&quot;INFO&quot;</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">appender-ref</span> <span class="hljs-attr">ref</span>=<span class="hljs-string">&quot;CONSOLE&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">root</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
 </ul>
 <p><strong>3. 调试技巧</strong>：</p>
 <ul>
-<li><strong>断点调试</strong>:<ul>
+<li><strong>断点调试</strong>:
+<ul>
 <li>在 Mapper 接口调用处打断点，单步进入 MyBatis 内部执行流程 (如果需要深入理解)。</li>
 <li>在 Service 层打断点，检查传入 Mapper 的参数是否正确，以及 Mapper 返回的结果是否符合预期。</li>
 </ul>
@@ -548,8 +598,10 @@
 </ul>
 <p><strong>常见问题：</strong></p>
 <ul>
-<li><strong>Q: 为什么我看不到 SQL 日志？</strong><ul>
-<li>A: 检查：<ol>
+<li><strong>Q: 为什么我看不到 SQL 日志？</strong>
+<ul>
+<li>A: 检查：
+<ol>
 <li><code>application.yml/properties</code> 中日志级别配置是否正确，包路径是否匹配你的 Mapper 接口。</li>
 <li>项目中是否有 SLF 4 J 的实现 (如 Logback, Log 4 j 2)，Spring Boot Starter 通常会带。</li>
 <li><code>mybatis.configuration.log-impl</code> 是否配置正确 (如果手动配置了)。</li>
@@ -558,7 +610,8 @@
 </li>
 </ul>
 </li>
-<li><strong>Q: SQL 日志中的参数是 <code>?</code>，怎么看到具体值？</strong><ul>
+<li><strong>Q: SQL 日志中的参数是 <code>?</code>，怎么看到具体值？</strong>
+<ul>
 <li>A: 将 Mapper 包的日志级别设为 <code>DEBUG</code>，通常 SLF4J 实现 (如 Logback) 会在另一行 <code>Parameters:</code> 中显示具体值。如果需要更底层的，可以尝试将 <code>java.sql.PreparedStatement</code> 的级别也设为 <code>DEBUG</code> (具体日志输出格式取决于 JDBC 驱动和日志库的配合)。一些专门的 SQL 日志库或 MyBatis 插件 (如 P 6 Spy 或自定义拦截器) 可以提供更友好的、参数内联的 SQL 日志。</li>
 </ul>
 </li>

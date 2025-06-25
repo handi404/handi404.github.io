@@ -19,12 +19,12 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一套基于 Spring Boot 的 Stripe 后端集成方案，包括如何使用 Secret Key 实现收费（Charge）、退款（Refund）、订阅管理（Subscriptions）以及访问部分敏感信息（如卡号后四位）。[[完整示例]] Spring Boot 集成 Stripe 后端方案首先，在 Spring Boot 项目中使用 Stripe，需要引入 Stripe 的 Java SDK">
+    <meta name="description" content="一套基于 Spring Boot 的 Stripe 后端集成方案，包括如何使用 Secret Key 实现收费（Charge）、退款（Refund）、订阅管理（Subscriptions）以及访问部分敏感信息（如卡号后四位）。 [[完整示例]] Spring Boot 集成 Stripe 后端方案 首先，在 Spring Boot 项目中使用 Stripe，需要引入 Stripe 的 Java S">
 <meta property="og:type" content="article">
 <meta property="og:title" content="繁星的蓝">
 <meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Stripe/Spring%20Boot%20%E9%9B%86%E6%88%90%20Stripe/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="一套基于 Spring Boot 的 Stripe 后端集成方案，包括如何使用 Secret Key 实现收费（Charge）、退款（Refund）、订阅管理（Subscriptions）以及访问部分敏感信息（如卡号后四位）。[[完整示例]] Spring Boot 集成 Stripe 后端方案首先，在 Spring Boot 项目中使用 Stripe，需要引入 Stripe 的 Java SDK">
+<meta property="og:description" content="一套基于 Spring Boot 的 Stripe 后端集成方案，包括如何使用 Secret Key 实现收费（Charge）、退款（Refund）、订阅管理（Subscriptions）以及访问部分敏感信息（如卡号后四位）。 [[完整示例]] Spring Boot 集成 Stripe 后端方案 首先，在 Spring Boot 项目中使用 Stripe，需要引入 Stripe 的 Java S">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-24T13:34:27.331Z">
 <meta property="article:modified_time" content="2025-05-04T10:05:48.038Z">
@@ -300,58 +300,68 @@
             
               <div class="markdown-body">
                 
-                <p>一套基于 Spring Boot 的 Stripe 后端集成方案，包括如何使用 Secret Key 实现收费（Charge）、退款（Refund）、订阅管理（Subscriptions）以及访问部分敏感信息（如卡号后四位）。<br>[[完整示例]]</p>
-<h1 id="Spring-Boot-集成-Stripe-后端方案"><a href="#Spring-Boot-集成-Stripe-后端方案" class="headerlink" title="Spring Boot 集成 Stripe 后端方案"></a>Spring Boot 集成 Stripe 后端方案</h1><p>首先，在 Spring Boot 项目中使用 Stripe，需要引入 Stripe 的 Java SDK 依赖。建议在 <strong>pom.xml</strong> 中添加 Stripe-Java 依赖（下例使用 22.x 最新稳定版本）：</p>
+                <p>一套基于 Spring Boot 的 Stripe 后端集成方案，包括如何使用 Secret Key 实现收费（Charge）、退款（Refund）、订阅管理（Subscriptions）以及访问部分敏感信息（如卡号后四位）。<br>
+[[完整示例]]</p>
+<h1>Spring Boot 集成 Stripe 后端方案</h1>
+<p>首先，在 Spring Boot 项目中使用 Stripe，需要引入 Stripe 的 Java SDK 依赖。建议在 <strong>pom.xml</strong> 中添加 Stripe-Java 依赖（下例使用 22.x 最新稳定版本）：</p>
 <figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.stripe<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>stripe-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>22.29.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>  <span class="hljs-comment">&lt;!-- 或根据需要使用最新版本 --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
-
 <p>接着，需要配置 Stripe 的 <strong>Secret Key</strong>（私钥）。在 Spring Boot 的 <code>application.properties</code> 或 <code>application.yml</code> 中添加配置，例如：</p>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">stripe.secret-key</span>=<span class="hljs-string">sk_test_yourSecretKeyHere</span><br></code></pre></td></tr></table></figure>
-
 <p>然后，在代码中通过 <code>@Value</code> 注入该配置并设置给 <code>Stripe.apiKey</code>。例如：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StripeConfig</span> &#123;<br>    <span class="hljs-meta">@Value(&quot;$&#123;stripe.secret-key&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String secretKey;<br><br>    <span class="hljs-meta">@PostConstruct</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 初始化 Stripe API，设置 Secret Key</span><br>        Stripe.apiKey = secretKey;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>这样 Spring 启动时会自动为 Stripe SDK 设置好私钥。务必<strong>不要</strong>将私钥硬编码在代码中，也不要提交到版本库；生产环境中更推荐使用环境变量或机密管理服务存储 API 密钥。</p>
-<h2 id="创建一次性收费（Charge）"><a href="#创建一次性收费（Charge）" class="headerlink" title="创建一次性收费（Charge）"></a>创建一次性收费（Charge）</h2><p>使用 Stripe 的 Charges API 可以对客户进行一次性收费。示例代码如下：</p>
+<h2 id="创建一次性收费（Charge）">创建一次性收费（Charge）</h2>
+<p>使用 Stripe 的 Charges API 可以对客户进行一次性收费。示例代码如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 构建收费参数</span><br><span class="hljs-type">ChargeCreateParams</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> ChargeCreateParams.builder()<br>    .setAmount(<span class="hljs-number">1099L</span>)          <span class="hljs-comment">// 费用金额（单位为最小货币单位，如美元的分）</span><br>    .setCurrency(<span class="hljs-string">&quot;usd&quot;</span>)        <span class="hljs-comment">// 币种</span><br>    .setSource(<span class="hljs-string">&quot;tok_visa&quot;</span>)     <span class="hljs-comment">// 支付源（可以是 Stripe Token、PaymentMethod 或已有的来源 ID）</span><br>    .setDescription(<span class="hljs-string">&quot;测试收费&quot;</span>) <span class="hljs-comment">// 可选描述</span><br>    .build();<br><br><span class="hljs-comment">// 发起收费</span><br><span class="hljs-type">Charge</span> <span class="hljs-variable">charge</span> <span class="hljs-operator">=</span> Charge.create(params);<br></code></pre></td></tr></table></figure>
-
 <p>以上代码通过 <code>Charge.create(params)</code> 向 Stripe 发起收费请求。注意 <strong>private key</strong> 必须在调用前已设置，否则请求会失败。调用成功后，<code>charge</code> 对象包含交易详情。对于新型支付场景，Stripe 推荐使用 PaymentIntent 方式处理 3D Secure 验证和 SCA，但这里示例使用了传统的 Charges API。</p>
-<h2 id="发起退款（Refund）"><a href="#发起退款（Refund）" class="headerlink" title="发起退款（Refund）"></a>发起退款（Refund）</h2><p>要对已完成的收费进行退款，可使用 Stripe 的 Refunds API。示例代码：</p>
+<h2 id="发起退款（Refund）">发起退款（Refund）</h2>
+<p>要对已完成的收费进行退款，可使用 Stripe 的 Refunds API。示例代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 指定要退款的 Charge ID</span><br><span class="hljs-type">String</span> <span class="hljs-variable">chargeId</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ch_ABC123xyz&quot;</span>;<br><br><span class="hljs-comment">// 构建退款参数（可选指定部分金额退款）</span><br><span class="hljs-type">RefundCreateParams</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> RefundCreateParams.builder()<br>    .setCharge(chargeId)<br>    <span class="hljs-comment">// .setAmount(500L)  // 如果需要部分退款，可设置金额（单位与收费时一致）</span><br>    .build();<br><br><span class="hljs-comment">// 创建退款</span><br><span class="hljs-type">Refund</span> <span class="hljs-variable">refund</span> <span class="hljs-operator">=</span> Refund.create(params);<br></code></pre></td></tr></table></figure>
-
 <p>以上代码通过 <code>Refund.create(params)</code> 向 Stripe 发起退款请求。如果未指定金额，会对整个交易进行全额退款；可以多次调用对不同金额退款，直到剩余金额为零。创建退款后，<code>refund</code> 对象会包含退款状态和详情。</p>
-<h2 id="订阅管理（Subscriptions）"><a href="#订阅管理（Subscriptions）" class="headerlink" title="订阅管理（Subscriptions）"></a>订阅管理（Subscriptions）</h2><h3 id="创建订阅（Create-Subscription）"><a href="#创建订阅（Create-Subscription）" class="headerlink" title="创建订阅（Create Subscription）"></a>创建订阅（Create Subscription）</h3><p>Stripe 订阅依赖于事先在 Stripe 控制台创建的产品（Product）和价格计划（Price）。示例代码：</p>
+<h2 id="订阅管理（Subscriptions）">订阅管理（Subscriptions）</h2>
+<h3 id="创建订阅（Create-Subscription）">创建订阅（Create Subscription）</h3>
+<p>Stripe 订阅依赖于事先在 Stripe 控制台创建的产品（Product）和价格计划（Price）。示例代码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> Subscription <span class="hljs-title function_">createSubscription</span><span class="hljs-params">(String customerId, String priceId)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>    <span class="hljs-type">SubscriptionCreateParams</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> SubscriptionCreateParams.builder()<br>        .setCustomer(customerId)<br>        .addItem(SubscriptionCreateParams.Item.builder()<br>            .setPrice(priceId)  <span class="hljs-comment">// 使用已有的价格计划 ID</span><br>            .build())<br>        .build();<br>    <span class="hljs-comment">// 发起订阅创建请求</span><br>    <span class="hljs-keyword">return</span> Subscription.create(params);<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>此代码将指定的客户（customerId）按给定价格（priceId）创建订阅。返回的 <code>Subscription</code> 对象包含订阅详情（例如状态、账单周期等）。</p>
-<h3 id="取消订阅（Cancel-Subscription）"><a href="#取消订阅（Cancel-Subscription）" class="headerlink" title="取消订阅（Cancel Subscription）"></a>取消订阅（Cancel Subscription）</h3><p>取消订阅可以调用 Stripe SDK 提供的方法：</p>
+<h3 id="取消订阅（Cancel-Subscription）">取消订阅（Cancel Subscription）</h3>
+<p>取消订阅可以调用 Stripe SDK 提供的方法：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> Subscription <span class="hljs-title function_">cancelSubscription</span><span class="hljs-params">(String subscriptionId)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>    <span class="hljs-type">Subscription</span> <span class="hljs-variable">subscription</span> <span class="hljs-operator">=</span> Subscription.retrieve(subscriptionId);<br>    <span class="hljs-keyword">return</span> subscription.cancel();<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>以上通过 <code>Subscription.retrieve()</code> 获取订阅对象，然后调用 <code>cancel()</code> 方法取消订阅。取消后订阅状态将更新为已取消，并且在当前账单周期结束后停止计费。</p>
-<h3 id="更新订阅（Update-Subscription）"><a href="#更新订阅（Update-Subscription）" class="headerlink" title="更新订阅（Update Subscription）"></a>更新订阅（Update Subscription）</h3><p>更新订阅最常见的是更换价格计划（proration 默认开启）或添加&#x2F;移除优惠券等。示例代码（更换价格计划）：</p>
+<h3 id="更新订阅（Update-Subscription）">更新订阅（Update Subscription）</h3>
+<p>更新订阅最常见的是更换价格计划（proration 默认开启）或添加/移除优惠券等。示例代码（更换价格计划）：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> Subscription <span class="hljs-title function_">updateSubscription</span><span class="hljs-params">(String subscriptionId, String newPriceId)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>    <span class="hljs-type">Subscription</span> <span class="hljs-variable">subscription</span> <span class="hljs-operator">=</span> Subscription.retrieve(subscriptionId);<br>    <span class="hljs-type">SubscriptionUpdateParams</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> SubscriptionUpdateParams.builder()<br>        .addItem(SubscriptionUpdateParams.Item.builder()<br>            .setId(subscription.getItems().getData().get(<span class="hljs-number">0</span>).getId()) <span class="hljs-comment">// 当前订阅项 ID</span><br>            .setPrice(newPriceId)    <span class="hljs-comment">// 更新为新价格 ID</span><br>            .build())<br>        .setProrationBehavior(SubscriptionUpdateParams.ProrationBehavior.CREATE_INVOICE) <span class="hljs-comment">// 按规则 proration</span><br>        .build();<br>    <span class="hljs-keyword">return</span> subscription.update(params);<br>&#125;<br></code></pre></td></tr></table></figure>
-
 <p>以上代码会将订阅中的第一项价格更新为 <code>newPriceId</code>，并生成新的账单差额。<code>SubscriptionUpdateParams</code> 支持更复杂的设置，如修改收费周期、应用折扣等。</p>
-<h2 id="获取卡片后四位等敏感信息"><a href="#获取卡片后四位等敏感信息" class="headerlink" title="获取卡片后四位等敏感信息"></a>获取卡片后四位等敏感信息</h2><p>Stripe 允许您获取卡的 <strong>后四位</strong>等非敏感信息，但<strong>不可</strong>获取完整卡号、CVC 等敏感数据。获取卡片信息的方式取决于卡片是如何与客户关联的：</p>
+<h2 id="获取卡片后四位等敏感信息">获取卡片后四位等敏感信息</h2>
+<p>Stripe 允许您获取卡的 <strong>后四位</strong>等非敏感信息，但<strong>不可</strong>获取完整卡号、CVC 等敏感数据。获取卡片信息的方式取决于卡片是如何与客户关联的：</p>
 <ul>
-<li><p>如果在付款时使用了 PaymentMethod：可以调用 <code>PaymentMethod.retrieve(paymentMethodId)</code>，然后使用返回的 <code>PaymentMethod</code> 对象访问卡片信息。例如：</p>
+<li>
+<p>如果在付款时使用了 PaymentMethod：可以调用 <code>PaymentMethod.retrieve(paymentMethodId)</code>，然后使用返回的 <code>PaymentMethod</code> 对象访问卡片信息。例如：</p>
   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">PaymentMethod</span> <span class="hljs-variable">pm</span> <span class="hljs-operator">=</span> PaymentMethod.retrieve(<span class="hljs-string">&quot;pm_xxx&quot;</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">last4</span> <span class="hljs-operator">=</span> pm.getCard().getLast4();<br></code></pre></td></tr></table></figure>
 </li>
-<li><p>如果要从已有的 Charge 中获取卡后四位，也可先 <code>Charge.retrieve(chargeId)</code>，再通过 <code>charge.getPaymentMethodDetails().getCard().getLast4()</code>（或类似方法）取得。但 <strong>前提</strong>是支付时产生的 Charge 对象包含卡详情。</p>
+<li>
+<p>如果要从已有的 Charge 中获取卡后四位，也可先 <code>Charge.retrieve(chargeId)</code>，再通过 <code>charge.getPaymentMethodDetails().getCard().getLast4()</code>（或类似方法）取得。但 <strong>前提</strong>是支付时产生的 Charge 对象包含卡详情。</p>
 </li>
 </ul>
 <p>以上操作均只会返回卡片的部分信息（如后四位、到期月份等），符合 PCI 合规要求。无论哪种方法，您都无需也不应直接接触到完整的卡号或 CVC，所有敏感数据均由 Stripe 安全存储。</p>
-<h2 id="关键注意事项与安全实践"><a href="#关键注意事项与安全实践" class="headerlink" title="关键注意事项与安全实践"></a>关键注意事项与安全实践</h2><ul>
-<li><p><strong>密钥管理</strong>：绝不可将 Stripe Secret Key 硬编码在代码或提交到版本库。推荐使用环境变量、机密管理服务或 Spring Cloud Config 等安全存储机制。定期轮换密钥，并仅在后端安全环境使用 Secret Key。前端页面只能使用 Publishable Key，不要泄露 Secret Key。</p>
+<h2 id="关键注意事项与安全实践">关键注意事项与安全实践</h2>
+<ul>
+<li>
+<p><strong>密钥管理</strong>：绝不可将 Stripe Secret Key 硬编码在代码或提交到版本库。推荐使用环境变量、机密管理服务或 Spring Cloud Config 等安全存储机制。定期轮换密钥，并仅在后端安全环境使用 Secret Key。前端页面只能使用 Publishable Key，不要泄露 Secret Key。</p>
 </li>
-<li><p><strong>测试模式</strong>：开发时使用 Stripe 提供的测试密钥（以 <code>sk_test_</code> 开头），并使用 Stripe 提供的测试卡号进行测试，以避免真实扣款。切勿在生产环境误用测试密钥，反之亦然。</p>
+<li>
+<p><strong>测试模式</strong>：开发时使用 Stripe 提供的测试密钥（以 <code>sk_test_</code> 开头），并使用 Stripe 提供的测试卡号进行测试，以避免真实扣款。切勿在生产环境误用测试密钥，反之亦然。</p>
 </li>
-<li><p><strong>PCI 合规</strong>：后端使用 Stripe SDK 并不直接处理或存储信用卡完整信息，只处理 Token 或 PaymentMethod ID，符合 PCI 要求。尽量使用 Stripe Elements 或 Checkout 等前端组件收集卡信息，这样卡信息不会经过您的服务器。</p>
+<li>
+<p><strong>PCI 合规</strong>：后端使用 Stripe SDK 并不直接处理或存储信用卡完整信息，只处理 Token 或 PaymentMethod ID，符合 PCI 要求。尽量使用 Stripe Elements 或 Checkout 等前端组件收集卡信息，这样卡信息不会经过您的服务器。</p>
 </li>
-<li><p><strong>Webhooks 验证</strong>：对订阅等事件，建议配置 Stripe Webhooks，以便实时获知支付成功、订阅到期、欠费等事件，并在服务器端做相应处理（如更新数据库状态）。</p>
+<li>
+<p><strong>Webhooks 验证</strong>：对订阅等事件，建议配置 Stripe Webhooks，以便实时获知支付成功、订阅到期、欠费等事件，并在服务器端做相应处理（如更新数据库状态）。</p>
 </li>
-<li><p><strong>并发与幂等性</strong>：对可能重复请求的接口（如收费接口），应使用 Stripe 的幂等请求功能（Idempotency Keys），避免因重试导致重复扣款。</p>
+<li>
+<p><strong>并发与幂等性</strong>：对可能重复请求的接口（如收费接口），应使用 Stripe 的幂等请求功能（Idempotency Keys），避免因重试导致重复扣款。</p>
 </li>
-<li><p><strong>安全最佳实践</strong>：切记按照最小权限原则操作。不要返回或日志记录敏感字段。参考 Stripe 官方及安全社区建议，避免泄露任何敏感信息。</p>
+<li>
+<p><strong>安全最佳实践</strong>：切记按照最小权限原则操作。不要返回或日志记录敏感字段。参考 Stripe 官方及安全社区建议，避免泄露任何敏感信息。</p>
 </li>
 </ul>
 <p>通过以上步骤，您可以在 Spring Boot 后端中完整集成 Stripe 支付功能，安全地对接一次性收费、退款以及订阅服务等操作。</p>
