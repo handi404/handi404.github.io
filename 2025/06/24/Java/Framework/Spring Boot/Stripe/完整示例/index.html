@@ -1,0 +1,762 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="以下是一个基于 Spring Boot 的 Stripe 集成完整示例项目结构，包括典型的分层架构（Controller、Service、配置类等），用于实现创建收费（Charge）、退款（Refund）和管理订阅等功能。  🗂 项目结构概览123456789101112131415161718src&#x2F;├── main&#x2F;│   └── java&#x2F;│       └── com&#x2F;example&#x2F;s">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Stripe/%E5%AE%8C%E6%95%B4%E7%A4%BA%E4%BE%8B/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="以下是一个基于 Spring Boot 的 Stripe 集成完整示例项目结构，包括典型的分层架构（Controller、Service、配置类等），用于实现创建收费（Charge）、退款（Refund）和管理订阅等功能。  🗂 项目结构概览123456789101112131415161718src&#x2F;├── main&#x2F;│   └── java&#x2F;│       └── com&#x2F;example&#x2F;s">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.336Z">
+<meta property="article:modified_time" content="2025-05-04T10:04:46.599Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          635 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          6 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年5月4日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>以下是一个基于 <strong>Spring Boot</strong> 的 Stripe 集成完整示例项目结构，包括典型的分层架构（Controller、Service、配置类等），用于实现创建收费（Charge）、退款（Refund）和管理订阅等功能。</p>
+<hr>
+<h2 id="🗂-项目结构概览"><a href="#🗂-项目结构概览" class="headerlink" title="🗂 项目结构概览"></a>🗂 项目结构概览</h2><figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs nix">src<span class="hljs-symbol">/</span><br>├── main<span class="hljs-symbol">/</span><br>│   └── java<span class="hljs-symbol">/</span><br>│       └── com<span class="hljs-operator">/</span>example<span class="hljs-operator">/</span>stripe<span class="hljs-symbol">/</span><br>│           ├── config<span class="hljs-symbol">/</span><br>│           │   └── StripeConfig.java<br>│           ├── controller<span class="hljs-symbol">/</span><br>│           │   └── PaymentController.java<br>│           ├── dto<span class="hljs-symbol">/</span><br>│           │   ├── ChargeRequest.java<br>│           │   ├── RefundRequest.java<br>│           │   └── SubscriptionRequest.java<br>│           ├── service<span class="hljs-symbol">/</span><br>│           │   └── StripeService.java<br>│           └── StripeApplication.java<br>│<br>└── resources<span class="hljs-symbol">/</span><br>    └── application.properties<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧾-1-application-properties"><a href="#🧾-1-application-properties" class="headerlink" title="🧾 1. application.properties"></a>🧾 1. application.properties</h2><figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">stripe.secret-key</span>=<span class="hljs-string">sk_test_your_secret_key_here</span><br><span class="hljs-attr">server.port</span>=<span class="hljs-string">8080</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="⚙️-2-StripeConfig-java"><a href="#⚙️-2-StripeConfig-java" class="headerlink" title="⚙️ 2. StripeConfig.java"></a>⚙️ 2. StripeConfig.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.stripe.config;<br><br><span class="hljs-keyword">import</span> com.stripe.Stripe;<br><span class="hljs-keyword">import</span> jakarta.annotation.PostConstruct;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Value;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StripeConfig</span> &#123;<br><br>    <span class="hljs-meta">@Value(&quot;$&#123;stripe.secret-key&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String secretKey;<br><br>    <span class="hljs-meta">@PostConstruct</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> &#123;<br>        Stripe.apiKey = secretKey;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="📦-3-DTO-类（用于接收请求参数）"><a href="#📦-3-DTO-类（用于接收请求参数）" class="headerlink" title="📦 3. DTO 类（用于接收请求参数）"></a>📦 3. DTO 类（用于接收请求参数）</h2><h3 id="ChargeRequest-java"><a href="#ChargeRequest-java" class="headerlink" title="ChargeRequest.java"></a>ChargeRequest.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.stripe.dto;<br><br><span class="hljs-keyword">import</span> lombok.Data;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ChargeRequest</span> &#123;<br>    <span class="hljs-keyword">private</span> Long amount;<br>    <span class="hljs-keyword">private</span> String currency;<br>    <span class="hljs-keyword">private</span> String source; <span class="hljs-comment">// 前端传来的 token，如 &quot;tok_visa&quot;</span><br>    <span class="hljs-keyword">private</span> String description;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="RefundRequest-java"><a href="#RefundRequest-java" class="headerlink" title="RefundRequest.java"></a>RefundRequest.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.stripe.dto;<br><br><span class="hljs-keyword">import</span> lombok.Data;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RefundRequest</span> &#123;<br>    <span class="hljs-keyword">private</span> String chargeId;<br>    <span class="hljs-keyword">private</span> Long amount; <span class="hljs-comment">// 可选，null 表示全额退款</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="SubscriptionRequest-java"><a href="#SubscriptionRequest-java" class="headerlink" title="SubscriptionRequest.java"></a>SubscriptionRequest.java</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.stripe.dto;<br><br><span class="hljs-keyword">import</span> lombok.Data;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SubscriptionRequest</span> &#123;<br>    <span class="hljs-keyword">private</span> String customerId;<br>    <span class="hljs-keyword">private</span> String priceId;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🧠-4-StripeService-java"><a href="#🧠-4-StripeService-java" class="headerlink" title="🧠 4. StripeService.java"></a>🧠 4. StripeService.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.stripe.service;<br><br><span class="hljs-keyword">import</span> com.example.stripe.dto.ChargeRequest;<br><span class="hljs-keyword">import</span> com.example.stripe.dto.RefundRequest;<br><span class="hljs-keyword">import</span> com.example.stripe.dto.SubscriptionRequest;<br><span class="hljs-keyword">import</span> com.stripe.exception.StripeException;<br><span class="hljs-keyword">import</span> com.stripe.model.*;<br><span class="hljs-keyword">import</span> com.stripe.param.*;<br><br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StripeService</span> &#123;<br><br>    <span class="hljs-keyword">public</span> Charge <span class="hljs-title function_">createCharge</span><span class="hljs-params">(ChargeRequest request)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>        <span class="hljs-type">ChargeCreateParams</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> ChargeCreateParams.builder()<br>            .setAmount(request.getAmount())<br>            .setCurrency(request.getCurrency())<br>            .setSource(request.getSource())<br>            .setDescription(request.getDescription())<br>            .build();<br><br>        <span class="hljs-keyword">return</span> Charge.create(params);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Refund <span class="hljs-title function_">createRefund</span><span class="hljs-params">(RefundRequest request)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>        RefundCreateParams.<span class="hljs-type">Builder</span> <span class="hljs-variable">builder</span> <span class="hljs-operator">=</span> RefundCreateParams.builder()<br>            .setCharge(request.getChargeId());<br><br>        <span class="hljs-keyword">if</span> (request.getAmount() != <span class="hljs-literal">null</span>) &#123;<br>            builder.setAmount(request.getAmount());<br>        &#125;<br><br>        <span class="hljs-keyword">return</span> Refund.create(builder.build());<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Subscription <span class="hljs-title function_">createSubscription</span><span class="hljs-params">(SubscriptionRequest request)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>        <span class="hljs-type">SubscriptionCreateParams</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> SubscriptionCreateParams.builder()<br>            .setCustomer(request.getCustomerId())<br>            .addItem(SubscriptionCreateParams.Item.builder()<br>                .setPrice(request.getPriceId())<br>                .build())<br>            .build();<br><br>        <span class="hljs-keyword">return</span> Subscription.create(params);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Subscription <span class="hljs-title function_">cancelSubscription</span><span class="hljs-params">(String subscriptionId)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>        <span class="hljs-type">Subscription</span> <span class="hljs-variable">subscription</span> <span class="hljs-operator">=</span> Subscription.retrieve(subscriptionId);<br>        <span class="hljs-keyword">return</span> subscription.cancel();<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> PaymentMethod <span class="hljs-title function_">getPaymentMethodDetails</span><span class="hljs-params">(String paymentMethodId)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>        <span class="hljs-keyword">return</span> PaymentMethod.retrieve(paymentMethodId);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🌐-5-PaymentController-java"><a href="#🌐-5-PaymentController-java" class="headerlink" title="🌐 5. PaymentController.java"></a>🌐 5. PaymentController.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.stripe.controller;<br><br><span class="hljs-keyword">import</span> com.example.stripe.dto.ChargeRequest;<br><span class="hljs-keyword">import</span> com.example.stripe.dto.RefundRequest;<br><span class="hljs-keyword">import</span> com.example.stripe.dto.SubscriptionRequest;<br><span class="hljs-keyword">import</span> com.example.stripe.service.StripeService;<br><span class="hljs-keyword">import</span> com.stripe.exception.StripeException;<br><span class="hljs-keyword">import</span> com.stripe.model.*;<br><br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.*;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api/stripe&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PaymentController</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> StripeService stripeService;<br><br>    <span class="hljs-meta">@PostMapping(&quot;/charge&quot;)</span><br>    <span class="hljs-keyword">public</span> Charge <span class="hljs-title function_">charge</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> ChargeRequest request)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>        <span class="hljs-keyword">return</span> stripeService.createCharge(request);<br>    &#125;<br><br>    <span class="hljs-meta">@PostMapping(&quot;/refund&quot;)</span><br>    <span class="hljs-keyword">public</span> Refund <span class="hljs-title function_">refund</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> RefundRequest request)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>        <span class="hljs-keyword">return</span> stripeService.createRefund(request);<br>    &#125;<br><br>    <span class="hljs-meta">@PostMapping(&quot;/subscribe&quot;)</span><br>    <span class="hljs-keyword">public</span> Subscription <span class="hljs-title function_">subscribe</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> SubscriptionRequest request)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>        <span class="hljs-keyword">return</span> stripeService.createSubscription(request);<br>    &#125;<br><br>    <span class="hljs-meta">@PostMapping(&quot;/cancel-subscription/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> Subscription <span class="hljs-title function_">cancel</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;id&quot;)</span> String id)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>        <span class="hljs-keyword">return</span> stripeService.cancelSubscription(id);<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/payment-method/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> PaymentMethod <span class="hljs-title function_">getPaymentMethod</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable(&quot;id&quot;)</span> String id)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>        <span class="hljs-keyword">return</span> stripeService.getPaymentMethodDetails(id);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🚀-6-启动类-StripeApplication-java"><a href="#🚀-6-启动类-StripeApplication-java" class="headerlink" title="🚀 6. 启动类 StripeApplication.java"></a>🚀 6. 启动类 StripeApplication.java</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.stripe;<br><br><span class="hljs-keyword">import</span> org.springframework.boot.SpringApplication;<br><span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.SpringBootApplication;<br><br><span class="hljs-meta">@SpringBootApplication</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StripeApplication</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        SpringApplication.run(StripeApplication.class, args);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="✅-测试示例（使用-Postman）"><a href="#✅-测试示例（使用-Postman）" class="headerlink" title="✅ 测试示例（使用 Postman）"></a>✅ 测试示例（使用 Postman）</h2><ol>
+<li>创建收费：</li>
+</ol>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs http">POST http://localhost:8080/api/stripe/charge<br><span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>application/json<br><br>&#123;<br>  &quot;amount&quot;: 1000,<br>  &quot;currency&quot;: &quot;usd&quot;,<br>  &quot;source&quot;: &quot;tok_visa&quot;,<br>  &quot;description&quot;: &quot;测试商品&quot;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>退款：</li>
+</ol>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs http">POST http://localhost:8080/api/stripe/refund<br><span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>application/json<br><br>&#123;<br>  &quot;chargeId&quot;: &quot;ch_1234567890abcdef&quot;,<br>  &quot;amount&quot;: 500<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>创建订阅：</li>
+</ol>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs http">POST http://localhost:8080/api/stripe/subscribe<br><span class="hljs-attribute">Content-Type</span><span class="hljs-punctuation">: </span>application/json<br><br>&#123;<br>  &quot;customerId&quot;: &quot;cus_ABC123&quot;,<br>  &quot;priceId&quot;: &quot;price_1NqABCxyz&quot;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="🔐-安全建议"><a href="#🔐-安全建议" class="headerlink" title="🔐 安全建议"></a>🔐 安全建议</h2><ul>
+<li><p>所有接口建议添加认证（如 JWT）。</p>
+</li>
+<li><p>不要将 Secret Key 写死在代码中或公开版本控制中。</p>
+</li>
+<li><p>对敏感数据（如 token、chargeId）做校验。</p>
+</li>
+</ul>
+<hr>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Stripe/完整示例/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Validation/Validation/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Stripe/%E5%9F%BA%E7%A1%80/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

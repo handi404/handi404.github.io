@@ -1,0 +1,815 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是 Java 近年来引入的一个非常实用的特性，旨在减少创建简单数据载体类（Data Carrier Class）时的样板代码。 record 类 (自 Java 14 预览，Java 16 正式发布)  是什么？为什么需要它？  在 record 出现之前，如果你想创建一个简单的类来封装数据，比如一个 Point 类包含 x 和 y 坐标，你需要手动编写： 私有 final 字段 (privat">
+<meta property="og:type" content="article">
+<meta property="og:title" content="record">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/%E5%9F%BA%E7%A1%80/Class/record/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="这是 Java 近年来引入的一个非常实用的特性，旨在减少创建简单数据载体类（Data Carrier Class）时的样板代码。 record 类 (自 Java 14 预览，Java 16 正式发布)  是什么？为什么需要它？  在 record 出现之前，如果你想创建一个简单的类来封装数据，比如一个 Point 类包含 x 和 y 坐标，你需要手动编写： 私有 final 字段 (privat">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.759Z">
+<meta property="article:modified_time" content="2025-06-24T13:47:16.162Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>record - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="record"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          13 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">record</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月24日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是 Java 近年来引入的一个非常实用的特性，旨在减少创建简单数据载体类（Data Carrier Class）时的样板代码。</p>
+<p><strong><code>record</code> 类 (自 Java 14 预览，Java 16 正式发布)</strong></p>
+<ol>
+<li><p><strong>是什么？为什么需要它？</strong></p>
+<ul>
+<li>在 <code>record</code> 出现之前，如果你想创建一个简单的类来封装数据，比如一个 <code>Point</code> 类包含 <code>x</code> 和 <code>y</code> 坐标，你需要手动编写：<ul>
+<li>私有 final 字段 (<code>private final int x; private final int y;</code>)</li>
+<li>构造函数 (<code>public Point(int x, int y)</code>)</li>
+<li>getter 方法 (<code>public int getX()</code>, <code>public int getY()</code>)</li>
+<li><code>equals()</code> 方法</li>
+<li><code>hashCode()</code> 方法</li>
+<li><code>toString()</code> 方法<br>这些代码非常冗长且容易出错。</li>
+</ul>
+</li>
+<li><code>record</code> 就是为了解决这个问题而生的。它是一种特殊的类，主要目的是<strong>透明地持有不可变数据</strong>。编译器会自动为你生成上述所有样板代码。</li>
+</ul>
+</li>
+<li><p><strong>如何定义？</strong><br>非常简洁！你只需要声明 <code>record</code> 的名称和它的组件（components），也就是它所持有的数据字段。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 定义一个简单的 Point record</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Point</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> &#123;<br>    <span class="hljs-comment">// 就这么简单！</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>编译器为你做了什么？</strong><br>对于上面的 <code>Point</code> record，编译器会自动生成：</p>
+<ul>
+<li><strong>私有 final 字段</strong>：<code>private final int x;</code> 和 <code>private final int y;</code>。这意味着 <code>record</code> 实例默认是（浅）不可变的。</li>
+<li><strong>全参构造函数 (Canonical Constructor)</strong>：<code>public Point(int x, int y)</code>，用于初始化所有字段。</li>
+<li><strong>公共访问器方法 (Accessor Methods)</strong>：名称与字段名相同，例如 <code>public int x()</code> 和 <code>public int y()</code>。(注意：不是传统的 <code>getX()</code> <code>getY()</code> 格式，虽然你也可以自定义添加这些)。</li>
+<li><strong><code>equals()</code> 方法</strong>：比较两个 <code>Point</code> 实例是否所有组件都相等。</li>
+<li><strong><code>hashCode()</code> 方法</strong>：基于所有组件的值计算哈希码。</li>
+<li><strong><code>toString()</code> 方法</strong>：返回一个包含 <code>record</code> 名称和所有组件及其值的字符串，如 <code>Point[x=1, y=2]</code>。</li>
+</ul>
+</li>
+<li><p><strong>使用示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RecordDemo</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">Point</span> <span class="hljs-variable">p1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>);<br>        <span class="hljs-type">Point</span> <span class="hljs-variable">p2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>);<br>        <span class="hljs-type">Point</span> <span class="hljs-variable">p3</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(<span class="hljs-number">30</span>, <span class="hljs-number">40</span>);<br><br>        <span class="hljs-comment">// 访问器</span><br>        System.out.println(<span class="hljs-string">&quot;p1.x: &quot;</span> + p1.x()); <span class="hljs-comment">// 输出: p1.x: 10</span><br>        System.out.println(<span class="hljs-string">&quot;p1.y: &quot;</span> + p1.y()); <span class="hljs-comment">// 输出: p1.y: 20</span><br><br>        <span class="hljs-comment">// toString()</span><br>        System.out.println(<span class="hljs-string">&quot;p1: &quot;</span> + p1);     <span class="hljs-comment">// 输出: p1: Point[x=10, y=20]</span><br><br>        <span class="hljs-comment">// equals()</span><br>        System.out.println(<span class="hljs-string">&quot;p1.equals(p2): &quot;</span> + p1.equals(p2)); <span class="hljs-comment">// 输出: true</span><br>        System.out.println(<span class="hljs-string">&quot;p1.equals(p3): &quot;</span> + p1.equals(p3)); <span class="hljs-comment">// 输出: false</span><br><br>        <span class="hljs-comment">// hashCode()</span><br>        System.out.println(<span class="hljs-string">&quot;p1.hashCode(): &quot;</span> + p1.hashCode());<br>        System.out.println(<span class="hljs-string">&quot;p2.hashCode(): &quot;</span> + p2.hashCode());<br>        System.out.println(<span class="hljs-string">&quot;p3.hashCode(): &quot;</span> + p3.hashCode());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>record</code> 的一些重要特性和限制：</strong></p>
+<ul>
+<li><strong>隐式 <code>final</code></strong>：<code>record</code> 类本身是隐式 <code>final</code> 的，不能被继承。</li>
+<li><strong>不能继承其他类</strong>：<code>record</code> 隐式继承自 <code>java.lang.Record</code>（类似于 <code>enum</code> 继承自 <code>java.lang.Enum</code>），因此不能再继承其他类。</li>
+<li><strong>可以实现接口</strong>：<code>record</code> 可以实现一个或多个接口。</li>
+<li><strong>不能声明实例字段</strong>：除了与 <code>record</code> 组件对应的私有 <code>final</code> 字段外，不能声明其他实例字段。</li>
+<li><strong>可以声明静态字段和静态方法</strong>。</li>
+<li><strong>可以声明实例方法</strong>。</li>
+<li><strong>紧凑构造函数 (Compact Constructor)</strong>：可以声明一个没有参数列表的构造函数，用于在标准构造函数执行前进行参数校验或规范化。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Range</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> &#123;<br>    <span class="hljs-comment">// 紧凑构造函数</span><br>    <span class="hljs-keyword">public</span> Range &#123; <span class="hljs-comment">// 注意：没有 (int start, int end) 参数列表</span><br>        <span class="hljs-keyword">if</span> (start &gt; end) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Start cannot be greater than end&quot;</span>);<br>        &#125;<br>        <span class="hljs-comment">// 这里的 start 和 end 指的是构造函数的参数，在紧凑构造函数体执行完毕后，</span><br>        <span class="hljs-comment">// 这些值（可能已被修改）会被赋给 record 的同名字段。</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><strong>自定义规范构造函数 (Canonical Constructor)</strong>：虽然编译器会自动生成，但你也可以显式提供一个与 <code>record</code> 组件签名完全匹配的构造函数，这时编译器就不再生成默认的了。通常只有在需要非常特殊的初始化逻辑时才这样做。</li>
+<li><strong>（浅）不可变性</strong>：<code>record</code> 的字段是 <code>final</code> 的，这使得 <code>record</code> 实例本身是不可变的。但如果 <code>record</code> 的组件是可变对象（例如 <code>List</code>），那么 <code>record</code> 只是浅不可变的（即 <code>List</code> 引用本身不变，但 <code>List</code> 内部的内容可以变）。</li>
+</ul>
+</li>
+</ol>
+<p><strong><code>record</code> 嵌套 <code>record</code></strong></p>
+<p><code>record</code> 可以像普通类一样嵌套在其他类或接口中，当然也包括嵌套在另一个 <code>record</code> 中。</p>
+<ol>
+<li><p><strong>如何定义？</strong><br>直接在外部类或 <code>record</code> 内部定义即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 外部 Record</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Order</span><span class="hljs-params">(String orderId, CustomerInfo customer, ProductInfo product)</span> &#123;<br><br>    <span class="hljs-comment">// 嵌套 Record (隐式静态)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">CustomerInfo</span><span class="hljs-params">(String customerId, String name, Address address)</span> &#123;<br>        <span class="hljs-comment">// CustomerInfo 也可以有自己的方法或紧凑构造函数</span><br>    &#125;<br><br>    <span class="hljs-comment">// 另一个嵌套 Record (隐式静态)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">ProductInfo</span><span class="hljs-params">(String productId, String productName, <span class="hljs-type">double</span> price)</span> &#123;<br>        <span class="hljs-comment">// ...</span><br>    &#125;<br><br>    <span class="hljs-comment">// 嵌套 Record 也可以嵌套更深层的 Record (隐式静态)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Address</span><span class="hljs-params">(String street, String city, String zipCode)</span> &#123;<br>        <span class="hljs-comment">// ...</span><br>    &#125;<br><br>    <span class="hljs-comment">// 外部 Record 也可以有自己的方法</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">calculateTotalPrice</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> product.price(); <span class="hljs-comment">// 假设没有数量和折扣</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>关键点：</strong></p>
+<ul>
+<li><strong>隐式静态</strong>：当一个 <code>record</code> (或普通类&#x2F;接口) 嵌套在另一个顶层类或 <code>record</code> 中时，如果它不是内部类（即没有 <code>inner</code> 关键字，<code>record</code> 不能是 <code>inner</code> 的），它默认是<strong>隐式静态</strong>的。这意味着你不需要外部 <code>record</code> 的实例来创建嵌套 <code>record</code> 的实例。</li>
+<li><strong>命名空间</strong>：嵌套有助于组织代码和提供命名空间，使得相关的纯数据结构聚合在一起。</li>
+<li><strong>访问性</strong>：遵循标准的 Java 访问修饰符规则（<code>public</code>, <code>protected</code>, <code>private</code>, 包私有）。</li>
+</ul>
+</li>
+<li><p><strong>使用示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NestedRecordDemo</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 创建嵌套 record 实例</span><br>        Order.<span class="hljs-type">Address</span> <span class="hljs-variable">shippingAddress</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Order</span>.Address(<span class="hljs-string">&quot;123 Main St&quot;</span>, <span class="hljs-string">&quot;Anytown&quot;</span>, <span class="hljs-string">&quot;12345&quot;</span>);<br>        Order.<span class="hljs-type">CustomerInfo</span> <span class="hljs-variable">customer</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Order</span>.CustomerInfo(<span class="hljs-string">&quot;CUST001&quot;</span>, <span class="hljs-string">&quot;Alice Smith&quot;</span>, shippingAddress);<br>        Order.<span class="hljs-type">ProductInfo</span> <span class="hljs-variable">product</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Order</span>.ProductInfo(<span class="hljs-string">&quot;PROD007&quot;</span>, <span class="hljs-string">&quot;Awesome Widget&quot;</span>, <span class="hljs-number">29.99</span>);<br><br>        <span class="hljs-comment">// 创建外部 record 实例</span><br>        <span class="hljs-type">Order</span> <span class="hljs-variable">myOrder</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Order</span>(<span class="hljs-string">&quot;ORDER_XYZ&quot;</span>, customer, product);<br><br>        System.out.println(myOrder);<br>        <span class="hljs-comment">// 输出类似:</span><br>        <span class="hljs-comment">// Order[orderId=ORDER_XYZ, customer=CustomerInfo[customerId=CUST001, name=Alice Smith, address=Address[street=123 Main St, city=Anytown, zipCode=12345]], product=ProductInfo[productId=PROD007, productName=Awesome Widget, price=29.99]]</span><br><br>        System.out.println(<span class="hljs-string">&quot;Customer Name: &quot;</span> + myOrder.customer().name()); <span class="hljs-comment">// Customer Name: Alice Smith</span><br>        System.out.println(<span class="hljs-string">&quot;Shipping City: &quot;</span> + myOrder.customer().address().city()); <span class="hljs-comment">// Shipping City: Anytown</span><br>        System.out.println(<span class="hljs-string">&quot;Total Price: &quot;</span> + myOrder.calculateTotalPrice()); <span class="hljs-comment">// Total Price: 29.99</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>总结</strong></p>
+<ul>
+<li><code>record</code> 是 Java 中创建不可变数据载体类的现代化、简洁方式，极大地减少了样板代码。</li>
+<li>它自动提供构造函数、访问器、<code>equals()</code>、<code>hashCode()</code> 和 <code>toString()</code>。</li>
+<li><code>record</code> 可以嵌套定义，嵌套的 <code>record</code> (在顶层类或另一 <code>record</code> 中) 是隐式静态的。</li>
+<li>这使得构建复杂但清晰的数据模型变得更加容易，特别适用于 API 响应、DTO（数据传输对象）、配置对象等场景。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/Class/" class="category-chain-item">Class</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>record</div>
+      <div>http://example.com/2025/06/24/Java/基础/Class/record/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E5%9F%BA%E7%A1%80/Reflection%EF%BC%88%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%EF%BC%89/%E5%8F%91%E5%B1%95%E5%8E%86%E7%A8%8B/" title="发展历程">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">发展历程</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E5%9F%BA%E7%A1%80/Class/enum/" title="enum">
+                        <span class="hidden-mobile">enum</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

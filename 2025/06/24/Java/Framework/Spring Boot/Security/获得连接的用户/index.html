@@ -1,0 +1,770 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这是一个非常实际且常用的需求。当你的端点（Endpoint，通常指 Controller 中的一个处理方法）被 Spring Security 保护起来后，意味着在执行你的业务逻辑之前，用户已经成功通过了认证。这时，你自然希望能够获取到当前登录用户的信息。 Spring Security 提供了多种优雅的方式来获取已认证的用户信息。以下是最常用且推荐的方法，我会从最便捷到更底层的方式进行介绍： 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Security/%E8%8E%B7%E5%BE%97%E8%BF%9E%E6%8E%A5%E7%9A%84%E7%94%A8%E6%88%B7/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="这是一个非常实际且常用的需求。当你的端点（Endpoint，通常指 Controller 中的一个处理方法）被 Spring Security 保护起来后，意味着在执行你的业务逻辑之前，用户已经成功通过了认证。这时，你自然希望能够获取到当前登录用户的信息。 Spring Security 提供了多种优雅的方式来获取已认证的用户信息。以下是最常用且推荐的方法，我会从最便捷到更底层的方式进行介绍： 1">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.245Z">
+<meta property="article:modified_time" content="2025-06-10T07:36:57.326Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月10日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这是一个非常实际且常用的需求。当你的端点（Endpoint，通常指 Controller 中的一个处理方法）被 Spring Security 保护起来后，意味着在执行你的业务逻辑之前，用户已经成功通过了认证。这时，你自然希望能够获取到当前登录用户的信息。</p>
+<p>Spring Security 提供了多种优雅的方式来获取已认证的用户信息。以下是最常用且推荐的方法，我会从最便捷到更底层的方式进行介绍：</p>
+<p><strong>1. 通过方法参数注入 (推荐用于 Controller 层)</strong></p>
+<p>这是在 Controller 方法中最方便、最推荐的方式。Spring MVC 会自动为你注入当前认证用户的信息。</p>
+<ul>
+<li><p><strong>注入 <code>Authentication</code> 对象:</strong><br>你可以直接在Controller方法参数中声明 <code>org.springframework.security.core.Authentication</code> 类型的参数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.security.core.Authentication;<br><span class="hljs-keyword">import</span> org.springframework.security.core.userdetails.UserDetails;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserController</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/api/me&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getCurrentUser</span><span class="hljs-params">(Authentication authentication)</span> &#123;<br>        <span class="hljs-keyword">if</span> (authentication != <span class="hljs-literal">null</span> &amp;&amp; authentication.isAuthenticated()) &#123;<br>            <span class="hljs-type">Object</span> <span class="hljs-variable">principal</span> <span class="hljs-operator">=</span> authentication.getPrincipal();<br>            String username;<br><br>            <span class="hljs-keyword">if</span> (principal <span class="hljs-keyword">instanceof</span> UserDetails) &#123;<br>                username = ((UserDetails) principal).getUsername();<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                username = principal.toString(); <span class="hljs-comment">// 通常是用户名字符串</span><br>            &#125;<br>            <span class="hljs-comment">// 你还可以获取权限等信息</span><br>            <span class="hljs-comment">// Collection&lt;? extends GrantedAuthority&gt; authorities = authentication.getAuthorities();</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Current user: &quot;</span> + username;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;No user authenticated&quot;</span>; <span class="hljs-comment">// 理论上，如果端点受保护，这里不会执行</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>authentication.getPrincipal()</code></strong>: 这是核心方法。<ul>
+<li>如果你的 <code>UserDetailsService</code> 返回的是标准的 <code>UserDetails</code> 对象（或其自定义实现），那么 <code>getPrincipal()</code> 通常会返回这个 <code>UserDetails</code> 对象。你可以将其强制转换为 <code>UserDetails</code> 来获取用户名、权限等详细信息。</li>
+<li>在某些配置下（例如，如果认证信息不是来自 <code>UserDetailsService</code>，或者自定义了 <code>AuthenticationProvider</code>），<code>principal</code> 可能直接是一个用户名字符串，或者一个自定义的 Principal 对象。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>注入 <code>UserDetails</code> (通过 <code>@AuthenticationPrincipal</code>)</strong>:<br>如果你的 <code>UserDetailsService</code> 返回的是 <code>UserDetails</code> 的实现，你可以使用 <code>@AuthenticationPrincipal</code> 注解直接注入 <code>UserDetails</code> 对象，这更加简洁。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.security.core.annotation.AuthenticationPrincipal;<br><span class="hljs-keyword">import</span> org.springframework.security.core.userdetails.UserDetails;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserController</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/api/me/details&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getCurrentUserDetails</span><span class="hljs-params">(<span class="hljs-meta">@AuthenticationPrincipal</span> UserDetails userDetails)</span> &#123;<br>        <span class="hljs-keyword">if</span> (userDetails != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-comment">// 如果你有自定义的UserDetails实现，例如 MyCustomUserDetails</span><br>            <span class="hljs-comment">// if (userDetails instanceof MyCustomUserDetails) &#123;</span><br>            <span class="hljs-comment">//     MyCustomUserDetails customUser = (MyCustomUserDetails) userDetails;</span><br>            <span class="hljs-comment">//     // 可以获取自定义的属性，比如 userId, email 等</span><br>            <span class="hljs-comment">//     return &quot;Current user: &quot; + customUser.getUsername() + &quot;, Email: &quot; + customUser.getEmail();</span><br>            <span class="hljs-comment">// &#125;</span><br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Current user: &quot;</span> + userDetails.getUsername() + <span class="hljs-string">&quot;, Authorities: &quot;</span> + userDetails.getAuthorities();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;No user authenticated&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>@AuthenticationPrincipal</code> 的强大之处</strong>:<ul>
+<li>它可以直接注入 <code>UserDetails</code>。</li>
+<li>如果你的 Principal 是一个自定义对象 (例如 <code>MyCustomUser implements UserDetails</code>)，你可以直接注入 <code>MyCustomUser myCustomUser</code>。</li>
+<li>它还支持SpEL表达式，例如 <code>@AuthenticationPrincipal(expression = &quot;username&quot;) String username</code> 可以直接注入用户名。</li>
+<li>对于OAuth2&#x2F;OIDC登录，你可以注入 <code>OAuth2User</code> 或 <code>OidcUser</code>: <code>@AuthenticationPrincipal OAuth2User oauth2User</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>注入 <code>java.security.Principal</code></strong>:<br>这是Java EE规范中的标准接口，Spring Security也支持。通常 <code>principal.getName()</code> 会返回用户名。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.security.Principal;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserController</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/api/me/principal&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getCurrentUserPrincipal</span><span class="hljs-params">(Principal principal)</span> &#123;<br>        <span class="hljs-keyword">if</span> (principal != <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Current user (from Principal): &quot;</span> + principal.getName();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;No user authenticated&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这种方式相对简单，但获取的信息不如 <code>Authentication</code> 或 <code>UserDetails</code> 丰富。</p>
+</li>
+</ul>
+<p><strong>2. 通过 <code>SecurityContextHolder</code> (适用于任何地方，包括 Service 层)</strong></p>
+<p>如果你不在Controller方法中，或者需要在Service层、工具类等地方获取当前用户信息，可以使用 <code>SecurityContextHolder</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.security.core.Authentication;<br><span class="hljs-keyword">import</span> org.springframework.security.core.context.SecurityContext;<br><span class="hljs-keyword">import</span> org.springframework.security.core.context.SecurityContextHolder;<br><span class="hljs-keyword">import</span> org.springframework.security.core.userdetails.UserDetails;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getCurrentAuthenticatedUsername</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">SecurityContext</span> <span class="hljs-variable">securityContext</span> <span class="hljs-operator">=</span> SecurityContextHolder.getContext();<br>        <span class="hljs-type">Authentication</span> <span class="hljs-variable">authentication</span> <span class="hljs-operator">=</span> securityContext.getAuthentication();<br><br>        <span class="hljs-keyword">if</span> (authentication != <span class="hljs-literal">null</span> &amp;&amp; authentication.isAuthenticated()) &#123;<br>            <span class="hljs-type">Object</span> <span class="hljs-variable">principal</span> <span class="hljs-operator">=</span> authentication.getPrincipal();<br>            <span class="hljs-keyword">if</span> (principal <span class="hljs-keyword">instanceof</span> UserDetails) &#123;<br>                <span class="hljs-keyword">return</span> ((UserDetails) principal).getUsername();<br>            &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (principal <span class="hljs-keyword">instanceof</span> String) &#123; <span class="hljs-comment">// 例如JWT直接存用户名</span><br>                <span class="hljs-keyword">return</span> (String) principal;<br>            &#125; <span class="hljs-keyword">else</span> &#123;<br>                <span class="hljs-comment">// 对于OAuth2/OIDC, principal可能是OAuth2User或OidcUser</span><br>                <span class="hljs-comment">// if (principal instanceof org.springframework.security.oauth2.core.user.OAuth2User) &#123;</span><br>                <span class="hljs-comment">//     return ((org.springframework.security.oauth2.core.user.OAuth2User) principal).getName();</span><br>                <span class="hljs-comment">// &#125;</span><br>                <span class="hljs-keyword">return</span> principal.toString(); <span class="hljs-comment">// 最后的备选方案</span><br>            &#125;<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>; <span class="hljs-comment">// 或者抛出异常，表示没有认证用户</span><br>    &#125;<br><br>    <span class="hljs-keyword">public</span> UserDetails <span class="hljs-title function_">getCurrentAuthenticatedUserDetails</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">Authentication</span> <span class="hljs-variable">authentication</span> <span class="hljs-operator">=</span> SecurityContextHolder.getContext().getAuthentication();<br>        <span class="hljs-keyword">if</span> (authentication != <span class="hljs-literal">null</span> &amp;&amp; authentication.isAuthenticated() &amp;&amp; authentication.getPrincipal() <span class="hljs-keyword">instanceof</span> UserDetails) &#123;<br>            <span class="hljs-keyword">return</span> (UserDetails) authentication.getPrincipal();<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>SecurityContextHolder.getContext()</code>: 获取当前的 <code>SecurityContext</code>。</li>
+<li><code>securityContext.getAuthentication()</code>: 从 <code>SecurityContext</code> 中获取 <code>Authentication</code> 对象。</li>
+<li>后续处理与方法1中获取到 <code>Authentication</code> 对象后类似。</li>
+</ul>
+<p><strong>关键点和最佳实践：</strong></p>
+<ol>
+<li><strong>端点必须是安全的</strong>: 这些方法只有在请求已经通过Spring Security的认证过滤器链，并且用户已成功认证后才能正确工作。如果端点是公开的 (<code>permitAll()</code>)，那么 <code>authentication</code> 对象可能是 <code>null</code>，或者是一个代表匿名用户的 <code>AnonymousAuthenticationToken</code>。</li>
+<li><strong><code>principal</code> 的类型</strong>: <code>authentication.getPrincipal()</code> 返回的对象的具体类型取决于你的认证配置。<ul>
+<li>最常见的是 <code>org.springframework.security.core.userdetails.UserDetails</code> 的实现。</li>
+<li>如果使用了OAuth2&#x2F;OIDC，可能是 <code>org.springframework.security.oauth2.core.user.OAuth2User</code> 或 <code>org.springframework.security.oauth2.core.oidc.user.OidcUser</code>。</li>
+<li>在某些JWT配置中，<code>principal</code> 可能仅仅是一个用户名字符串，或者一个包含 JWT 声明的自定义对象。</li>
+<li>因此，在使用前进行 <code>instanceof</code> 检查并进行类型转换是个好习惯。</li>
+</ul>
+</li>
+<li><strong>自定义 <code>UserDetails</code></strong>: 强烈建议创建你自己的 <code>UserDetails</code> 实现，例如 <code>CustomUserDetails</code>，它除了标准接口方法外，还可以包含你的应用特有的用户信息（如用户ID、邮箱、昵称等）。这样，获取到 <code>UserDetails</code> 后，可以将其转换为你的自定义类型，方便地访问这些额外信息。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 假设你有这样一个自定义UserDetails</span><br><span class="hljs-comment">// public class CustomUserDetails implements UserDetails &#123;</span><br><span class="hljs-comment">//     private Long id;</span><br><span class="hljs-comment">//     private String username;</span><br><span class="hljs-comment">//     private String password;</span><br><span class="hljs-comment">//     private String email;</span><br><span class="hljs-comment">//     private Collection&lt;? extends GrantedAuthority&gt; authorities;</span><br><span class="hljs-comment">//     // ...构造函数、getter、以及UserDetails的接口方法实现...</span><br><span class="hljs-comment">//     public Long getId() &#123; return id; &#125;</span><br><span class="hljs-comment">//     public String getEmail() &#123; return email; &#125;</span><br><span class="hljs-comment">// &#125;</span><br><br><span class="hljs-comment">// 在Controller或Service中:</span><br><span class="hljs-comment">// UserDetails userDetails = ... ; // 获取到UserDetails</span><br><span class="hljs-comment">// if (userDetails instanceof CustomUserDetails) &#123;</span><br><span class="hljs-comment">//     CustomUserDetails customUser = (CustomUserDetails) userDetails;</span><br><span class="hljs-comment">//     Long userId = customUser.getId();</span><br><span class="hljs-comment">//     String email = customUser.getEmail();</span><br><span class="hljs-comment">//     // ... 使用这些信息</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure></li>
+<li><strong><code>isAuthenticated()</code> 检查</strong>: 在使用 <code>Authentication</code> 对象之前，通常最好检查 <code>authentication != null &amp;&amp; authentication.isAuthenticated()</code>。对于受保护的端点，<code>isAuthenticated()</code> 通常为 <code>true</code>。</li>
+<li><strong>线程绑定</strong>: <code>SecurityContextHolder</code> 默认使用 <code>ThreadLocal</code> 策略来存储 <code>SecurityContext</code>，这意味着 <code>SecurityContext</code>（以及其中的 <code>Authentication</code>）是与当前执行线程绑定的。这在大多数Web应用中工作良好。但在异步处理（如使用 <code>@Async</code> 或手动管理线程）时需要特别注意 <code>SecurityContext</code> 的传播。Spring Security 提供了 <code>DelegatingSecurityContextAsyncTaskExecutor</code> 和 <code>SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL)</code> 等机制来帮助处理异步场景。</li>
+</ol>
+<p><strong>总结一下：</strong></p>
+<ul>
+<li><strong>Controller层</strong>: 优先使用方法参数注入，尤其是 <code>@AuthenticationPrincipal UserDetails userDetails</code> 或 <code>@AuthenticationPrincipal MyCustomUserDetails customUser</code>，非常简洁方便。</li>
+<li><strong>Service层或其他组件</strong>: 使用 <code>SecurityContextHolder.getContext().getAuthentication()</code>。</li>
+</ul>
+<p>这些方法能够满足绝大多数获取已认证用户信息的场景。你可以根据你的具体需求和代码所处的层次选择最合适的方式。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Security/获得连接的用户/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/Keycloak%20%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%90%AF%E5%8A%A8/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E7%9B%AE%E5%BD%95/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

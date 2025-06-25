@@ -1,0 +1,855 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 虚拟机（JVM）工作原理详解 Java 虚拟机（Java Virtual Machine，简称 JVM）是 Java 程序执行的核心组件，它提供了一个运行时环境，使得 Java 程序可以在不同的硬件和操作系统上运行而无需修改代码。理解 JVM 的工作原理对于优化 Java 应用程序的性能、内存管理以及故障排查至关重要。以下是 JVM 的主要组成部分和其工作机制的详解。  1. 类加载机制">
+<meta property="og:type" content="article">
+<meta property="og:title" content="虚拟机（JVM）工作原理">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Java%20%E7%BC%96%E8%AF%91%E4%B8%8E%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/Java%20%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%88JVM%EF%BC%89%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 虚拟机（JVM）工作原理详解 Java 虚拟机（Java Virtual Machine，简称 JVM）是 Java 程序执行的核心组件，它提供了一个运行时环境，使得 Java 程序可以在不同的硬件和操作系统上运行而无需修改代码。理解 JVM 的工作原理对于优化 Java 应用程序的性能、内存管理以及故障排查至关重要。以下是 JVM 的主要组成部分和其工作机制的详解。  1. 类加载机制">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:26.271Z">
+<meta property="article:modified_time" content="2025-06-25T02:55:24.539Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>虚拟机（JVM）工作原理 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="虚拟机（JVM）工作原理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          10 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">虚拟机（JVM）工作原理</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月25日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong>Java 虚拟机（JVM）工作原理详解</strong></p>
+<p>Java 虚拟机（Java Virtual Machine，简称 JVM）是 Java 程序执行的核心组件，它提供了一个运行时环境，使得 Java 程序可以在不同的硬件和操作系统上运行而无需修改代码。理解 JVM 的工作原理对于优化 Java 应用程序的性能、内存管理以及故障排查至关重要。以下是 JVM 的主要组成部分和其工作机制的详解。</p>
+<hr>
+<h3 id="1-类加载机制"><a href="#1-类加载机制" class="headerlink" title="1. 类加载机制"></a>1. <strong>类加载机制</strong></h3><p><strong>1.1. 类加载器（ClassLoader）</strong></p>
+<ul>
+<li><p><strong>作用：</strong> 将 <code>.class</code> 文件（包含 Java 字节码）加载到 JVM 的内存中。</p>
+</li>
+<li><p><strong>类型：</strong></p>
+<ul>
+<li><p><strong>引导类加载器（Bootstrap ClassLoader）：</strong> 负责加载核心 Java 类库（如 <code>rt.jar</code>）。</p>
+</li>
+<li><p><strong>扩展类加载器（Extension ClassLoader）：</strong> 负责加载扩展类库（如 <code>ext</code> 目录下的类）。</p>
+</li>
+<li><p><strong>应用程序类加载器（Application ClassLoader）：</strong> 负责加载用户类路径（<code>classpath</code>）下的类。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>1.2. 类加载过程</strong></p>
+<ul>
+<li><p><strong>加载（Loading）：</strong> 查找并加载类的二进制数据。</p>
+</li>
+<li><p><strong>验证（Verification）：</strong> 确保被加载的类的字节码符合 JVM 的规范，保证程序运行安全。</p>
+</li>
+<li><p><strong>准备（Preparation）：</strong> 为类的静态变量分配内存，并将其初始化为默认值。</p>
+</li>
+<li><p><strong>解析（Resolution）：</strong> 将常量池中的符号引用替换为直接引用。</p>
+</li>
+<li><p><strong>初始化（Initialization）：</strong> 执行类构造器 <code>&lt;clinit&gt;()</code> 方法，初始化静态变量的正确值。</p>
+</li>
+<li><p><strong>使用（Using）：</strong> 类被真正使用的阶段。</p>
+</li>
+<li><p><strong>卸载（Unloading）：</strong> 当类不再被使用时，由 JVM 进行卸载，释放内存。</p>
+</li>
+</ul>
+<hr>
+<h3 id="2-运行时数据区域"><a href="#2-运行时数据区域" class="headerlink" title="2. 运行时数据区域"></a>2. <strong>运行时数据区域</strong></h3><p>JVM 在运行时将所需的数据存储在不同的内存区域中：</p>
+<p><strong>2.1. 方法区（Method Area）</strong></p>
+<ul>
+<li><p><strong>作用：</strong> 存储已被 JVM 加载的类信息、常量、静态变量、即时编译器编译后的代码等。它是线程共享的。</p>
+</li>
+<li><p><strong>特点：</strong> 在 Java 8 之前，方法区的实现为永久代（Permanent Generation）；在 Java 8 及之后，使用元空间（Metaspace），从而解决永久代内存不足的问题。</p>
+</li>
+</ul>
+<p><strong>2.2. 堆（Heap）</strong></p>
+<ul>
+<li><p><strong>作用：</strong> 存储所有对象实例和数组，也是线程共享的区域。</p>
+</li>
+<li><p><strong>特点：</strong> 是垃圾收集器管理的主要区域，因此也被称为“GC 堆”。堆可以进一步分为新生代（Young Generation）和老年代（Old Generation）。</p>
+</li>
+</ul>
+<p><strong>2.3. 虚拟机栈（JVM Stack）</strong></p>
+<ul>
+<li><p><strong>作用：</strong> 为每个线程创建，存储局部变量表、操作数栈、动态链接、方法出口等信息。</p>
+</li>
+<li><p><strong>特点：</strong> 每个方法在执行时会创建一个栈帧（Stack Frame），用于存储上述信息。</p>
+</li>
+</ul>
+<p><strong>2.4. 本地方法栈（Native Method Stack）</strong></p>
+<ul>
+<li><strong>作用：</strong> 与虚拟机栈类似，但用于处理本地（Native）方法的调用。</li>
+</ul>
+<p><strong>2.5. 程序计数器（Program Counter Register）</strong></p>
+<ul>
+<li><strong>作用：</strong> 用于记录当前线程所执行的字节码指令地址。由于 Java 是多线程的，每个线程都有独立的程序计数器。</li>
+</ul>
+<hr>
+<h3 id="3-执行引擎"><a href="#3-执行引擎" class="headerlink" title="3. 执行引擎"></a>3. <strong>执行引擎</strong></h3><p>执行引擎是 JVM 的核心组件，负责执行字节码。</p>
+<p><strong>3.1. 解释器（Interpreter）</strong></p>
+<ul>
+<li><p><strong>作用：</strong> 将字节码逐条解释执行。</p>
+</li>
+<li><p><strong>特点：</strong> 解释执行速度较慢，但启动快。</p>
+</li>
+</ul>
+<p><strong>3.2. 即时编译器（Just-In-Time Compiler，JIT）</strong></p>
+<ul>
+<li><p><strong>作用：</strong> 将频繁执行的字节码编译为本地机器码，提高执行效率。</p>
+</li>
+<li><p><strong>种类：</strong></p>
+<ul>
+<li><p><strong>C1 编译器：</strong> 编译速度快，适用于简单的方法。</p>
+</li>
+<li><p><strong>C2 编译器：</strong> 优化程度高，适用于复杂的方法。</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>3.3. 垃圾收集器（Garbage Collector）</strong></p>
+<ul>
+<li><p><strong>作用：</strong> 自动管理内存，回收不再使用的对象，防止内存泄漏。</p>
+</li>
+<li><p><strong>算法：</strong></p>
+<ul>
+<li><p><strong>标记-清除（Mark-Sweep）：</strong> 标记存活对象，清除未被标记的对象。</p>
+</li>
+<li><p><strong>复制算法（Copying）：</strong> 将存活对象复制到新区域，适用于新生代。</p>
+</li>
+<li><p><strong>标记-整理（Mark-Compact）：</strong> 标记存活对象并整理，适用于老年代。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>常见垃圾收集器：</strong></p>
+<ul>
+<li><strong>Serial、Parallel、CMS、G1、ZGC、Shenandoah</strong> 等。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-本地接口（JNI）"><a href="#4-本地接口（JNI）" class="headerlink" title="4. 本地接口（JNI）"></a>4. <strong>本地接口（JNI）</strong></h3><p><strong>作用：</strong> Java Native Interface（JNI）允许 Java 调用本地（如 C&#x2F;C++）代码，以实现与底层系统的交互或提高性能。</p>
+<hr>
+<h3 id="5-异常处理机制"><a href="#5-异常处理机制" class="headerlink" title="5. 异常处理机制"></a>5. <strong>异常处理机制</strong></h3><p>JVM 在执行过程中，如果遇到异常情况（如除零、空指针等），会抛出异常。异常处理机制确保程序能够安全地处理错误。</p>
+<hr>
+<h3 id="6-安全管理"><a href="#6-安全管理" class="headerlink" title="6. 安全管理"></a>6. <strong>安全管理</strong></h3><p>JVM 提供了一系列安全机制，如类加载器的沙箱模型、字节码验证、权限管理等，确保 Java 应用程序的安全性。</p>
+<hr>
+<p><strong>总结：</strong></p>
+<p>JVM 通过其复杂而精密的架构，实现了 Java 的“一次编写，到处运行”的特性。理解 JVM 的工作原理，不仅有助于编写高效的 Java 程序，还能在遇到性能瓶颈、内存泄漏等问题时，提供有效的解决思路。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E7%BC%96%E8%AF%91%E4%B8%8E%E8%BF%90%E8%A1%8C/" class="category-chain-item">编译与运行</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>虚拟机（JVM）工作原理</div>
+      <div>http://example.com/2025/06/24/Java/Java 编译与运行环境/Java 虚拟机（JVM）的基本工作原理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Java%20%E7%BC%96%E8%AF%91%E4%B8%8E%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/JDK%20%E5%92%8C%20JRE%20%E4%B8%BB%E8%A6%81%E5%8C%BA%E5%88%AB/" title="JDK 和 JRE 主要区别">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JDK 和 JRE 主要区别</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Java%20%E7%BC%96%E8%AF%91%E4%B8%8E%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/Java%20%E7%9A%84%E7%BC%96%E8%AF%91%E4%B8%8E%E8%BF%90%E8%A1%8C/" title="编译与运行过程">
+                        <span class="hidden-mobile">编译与运行过程</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

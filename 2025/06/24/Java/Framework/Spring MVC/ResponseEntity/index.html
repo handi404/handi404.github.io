@@ -1,0 +1,861 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Spring MVC 中 ResponseEntity 的使用。ResponseEntity 是一个非常强大且灵活的类，它代表了整个 HTTP 响应：包括状态码 (Status Code)、响应头 (Headers) 和 响应体 (Body)。 使用 ResponseEntity 可以让你对 HTTP 响应进行精细化的控制，这在构建 RESTful API 时尤其重要。  1. ResponseE">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ResponseEntity">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20MVC/ResponseEntity/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Spring MVC 中 ResponseEntity 的使用。ResponseEntity 是一个非常强大且灵活的类，它代表了整个 HTTP 响应：包括状态码 (Status Code)、响应头 (Headers) 和 响应体 (Body)。 使用 ResponseEntity 可以让你对 HTTP 响应进行精细化的控制，这在构建 RESTful API 时尤其重要。  1. ResponseE">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.466Z">
+<meta property="article:modified_time" content="2025-06-25T02:39:56.856Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>ResponseEntity - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="ResponseEntity"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">ResponseEntity</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月25日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Spring MVC 中 <code>ResponseEntity</code> 的使用。<code>ResponseEntity</code> 是一个非常强大且灵活的类，它代表了整个 HTTP 响应：包括<strong>状态码 (Status Code)</strong>、<strong>响应头 (Headers)</strong> 和 <strong>响应体 (Body)</strong>。</p>
+<p>使用 <code>ResponseEntity</code> 可以让你对 HTTP 响应进行精细化的控制，这在构建 RESTful API 时尤其重要。</p>
+<hr>
+<h3 id="1-ResponseEntity-是什么？"><a href="#1-ResponseEntity-是什么？" class="headerlink" title="1. ResponseEntity 是什么？"></a>1. <code>ResponseEntity</code> 是什么？</h3><p><code>ResponseEntity</code> 是 Spring 框架提供的一个泛型类，位于 <code>org.springframework.http</code> 包下。它的定义大致如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ResponseEntity</span>&lt;T&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title class_">HttpEntity</span>&lt;T&gt; &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Object statusCode; <span class="hljs-comment">// 可以是 HttpStatus 枚举或 int 值</span><br><br>    <span class="hljs-comment">// 构造函数等</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>它继承自 <code>HttpEntity&lt;T&gt;</code>，<code>HttpEntity</code> 代表了一个 HTTP 请求或响应的实体，包含了头部 (Headers) 和主体 (Body)。<code>ResponseEntity</code> 在此基础上增加了<strong>状态码</strong>。</p>
+<ul>
+<li><strong><code>T</code> (泛型参数)</strong>：代表响应体 (Body) 的类型。例如，可以是 <code>String</code>, <code>UserDto</code>, <code>List&lt;Product&gt;</code>, <code>Void</code> (如果没有响应体) 等。</li>
+<li><strong>状态码 (Status Code)</strong>：HTTP 响应的状态，例如 <code>200 OK</code>, <code>201 Created</code>, <code>400 Bad Request</code>, <code>404 Not Found</code>, <code>500 Internal Server Error</code> 等。可以使用 <code>org.springframework.http.HttpStatus</code> 枚举来表示，也可以直接使用 <code>int</code> 类型的值。</li>
+<li><strong>响应头 (Headers)</strong>：HTTP 响应的头部信息，例如 <code>Content-Type</code>, <code>Location</code>, <code>Cache-Control</code> 等。通过 <code>org.springframework.http.HttpHeaders</code> 类来管理。</li>
+<li><strong>响应体 (Body)</strong>：实际返回给客户端的数据。</li>
+</ul>
+<hr>
+<h3 id="2-为什么以及何时使用-ResponseEntity？"><a href="#2-为什么以及何时使用-ResponseEntity？" class="headerlink" title="2. 为什么以及何时使用 ResponseEntity？"></a>2. 为什么以及何时使用 <code>ResponseEntity</code>？</h3><p>虽然 Spring MVC 允许 Controller 方法直接返回一个对象 (例如一个 DTO)，Spring 会自动将其序列化 (通常为 JSON) 并返回一个 <code>200 OK</code> 状态码，但在以下情况下，使用 <code>ResponseEntity</code> 会更有优势：</p>
+<ol>
+<li><strong>自定义 HTTP 状态码</strong>：<ul>
+<li>当你需要返回非 <code>200 OK</code> 的状态码时，例如：<ul>
+<li>资源创建成功：<code>201 Created</code></li>
+<li>请求成功但无内容返回：<code>204 No Content</code></li>
+<li>客户端请求错误：<code>400 Bad Request</code>, <code>401 Unauthorized</code>, <code>403 Forbidden</code>, <code>404 Not Found</code></li>
+<li>服务器内部错误：<code>500 Internal Server Error</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>设置自定义 HTTP 响应头</strong>：<ul>
+<li>例如，在创建资源后，通过 <code>Location</code> 头部返回新资源的 URI。</li>
+<li>设置 <code>Content-Type</code>, <code>Cache-Control</code>, <code>ETag</code>, <code>Set-Cookie</code> 等。</li>
+</ul>
+</li>
+<li><strong>没有响应体但需要指定状态码或头部</strong>：<ul>
+<li>例如，<code>DELETE</code> 请求成功后，通常返回 <code>204 No Content</code> 并且没有响应体。</li>
+</ul>
+</li>
+<li><strong>更明确和可控的响应构建</strong>：<ul>
+<li>使得代码意图更清晰，一眼就能看出该方法会返回什么样的 HTTP 响应。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="3-如何使用-ResponseEntity？"><a href="#3-如何使用-ResponseEntity？" class="headerlink" title="3. 如何使用 ResponseEntity？"></a>3. 如何使用 <code>ResponseEntity</code>？</h3><p>有多种方式可以创建和返回 <code>ResponseEntity</code> 实例。</p>
+<h4 id="a-使用构造函数-不常用，但可以了解"><a href="#a-使用构造函数-不常用，但可以了解" class="headerlink" title="a. 使用构造函数 (不常用，但可以了解)"></a>a. 使用构造函数 (不常用，但可以了解)</h4><p>可以直接使用 <code>ResponseEntity</code> 的构造函数来创建实例，但通常更推荐使用其提供的静态工厂方法或 <code>BodyBuilder</code> &#x2F; <code>HeadersBuilder</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.http.HttpHeaders;<br><span class="hljs-keyword">import</span> org.springframework.http.HttpStatus;<br><span class="hljs-keyword">import</span> org.springframework.http.ResponseEntity;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ExampleController</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/example-constructor&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;String&gt; <span class="hljs-title function_">exampleWithConstructor</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">String</span> <span class="hljs-variable">body</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Hello from constructor!&quot;</span>;<br>        <span class="hljs-type">HttpHeaders</span> <span class="hljs-variable">headers</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>();<br>        headers.add(<span class="hljs-string">&quot;Custom-Header&quot;</span>, <span class="hljs-string">&quot;MyValue&quot;</span>);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseEntity</span>&lt;&gt;(body, headers, HttpStatus.OK); <span class="hljs-comment">// body, headers, status</span><br>        <span class="hljs-comment">// 或者</span><br>        <span class="hljs-comment">// return new ResponseEntity&lt;&gt;(body, headers, 200); // body, headers, raw status code</span><br>        <span class="hljs-comment">// 或者，如果只有 body 和 status</span><br>        <span class="hljs-comment">// return new ResponseEntity&lt;&gt;(body, HttpStatus.CREATED);</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="b-使用静态工厂方法-非常常用"><a href="#b-使用静态工厂方法-非常常用" class="headerlink" title="b. 使用静态工厂方法 (非常常用)"></a>b. 使用静态工厂方法 (非常常用)</h4><p><code>ResponseEntity</code> 类提供了一系列方便的静态工厂方法来创建实例，这些方法通常以 HTTP 状态命名或描述其行为。</p>
+<p><strong>常用的静态工厂方法：</strong></p>
+<ul>
+<li><code>ResponseEntity.ok(T body)</code>: 返回 <code>200 OK</code> 状态，并带有响应体。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/users/&#123;id&#125;&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;UserDto&gt; <span class="hljs-title function_">getUserById</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long id)</span> &#123;<br>    <span class="hljs-type">UserDto</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userService.findById(id);<br>    <span class="hljs-keyword">if</span> (user != <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">return</span> ResponseEntity.ok(user); <span class="hljs-comment">// 200 OK with user DTO in body</span><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">return</span> ResponseEntity.notFound().build(); <span class="hljs-comment">// 404 Not Found, no body</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><code>ResponseEntity.ok().build()</code>: 返回 <code>200 OK</code> 状态，没有响应体 (较少见，通常 <code>200</code> 期望有内容)。</li>
+<li><code>ResponseEntity.created(URI location).body(T body)</code>: 返回 <code>201 Created</code> 状态，通常用于 <code>POST</code> 请求成功创建资源后。<code>location</code> 参数指定了新创建资源的 URI。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/users&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;UserDto&gt; <span class="hljs-title function_">createUser</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> UserDto newUser)</span> &#123;<br>    <span class="hljs-type">UserDto</span> <span class="hljs-variable">createdUser</span> <span class="hljs-operator">=</span> userService.createUser(newUser);<br>    <span class="hljs-comment">// 假设 createdUser 有一个 getId() 方法</span><br>    <span class="hljs-type">URI</span> <span class="hljs-variable">location</span> <span class="hljs-operator">=</span> ServletUriComponentsBuilder.fromCurrentRequest()<br>                                         .path(<span class="hljs-string">&quot;/&#123;id&#125;&quot;</span>)<br>                                         .buildAndExpand(createdUser.getId())<br>                                         .toUri();<br>    <span class="hljs-keyword">return</span> ResponseEntity.created(location).body(createdUser); <span class="hljs-comment">// 201 Created with location header and body</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><code>ResponseEntity.accepted()</code>: 返回 <code>202 Accepted</code> 状态，表示请求已被接受处理，但处理尚未完成 (例如异步任务)。通常没有响应体。</li>
+<li><code>ResponseEntity.noContent().build()</code>: 返回 <code>204 No Content</code> 状态，表示请求成功处理，但没有内容返回。常用于 <code>DELETE</code> 或 <code>PUT</code> (不返回更新后资源) 操作。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@DeleteMapping(&quot;/users/&#123;id&#125;&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;Void&gt; <span class="hljs-title function_">deleteUser</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Long id)</span> &#123;<br>    <span class="hljs-type">boolean</span> <span class="hljs-variable">deleted</span> <span class="hljs-operator">=</span> userService.deleteById(id);<br>    <span class="hljs-keyword">if</span> (deleted) &#123;<br>        <span class="hljs-keyword">return</span> ResponseEntity.noContent().build(); <span class="hljs-comment">// 204 No Content</span><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">return</span> ResponseEntity.notFound().build(); <span class="hljs-comment">// 404 Not Found if user didn&#x27;t exist</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><code>ResponseEntity.badRequest().body(T errorBody)</code>: 返回 <code>400 Bad Request</code> 状态，通常用于客户端请求无效 (例如参数错误、校验失败)。可以附带错误详情作为响应体。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/validate&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;?&gt; validateData(<span class="hljs-meta">@Valid</span> <span class="hljs-meta">@RequestBody</span> DataDto data, BindingResult bindingResult) &#123;<br>    <span class="hljs-keyword">if</span> (bindingResult.hasErrors()) &#123;<br>        Map&lt;String, String&gt; errors = ... <span class="hljs-comment">// 从 bindingResult 提取错误</span><br>        <span class="hljs-keyword">return</span> ResponseEntity.badRequest().body(errors); <span class="hljs-comment">// 400 Bad Request with error map</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> ResponseEntity.ok(<span class="hljs-string">&quot;Data is valid&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><code>ResponseEntity.notFound().build()</code>: 返回 <code>404 Not Found</code> 状态，表示请求的资源不存在。</li>
+<li><code>ResponseEntity.status(HttpStatus status).body(T body)</code>: 返回指定的状态码，并带有响应体。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/custom-status&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;String&gt; <span class="hljs-title function_">customStatus</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).body(<span class="hljs-string">&quot;I&#x27;m a little teapot!&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><code>ResponseEntity.status(int rawStatusCode).body(T body)</code>: 使用原始 <code>int</code> 值指定状态码。</li>
+</ul>
+<h4 id="c-使用-BodyBuilder-和-HeadersBuilder-链式构建，非常灵活"><a href="#c-使用-BodyBuilder-和-HeadersBuilder-链式构建，非常灵活" class="headerlink" title="c. 使用 BodyBuilder 和 HeadersBuilder (链式构建，非常灵活)"></a>c. 使用 <code>BodyBuilder</code> 和 <code>HeadersBuilder</code> (链式构建，非常灵活)</h4><p>静态方法如 <code>ok()</code>, <code>created()</code>, <code>status()</code> 等通常会返回一个 <code>BodyBuilder</code> 或其子接口 <code>HeadersBuilder</code> 的实例，允许你链式地设置头部信息，最后通过 <code>body()</code> 或 <code>build()</code> 方法完成 <code>ResponseEntity</code> 的构建。</p>
+<ul>
+<li><code>BodyBuilder</code>: 允许设置头部，并最终通过 <code>body()</code> 方法设置响应体来构建 <code>ResponseEntity</code>。<ul>
+<li><code>ok()</code>, <code>created(URI)</code>, <code>accepted()</code>, <code>noContent()</code>, <code>badRequest()</code>, <code>notFound()</code>, <code>status(HttpStatus)</code> 等方法返回 <code>BodyBuilder</code>。</li>
+</ul>
+</li>
+<li><code>HeadersBuilder</code>: <code>BodyBuilder</code> 的一个子接口，主要强调头部设置。</li>
+</ul>
+<p><strong>示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/builder-example&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;String&gt; <span class="hljs-title function_">builderExample</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> ResponseEntity.status(HttpStatus.OK) <span class="hljs-comment">// 返回一个 BodyBuilder</span><br>                         .header(<span class="hljs-string">&quot;X-Custom-Header&quot;</span>, <span class="hljs-string">&quot;ValueFromBuilder&quot;</span>)<br>                         .header(<span class="hljs-string">&quot;Cache-Control&quot;</span>, <span class="hljs-string">&quot;no-cache, no-store, must-revalidate&quot;</span>)<br>                         .contentType(MediaType.APPLICATION_JSON) <span class="hljs-comment">// MediaType.TEXT_PLAIN 等</span><br>                         .contentLength(<span class="hljs-number">100</span>) <span class="hljs-comment">// 设置 Content-Length (如果知道)</span><br>                         .eTag(<span class="hljs-string">&quot;\&quot;someETagValue\&quot;&quot;</span>) <span class="hljs-comment">// 设置 ETag</span><br>                         .body(<span class="hljs-string">&quot;Response built with BodyBuilder!&quot;</span>);<br>&#125;<br><br><span class="hljs-meta">@GetMapping(&quot;/builder-no-body&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;Void&gt; <span class="hljs-title function_">builderNoBody</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> ResponseEntity.noContent() <span class="hljs-comment">// 返回一个 BodyBuilder</span><br>                         .header(<span class="hljs-string">&quot;X-Processed-By&quot;</span>, <span class="hljs-string">&quot;MyApplication&quot;</span>)<br>                         .build(); <span class="hljs-comment">// build() 用于没有响应体的情况</span><br>&#125;<br><br><span class="hljs-meta">@PostMapping(&quot;/create-with-builder&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;ResourceRepresentation&gt; <span class="hljs-title function_">createResource</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> ResourceCreationDto dto)</span> &#123;<br>    <span class="hljs-type">Resource</span> <span class="hljs-variable">newResource</span> <span class="hljs-operator">=</span> resourceService.create(dto);<br>    <span class="hljs-type">URI</span> <span class="hljs-variable">location</span> <span class="hljs-operator">=</span> ServletUriComponentsBuilder.fromCurrentRequest()<br>                                         .path(<span class="hljs-string">&quot;/&#123;id&#125;&quot;</span>)<br>                                         .buildAndExpand(newResource.getId())<br>                                         .toUri();<br><br>    <span class="hljs-keyword">return</span> ResponseEntity.created(location) <span class="hljs-comment">// 返回 BodyBuilder</span><br>                         .header(<span class="hljs-string">&quot;X-Resource-Type&quot;</span>, <span class="hljs-string">&quot;CustomType&quot;</span>)<br>                         .body(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ResourceRepresentation</span>(newResource)); <span class="hljs-comment">// 使用 body() 设置响应体</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong><code>BodyBuilder</code> 常用的方法：</strong></p>
+<ul>
+<li><code>header(String headerName, String... headerValues)</code>: 添加一个响应头。</li>
+<li><code>headers(HttpHeaders headers)</code>: 添加多个响应头。</li>
+<li><code>contentType(MediaType mediaType)</code>: 设置 <code>Content-Type</code> 响应头。</li>
+<li><code>contentLength(long contentLength)</code>: 设置 <code>Content-Length</code> 响应头。</li>
+<li><code>eTag(String eTag)</code>: 设置 <code>ETag</code> 响应头 (用于缓存控制)。</li>
+<li><code>lastModified(long lastModified)</code> &#x2F; <code>lastModified(ZonedDateTime lastModified)</code>: 设置 <code>Last-Modified</code> 响应头。</li>
+<li><code>location(URI location)</code>: 设置 <code>Location</code> 响应头 (通常由 <code>created()</code> 方法内部调用)。</li>
+<li><code>allow(HttpMethod... allowedMethods)</code>: 设置 <code>Allow</code> 响应头 (通常用于 <code>405 Method Not Allowed</code>)。</li>
+<li><code>cacheControl(CacheControl cacheControl)</code>: 设置 <code>Cache-Control</code> 响应头。</li>
+<li><code>varyBy(String... requestHeaders)</code>: 设置 <code>Vary</code> 响应头。</li>
+<li><code>body(T body)</code>: 设置响应体并构建 <code>ResponseEntity&lt;T&gt;</code>。</li>
+<li><code>build()</code>: 构建 <code>ResponseEntity&lt;Void&gt;</code> (当没有响应体时使用)。</li>
+</ul>
+<hr>
+<h3 id="4-泛型-Void-的使用"><a href="#4-泛型-Void-的使用" class="headerlink" title="4. 泛型 Void 的使用"></a>4. 泛型 <code>Void</code> 的使用</h3><p>当 HTTP 响应不需要返回任何主体内容时 (例如 <code>204 No Content</code> 或某些 <code>DELETE</code> 操作成功后的 <code>200 OK</code>)，可以将 <code>ResponseEntity</code> 的泛型类型指定为 <code>Void</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@DeleteMapping(&quot;/items/&#123;id&#125;&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;Void&gt; <span class="hljs-title function_">deleteItem</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> String id)</span> &#123;<br>    itemService.delete(id);<br>    <span class="hljs-keyword">return</span> ResponseEntity.noContent().build(); <span class="hljs-comment">// 204 No Content, body is Void</span><br>&#125;<br><br><span class="hljs-meta">@PutMapping(&quot;/items/&#123;id&#125;/status&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;Void&gt; <span class="hljs-title function_">updateItemStatus</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> String id, <span class="hljs-meta">@RequestBody</span> StatusUpdateDto statusUpdate)</span> &#123;<br>    itemService.updateStatus(id, statusUpdate);<br>    <span class="hljs-keyword">return</span> ResponseEntity.ok().build(); <span class="hljs-comment">// 200 OK, no body returned explicitly</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-结合-ResponseStatus-和直接返回对象"><a href="#5-结合-ResponseStatus-和直接返回对象" class="headerlink" title="5. 结合 @ResponseStatus 和直接返回对象"></a>5. 结合 <code>@ResponseStatus</code> 和直接返回对象</h3><p>虽然 <code>ResponseEntity</code> 提供了最大的灵活性，但在一些简单场景下，你可能只想改变状态码而不想构建完整的 <code>ResponseEntity</code>。此时，可以使用 <code>@ResponseStatus</code> 注解与直接返回对象结合。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.http.HttpStatus;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.PostMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RequestBody;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.ResponseStatus;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SimpleController</span> &#123;<br><br>    <span class="hljs-meta">@PostMapping(&quot;/simple-create&quot;)</span><br>    <span class="hljs-meta">@ResponseStatus(HttpStatus.CREATED)</span> <span class="hljs-comment">// 指定成功时的状态码为 201</span><br>    <span class="hljs-keyword">public</span> Item <span class="hljs-title function_">createItem</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Item item)</span> &#123;<br>        <span class="hljs-type">Item</span> <span class="hljs-variable">createdItem</span> <span class="hljs-operator">=</span> itemService.save(item);<br>        <span class="hljs-comment">// Spring会自动将 createdItem 序列化为响应体，并使用 @ResponseStatus 指定的状态码</span><br>        <span class="hljs-keyword">return</span> createdItem;<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/simple-no-content&quot;)</span><br>    <span class="hljs-meta">@ResponseStatus(HttpStatus.NO_CONTENT)</span> <span class="hljs-comment">// 指定成功时的状态码为 204</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">getNoContent</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 方法返回 void，Spring 会发送一个 204 No Content 响应，没有响应体</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong><code>@ResponseStatus</code> 的局限性</strong>：</p>
+<ul>
+<li>它只能为成功情况指定一个固定的状态码。</li>
+<li>它不能动态地根据逻辑分支返回不同的状态码 (例如，成功时 <code>200</code>，资源不存在时 <code>404</code>)。</li>
+<li>它不能用来设置响应头。</li>
+</ul>
+<p>因此，当需要更细致的控制时，<code>ResponseEntity</code> 仍然是首选。</p>
+<hr>
+<h3 id="6-异常处理中的-ResponseEntity"><a href="#6-异常处理中的-ResponseEntity" class="headerlink" title="6. 异常处理中的 ResponseEntity"></a>6. 异常处理中的 <code>ResponseEntity</code></h3><p><code>ResponseEntity</code> 在通过 <code>@ControllerAdvice</code> 和 <code>@ExceptionHandler</code> 进行全局或局部异常处理时也非常有用，可以让你为不同类型的异常返回定制的 HTTP 响应。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@ControllerAdvice</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GlobalExceptionHandler</span> &#123;<br><br>    <span class="hljs-meta">@ExceptionHandler(ResourceNotFoundException.class)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;ErrorResponse&gt; <span class="hljs-title function_">handleResourceNotFound</span><span class="hljs-params">(ResourceNotFoundException ex, WebRequest request)</span> &#123;<br>        <span class="hljs-type">ErrorResponse</span> <span class="hljs-variable">errorDetails</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ErrorResponse</span>(<br>            LocalDateTime.now(),<br>            HttpStatus.NOT_FOUND.value(),<br>            <span class="hljs-string">&quot;Resource Not Found&quot;</span>,<br>            ex.getMessage(),<br>            request.getDescription(<span class="hljs-literal">false</span>)<br>        );<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseEntity</span>&lt;&gt;(errorDetails, HttpStatus.NOT_FOUND);<br>    &#125;<br><br>    <span class="hljs-meta">@ExceptionHandler(MethodArgumentNotValidException.class)</span> <span class="hljs-comment">// Bean Validation 失败</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;Map&lt;String, String&gt;&gt; <span class="hljs-title function_">handleValidationExceptions</span><span class="hljs-params">(MethodArgumentNotValidException ex)</span> &#123;<br>        Map&lt;String, String&gt; errors = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>        ex.getBindingResult().getAllErrors().forEach((error) -&gt; &#123;<br>            <span class="hljs-type">String</span> <span class="hljs-variable">fieldName</span> <span class="hljs-operator">=</span> ((FieldError) error).getField();<br>            <span class="hljs-type">String</span> <span class="hljs-variable">errorMessage</span> <span class="hljs-operator">=</span> error.getDefaultMessage();<br>            errors.put(fieldName, errorMessage);<br>        &#125;);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseEntity</span>&lt;&gt;(errors, HttpStatus.BAD_REQUEST);<br>    &#125;<br><br>    <span class="hljs-comment">// ... 其他异常处理</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li><code>ResponseEntity&lt;T&gt;</code> 封装了 HTTP 响应的<strong>状态码</strong>、<strong>头部</strong>和<strong>主体</strong>。</li>
+<li><strong>使用场景</strong>：需要自定义状态码、设置响应头、或对响应有精细控制时。</li>
+<li><strong>创建方式</strong>：<ul>
+<li><strong>静态工厂方法</strong> (如 <code>ResponseEntity.ok()</code>, <code>ResponseEntity.notFound().build()</code>) 是最常用的。</li>
+<li><strong><code>BodyBuilder</code> &#x2F; <code>HeadersBuilder</code></strong> (如 <code>ResponseEntity.status().header().body()</code>) 提供链式构建的灵活性。</li>
+</ul>
+</li>
+<li>响应体类型 <code>T</code> 可以是任何对象，或者用 <code>Void</code> 表示没有响应体。</li>
+<li>在异常处理中，<code>ResponseEntity</code> 可以让你返回结构化的错误响应和适当的状态码。</li>
+</ul>
+<p><code>ResponseEntity</code> 是 Spring MVC 中构建专业、符合 HTTP 规范的 RESTful API 的重要工具。它使得开发者能够完全掌控返回给客户端的 HTTP 响应的每一个方面。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-MVC/" class="category-chain-item">Spring MVC</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>ResponseEntity</div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring MVC/ResponseEntity/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20MVC/%E7%A0%94%E7%A9%B6/" title="研究">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">研究</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Cloud/Spring%20Boot%20Microservices%20%E9%A1%B9%E7%9B%AE%E6%95%99%E7%A8%8B/%E6%9C%8D%E5%8A%A1%E9%97%B4%E9%80%9A%E4%BF%A1/RestClient/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

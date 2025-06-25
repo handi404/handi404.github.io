@@ -1,0 +1,892 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="简单介绍别再使用 fastJson 了！漏洞天天报，Bug 修不完。快来拥抱 Jackson 吧！ Jackson 是用来序列化和反序列化 json 的 Java 的开源框架。Spring MVC 的默认 json 解析器便是 Jackson。与其他 Java 的 json 的框架 Gson 等相比， Jackson 解析大的 json 文件速度比较快；Jackson 运行时占用内存比较低，性能比">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Jackson/Jackson%20%E6%A1%86%E6%9E%B6%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="简单介绍别再使用 fastJson 了！漏洞天天报，Bug 修不完。快来拥抱 Jackson 吧！ Jackson 是用来序列化和反序列化 json 的 Java 的开源框架。Spring MVC 的默认 json 解析器便是 Jackson。与其他 Java 的 json 的框架 Gson 等相比， Jackson 解析大的 json 文件速度比较快；Jackson 运行时占用内存比较低，性能比">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.179Z">
+<meta property="article:modified_time" content="2024-11-30T06:43:25.155Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2024年11月30日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h3><p>别再使用 fastJson 了！漏洞天天报，Bug 修不完。快来拥抱 Jackson 吧！</p>
+<p>Jackson 是用来序列化和<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96&spm=1001.2101.3001.7020">反序列化</a> json 的 Java 的开源框架。Spring MVC 的默认 json 解析器便是 Jackson。与其他 Java 的 json 的框架 Gson 等相比， Jackson 解析大的 json 文件速度比较快；Jackson 运行时占用内存比较低，<a target="_blank" rel="noopener" href="https://marketing.csdn.net/p/3127db09a98e0723b83b2914d9256174?pId=2782?utm_source=glcblog&spm=1001.2101.3001.7020">性能</a>比较好；Jackson 有灵活的 API，可以很容易进行扩展和定制。</p>
+<p>Jackson 的 1.x 版本的包名是 org.codehaus.jackson ，当升级到 2.x 版本时，包名变为 com.fasterxml.jackson，本文讨论的内容是基于最新的 Jackson 的 2.9.1 版本。</p>
+<p>Jackson 的核心模块由三部分组成。</p>
+<ul>
+<li><p>jackson-core，核心包，提供基于”流模式”解析的相关 API，它包括 JsonPaser 和 JsonGenerator。Jackson 内部实现正是通过高性能的流模式 API 的 JsonGenerator 和 JsonParser 来生成和解析 json。</p>
+</li>
+<li><p>jackson-annotations，注解包，提供标准注解功能；</p>
+</li>
+<li><p>jackson-databind ，数据绑定包， 提供基于”对象绑定” 解析的相关 API （ ObjectMapper ） 和”树模型” 解析的相关 API （JsonNode）；基于”对象绑定” 解析的 API 和”树模型”解析的 API 依赖基于”流模式”解析的 API。</p>
+</li>
+</ul>
+<p>在了解 Jackson 的概要情况之后，下面介绍 Jackson 的基本用法。</p>
+<h3 id="导入依赖"><a href="#导入依赖" class="headerlink" title="导入依赖"></a>导入依赖</h3><p>若想在 Java 代码中使用 Jackson 的核心模块的 jar 包 ，需要在 pom.xml 中添加如下信息。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span> <br>	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.core<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span> <br>	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-databind<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span> <br>	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><code>jackson-databind</code> 依赖 <code>jackson-core</code> 和 <code>jackson-annotations</code>，当添加 <code>jackson-databind</code> 之后， <code>jackson-core</code> 和 <code>jackson-annotations</code> 也随之添加到 Java 项目工程中。在添加相关依赖包之后，就可以使用 Jackson。</p>
+<h3 id="快速入门"><a href="#快速入门" class="headerlink" title="快速入门"></a>快速入门</h3><p>Jackson 最常用的 API 就是基于”对象绑定” 的 ObjectMapper。下面是一个 ObjectMapper 的使用的简单示例。</p>
+<p>准备一个名称为 Person 的 Java 对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;<br>    <span class="hljs-comment">// 正常case</span><br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-comment">// 空对象case</span><br>    <span class="hljs-keyword">private</span> Integer age;<br>    <span class="hljs-comment">// 日期转换case</span><br>    <span class="hljs-keyword">private</span> Date date;<br>    <span class="hljs-comment">// 默认值case</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> height;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>使用示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test1</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>    <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br>    <span class="hljs-comment">// 造数据</span><br>    <span class="hljs-type">Person</span> <span class="hljs-variable">person</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>();<br>    person.setName(<span class="hljs-string">&quot;Tom&quot;</span>);<br>    person.setAge(<span class="hljs-number">40</span>);<br>    person.setDate(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>    System.out.println(<span class="hljs-string">&quot;序列化&quot;</span>);<br>    <span class="hljs-type">String</span> <span class="hljs-variable">jsonString</span> <span class="hljs-operator">=</span> mapper.writerWithDefaultPrettyPrinter().writeValueAsString(person);<br>    System.out.println(jsonString);<br>    System.out.println(<span class="hljs-string">&quot;反序列化&quot;</span>);<br>    <span class="hljs-type">Person</span> <span class="hljs-variable">deserializedPerson</span> <span class="hljs-operator">=</span> mapper.readValue(jsonString, Person.class);<br>    System.out.println(deserializedPerson);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印输出：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java">序列化<br>&#123;<br><span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span>,<br><span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-number">40</span>,<br><span class="hljs-string">&quot;date&quot;</span> : <span class="hljs-number">1594634846647</span>,<br><span class="hljs-string">&quot;man&quot;</span> : <span class="hljs-literal">null</span>,<br><span class="hljs-string">&quot;height&quot;</span> : <span class="hljs-number">0</span><br>&#125;<br>反序列化<br>JackSonTest.Person(name=Tom, age=<span class="hljs-number">40</span>, date=Mon Jul <span class="hljs-number">13</span> <span class="hljs-number">18</span>:<span class="hljs-number">07</span>:<span class="hljs-number">26</span> CST <span class="hljs-number">2020</span>, man=<span class="hljs-literal">null</span>, height=<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+
+<p>ObjectMapper 通过 writeValue 系列方法将 java 对象序列化为 json，并将 json 存储成不同的格式，<a target="_blank" rel="noopener" href="https://marketing.csdn.net/p/3127db09a98e0723b83b2914d9256174?pId=2782?utm_source=glcblog&spm=1001.2101.3001.7020">String</a>（writeValueAsString），Byte Array（writeValueAsString），Writer， File，OutStream 和 DataOutput。</p>
+<p>ObjectMapper 通过 readValue 系列方法从不同的数据源像 String ， Byte Array， Reader，File，URL， InputStream 将 json 反序列化为 java 对象。</p>
+<h3 id="统一配置"><a href="#统一配置" class="headerlink" title="统一配置"></a>统一配置</h3><p>在调用 writeValue 或调用 readValue 方法之前，往往需要设置 ObjectMapper 的相关配置信息。这些配置信息应用 java 对象的所有属性上。示例如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-comment">//在反序列化时忽略在 json 中存在但 Java 对象不存在的属性</span><br>mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, <span class="hljs-literal">false</span>);<br><span class="hljs-comment">//在序列化时日期格式默认为 yyyy-MM-dd&#x27;T&#x27;HH:mm:ss.SSSZ</span><br>mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, <span class="hljs-literal">false</span>);<br><span class="hljs-comment">//在序列化时自定义时间日期格式</span><br>mapper.setDateFormat(<span class="hljs-built_in">new</span> SimpleDateFormat(<span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>));<br><span class="hljs-comment">//在序列化时忽略值为 null 的属性</span><br>mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);<br><span class="hljs-comment">//在序列化时忽略值为默认值的属性</span><br>mapper.setDefaultPropertyInclusion(JsonInclude.Include.NON_DEFAULT);<br></code></pre></td></tr></table></figure>
+
+<p>更多配置信息可以查看 Jackson 的 DeserializationFeature，SerializationFeature 和 Include。</p>
+<p>重新运行<a target="_blank" rel="noopener" href="https://edu.csdn.net/cloud/sd_summit?utm_source=glcblog&spm=1001.2101.3001.7020">单元测试</a>1，打印输出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs go">序列化<br>&#123;<br>  <span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span>,<br>  <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-number">40</span>,<br>  <span class="hljs-string">&quot;date&quot;</span> : <span class="hljs-string">&quot;2020-07-26 18:46:51&quot;</span><br>&#125;<br>反序列化<br>JackSonTest.Person(name=Tom, age=<span class="hljs-number">40</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">18</span>:<span class="hljs-number">46</span>:<span class="hljs-number">51</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>)<br></code></pre></td></tr></table></figure>
+
+<h3 id="使用注解"><a href="#使用注解" class="headerlink" title="使用注解"></a>使用注解</h3><p>Jackson 根据它的默认方式序列化和反序列化 java 对象，若根据实际需要，灵活的调整它的默认方式，可以使用 Jackson 的注解。常用的注解及用法如下。</p>
+<table>
+<thead>
+<tr>
+<th>注解</th>
+<th>用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>@JsonProperty</td>
+<td>用于属性，把属性的名称序列化时转换为另外一个名称。示例：@JsonProperty(“birth_date”) <br>private Date birthDate</td>
+</tr>
+<tr>
+<td>@JsonIgnore</td>
+<td>可用于字段、getter&#x2F;setter、构造函数参数上，作用相同，都会对相应的字段产生影响。使相应字段不参与序列化和反序列化。</td>
+</tr>
+<tr>
+<td>@JsonIgnoreProperties</td>
+<td>该注解是类注解。该注解在Java类和JSON不完全匹配的时候使用。</td>
+</tr>
+<tr>
+<td>@JsonFormat</td>
+<td>用于属性或者方法，把属性的格式序列化时转换成指定的格式。示例：@JsonFormat(timezone &#x3D; “GMT+8”, pattern &#x3D; “yyyy-MM-dd HH:mm”) public Date getBirthDate()</td>
+</tr>
+<tr>
+<td>@JsonPropertyOrder</td>
+<td>用于类， 和 @JsonProperty 的index属性类似，指定属性在序列化时 json 中的顺序 ， 示例：@JsonPropertyOrder({ “birth_Date”, “name” }) public class Person</td>
+</tr>
+<tr>
+<td>@JsonCreator</td>
+<td>用于构造方法，和 @JsonProperty 配合使用，适用有参数的构造方法。示例：@JsonCreator public Person(@JsonProperty(“name”)String name) {…}</td>
+</tr>
+<tr>
+<td>@JsonAnySetter</td>
+<td>用于属性或者方法，设置未反序列化的属性名和值作为键值存储到 map 中 @JsonAnySetter public void set(String key, Object value) { map.put(key, value); }</td>
+</tr>
+<tr>
+<td>@JsonAnyGetter</td>
+<td>用于方法 ，获取所有未序列化的属性 public Map&lt;String, Object&gt; any() { return map; }</td>
+</tr>
+<tr>
+<td>@JsonNaming</td>
+<td>类注解。序列化的时候该注解可将驼峰命名的字段名转换为下划线分隔的小写字母命名方式。反序列化的时候可以将下划线分隔的小写字母转换为驼峰命名的字段名。示例：@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)</td>
+</tr>
+<tr>
+<td>@JsonRootName</td>
+<td>类注解。需开启mapper.enable(SerializationFeature.WRAP_ROOT_VALUE)，用于序列化时输出带有根属性名称的 JSON 串，形式如 {“root_name”:{“id”:1,”name”:”zhangsan”}}。但不支持该 JSON 串反序列化。</td>
+</tr>
+</tbody></table>
+<p>使用示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 用于类,指定属性在序列化时 json 中的顺序</span><br><span class="hljs-meta">@JsonPropertyOrder(&#123;&quot;date&quot;, &quot;user_name&quot;&#125;)</span><br><span class="hljs-comment">// 批量忽略属性，不进行序列化</span><br><span class="hljs-meta">@JsonIgnoreProperties(value = &#123;&quot;other&quot;&#125;)</span><br><span class="hljs-comment">// 用于序列化与反序列化时的驼峰命名与小写字母命名转换</span><br><span class="hljs-meta">@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-meta">@JsonIgnore</span><br>    <span class="hljs-keyword">private</span> Map&lt;String, Object&gt; other = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br> <br>    <span class="hljs-comment">// 正常case</span><br>    <span class="hljs-meta">@JsonProperty(&quot;user_name&quot;)</span><br>    <span class="hljs-keyword">private</span> String userName;<br>    <span class="hljs-comment">// 空对象case</span><br>    <span class="hljs-keyword">private</span> Integer age;<br>    <span class="hljs-meta">@JsonFormat(timezone = &quot;GMT+8&quot;, pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)</span><br>    <span class="hljs-comment">// 日期转换case</span><br>    <span class="hljs-keyword">private</span> Date date;<br>    <span class="hljs-comment">// 默认值case</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> height;<br> <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">User</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br> <br>    <span class="hljs-comment">// 反序列化执行构造方法</span><br>    <span class="hljs-meta">@JsonCreator</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">User</span><span class="hljs-params">(<span class="hljs-meta">@JsonProperty(&quot;user_name&quot;)</span> String userName)</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;@JsonCreator 注解使得反序列化自动执行该构造方法 &quot;</span> + userName);<br>        <span class="hljs-comment">// 反序列化需要手动赋值</span><br>        <span class="hljs-built_in">this</span>.userName = userName;<br>    &#125;<br> <br>    <span class="hljs-meta">@JsonAnySetter</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">set</span><span class="hljs-params">(String key, Object value)</span> &#123;<br>        other.put(key, value);<br>    &#125;<br> <br>    <span class="hljs-meta">@JsonAnyGetter</span><br>    <span class="hljs-keyword">public</span> Map&lt;String, Object&gt; <span class="hljs-title function_">any</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> other;<br>    &#125;<br>    <span class="hljs-comment">// 本文默认省略getter、setter方法</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>单元测试：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs go">@Test<br>public void test3() throws IOException &#123;<br>    ObjectMapper mapper = <span class="hljs-built_in">new</span> ObjectMapper();<br>    <span class="hljs-comment">// 造数据</span><br>    Map&lt;String, Object&gt; <span class="hljs-keyword">map</span> = <span class="hljs-built_in">new</span> HashMap&lt;&gt;();<br>    <span class="hljs-keyword">map</span>.put(<span class="hljs-string">&quot;user_name&quot;</span>, <span class="hljs-string">&quot;Tom&quot;</span>);<br>    <span class="hljs-keyword">map</span>.put(<span class="hljs-string">&quot;date&quot;</span>, <span class="hljs-string">&quot;2020-07-26 19:28:44&quot;</span>);<br>    <span class="hljs-keyword">map</span>.put(<span class="hljs-string">&quot;age&quot;</span>, <span class="hljs-number">100</span>);<br>    <span class="hljs-keyword">map</span>.put(<span class="hljs-string">&quot;demoKey&quot;</span>, <span class="hljs-string">&quot;demoValue&quot;</span>);<br>    String jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(<span class="hljs-keyword">map</span>);<br>    System.out.<span class="hljs-built_in">println</span>(jsonString);<br>    System.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;反序列化&quot;</span>);<br>    User user = mapper.readValue(jsonString, User.class);<br>    System.out.<span class="hljs-built_in">println</span>(user);<br>    System.out.<span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;序列化&quot;</span>);<br>    jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(user);<br>    System.out.<span class="hljs-built_in">println</span>(jsonString);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印输出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs go">&#123;<br>  <span class="hljs-string">&quot;date&quot;</span> : <span class="hljs-string">&quot;2020-07-26 19:28:44&quot;</span>,<br>  <span class="hljs-string">&quot;demoKey&quot;</span> : <span class="hljs-string">&quot;demoValue&quot;</span>,<br>  <span class="hljs-string">&quot;user_name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span>,<br>  <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-number">100</span><br>&#125;<br>反序列化<br>@JsonCreator 注解使得反序列化自动执行该构造方法Tom<br>JackSonTest.User(other=&#123;demoKey=demoValue&#125;, userName=Tom, age=<span class="hljs-number">100</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">19</span>:<span class="hljs-number">28</span>:<span class="hljs-number">44</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>)<br>序列化<br>&#123;<br>  <span class="hljs-string">&quot;date&quot;</span> : <span class="hljs-string">&quot;2020-07-26 19:28:44&quot;</span>,<br>  <span class="hljs-string">&quot;user_name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span>,<br>  <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-number">100</span>,<br>  <span class="hljs-string">&quot;height&quot;</span> : <span class="hljs-number">0</span>,<br>  <span class="hljs-string">&quot;demoKey&quot;</span> : <span class="hljs-string">&quot;demoValue&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="日期处理"><a href="#日期处理" class="headerlink" title="日期处理"></a>日期处理</h3><p>不同类型的日期类型，JackSon 的处理方式也不同。</p>
+<h4 id="普通日期"><a href="#普通日期" class="headerlink" title="普通日期"></a>普通日期</h4><p>对于日期类型为 <code>java.util.Calendar</code>, <code>java.util.GregorianCalendar</code>, <code>java.sql.Date</code>, <code>java.util.Date</code>, <code>java.sql.Timestamp</code>，若不指定格式，在 json 文件中将序列化为 <code>long</code> 类型的数据。显然这种默认格式，可读性差，转换格式是必要的。</p>
+<p>JackSon 有很多方式转换日期格式。</p>
+<ul>
+<li><p>注解方式，使用 <code>@JsonFormat</code> 注解指定日期格式。</p>
+</li>
+<li><p>ObjectMapper 方式，调用 ObjectMapper 的方法 <code>setDateFormat</code>，将序列化为指定格式的 string 类型的数据。</p>
+</li>
+</ul>
+<h4 id="Local日期"><a href="#Local日期" class="headerlink" title="Local日期"></a>Local日期</h4><p>对于日期类型为 java.time.LocalDate, java.time.LocalDateTime，还需要添加代码 <code>mapper.registerModule(new JavaTimeModule())</code>，同时添加相应的依赖 jar 包。</p>
+<p>导入依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span> <br>  <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.datatype<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span> <br>  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-datatype-jsr310<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span> <br>  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>对于 Jackson 2.5 以下版本，需要添加代码 <code>mapper.registerModule(new JSR310Module ())</code>。</p>
+<p>使用示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Data</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span> &#123;<br>    <span class="hljs-comment">// 正常case</span><br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-comment">// 日期转换case</span><br>    <span class="hljs-keyword">private</span> LocalDateTime date;<br>&#125;<br> <br><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test4</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>    <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br>    <span class="hljs-comment">// 必须添加对LocalDate的支持</span><br>    mapper.registerModule(JavaTimeModule());<br>    <span class="hljs-comment">// 造数据</span><br>    <span class="hljs-type">Student</span> <span class="hljs-variable">student</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Student</span>();<br>    student.setName(<span class="hljs-string">&quot;Tom&quot;</span>);<br>    student.setDate(LocalDateTime.now());<br>    System.out.println(<span class="hljs-string">&quot;序列化&quot;</span>);<br>    <span class="hljs-type">String</span> <span class="hljs-variable">jsonString</span> <span class="hljs-operator">=</span> mapper.writerWithDefaultPrettyPrinter().writeValueAsString(student);<br>    System.out.println(jsonString);<br>    System.out.println(<span class="hljs-string">&quot;反序列化&quot;</span>);<br>    <span class="hljs-type">Student</span> <span class="hljs-variable">deserializedPerson</span> <span class="hljs-operator">=</span> mapper.readValue(jsonString, Student.class);<br>    System.out.println(deserializedPerson);<br>&#125;<br> <br><span class="hljs-keyword">private</span> Module <span class="hljs-title function_">JavaTimeModule</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-type">JavaTimeModule</span> <span class="hljs-variable">module</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JavaTimeModule</span>();<br>    <span class="hljs-type">String</span> <span class="hljs-variable">DATE_TIME_FORMAT</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span>;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">DATE_FORMAT</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;yyyy-MM-dd&quot;</span>;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">TIME_FORMAT</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;HH:mm:ss&quot;</span>;<br>    <span class="hljs-keyword">module</span>.addSerializer(LocalDateTime.class, <span class="hljs-keyword">new</span> <span class="hljs-title class_">LocalDateTimeSerializer</span>(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)));<br>    <span class="hljs-keyword">module</span>.addSerializer(LocalDate.class, <span class="hljs-keyword">new</span> <span class="hljs-title class_">LocalDateSerializer</span>(DateTimeFormatter.ofPattern(DATE_FORMAT)));<br>    <span class="hljs-keyword">module</span>.addSerializer(LocalTime.class, <span class="hljs-keyword">new</span> <span class="hljs-title class_">LocalTimeSerializer</span>(DateTimeFormatter.ofPattern((TIME_FORMAT))));<br>    <span class="hljs-keyword">module</span>.addDeserializer(LocalDateTime.class, <span class="hljs-keyword">new</span> <span class="hljs-title class_">LocalDateTimeDeserializer</span>(DateTimeFormatter.ofPattern(DATE_TIME_FORMAT)));<br>    <span class="hljs-keyword">module</span>.addDeserializer(LocalDate.class, <span class="hljs-keyword">new</span> <span class="hljs-title class_">LocalDateDeserializer</span>(DateTimeFormatter.ofPattern(DATE_FORMAT)));<br>    <span class="hljs-keyword">module</span>.addDeserializer(LocalTime.class, <span class="hljs-keyword">new</span> <span class="hljs-title class_">LocalTimeDeserializer</span>(DateTimeFormatter.ofPattern(TIME_FORMAT)));<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">module</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印输出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go">序列化<br>&#123;<br>  <span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span>,<br>  <span class="hljs-string">&quot;date&quot;</span> : <span class="hljs-string">&quot;2020-07-26 23:10:42&quot;</span><br>&#125;<br>反序列化<br>JackSonTest.Student(name=Tom, date=<span class="hljs-number">2020</span><span class="hljs-number">-07</span><span class="hljs-number">-26</span>T23:<span class="hljs-number">10</span>:<span class="hljs-number">42</span>)<br></code></pre></td></tr></table></figure>
+
+<h4 id="Joda日期"><a href="#Joda日期" class="headerlink" title="Joda日期"></a>Joda日期</h4><p>对于日期类型为 <code>org.joda.time.DateTime</code>，还需要添加代码 <code>mapper.registerModule(new JodaModule())</code>，同时添加相应的依赖 jar 包</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span> <br>  <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.fasterxml.jackson.datatype<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>jackson-datatype-joda<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span> <br>  <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.9.1<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="对象集合"><a href="#对象集合" class="headerlink" title="对象集合"></a>对象集合</h3><p>Jackson 对泛型反序列化也提供很好的支持。</p>
+<h4 id="List"><a href="#List" class="headerlink" title="List"></a>List</h4><p>对于 List 类型 ，可以调用 <code>constructCollectionType</code> 方法来序列化，也可以构造 <code>TypeReference</code> 来序列化。</p>
+<p>使用示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test5</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>    <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br>    <span class="hljs-type">CollectionType</span> <span class="hljs-variable">javaType</span> <span class="hljs-operator">=</span> mapper.getTypeFactory().constructCollectionType(List.class, Person.class);<br>    <span class="hljs-comment">// 造数据</span><br>    List&lt;Person&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) &#123;<br>        <span class="hljs-type">Person</span> <span class="hljs-variable">person</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>();<br>        person.setName(<span class="hljs-string">&quot;Tom&quot;</span>);<br>        person.setAge(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>().nextInt(<span class="hljs-number">100</span>));<br>        person.setDate(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>        list.add(person);<br>    &#125;<br>    System.out.println(<span class="hljs-string">&quot;序列化&quot;</span>);<br>    <span class="hljs-type">String</span> <span class="hljs-variable">jsonInString</span> <span class="hljs-operator">=</span> mapper.writerWithDefaultPrettyPrinter().writeValueAsString(list);<br>    System.out.println(jsonInString);<br>    System.out.println(<span class="hljs-string">&quot;反序列化：使用 javaType&quot;</span>);<br>    List&lt;Person&gt; personList = mapper.readValue(jsonInString, javaType);<br>    System.out.println(personList);<br>    System.out.println(<span class="hljs-string">&quot;反序列化：使用 TypeReference&quot;</span>);<br>    List&lt;Person&gt; personList2 = mapper.readValue(jsonInString, <span class="hljs-keyword">new</span> <span class="hljs-title class_">TypeReference</span>&lt;List&lt;Person&gt;&gt;() &#123;<br>    &#125;);<br>    System.out.println(personList2);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印输出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs go">序列化<br>[ &#123;<br>  <span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span>,<br>  <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-number">33</span>,<br>  <span class="hljs-string">&quot;date&quot;</span> : <span class="hljs-number">1595778639371</span>,<br>  <span class="hljs-string">&quot;height&quot;</span> : <span class="hljs-number">0</span><br>&#125;, &#123;<br>  <span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span>,<br>  <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-number">3</span>,<br>  <span class="hljs-string">&quot;date&quot;</span> : <span class="hljs-number">1595778639371</span>,<br>  <span class="hljs-string">&quot;height&quot;</span> : <span class="hljs-number">0</span><br>&#125;, &#123;<br>  <span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span>,<br>  <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-number">36</span>,<br>  <span class="hljs-string">&quot;date&quot;</span> : <span class="hljs-number">1595778639371</span>,<br>  <span class="hljs-string">&quot;height&quot;</span> : <span class="hljs-number">0</span><br>&#125; ]<br>反序列化：使用 javaType<br>[JackSonTest.Person(name=Tom, age=<span class="hljs-number">33</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">50</span>:<span class="hljs-number">39</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>), JackSonTest.Person(name=Tom, age=<span class="hljs-number">3</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">50</span>:<span class="hljs-number">39</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>), JackSonTest.Person(name=Tom, age=<span class="hljs-number">36</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">50</span>:<span class="hljs-number">39</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>)]<br>反序列化：使用 TypeReference<br>[JackSonTest.Person(name=Tom, age=<span class="hljs-number">33</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">50</span>:<span class="hljs-number">39</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>), JackSonTest.Person(name=Tom, age=<span class="hljs-number">3</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">50</span>:<span class="hljs-number">39</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>), JackSonTest.Person(name=Tom, age=<span class="hljs-number">36</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">50</span>:<span class="hljs-number">39</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>)]<br></code></pre></td></tr></table></figure>
+
+<h4 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h4><p>对于 map 类型， 与 List 的实现方式相似。</p>
+<p>使用示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test6</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>    <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br>    <span class="hljs-comment">//第二参数是 map 的 key 的类型，第三参数是 map 的 value 的类型</span><br>    <span class="hljs-type">MapType</span> <span class="hljs-variable">javaType</span> <span class="hljs-operator">=</span> mapper.getTypeFactory().constructMapType(HashMap.class, String.class, Person.class);<br>    <span class="hljs-comment">// 造数据</span><br>    Map&lt;String, Person&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">3</span>; i++) &#123;<br>        <span class="hljs-type">Person</span> <span class="hljs-variable">person</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>();<br>        person.setName(<span class="hljs-string">&quot;Tom&quot;</span>);<br>        person.setAge(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Random</span>().nextInt(<span class="hljs-number">100</span>));<br>        person.setDate(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>        map.put(<span class="hljs-string">&quot;key&quot;</span> + i, person);<br>    &#125;<br>    System.out.println(<span class="hljs-string">&quot;序列化&quot;</span>);<br>    <span class="hljs-type">String</span> <span class="hljs-variable">jsonInString</span> <span class="hljs-operator">=</span> mapper.writerWithDefaultPrettyPrinter().writeValueAsString(map);<br>    System.out.println(jsonInString);<br>    System.out.println(<span class="hljs-string">&quot;反序列化: 使用 javaType&quot;</span>);<br>    Map&lt;String, Person&gt; personMap = mapper.readValue(jsonInString, javaType);<br>    System.out.println(personMap);<br>    System.out.println(<span class="hljs-string">&quot;反序列化: 使用 TypeReference&quot;</span>);<br>    Map&lt;String, Person&gt; personMap2 = mapper.readValue(jsonInString, <span class="hljs-keyword">new</span> <span class="hljs-title class_">TypeReference</span>&lt;Map&lt;String, Person&gt;&gt;() &#123;<br>    &#125;);<br>    System.out.println(personMap2);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印输出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs go">序列化<br>&#123;<br>  <span class="hljs-string">&quot;key1&quot;</span> : &#123;<br>    <span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span>,<br>    <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-number">95</span>,<br>    <span class="hljs-string">&quot;date&quot;</span> : <span class="hljs-number">1595778740606</span>,<br>    <span class="hljs-string">&quot;height&quot;</span> : <span class="hljs-number">0</span><br>  &#125;,<br>  <span class="hljs-string">&quot;key2&quot;</span> : &#123;<br>    <span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span>,<br>    <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-number">27</span>,<br>    <span class="hljs-string">&quot;date&quot;</span> : <span class="hljs-number">1595778740606</span>,<br>    <span class="hljs-string">&quot;height&quot;</span> : <span class="hljs-number">0</span><br>  &#125;,<br>  <span class="hljs-string">&quot;key0&quot;</span> : &#123;<br>    <span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span>,<br>    <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-number">98</span>,<br>    <span class="hljs-string">&quot;date&quot;</span> : <span class="hljs-number">1595778740606</span>,<br>    <span class="hljs-string">&quot;height&quot;</span> : <span class="hljs-number">0</span><br>  &#125;<br>&#125;<br>反序列化: 使用 javaType<br>&#123;key1=JackSonTest.Person(name=Tom, age=<span class="hljs-number">95</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">52</span>:<span class="hljs-number">20</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>), key2=JackSonTest.Person(name=Tom, age=<span class="hljs-number">27</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">52</span>:<span class="hljs-number">20</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>), key0=JackSonTest.Person(name=Tom, age=<span class="hljs-number">98</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">52</span>:<span class="hljs-number">20</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>)&#125;<br>反序列化: 使用 TypeReference<br>&#123;key1=JackSonTest.Person(name=Tom, age=<span class="hljs-number">95</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">52</span>:<span class="hljs-number">20</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>), key2=JackSonTest.Person(name=Tom, age=<span class="hljs-number">27</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">52</span>:<span class="hljs-number">20</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>), key0=JackSonTest.Person(name=Tom, age=<span class="hljs-number">98</span>, date=Sun Jul <span class="hljs-number">26</span> <span class="hljs-number">23</span>:<span class="hljs-number">52</span>:<span class="hljs-number">20</span> CST <span class="hljs-number">2020</span>, height=<span class="hljs-number">0</span>)&#125;<br></code></pre></td></tr></table></figure>
+
+<p>Array 和 Collection 的处理与 List，Map 相似，这里不再详述。</p>
+<h3 id="属性可视化"><a href="#属性可视化" class="headerlink" title="属性可视化"></a>属性可视化</h3><p>JackSon 默认不是所有的属性都可以被序列化和反序列化。默认的属性可视化的规则如下：</p>
+<ul>
+<li><p>若该属性修饰符是 public，该属性可序列化和反序列化。</p>
+</li>
+<li><p>若属性的修饰符不是 public，但是它的 getter 方法和 setter 方法是 public，该属性可序列化和反序列化。因为 getter 方法用于序列化， 而 setter 方法用于反序列化。</p>
+</li>
+<li><p>若属性只有 public 的 setter 方法，而无 public 的 getter 方 法，该属性只能用于反序列化。</p>
+</li>
+</ul>
+<p>若想更改默认的属性可视化的规则，需要调用 ObjectMapper 的方法 <code>setVisibility</code>。</p>
+<p>下面的示例使修饰符为 protected 的属性 name 也可以序列化和反序列化。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">People</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> age;<br>    <span class="hljs-keyword">protected</span> String name;<br>&#125;<br> <br><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test7</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>    <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br>    <span class="hljs-comment">// PropertyAccessor 支持的类型有 ALL,CREATOR,FIELD,GETTER,IS_GETTER,NONE,SETTER</span><br>    <span class="hljs-comment">// Visibility 支持的类型有 ANY,DEFAULT,NON_PRIVATE,NONE,PROTECTED_AND_PUBLIC,PUBLIC_ONLY</span><br>    mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);<br>    <span class="hljs-comment">// 造数据</span><br>    <span class="hljs-type">People</span> <span class="hljs-variable">people</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">People</span>();<br>    people.name = <span class="hljs-string">&quot;Tom&quot;</span>;<br>    people.age = <span class="hljs-number">40</span>;<br>    System.out.println(<span class="hljs-string">&quot;序列化&quot;</span>);<br>    <span class="hljs-type">String</span> <span class="hljs-variable">jsonString</span> <span class="hljs-operator">=</span> mapper.writerWithDefaultPrettyPrinter().writeValueAsString(people);<br>    System.out.println(jsonString);<br>    System.out.println(<span class="hljs-string">&quot;反序列化&quot;</span>);<br>    <span class="hljs-type">People</span> <span class="hljs-variable">deserializedPerson</span> <span class="hljs-operator">=</span> mapper.readValue(jsonString, People.class);<br>    System.out.println(deserializedPerson);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印输出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs go">序列化<br>&#123;<br>  <span class="hljs-string">&quot;age&quot;</span> : <span class="hljs-number">40</span>,<br>  <span class="hljs-string">&quot;name&quot;</span> : <span class="hljs-string">&quot;Tom&quot;</span><br>&#125;<br>反序列化<br>JackSonTest.People(age=<span class="hljs-number">40</span>, name=Tom)<br></code></pre></td></tr></table></figure>
+
+<h3 id="属性过滤"><a href="#属性过滤" class="headerlink" title="属性过滤"></a>属性过滤</h3><p>在将 Java 对象序列化为 json 时 ，有些属性需要过滤掉，不显示在 json 中 ，除了使用 <code>@JsonIgnore</code> 过滤单个属性或用 <code>@JsonIgnoreProperties</code> 过滤多个属性之外， Jackson 还有通过代码控制的方式。</p>
+<p>使用示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@JsonFilter(&quot;myFilter&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">MyFilter</span> &#123;<br>&#125;<br> <br><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test8</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> JsonProcessingException &#123;<br>    <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br>    <span class="hljs-comment">//设置 addMixIn</span><br>    mapper.addMixIn(Person.class, MyFilter.class);<br>    <span class="hljs-comment">//调用 SimpleBeanPropertyFilter 的 serializeAllExcept 方法</span><br>    <span class="hljs-type">SimpleBeanPropertyFilter</span> <span class="hljs-variable">newFilter</span> <span class="hljs-operator">=</span> SimpleBeanPropertyFilter.serializeAllExcept(<span class="hljs-string">&quot;age&quot;</span>);<br>    <span class="hljs-comment">//或重写 SimpleBeanPropertyFilter 的 serializeAsField 方法</span><br>    <span class="hljs-type">SimpleBeanPropertyFilter</span> <span class="hljs-variable">newFilter2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleBeanPropertyFilter</span>() &#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">serializeAsField</span><span class="hljs-params">(Object pojo, JsonGenerator jgen,</span><br><span class="hljs-params">                                     SerializerProvider provider, PropertyWriter writer)</span><br>                <span class="hljs-keyword">throws</span> Exception &#123;<br>            <span class="hljs-keyword">if</span> (!writer.getName().equals(<span class="hljs-string">&quot;age&quot;</span>)) &#123;<br>                writer.serializeAsField(pojo, jgen, provider);<br>            &#125;<br>        &#125;<br>    &#125;;<br>    <span class="hljs-comment">//设置 FilterProvider</span><br>    <span class="hljs-type">FilterProvider</span> <span class="hljs-variable">filterProvider</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleFilterProvider</span>().addFilter(<span class="hljs-string">&quot;myFilter&quot;</span>, newFilter);<br>    <span class="hljs-comment">// 造数据</span><br>    <span class="hljs-type">Person</span> <span class="hljs-variable">person</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>();<br>    person.setName(<span class="hljs-string">&quot;Tom&quot;</span>);<br>    person.setAge(<span class="hljs-number">40</span>); <span class="hljs-comment">// 该属性将被忽略</span><br>    person.setDate(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>    <span class="hljs-comment">// 序列化</span><br>    <span class="hljs-type">String</span> <span class="hljs-variable">jsonString</span> <span class="hljs-operator">=</span> mapper.setFilterProvider(filterProvider).writeValueAsString(person);<br>    System.out.println(jsonString);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印输出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs go">&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;Tom&quot;</span>,<span class="hljs-string">&quot;date&quot;</span>:<span class="hljs-number">1595780842754</span>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="自定义序列化类"><a href="#自定义序列化类" class="headerlink" title="自定义序列化类"></a>自定义序列化类</h3><p>当 Jackson 默认序列化和反序列化的类不能满足实际需要，可以自定义新的序列化和反序列化的类。</p>
+<p>自定义序列化类：自定义的序列化类需要直接或间接继承 StdSerializer 或 JsonSerializer，同时需要利用 JsonGenerator 生成 json，重写方法 serialize，示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomSerializer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">StdSerializer</span>&lt;Person&gt; &#123;<br>    <span class="hljs-keyword">protected</span> <span class="hljs-title function_">CustomSerializer</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-built_in">super</span>(Person.class);<br>    &#125;<br> <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">serialize</span><span class="hljs-params">(Person person, JsonGenerator jgen, SerializerProvider provider)</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>        jgen.writeStartObject();<br>        jgen.writeNumberField(<span class="hljs-string">&quot;age&quot;</span>, person.getAge());<br>        jgen.writeStringField(<span class="hljs-string">&quot;name&quot;</span>, person.getName());<br>        jgen.writeStringField(<span class="hljs-string">&quot;msg&quot;</span>, <span class="hljs-string">&quot;已被自定义序列化&quot;</span>);<br>        jgen.writeEndObject();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>JsonGenerator 有多种 write 方法以支持生成复杂的类型的 json，比如 writeArray，writeTree 等 。若想单独创建 JsonGenerator，可以通过 JsonFactory() 的 createGenerator。</p>
+<p>自定义反序列化类：自定义的反序列化类需要直接或间接继承 StdDeserializer 或 StdDeserializer，同时需要利用 JsonParser 读取 json，重写方法 deserialize，示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">CustomDeserializer</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">StdDeserializer</span>&lt;Person&gt; &#123;<br>    <span class="hljs-keyword">protected</span> <span class="hljs-title function_">CustomDeserializer</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-built_in">super</span>(Person.class);<br>    &#125;<br> <br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Person <span class="hljs-title function_">deserialize</span><span class="hljs-params">(JsonParser jp, DeserializationContext ctxt)</span><br>            <span class="hljs-keyword">throws</span> IOException, JsonProcessingException &#123;<br>        <span class="hljs-type">JsonNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> jp.getCodec().readTree(jp);<br>        <span class="hljs-type">Person</span> <span class="hljs-variable">person</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>();<br>        <span class="hljs-type">int</span> <span class="hljs-variable">age</span> <span class="hljs-operator">=</span> (Integer) ((IntNode) node.get(<span class="hljs-string">&quot;age&quot;</span>)).numberValue();<br>        <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> node.get(<span class="hljs-string">&quot;name&quot;</span>).asText();<br>        person.setAge(age);<br>        person.setName(name);<br>        <span class="hljs-keyword">return</span> person;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>JsonParser 提供很多方法来读取 json 信息， 如 isClosed(), nextToken(), getValueAsString()等。若想单独创建 JsonParser，可以通过 JsonFactory() 的 createParser。</p>
+<p>定义好自定义序列化类和自定义反序列化类，若想在程序中调用它们，还需要注册到 ObjectMapper 的 Module，示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test9</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>    <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br>    <span class="hljs-comment">// 生成 module</span><br>    <span class="hljs-type">SimpleModule</span> <span class="hljs-variable">module</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleModule</span>(<span class="hljs-string">&quot;myModule&quot;</span>);<br>    <span class="hljs-keyword">module</span>.addSerializer(<span class="hljs-keyword">new</span> <span class="hljs-title class_">CustomSerializer</span>());<br>    <span class="hljs-keyword">module</span>.addDeserializer(Person.class, <span class="hljs-keyword">new</span> <span class="hljs-title class_">CustomDeserializer</span>());<br>    <span class="hljs-comment">// 注册 module</span><br>    mapper.registerModule(<span class="hljs-keyword">module</span>);<br>    <span class="hljs-comment">// 造数据</span><br>    <span class="hljs-type">Person</span> <span class="hljs-variable">person</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Person</span>();<br>    person.setName(<span class="hljs-string">&quot;Tom&quot;</span>);<br>    person.setAge(<span class="hljs-number">40</span>);<br>    person.setDate(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Date</span>());<br>    System.out.println(<span class="hljs-string">&quot;序列化&quot;</span>);<br>    <span class="hljs-type">String</span> <span class="hljs-variable">jsonString</span> <span class="hljs-operator">=</span> mapper.writerWithDefaultPrettyPrinter().writeValueAsString(person);<br>    System.out.println(jsonString);<br>    System.out.println(<span class="hljs-string">&quot;反序列化&quot;</span>);<br>    <span class="hljs-type">Person</span> <span class="hljs-variable">deserializedPerson</span> <span class="hljs-operator">=</span> mapper.readValue(jsonString, Person.class);<br>    System.out.println(deserializedPerson);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>或者也可通过注解方式加在 java 对象的属性，方法或类上面来调用它们：</p>
+<ul>
+<li><p>@JsonSerialize(using &#x3D; CustomSerializer.class)</p>
+</li>
+<li><p>@JsonDeserialize(using &#x3D; CustomDeserializer.class)</p>
+</li>
+</ul>
+<h3 id="树模型处理"><a href="#树模型处理" class="headerlink" title="树模型处理"></a>树模型处理</h3><p>Jackson 也提供了树模型(tree model)来生成和解析 json。若想修改或访问 json 部分属性，树模型是不错的选择。树模型由 JsonNode 节点组成。程序中常常使用 ObjectNode，ObjectNode 继承于 JsonNode，示例如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">test10</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>    <span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">mapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br>    <span class="hljs-comment">//构建 ObjectNode</span><br>    <span class="hljs-type">ObjectNode</span> <span class="hljs-variable">personNode</span> <span class="hljs-operator">=</span> mapper.createObjectNode();<br>    <span class="hljs-comment">//添加/更改属性</span><br>    personNode.put(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;Tom&quot;</span>);<br>    personNode.put(<span class="hljs-string">&quot;age&quot;</span>, <span class="hljs-number">40</span>);<br>    <span class="hljs-type">ObjectNode</span> <span class="hljs-variable">addressNode</span> <span class="hljs-operator">=</span> mapper.createObjectNode();<br>    addressNode.put(<span class="hljs-string">&quot;zip&quot;</span>, <span class="hljs-string">&quot;000000&quot;</span>);<br>    addressNode.put(<span class="hljs-string">&quot;street&quot;</span>, <span class="hljs-string">&quot;Road NanJing&quot;</span>);<br>    <span class="hljs-comment">//设置子节点</span><br>    personNode.set(<span class="hljs-string">&quot;address&quot;</span>, addressNode);<br>    System.out.println(<span class="hljs-string">&quot;构建 ObjectNode:\n&quot;</span> + personNode.toString());<br>    <span class="hljs-comment">//通过 path 查找节点</span><br>    <span class="hljs-type">JsonNode</span> <span class="hljs-variable">searchNode</span> <span class="hljs-operator">=</span> personNode.path(<span class="hljs-string">&quot;name&quot;</span>);<br>    System.out.println(<span class="hljs-string">&quot;查找子节点 name:\n&quot;</span> + searchNode.asText());<br>    <span class="hljs-comment">//删除属性</span><br>    ((ObjectNode) personNode).remove(<span class="hljs-string">&quot;address&quot;</span>);<br>    System.out.println(<span class="hljs-string">&quot;删除后的 ObjectNode:\n&quot;</span> + personNode.toString());<br>    <span class="hljs-comment">//读取 json</span><br>    <span class="hljs-type">JsonNode</span> <span class="hljs-variable">rootNode</span> <span class="hljs-operator">=</span> mapper.readTree(personNode.toString());<br>    System.out.println(<span class="hljs-string">&quot;Json 转 JsonNode:\n&quot;</span> + rootNode);<br>    <span class="hljs-comment">//JsonNode 转换成 java 对象</span><br>    <span class="hljs-type">Person</span> <span class="hljs-variable">person</span> <span class="hljs-operator">=</span> mapper.treeToValue(personNode, Person.class);<br>    System.out.println(<span class="hljs-string">&quot;JsonNode 转对象:\n&quot;</span> + person);<br>    <span class="hljs-comment">//java 对象转换成 JsonNode</span><br>    <span class="hljs-type">JsonNode</span> <span class="hljs-variable">node</span> <span class="hljs-operator">=</span> mapper.valueToTree(person);<br>    System.out.println(<span class="hljs-string">&quot;对象转 JsonNode:\n&quot;</span> + node);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>打印输出：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs go">构建 ObjectNode:<br>&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;Tom&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>:<span class="hljs-number">40</span>,<span class="hljs-string">&quot;address&quot;</span>:&#123;<span class="hljs-string">&quot;zip&quot;</span>:<span class="hljs-string">&quot;000000&quot;</span>,<span class="hljs-string">&quot;street&quot;</span>:<span class="hljs-string">&quot;Road NanJing&quot;</span>&#125;&#125;<br>查找子节点 name:<br>Tom<br>删除后的 ObjectNode:<br>&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;Tom&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>:<span class="hljs-number">40</span>&#125;<br>Json 转 JsonNode:<br>&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;Tom&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>:<span class="hljs-number">40</span>&#125;<br>JsonNode 转对象:<br>JackSonTest.Person(name=Tom, age=<span class="hljs-number">40</span>, date=null, height=<span class="hljs-number">0</span>)<br>对象转 JsonNode:<br>&#123;<span class="hljs-string">&quot;name&quot;</span>:<span class="hljs-string">&quot;Tom&quot;</span>,<span class="hljs-string">&quot;age&quot;</span>:<span class="hljs-number">40</span>,<span class="hljs-string">&quot;date&quot;</span>:null,<span class="hljs-string">&quot;height&quot;</span>:<span class="hljs-number">0</span>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Jackson/Jackson 框架使用教程/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Jackson/Jackson/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Jackson/Jackson%20%E5%B7%A5%E5%85%B7%E7%B1%BB/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

@@ -1,0 +1,752 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从获取正确的项目依赖项开始，使用 JPA 注解标注我们的类，并设置 SessionFactory。这使我们能够执行基本的 CRUD 操作、HQL 和 Criteria 查询。之后，我们可以简单地 JPA 化我们的代码，替换几个类，你就会理解 Hibernate &#x2F; JPA 与 Spring Boot 是如何协同工作的。到那时，你将对其使用有一个良好的（初步）了解，以及你的未来 Hiber">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/Hibernate%20&%20JPA/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="从获取正确的项目依赖项开始，使用 JPA 注解标注我们的类，并设置 SessionFactory。这使我们能够执行基本的 CRUD 操作、HQL 和 Criteria 查询。之后，我们可以简单地 JPA 化我们的代码，替换几个类，你就会理解 Hibernate &#x2F; JPA 与 Spring Boot 是如何协同工作的。到那时，你将对其使用有一个良好的（初步）了解，以及你的未来 Hiber">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.006Z">
+<meta property="article:modified_time" content="2025-02-08T12:13:17.929Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年2月8日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>从获取正确的项目依赖项开始，使用 JPA 注解标注我们的类，并设置 SessionFactory。这使我们能够执行基本的 CRUD 操作、HQL 和 Criteria 查询。之后，我们可以简单地 JPA 化我们的代码，替换几个类，你就会理解 Hibernate &#x2F; JPA 与 Spring Boot 是如何协同工作的。到那时，你将对其使用有一个良好的（初步）了解，以及你的未来 Hibernate &#x2F; JPA 学习旅程包括什么。</p>
+<p>00:00 简介 - 需要了解的 Hibernate 相关信息<br>它解决了什么问题<br>项目依赖项<br>02:41 Mapping Annotations(映射注解)<br>05:53 SessionFactory(会话工厂)<br>Save &#x2F; Update &#x2F; Delete - 基本 CRUD<br>10:33 HQL 查询<br>13:33 JPA<br>17:37 Criteria API<br>22:22 Hibernate &#x2F;JPA &amp; Spring Boot<br>24:11 下一步要学什么</p>
+<h3 id="需要了解的-Hibernate-相关信息"><a href="#需要了解的-Hibernate-相关信息" class="headerlink" title="需要了解的 Hibernate 相关信息"></a>需要了解的 Hibernate 相关信息</h3><p>hibernate jpa jql sql 什么鬼，学习 hibernate 和 jpa，不是真的，因为那将是一个很大的承诺事实上你需要花费数月甚至数年的时间刻意练习 hibernate 和sql 才能完全理解。<br>展示几个非常重要的一般概念，在未来的学习过程中提供一些建议。</p>
+<h3 id="Hibernate-解决了什么问题"><a href="#Hibernate-解决了什么问题" class="headerlink" title="Hibernate 解决了什么问题"></a>Hibernate 解决了什么问题</h3><p>想象你有一个好的旧关系数据库不管它是 postgres mysql 还是你现在有什么，想象我有一个用户的数据库表该表带有一个 id 列 name 列 birthdate 列，两行里面有两个用户一个用户叫 marco 另一个用户叫 ocram，现在我的 java 项目中有一个 User 类有与表对应的属性。问题是，<strong>如何轻松地从数据库表中获取数据并将其放入 User 对象中，并且，如果在 java 端有一个 User 对象，如何轻松地将其保存到名为 users 的数据库表中，而无需进行疯狂的字符串连接，这本质上是 hibernate 在 20000 个其他问题中解决的核心问题</strong>。</p>
+<h3 id="项目依赖项"><a href="#项目依赖项" class="headerlink" title="项目依赖项"></a>项目依赖项</h3><p>hibernate 启动和运行的依赖项为什么这如此重要，因为现在人们使用例如 spring boot 包括 spring data jpa，其中包括很多个库，其中包括 hibernate，他们认为 hibernate 是一个巨大而复杂的库堆栈，需要包含它。并不是。如果使用的是 maven，则需要 pom.xml 文件；如果您使用的是 gradle，则需要 build.gradle 文件。然后粘贴一个微小的依赖项：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.hibernate<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>hibernate-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>6.1.2.Final<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+
+<h3 id="Mapping-Annotations-映射注解"><a href="#Mapping-Annotations-映射注解" class="headerlink" title="Mapping Annotations(映射注解)"></a>Mapping Annotations(映射注解)</h3><p>已经设置了依赖项，现在的问题是，如何告诉 hibernate 将 User 类映射到名为 users 的数据库表，以及如何告诉 hibernate id name 和 birthdate 应映射到数据库中的相应列 ID​​ NAME BIRTH_DATE。实际上只需使用 hibernate 特定的注解对类进行注释，第一个是添加实体注释 <code>@Entity</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br><span class="hljs-comment">//...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>entiry 只是一个标记注解，它告诉 hibernate 这个类很特别，需将它映射到数据库表，然后默认情况下，hibernate 会采取一个 User 类并尝试映射将其添加到名为 user 的数据库表中，但我们的表名为 users，因此我们必须使用另一个注解 <code>@Tahle(name = &quot;&quot;)</code>，需在此处指定名称：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;USERS&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br><span class="hljs-comment">//...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>然后继续 intellij 已经显示，User 应该有一个 primary key(主键)，对 hibernate 来说，知道哪个字段是主键很重要，还有两个注解 <code>@Id @GeneratedValue</code>，我们有一个数据库列 id，它也会递增，本质上是一个标识列，我们还必须告诉 hibernate，属性 id 是一个标识列，请不要自己生成 id：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;USERS&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>	<span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> LocalDate birthDate;<br><span class="hljs-comment">//...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>然后 hibernate 足够聪明，可以很好地理解 id name 应该映射到 ID NAME。只有出生日期，在数据库中称为 BIRTH_DATE，所以我们可以使用注解 <code>@Column(name = &quot;&quot;)</code> 让其正确的映射：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@Table(name = &quot;USERS&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>	<span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String name;<br>    <br>    <span class="hljs-meta">@Column(name = &quot;birth_date&quot;)</span><br>    <span class="hljs-keyword">private</span> LocalDate birthDate;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">User</span><span class="hljs-params">()</span> &#123;<br>    &#125;<br><span class="hljs-comment">//...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>然后通常你只需要确保类有一个空的构造函数，特别是如果没有任何辅助构造函数，实际上并不需要它，但是一旦有一个辅助构造函数，你至少需要有一个空的构造函数，实际上这样 hibernate 可以在<strong>从数据库表中获取数据并填充这些数据时构造空对象</strong>，如果只是省略了空构造函数，它是行不通的，因为 hibernate 不知道默认情况下如何构造一个用户对象。</p>
+<p>有一本很棒的书，推荐阅读：&#x3D;&#x3D;《JAVA PERSISTENCE WITH HIBERNATE》&#x3D;&#x3D;</p>
+<h3 id="SessionFactory-会话工厂"><a href="#SessionFactory-会话工厂" class="headerlink" title="SessionFactory(会话工厂)"></a>SessionFactory(会话工厂)</h3><p>有了依赖我们有了映射注释，现在编写一些代码，准备一个小型测试类。<br>查阅 Hibernate 的入门手册，复制并粘贴了一些代码并把它放在这里，你最终无法自己想出这些代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HibernateFullTest</span> &#123;<br><br>    <span class="hljs-keyword">private</span> SessionFactory sessionFactory;<br><br>    <span class="hljs-meta">@BeforeEach</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setUp</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>	   <span class="hljs-comment">// A SessionFactory is set up once for an application!</span><br>	   <span class="hljs-keyword">final</span> <span class="hljs-type">StandardServiceRegistry</span> <span class="hljs-variable">registry</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">StandardServiceRegistryBuilder</span>()<br>			 .configure() <span class="hljs-comment">// configures settings from hibernate.cfg.xml</span><br>			 .build();<br>	   <span class="hljs-keyword">try</span> &#123;<br>		  sessionFactory = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MetadataSources</span>( registry ).buildMetadata().buildSessionFactory();<br>	   &#125;<br>	   <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>		  <span class="hljs-comment">// The registry would be destroyed by the SessionFactory, but we had trouble building the SessionFactory</span><br>		  <span class="hljs-comment">// so destroy it manually.</span><br>		  StandardServiceRegistryBuilder.destroy( registry );<br>	   &#125;<br>    &#125;<br><br>    <span class="hljs-meta">@AfterEach</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">tearDown</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>	   <span class="hljs-keyword">if</span> ( sessionFactory != <span class="hljs-literal">null</span> ) &#123;<br>		  sessionFactory.close();<br>	   &#125;<br>    &#125;<br><br>    <span class="hljs-meta">@SuppressWarnings(&quot;unchecked&quot;)</span><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">testBasicUsage</span><span class="hljs-params">()</span> &#123;<br>	   <span class="hljs-comment">// create a couple of events...</span><br>	   <span class="hljs-type">Session</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> sessionFactory.openSession();<br>	   session.beginTransaction();<br>	   session.remove(<span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-string">&quot;Marco&#x27;s Friend&quot;</span>, LocalDate.now()));<br>	   session.getTransaction().commit();<br>	   session.close();<br><br>	   session = sessionFactory.openSession();<br>	   session.beginTransaction();<br>	   List&lt;User&gt; result = session.createQuery( <span class="hljs-string">&quot;select u from User u&quot;</span> , User.class).list();<br>	   <span class="hljs-keyword">for</span> ( User user : result) &#123;<br>		  System.out.println( <span class="hljs-string">&quot;User (&quot;</span> + user.getName() + <span class="hljs-string">&quot;) : &quot;</span> + user.getBirthDate() );<br>	   &#125;<br>	   session.getTransaction().commit();<br>	   session.close();<br>    &#125;<br><br>    <span class="hljs-meta">@Test</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">marco_is_in_the_house</span><span class="hljs-params">()</span> &#123;<br>	   assertThat(<span class="hljs-number">1</span>).isGreaterThanOrEqualTo(<span class="hljs-number">0</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>你想要的是一个 SessionFactory，SessionFactory 本质上是 Hibernate 所以它的全部内容都是关于构建一个 SessionFactory。现在为此这里有一些时髦的代码带有一个标准服务注册表配置构建新元数据源注册表构建元数据构建会话，无论什么你需要知道的是，这段代码<strong>本质上是查看一个配置文件来配置 hibernate，它被称为 <code>hibernate.config.xml</code></strong>，查看它：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs XML"><span class="hljs-meta">&lt;?xml version=&#x27;1.0&#x27; encoding=&#x27;utf-8&#x27;?&gt;</span><br><span class="hljs-comment">&lt;!--</span><br><span class="hljs-comment">  ~ Hibernate, Relational Persistence for Idiomatic Java</span><br><span class="hljs-comment">  ~</span><br><span class="hljs-comment">  ~ License: GNU Lesser General Public License (LGPL), version 2.1 or later.</span><br><span class="hljs-comment">  ~ See the lgpl.txt file in the root directory or &lt;http://www.gnu.org/licenses/lgpl-2.1.html&gt;.</span><br><span class="hljs-comment">  --&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">hibernate-configuration</span> <span class="hljs-keyword">PUBLIC</span></span><br><span class="hljs-meta">	   <span class="hljs-string">&quot;-//Hibernate/Hibernate Configuration DTD 3.0//EN&quot;</span></span><br><span class="hljs-meta">	   <span class="hljs-string">&quot;http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd&quot;</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">hibernate-configuration</span>&gt;</span><br><br>    <span class="hljs-tag">&lt;<span class="hljs-name">session-factory</span>&gt;</span><br><br>	   <span class="hljs-comment">&lt;!-- Database connection settings --&gt;</span><br>	   <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;connection.driver_class&quot;</span>&gt;</span>org.h2.Driver<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>	   <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;connection.url&quot;</span>&gt;</span>jdbc:h2:~/database;AUTO_SERVER=TRUE<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>	   <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;connection.username&quot;</span>&gt;</span>sa<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>	   <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;connection.password&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><br>	   <span class="hljs-comment">&lt;!-- SQL dialect --&gt;</span><br>	   <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;dialect&quot;</span>&gt;</span>org.hibernate.dialect.H2Dialect<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><br>	   <span class="hljs-comment">&lt;!-- Echo all executed SQL to stdout --&gt;</span><br>	   <span class="hljs-tag">&lt;<span class="hljs-name">property</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;show_sql&quot;</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><br>	   <span class="hljs-comment">&lt;!-- Names the annotated entity class --&gt;</span><br>	   <span class="hljs-tag">&lt;<span class="hljs-name">mapping</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;org.example.User&quot;</span>/&gt;</span><br><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">session-factory</span>&gt;</span><br><br><span class="hljs-tag">&lt;/<span class="hljs-name">hibernate-configuration</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>可以看到似乎有一个 session-factory 标记，可以设置几个属性，例如，我可以告诉会话工厂&#x3D;&#x3D;连接到什么数据库&#x3D;&#x3D;，我正在连接到一个 h2 数据库，所以只需将你的数据库 url 放在这里，还有&#x3D;&#x3D;正确的驱动程序类和用户名密码&#x3D;&#x3D;。需要告诉 hibernate当它创建 sql 语句时它应该使用什么 &#x3D;&#x3D;sql 方言&#x3D;&#x3D;，在这种情况下是 h2。可以告诉 hibernate 一些事情，比&#x3D;&#x3D;打印出正在执行的所有 sql 语句&#x3D;&#x3D;，但<strong>最重要的是需要告诉 hibernate 哪些特殊的类需要将我们需要的映射标记交给它</strong>，比如 User 类。</p>
+<h3 id="Save-Update-Delete-基本-CRUD"><a href="#Save-Update-Delete-基本-CRUD" class="headerlink" title="Save &#x2F; Update &#x2F; Delete - 基本 CRUD"></a>Save &#x2F; Update &#x2F; Delete - 基本 CRUD</h3><p>从简单的事情开始，尝试将 User 对象保存到数据库表中。<br>显然它从 SessionFactory 开始，我想要做的是，现在创建一个新的会话 sessino，可以将它视为一个数据库连接，没有其他东西，实际上并不完全正确，但现在完全没问题：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">save_my_first_object_to_the_db</span><span class="hljs-params">()</span>&#123;<br>	<span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-string">&quot;Lisa&quot;</span>, LocalDate.now());<br>	<br>	<span class="hljs-keyword">try</span> (<span class="hljs-type">Session</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> sessionFactory.openSession()) &#123;<br>		session.beginTransaction();<br>		<br>		session.persist(user);<br>		<br>		session.getTransaction().commit();<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="HQL-查询"><a href="#HQL-查询" class="headerlink" title="HQL 查询"></a>HQL 查询</h3><p>尝试将用户从数据库中取出，将在 hql 的帮助下做到这一点，hql是 hibernate 的查询语言，它类似于 sql，尽管 sql 适用于数据库表，而 hql 适用于类层次结构。所以编写 <code>session.createQuery()</code>，因为想要编写一个 hql 查询，第一个参数是你的查询，第二个参数是结果对象的类型。现在问题是查询要查找什么，非常类似于 sql，所以：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">void</span> <span class="hljs-title function_">hql_fetch_users</span><span class="hljs-params">()</span>&#123;<br>	<span class="hljs-keyword">try</span> (<span class="hljs-type">Session</span> <span class="hljs-variable">session</span> <span class="hljs-operator">=</span> sessionFactory.openSession()) &#123;<br>		session.beginTransaction();<br>		List&lt;User&gt; users = session.createQuery(<span class="hljs-string">&quot;select u from User u&quot;</span>, User.class).list();<br>		users.forEach(System.out::println)<br>		<br>		session.getTransaction().commit();<br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这意味着实际上来说，获取特定用户应该不是什么大问题，必须找出如何在 hql 查询中指定参数设置这些参数，然后只返回一个用户。</p>
+<h3 id="JPA"><a href="#JPA" class="headerlink" title="JPA"></a>JPA</h3><p>到了 jpa 的话题，java persistence api(java 持久性 api)。什么是 jpa，事情已经告诉过了有多个工具，例如 hibernate eclipselink openJPA datanucleus，其他几个和商品在很久以前的某个时候聚在一起，认为很高兴有某种基础接口 jpa，所有这些工具都需要遵循该接口，并且它们可以添加自己的功能。<br>如果代码将确保不使用任何特定于 hibernate 的类，而只使用特定于 jpa 的类，我可以在最后插入 hibernate，让 hibernate 进行保存。这在实践中意味着什么，在实践中我可以说，明天我将用 eclipse link 替换 hibernate，然后在后天用 data nucleus 替换 hibernate，尽管 reddit 上总有一些评论声称他们基本上每天都这样做，但基本上针对 jpa 注解进行编码仍然是一种很好的做法。每当需要 hibernate 中的特定功能时，只需使用它们即可。如果使用的是 spring data 之类的框架，那么选择已经为你做出。</p>
+<h3 id="Criteria-API-dynamic-sql"><a href="#Criteria-API-dynamic-sql" class="headerlink" title="Criteria API &amp; dynamic sql"></a>Criteria API &amp; dynamic sql</h3><p>到了 hibernate 的 Criteria(标准) API 和 dynamic(动态) sql。<br>这很重要，因为想象一下你有一个复杂的表单，它甚至不必是一个复杂的表单，根据下拉菜单中的字段，需要在后端生成不同的 sql 语句，可以通过使用 hql 查询进行字符串连接来实现这一点，有些人会这样做，第二个是构建自己的查询生成器框架，第三个可以使用 hibernate 的 Criteria API，它使用起来有点古怪，但它现在可以完成工作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-meta">@Test</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">criteria_api</span><span class="hljs-params">()</span> &#123;<br>	<span class="hljs-type">EntityManager</span> <span class="hljs-variable">em</span> <span class="hljs-operator">=</span> emf.createEntityManager();<br>	<span class="hljs-type">CriteriaBuilder</span> <span class="hljs-variable">cb</span> <span class="hljs-operator">=</span> em.getCriaBuilder();<br>	<br>	CriteriaQuery&lt;User&gt; cirteriaQuery = cb.createQuery(User.class);<br>	Root&lt;User&gt; root = criteriaQuery.from(User.class);<br>	cirteriaQuery.select(root).where(cb.equal(root.get(User_.NAME), <span class="hljs-string">&quot;marco&quot;</span>));<br>	<br>	TypedQuery&lt;User&gt; query = em.createQuery(criteriaQuery);<br>	List&lt;User&gt; results = query.getResultList();<br>	results.forEach(System.out::println);<br>	<br>	em.close();<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>我们需要一个实体管理器，我们需要一个标准生成器，因为我们想要现在创建一个条件查询条件生成器请让我创建一个查询，从中获取用户 user.class 是查询的结果类型，然后构造查询条件查询，就好像它是一个 sql 查询，但它看起来有点复杂，所以从我的用户表中进行条件查询，本质上是用户表，我想选择 User_.NAME 等于 marco。显然，如果你在这里有不同的条件，你可以把它们放进去。User_ 来自哪里，让它工作需要向 pom.xml 添加：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs XML"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.hibernate<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>hibernate-jpamodelgen<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>6.1.1.Final<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>需要 jsp 运行时才能使它工作，现在每次编译项目时会发生什么，编译器插件都会查看 User类，然后在 target 生成的源上自动生成一个 User_ 辅助类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-meta">@Generated(value = &quot;org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor&quot;)</span><br><span class="hljs-meta">@StaticMetamodeL(User.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User_</span> &#123;<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">volatile</span> SingularAttribute&lt;User, String&gt; name;<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">volatile</span> SingularAttribute&lt;User,·Long&gt; id;<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">volatile</span> SingularAttribute&lt;User, LocalDate&gt; birthDate;<br>	<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">NAME</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;name&quot;</span>;<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">ID</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;id&quot;</span>;<br>	<span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">BIRTH_DATE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;birthDate&quot;</span>;	<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>推荐插件：jap buddy</p>
+<h3 id="Hibernate-JPA-Spring-Boot"><a href="#Hibernate-JPA-Spring-Boot" class="headerlink" title="Hibernate &#x2F;JPA &amp; Spring Boot"></a>Hibernate &#x2F;JPA &amp; Spring Boot</h3><p>最后在 spring boost 或 spring data 等框架，hibernation jpa它们在幕后的作用是什么。它们还必须使用实体管理器工厂&#x2F;会话工厂，因此 spring boot 可以为你做什么：<br>首先是你不必使用 <code>hibernate.config.xml</code> 文件或 java 持久性配置文件，你只需在 <code>application.properties</code> 中放入几个属性，即可自动创建实体管理器，最后 spring boot 将为您创建一个实体管理器，这是第一，所以这是基础设施管道。</p>
+<p>第二，当使用 spring 时，不用编程事务代码，例如开始和提交事务这里，你要做的是使用 <code>@Transactional</code> 注解，spring将确保事务打开和关闭，这是整个事务管理主题中的第二大主题。</p>
+<p>第三大主题是 <code>repository</code>，因为现在我们必须在这里写入这些 hql 查询字符串等等，而 spring data 具体为你提供的就是这些 repository，所以你只需编写接口 UserRepository，并让方法按名称查找，甚至可以给它一个名称参数，然后你将获得一个用户列表，现在 spring data 所做的是它会自动将所有这些转换为适当的 hibernate&#x2F;jpa 代码，你不必担心编写 sql 之类的东西。</p>
+<p>示例：[[示例]] [[示例2]]</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Data/Hibernate &amp; JPA/Hibernate &amp; JPA/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%E5%92%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/Auditing/" title="审计::Spring Data JPA --- Auditing :: Spring Data JPA">
+                        <span class="hidden-mobile">审计::Spring Data JPA --- Auditing :: Spring Data JPA</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

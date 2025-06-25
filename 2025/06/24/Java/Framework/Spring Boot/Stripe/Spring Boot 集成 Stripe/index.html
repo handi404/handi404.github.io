@@ -1,0 +1,766 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="一套基于 Spring Boot 的 Stripe 后端集成方案，包括如何使用 Secret Key 实现收费（Charge）、退款（Refund）、订阅管理（Subscriptions）以及访问部分敏感信息（如卡号后四位）。[[完整示例]] Spring Boot 集成 Stripe 后端方案首先，在 Spring Boot 项目中使用 Stripe，需要引入 Stripe 的 Java SDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Stripe/Spring%20Boot%20%E9%9B%86%E6%88%90%20Stripe/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="一套基于 Spring Boot 的 Stripe 后端集成方案，包括如何使用 Secret Key 实现收费（Charge）、退款（Refund）、订阅管理（Subscriptions）以及访问部分敏感信息（如卡号后四位）。[[完整示例]] Spring Boot 集成 Stripe 后端方案首先，在 Spring Boot 项目中使用 Stripe，需要引入 Stripe 的 Java SDK">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.331Z">
+<meta property="article:modified_time" content="2025-05-04T10:05:48.038Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年5月4日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>一套基于 Spring Boot 的 Stripe 后端集成方案，包括如何使用 Secret Key 实现收费（Charge）、退款（Refund）、订阅管理（Subscriptions）以及访问部分敏感信息（如卡号后四位）。<br>[[完整示例]]</p>
+<h1 id="Spring-Boot-集成-Stripe-后端方案"><a href="#Spring-Boot-集成-Stripe-后端方案" class="headerlink" title="Spring Boot 集成 Stripe 后端方案"></a>Spring Boot 集成 Stripe 后端方案</h1><p>首先，在 Spring Boot 项目中使用 Stripe，需要引入 Stripe 的 Java SDK 依赖。建议在 <strong>pom.xml</strong> 中添加 Stripe-Java 依赖（下例使用 22.x 最新稳定版本）：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.stripe<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>stripe-java<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>22.29.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span>  <span class="hljs-comment">&lt;!-- 或根据需要使用最新版本 --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>接着，需要配置 Stripe 的 <strong>Secret Key</strong>（私钥）。在 Spring Boot 的 <code>application.properties</code> 或 <code>application.yml</code> 中添加配置，例如：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">stripe.secret-key</span>=<span class="hljs-string">sk_test_yourSecretKeyHere</span><br></code></pre></td></tr></table></figure>
+
+<p>然后，在代码中通过 <code>@Value</code> 注入该配置并设置给 <code>Stripe.apiKey</code>。例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StripeConfig</span> &#123;<br>    <span class="hljs-meta">@Value(&quot;$&#123;stripe.secret-key&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String secretKey;<br><br>    <span class="hljs-meta">@PostConstruct</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">init</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 初始化 Stripe API，设置 Secret Key</span><br>        Stripe.apiKey = secretKey;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这样 Spring 启动时会自动为 Stripe SDK 设置好私钥。务必<strong>不要</strong>将私钥硬编码在代码中，也不要提交到版本库；生产环境中更推荐使用环境变量或机密管理服务存储 API 密钥。</p>
+<h2 id="创建一次性收费（Charge）"><a href="#创建一次性收费（Charge）" class="headerlink" title="创建一次性收费（Charge）"></a>创建一次性收费（Charge）</h2><p>使用 Stripe 的 Charges API 可以对客户进行一次性收费。示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 构建收费参数</span><br><span class="hljs-type">ChargeCreateParams</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> ChargeCreateParams.builder()<br>    .setAmount(<span class="hljs-number">1099L</span>)          <span class="hljs-comment">// 费用金额（单位为最小货币单位，如美元的分）</span><br>    .setCurrency(<span class="hljs-string">&quot;usd&quot;</span>)        <span class="hljs-comment">// 币种</span><br>    .setSource(<span class="hljs-string">&quot;tok_visa&quot;</span>)     <span class="hljs-comment">// 支付源（可以是 Stripe Token、PaymentMethod 或已有的来源 ID）</span><br>    .setDescription(<span class="hljs-string">&quot;测试收费&quot;</span>) <span class="hljs-comment">// 可选描述</span><br>    .build();<br><br><span class="hljs-comment">// 发起收费</span><br><span class="hljs-type">Charge</span> <span class="hljs-variable">charge</span> <span class="hljs-operator">=</span> Charge.create(params);<br></code></pre></td></tr></table></figure>
+
+<p>以上代码通过 <code>Charge.create(params)</code> 向 Stripe 发起收费请求。注意 <strong>private key</strong> 必须在调用前已设置，否则请求会失败。调用成功后，<code>charge</code> 对象包含交易详情。对于新型支付场景，Stripe 推荐使用 PaymentIntent 方式处理 3D Secure 验证和 SCA，但这里示例使用了传统的 Charges API。</p>
+<h2 id="发起退款（Refund）"><a href="#发起退款（Refund）" class="headerlink" title="发起退款（Refund）"></a>发起退款（Refund）</h2><p>要对已完成的收费进行退款，可使用 Stripe 的 Refunds API。示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 指定要退款的 Charge ID</span><br><span class="hljs-type">String</span> <span class="hljs-variable">chargeId</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;ch_ABC123xyz&quot;</span>;<br><br><span class="hljs-comment">// 构建退款参数（可选指定部分金额退款）</span><br><span class="hljs-type">RefundCreateParams</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> RefundCreateParams.builder()<br>    .setCharge(chargeId)<br>    <span class="hljs-comment">// .setAmount(500L)  // 如果需要部分退款，可设置金额（单位与收费时一致）</span><br>    .build();<br><br><span class="hljs-comment">// 创建退款</span><br><span class="hljs-type">Refund</span> <span class="hljs-variable">refund</span> <span class="hljs-operator">=</span> Refund.create(params);<br></code></pre></td></tr></table></figure>
+
+<p>以上代码通过 <code>Refund.create(params)</code> 向 Stripe 发起退款请求。如果未指定金额，会对整个交易进行全额退款；可以多次调用对不同金额退款，直到剩余金额为零。创建退款后，<code>refund</code> 对象会包含退款状态和详情。</p>
+<h2 id="订阅管理（Subscriptions）"><a href="#订阅管理（Subscriptions）" class="headerlink" title="订阅管理（Subscriptions）"></a>订阅管理（Subscriptions）</h2><h3 id="创建订阅（Create-Subscription）"><a href="#创建订阅（Create-Subscription）" class="headerlink" title="创建订阅（Create Subscription）"></a>创建订阅（Create Subscription）</h3><p>Stripe 订阅依赖于事先在 Stripe 控制台创建的产品（Product）和价格计划（Price）。示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> Subscription <span class="hljs-title function_">createSubscription</span><span class="hljs-params">(String customerId, String priceId)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>    <span class="hljs-type">SubscriptionCreateParams</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> SubscriptionCreateParams.builder()<br>        .setCustomer(customerId)<br>        .addItem(SubscriptionCreateParams.Item.builder()<br>            .setPrice(priceId)  <span class="hljs-comment">// 使用已有的价格计划 ID</span><br>            .build())<br>        .build();<br>    <span class="hljs-comment">// 发起订阅创建请求</span><br>    <span class="hljs-keyword">return</span> Subscription.create(params);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此代码将指定的客户（customerId）按给定价格（priceId）创建订阅。返回的 <code>Subscription</code> 对象包含订阅详情（例如状态、账单周期等）。</p>
+<h3 id="取消订阅（Cancel-Subscription）"><a href="#取消订阅（Cancel-Subscription）" class="headerlink" title="取消订阅（Cancel Subscription）"></a>取消订阅（Cancel Subscription）</h3><p>取消订阅可以调用 Stripe SDK 提供的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> Subscription <span class="hljs-title function_">cancelSubscription</span><span class="hljs-params">(String subscriptionId)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>    <span class="hljs-type">Subscription</span> <span class="hljs-variable">subscription</span> <span class="hljs-operator">=</span> Subscription.retrieve(subscriptionId);<br>    <span class="hljs-keyword">return</span> subscription.cancel();<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>以上通过 <code>Subscription.retrieve()</code> 获取订阅对象，然后调用 <code>cancel()</code> 方法取消订阅。取消后订阅状态将更新为已取消，并且在当前账单周期结束后停止计费。</p>
+<h3 id="更新订阅（Update-Subscription）"><a href="#更新订阅（Update-Subscription）" class="headerlink" title="更新订阅（Update Subscription）"></a>更新订阅（Update Subscription）</h3><p>更新订阅最常见的是更换价格计划（proration 默认开启）或添加&#x2F;移除优惠券等。示例代码（更换价格计划）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> Subscription <span class="hljs-title function_">updateSubscription</span><span class="hljs-params">(String subscriptionId, String newPriceId)</span> <span class="hljs-keyword">throws</span> StripeException &#123;<br>    <span class="hljs-type">Subscription</span> <span class="hljs-variable">subscription</span> <span class="hljs-operator">=</span> Subscription.retrieve(subscriptionId);<br>    <span class="hljs-type">SubscriptionUpdateParams</span> <span class="hljs-variable">params</span> <span class="hljs-operator">=</span> SubscriptionUpdateParams.builder()<br>        .addItem(SubscriptionUpdateParams.Item.builder()<br>            .setId(subscription.getItems().getData().get(<span class="hljs-number">0</span>).getId()) <span class="hljs-comment">// 当前订阅项 ID</span><br>            .setPrice(newPriceId)    <span class="hljs-comment">// 更新为新价格 ID</span><br>            .build())<br>        .setProrationBehavior(SubscriptionUpdateParams.ProrationBehavior.CREATE_INVOICE) <span class="hljs-comment">// 按规则 proration</span><br>        .build();<br>    <span class="hljs-keyword">return</span> subscription.update(params);<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>以上代码会将订阅中的第一项价格更新为 <code>newPriceId</code>，并生成新的账单差额。<code>SubscriptionUpdateParams</code> 支持更复杂的设置，如修改收费周期、应用折扣等。</p>
+<h2 id="获取卡片后四位等敏感信息"><a href="#获取卡片后四位等敏感信息" class="headerlink" title="获取卡片后四位等敏感信息"></a>获取卡片后四位等敏感信息</h2><p>Stripe 允许您获取卡的 <strong>后四位</strong>等非敏感信息，但<strong>不可</strong>获取完整卡号、CVC 等敏感数据。获取卡片信息的方式取决于卡片是如何与客户关联的：</p>
+<ul>
+<li><p>如果在付款时使用了 PaymentMethod：可以调用 <code>PaymentMethod.retrieve(paymentMethodId)</code>，然后使用返回的 <code>PaymentMethod</code> 对象访问卡片信息。例如：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">PaymentMethod</span> <span class="hljs-variable">pm</span> <span class="hljs-operator">=</span> PaymentMethod.retrieve(<span class="hljs-string">&quot;pm_xxx&quot;</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">last4</span> <span class="hljs-operator">=</span> pm.getCard().getLast4();<br></code></pre></td></tr></table></figure>
+</li>
+<li><p>如果要从已有的 Charge 中获取卡后四位，也可先 <code>Charge.retrieve(chargeId)</code>，再通过 <code>charge.getPaymentMethodDetails().getCard().getLast4()</code>（或类似方法）取得。但 <strong>前提</strong>是支付时产生的 Charge 对象包含卡详情。</p>
+</li>
+</ul>
+<p>以上操作均只会返回卡片的部分信息（如后四位、到期月份等），符合 PCI 合规要求。无论哪种方法，您都无需也不应直接接触到完整的卡号或 CVC，所有敏感数据均由 Stripe 安全存储。</p>
+<h2 id="关键注意事项与安全实践"><a href="#关键注意事项与安全实践" class="headerlink" title="关键注意事项与安全实践"></a>关键注意事项与安全实践</h2><ul>
+<li><p><strong>密钥管理</strong>：绝不可将 Stripe Secret Key 硬编码在代码或提交到版本库。推荐使用环境变量、机密管理服务或 Spring Cloud Config 等安全存储机制。定期轮换密钥，并仅在后端安全环境使用 Secret Key。前端页面只能使用 Publishable Key，不要泄露 Secret Key。</p>
+</li>
+<li><p><strong>测试模式</strong>：开发时使用 Stripe 提供的测试密钥（以 <code>sk_test_</code> 开头），并使用 Stripe 提供的测试卡号进行测试，以避免真实扣款。切勿在生产环境误用测试密钥，反之亦然。</p>
+</li>
+<li><p><strong>PCI 合规</strong>：后端使用 Stripe SDK 并不直接处理或存储信用卡完整信息，只处理 Token 或 PaymentMethod ID，符合 PCI 要求。尽量使用 Stripe Elements 或 Checkout 等前端组件收集卡信息，这样卡信息不会经过您的服务器。</p>
+</li>
+<li><p><strong>Webhooks 验证</strong>：对订阅等事件，建议配置 Stripe Webhooks，以便实时获知支付成功、订阅到期、欠费等事件，并在服务器端做相应处理（如更新数据库状态）。</p>
+</li>
+<li><p><strong>并发与幂等性</strong>：对可能重复请求的接口（如收费接口），应使用 Stripe 的幂等请求功能（Idempotency Keys），避免因重试导致重复扣款。</p>
+</li>
+<li><p><strong>安全最佳实践</strong>：切记按照最小权限原则操作。不要返回或日志记录敏感字段。参考 Stripe 官方及安全社区建议，避免泄露任何敏感信息。</p>
+</li>
+</ul>
+<p>通过以上步骤，您可以在 Spring Boot 后端中完整集成 Stripe 支付功能，安全地对接一次性收费、退款以及订阅服务等操作。</p>
+<p><strong>参考资料：</strong> Stripe 官方文档、Kinsta 与 OMI 博客等<a target="_blank" rel="noopener" href="https://docs.stripe.com/api/charges/create?lang=java#:~:text=ChargeCreateParams%20params%20%3D">docs.stripe.com</a><a target="_blank" rel="noopener" href="https://docs.stripe.com/api/refunds/create?lang=java#:~:text=RefundCreateParams%20params%20%3D">docs.stripe.com</a><a target="_blank" rel="noopener" href="https://www.omi.me/blogs/api-guides/how-to-use-stripe-billing-api-for-subscription-management-in-java#:~:text=public%20class%20SubscriptionService%20">omi.me</a><a target="_blank" rel="noopener" href="https://www.omi.me/blogs/api-guides/how-to-use-stripe-billing-api-for-subscription-management-in-java#:~:text=SubscriptionUpdateParams%20params%20%3D%20SubscriptionUpdateParams">omi.me</a><a target="_blank" rel="noopener" href="https://www.gitguardian.com/remediation/stripe-secret-key#:~:text=,term%20exposure">gitguardian.com</a>。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Stripe/Spring Boot 集成 Stripe/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Stripe/%E5%9F%BA%E7%A1%80/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Service/%E4%BA%8B%E5%8A%A1/%E4%BA%8B%E5%8A%A1%EF%BC%88Transactional%EF%BC%89/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

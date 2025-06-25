@@ -1,0 +1,848 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="聊聊 Java 中的 enum (枚举)。从基础讲起，逐步深入到它的高级特性和实际应用，确保内容既全面又跟得上潮流。 什么是枚举 (Enum)？想象一下，你需要表示一组固定的常量，比如一周中的几天（周一、周二…）、交通信号灯的颜色（红、黄、绿）或者订单的状态（待支付、已支付、已发货、已完成）。 在没有枚举之前，你可能会这样做： 1234567public class OldConstants &amp;#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="enum">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/%E5%9F%BA%E7%A1%80/Class/enum/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="聊聊 Java 中的 enum (枚举)。从基础讲起，逐步深入到它的高级特性和实际应用，确保内容既全面又跟得上潮流。 什么是枚举 (Enum)？想象一下，你需要表示一组固定的常量，比如一周中的几天（周一、周二…）、交通信号灯的颜色（红、黄、绿）或者订单的状态（待支付、已支付、已发货、已完成）。 在没有枚举之前，你可能会这样做： 1234567public class OldConstants &amp;#">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.757Z">
+<meta property="article:modified_time" content="2025-06-24T13:46:46.950Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>enum - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="enum"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">enum</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月24日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>聊聊 Java 中的 <code>enum</code> (枚举)。从基础讲起，逐步深入到它的高级特性和实际应用，确保内容既全面又跟得上潮流。</p>
+<h3 id="什么是枚举-Enum-？"><a href="#什么是枚举-Enum-？" class="headerlink" title="什么是枚举 (Enum)？"></a>什么是枚举 (Enum)？</h3><p>想象一下，你需要表示一组固定的常量，比如一周中的几天（周一、周二…）、交通信号灯的颜色（红、黄、绿）或者订单的状态（待支付、已支付、已发货、已完成）。</p>
+<p>在没有枚举之前，你可能会这样做：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OldConstants</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">DAY_MONDAY</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> <span class="hljs-variable">DAY_TUESDAY</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">COLOR_RED</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;RED&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">COLOR_YELLOW</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;YELLOW&quot;</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这种方式有几个<strong>缺点</strong>：</p>
+<ol>
+<li><strong>类型不安全</strong>：比如一个需要星期几的方法，你可能会错误地传入一个表示颜色的整数。编译器不会报错。</li>
+<li><strong>没有命名空间</strong>：常量名必须唯一，容易冲突。</li>
+<li><strong>可读性差</strong>：打印一个整数常量时，你只看到数字，而不是有意义的名称。</li>
+<li><strong>不易遍历</strong>：无法轻松获取所有可能的常量值。</li>
+<li><strong>难以关联更多信息</strong>：如果想给“红色”关联一个十六进制码，就很麻烦。</li>
+</ol>
+<p><strong>枚举 (Enum)</strong> 就是 Java 提供的解决方案，它是一种特殊的<strong>类</strong>，表示一组固定的常量集合。</p>
+<h3 id="基础用法"><a href="#基础用法" class="headerlink" title="基础用法"></a>基础用法</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 定义一个表示星期的枚举</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Day</span> &#123;<br>    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY<br>&#125;<br><br><span class="hljs-comment">// 定义一个表示交通信号灯颜色的枚举</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">TrafficLight</span> &#123;<br>    RED, YELLOW, GREEN<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>使用枚举：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">EnumDemo</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">Day</span> <span class="hljs-variable">today</span> <span class="hljs-operator">=</span> Day.MONDAY;<br>        System.out.println(<span class="hljs-string">&quot;Today is: &quot;</span> + today); <span class="hljs-comment">// 输出: Today is: MONDAY</span><br><br>        <span class="hljs-type">TrafficLight</span> <span class="hljs-variable">light</span> <span class="hljs-operator">=</span> TrafficLight.GREEN;<br>        System.out.println(<span class="hljs-string">&quot;Current light: &quot;</span> + light); <span class="hljs-comment">// 输出: Current light: GREEN</span><br><br>        <span class="hljs-comment">// 枚举天然支持 switch 语句</span><br>        <span class="hljs-keyword">switch</span> (today) &#123;<br>            <span class="hljs-keyword">case</span> MONDAY:<br>                System.out.println(<span class="hljs-string">&quot;Start of the work week!&quot;</span>);<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">case</span> FRIDAY:<br>                System.out.println(<span class="hljs-string">&quot;Almost weekend!&quot;</span>);<br>                <span class="hljs-keyword">break</span>;<br>            <span class="hljs-keyword">default</span>:<br>                System.out.println(<span class="hljs-string">&quot;Another day.&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-comment">// 遍历所有枚举实例</span><br>        System.out.println(<span class="hljs-string">&quot;\nAll days of the week:&quot;</span>);<br>        <span class="hljs-keyword">for</span> (Day d : Day.values()) &#123; <span class="hljs-comment">// values() 方法返回所有枚举实例的数组</span><br>            System.out.println(d + <span class="hljs-string">&quot; (ordinal: &quot;</span> + d.ordinal() + <span class="hljs-string">&quot;)&quot;</span>);<br>        &#125;<br>        <span class="hljs-comment">// ordinal() 方法返回枚举实例的声明顺序（从0开始）</span><br><br>        <span class="hljs-comment">// 通过字符串名称获取枚举实例</span><br>        <span class="hljs-type">Day</span> <span class="hljs-variable">specificDay</span> <span class="hljs-operator">=</span> Day.valueOf(<span class="hljs-string">&quot;WEDNESDAY&quot;</span>); <span class="hljs-comment">// valueOf() 方法根据名称查找</span><br>        System.out.println(<span class="hljs-string">&quot;\nSpecific day: &quot;</span> + specificDay); <span class="hljs-comment">// 输出: Specific day: WEDNESDAY</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="枚举的核心特性与高级用法"><a href="#枚举的核心特性与高级用法" class="headerlink" title="枚举的核心特性与高级用法"></a>枚举的核心特性与高级用法</h3><p>枚举远不止是简单的常量集合，它实际上是一个功能齐全的类。</p>
+<ol>
+<li><p><strong>枚举是类，枚举常量是实例</strong>：</p>
+<ul>
+<li>每个枚举常量（如 <code>Day.MONDAY</code>）都是 <code>Day</code> 这个枚举类的一个唯一实例。</li>
+<li>它们是 <code>public static final</code> 的，并且在类加载时被初始化。</li>
+<li>由于构造器是私有的（后面会讲），你不能在外部 <code>new</code> 一个枚举实例。</li>
+</ul>
+</li>
+<li><p><strong>构造方法 (Constructor)</strong>：</p>
+<ul>
+<li>枚举可以有构造方法，但它<strong>必须是 <code>private</code> 或包级私有</strong>（默认）。</li>
+<li>构造方法在定义枚举常量时自动调用。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">TrafficLight</span> &#123;<br>    RED(<span class="hljs-string">&quot;Stop&quot;</span>), <span class="hljs-comment">// 调用构造方法 TrafficLight(&quot;Stop&quot;)</span><br>    YELLOW(<span class="hljs-string">&quot;Caution&quot;</span>),<br>    GREEN(<span class="hljs-string">&quot;Go&quot;</span>);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String description; <span class="hljs-comment">// 实例字段</span><br><br>    <span class="hljs-comment">// 构造方法必须是 private (或包私有)</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">TrafficLight</span><span class="hljs-params">(String description)</span> &#123;<br>        <span class="hljs-built_in">this</span>.description = description;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getDescription</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> description;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br>System.out.println(TrafficLight.RED.getDescription()); <span class="hljs-comment">// 输出: Stop</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>字段和方法 (Fields and Methods)</strong>：</p>
+<ul>
+<li>枚举可以像普通类一样拥有实例字段和方法。</li>
+<li>每个枚举常量都可以拥有这些字段和方法的特定状态或行为。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">ErrorCode</span> &#123;<br>    NOT_FOUND(<span class="hljs-number">404</span>, <span class="hljs-string">&quot;Resource not found&quot;</span>),<br>    UNAUTHORIZED(<span class="hljs-number">401</span>, <span class="hljs-string">&quot;Authentication required&quot;</span>),<br>    INTERNAL_SERVER_ERROR(<span class="hljs-number">500</span>, <span class="hljs-string">&quot;Server error&quot;</span>);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> httpStatus;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String message;<br><br>    ErrorCode(<span class="hljs-type">int</span> httpStatus, String message) &#123;<br>        <span class="hljs-built_in">this</span>.httpStatus = httpStatus;<br>        <span class="hljs-built_in">this</span>.message = message;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getHttpStatus</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> httpStatus;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getMessage</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> message;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">displayError</span><span class="hljs-params">()</span> &#123;<br>        System.err.println(<span class="hljs-string">&quot;Error &quot;</span> + httpStatus + <span class="hljs-string">&quot;: &quot;</span> + message);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br>ErrorCode.NOT_FOUND.displayError(); <span class="hljs-comment">// 输出: Error 404: Resource not found</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>实现接口 (Implementing Interfaces)</strong>：</p>
+<ul>
+<li>枚举可以实现接口，这使得枚举常量可以参与多态。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">interface</span> <span class="hljs-title class_">Describable</span> &#123;<br>    String <span class="hljs-title function_">getFullDescription</span><span class="hljs-params">()</span>;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Status</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Describable</span> &#123;<br>    PENDING(<span class="hljs-string">&quot;Order is pending confirmation.&quot;</span>),<br>    PROCESSING(<span class="hljs-string">&quot;Order is being processed.&quot;</span>),<br>    SHIPPED(<span class="hljs-string">&quot;Order has been shipped.&quot;</span>);<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String details;<br><br>    Status(String details) &#123;<br>        <span class="hljs-built_in">this</span>.details = details;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getFullDescription</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Status: &quot;</span> + <span class="hljs-built_in">this</span>.name() + <span class="hljs-string">&quot; - Details: &quot;</span> + details;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br><span class="hljs-type">Describable</span> <span class="hljs-variable">currentStatus</span> <span class="hljs-operator">=</span> Status.PROCESSING;<br>System.out.println(currentStatus.getFullDescription());<br><span class="hljs-comment">// 输出: Status: PROCESSING - Details: Order is being processed.</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>常量特定的方法实现 (Constant-Specific Method Implementations)</strong>：</p>
+<ul>
+<li>这是枚举非常强大的一个特性。你可以让每个枚举常量提供其独有的方法实现，通常通过定义一个抽象方法在枚举类中，然后每个常量去覆盖它。这比在方法内部使用 <code>switch</code> 语句更优雅，更符合面向对象原则。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Operation</span> &#123;<br>    PLUS &#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">apply</span><span class="hljs-params">(<span class="hljs-type">double</span> x, <span class="hljs-type">double</span> y)</span> &#123;<br>            <span class="hljs-keyword">return</span> x + y;<br>        &#125;<br>    &#125;,<br>    MINUS &#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">apply</span><span class="hljs-params">(<span class="hljs-type">double</span> x, <span class="hljs-type">double</span> y)</span> &#123;<br>            <span class="hljs-keyword">return</span> x - y;<br>        &#125;<br>    &#125;,<br>    TIMES &#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">apply</span><span class="hljs-params">(<span class="hljs-type">double</span> x, <span class="hljs-type">double</span> y)</span> &#123;<br>            <span class="hljs-keyword">return</span> x * y;<br>        &#125;<br>    &#125;,<br>    DIVIDE &#123;<br>        <span class="hljs-meta">@Override</span><br>        <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">apply</span><span class="hljs-params">(<span class="hljs-type">double</span> x, <span class="hljs-type">double</span> y)</span> &#123;<br>            <span class="hljs-keyword">if</span> (y == <span class="hljs-number">0</span>) &#123;<br>                <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArithmeticException</span>(<span class="hljs-string">&quot;Cannot divide by zero&quot;</span>);<br>            &#125;<br>            <span class="hljs-keyword">return</span> x / y;<br>        &#125;<br>    &#125;;<br><br>    <span class="hljs-comment">// 抽象方法，每个常量必须实现</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-type">double</span> <span class="hljs-title function_">apply</span><span class="hljs-params">(<span class="hljs-type">double</span> x, <span class="hljs-type">double</span> y)</span>;<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br><span class="hljs-type">double</span> <span class="hljs-variable">resultPlus</span> <span class="hljs-operator">=</span> Operation.PLUS.apply(<span class="hljs-number">5</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">// 8.0</span><br><span class="hljs-type">double</span> <span class="hljs-variable">resultDivide</span> <span class="hljs-operator">=</span> Operation.DIVIDE.apply(<span class="hljs-number">10</span>, <span class="hljs-number">2</span>); <span class="hljs-comment">// 5.0</span><br>System.out.println(<span class="hljs-string">&quot;5 + 3 = &quot;</span> + resultPlus);<br>System.out.println(<span class="hljs-string">&quot;10 / 2 = &quot;</span> + resultDivide);<br></code></pre></td></tr></table></figure>
+<p>这种方式通常被称为<strong>策略枚举 (Strategy Enum Pattern)</strong>，它替代了在枚举方法中使用 <code>switch</code> 语句的冗长写法。</p>
+</li>
+</ol>
+<h3 id="枚举的内置方法"><a href="#枚举的内置方法" class="headerlink" title="枚举的内置方法"></a>枚举的内置方法</h3><p>所有枚举都隐式继承自 <code>java.lang.Enum</code> 类，因此它们都拥有一些有用的内置方法：</p>
+<ul>
+<li><code>String name()</code>: 返回枚举常量的名称（与 <code>toString()</code> 默认行为一致，但 <code>toString()</code> 可以被重写）。</li>
+<li><code>int ordinal()</code>: 返回枚举常量在声明时的序数（从0开始）。<strong>注意</strong>：尽量避免依赖 <code>ordinal()</code> 进行业务逻辑判断，因为修改枚举常量的顺序会导致逻辑错误。它主要用于 <code>EnumSet</code> 和 <code>EnumMap</code>。</li>
+<li><code>static &lt;T extends Enum&lt;T&gt;&gt; T valueOf(Class&lt;T&gt; enumType, String name)</code>: 返回指定名称的枚举常量。</li>
+<li><code>static E[] values()</code> (编译器自动生成): 返回一个包含所有枚举常量的数组，按声明顺序排列。</li>
+<li><code>compareTo(E o)</code>: 比较此枚举与指定对象的顺序。基于 <code>ordinal()</code>。</li>
+<li><code>equals(Object other)</code>: 当且仅当 <code>other</code> 是与此对象相同的枚举常量时返回 <code>true</code>。</li>
+<li><code>hashCode()</code>: 返回枚举常量的哈希码。</li>
+<li><code>getDeclaringClass()</code>: 返回与此枚举常量对应的枚举类型所属的 <code>Class</code> 对象。</li>
+</ul>
+<h3 id="枚举的优势总结"><a href="#枚举的优势总结" class="headerlink" title="枚举的优势总结"></a>枚举的优势总结</h3><ol>
+<li><strong>类型安全 (Type Safety)</strong>：编译器会检查类型，防止传入错误的值。</li>
+<li><strong>可读性强 (Readability)</strong>：代码更清晰，意图更明显。</li>
+<li><strong>易于维护 (Maintainability)</strong>：修改或添加常量更方便，不易出错。</li>
+<li><strong>命名空间 (Namespace)</strong>：常量被组织在枚举类型下，避免了名称冲突。</li>
+<li><strong>可遍历性 (Iterability)</strong>：可以使用 <code>values()</code> 方法轻松遍历所有常量。</li>
+<li><strong>与 <code>switch</code> 完美配合</strong>：Java 的 <code>switch</code> 语句天然支持枚举类型。</li>
+<li><strong>可扩展性 (Extensibility)</strong>：可以添加字段、方法、实现接口，甚至为每个常量提供特定的行为。</li>
+<li><strong>单例保证 (Singleton Guarantee)</strong>：每个枚举常量在 JVM 中都是唯一的实例，天然线程安全，常用于实现单例模式。</li>
+<li><strong>序列化保证 (Serialization Guarantee)</strong>：Java 序列化机制确保反序列化时枚举常量仍然是 JVM 中原有的那个实例，不会创建新的。</li>
+</ol>
+<h3 id="枚举的性能考量与特殊集合"><a href="#枚举的性能考量与特殊集合" class="headerlink" title="枚举的性能考量与特殊集合"></a>枚举的性能考量与特殊集合</h3><ul>
+<li><strong>性能</strong>：枚举常量是在类加载时初始化的，这点开销通常很小。与 <code>static final int</code> 相比，枚举在内存占用和访问速度上可能会有微小的额外开销，但在绝大多数情况下，这点开销可以忽略不计，而其带来的好处远大于这点开销。</li>
+<li><strong><code>EnumSet</code></strong>：专门为枚举类型设计的 <code>Set</code> 实现。内部通常使用位向量 (bit vector) 实现，性能极高，远超 <code>HashSet</code>。推荐在需要存储枚举常量的集合时使用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">EnumSet&lt;Day&gt; weekend = EnumSet.of(Day.SATURDAY, Day.SUNDAY);<br>System.out.println(<span class="hljs-string">&quot;Weekend days: &quot;</span> + weekend);<br></code></pre></td></tr></table></figure></li>
+<li><strong><code>EnumMap</code></strong>：专门为枚举类型作为键设计的 <code>Map</code> 实现。内部通常使用数组实现，性能也极高，远超 <code>HashMap</code>。推荐在需要以枚举常量作为键的映射时使用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">EnumMap&lt;Day, String&gt; schedule = <span class="hljs-keyword">new</span> <span class="hljs-title class_">EnumMap</span>&lt;&gt;(Day.class);<br>schedule.put(Day.MONDAY, <span class="hljs-string">&quot;Work&quot;</span>);<br>schedule.put(Day.FRIDAY, <span class="hljs-string">&quot;Party planning&quot;</span>);<br>System.out.println(<span class="hljs-string">&quot;Monday&#x27;s schedule: &quot;</span> + schedule.get(Day.MONDAY));<br></code></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="何时使用枚举？"><a href="#何时使用枚举？" class="headerlink" title="何时使用枚举？"></a>何时使用枚举？</h3><ul>
+<li>当有一组固定的、有限的、在编译时就知道的常量集合时。</li>
+<li>需要表示状态、类型、选项等。</li>
+<li>希望为这些常量关联额外的数据或行为。</li>
+<li>需要类型安全地传递这些常量。</li>
+<li>可以替代简单的策略模式实现。</li>
+</ul>
+<h3 id="避免的事项"><a href="#避免的事项" class="headerlink" title="避免的事项"></a>避免的事项</h3><ul>
+<li><strong>过度依赖 <code>ordinal()</code></strong>：如前所述，枚举常量的顺序可能会改变，导致依赖 <code>ordinal()</code> 的逻辑出错。如果需要一个稳定的值，应该为枚举定义一个显式的字段（如 <code>id</code>）。</li>
+<li><strong>滥用枚举实现复杂逻辑</strong>：虽然枚举可以有方法和实现接口，但如果逻辑变得过于复杂，可能还是拆分成单独的类更合适。枚举应保持其作为“常量集合”的核心职责。</li>
+</ul>
+<h3 id="最新进展-Java-17-21-及以后"><a href="#最新进展-Java-17-21-及以后" class="headerlink" title="最新进展 (Java 17, 21 及以后)"></a>最新进展 (Java 17, 21 及以后)</h3><p>枚举的核心机制自 Java 5 引入以来，一直非常稳定和强大，并没有发生翻天覆地的变化。后续 Java 版本主要是在其他方面进行增强，例如：</p>
+<ul>
+<li><p><strong><code>switch</code> 表达式 (Java 12+ 预览, Java 14 正式)</strong>：<code>switch</code> 表达式与枚举配合使用更加简洁和强大，尤其是可以返回值，并且强制 <code>exhaustive</code> (覆盖所有情况，否则编译错误，除非有 <code>default</code>)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Java 14+</span><br><span class="hljs-type">Day</span> <span class="hljs-variable">today</span> <span class="hljs-operator">=</span> Day.MONDAY;<br><span class="hljs-type">String</span> <span class="hljs-variable">activity</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">switch</span> (today) &#123;<br>    <span class="hljs-keyword">case</span> MONDAY, TUESDAY, WEDNESDAY, THURSDAY -&gt; <span class="hljs-string">&quot;Working&quot;</span>;<br>    <span class="hljs-keyword">case</span> FRIDAY -&gt; <span class="hljs-string">&quot;Working and planning weekend&quot;</span>;<br>    <span class="hljs-keyword">case</span> SATURDAY, SUNDAY -&gt; <span class="hljs-string">&quot;Relaxing&quot;</span>;<br>    <span class="hljs-comment">// 如果 Day 枚举新增了常量，这里不处理编译器会警告或报错（取决于配置）</span><br>&#125;;<br>System.out.println(<span class="hljs-string">&quot;Activity for &quot;</span> + today + <span class="hljs-string">&quot;: &quot;</span> + activity);<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>记录类型 (Records, Java 14+ 预览, Java 16 正式)</strong>：虽然不是直接针对枚举，但记录类型简化了数据类的创建。在某些场景下，如果枚举常量需要关联大量数据，且这些数据本身可以构成一个简单的 DTO，可以考虑结合使用。但通常枚举自身的字段已经足够。</p>
+</li>
+</ul>
+<p>总的来说，Java 枚举是一个设计得非常好且非常实用的特性。它不仅仅是常量的集合，更是一个强大的工具，可以帮助你编写更安全、更可读、更易维护的代码。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/Class/" class="category-chain-item">Class</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>enum</div>
+      <div>http://example.com/2025/06/24/Java/基础/Class/enum/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E5%9F%BA%E7%A1%80/Class/record/" title="record">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">record</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E5%9F%BA%E7%A1%80/Class/Class%20%E7%B1%BB%E5%9E%8B/" title="Class 类型">
+                        <span class="hidden-mobile">Class 类型</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

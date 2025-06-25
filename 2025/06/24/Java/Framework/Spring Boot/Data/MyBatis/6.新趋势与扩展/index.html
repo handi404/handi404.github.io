@@ -1,0 +1,819 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="探讨一下 MyBatis 的一些新趋势与扩展。虽然 MyBatis 本身是一个相对成熟和稳定的框架，但其生态系统和应用方式仍在不断发展。  6. MyBatis 的新趋势与扩展6.1 MyBatis-Plus (MP) - 强大的增强工具包是什么？ MyBatis-Plus (简称 MP) 是一个为 MyBatis 量身定制的增强工具包，它在 MyBatis 的基础上只做增强不做改变，旨在简化开发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/6.%E6%96%B0%E8%B6%8B%E5%8A%BF%E4%B8%8E%E6%89%A9%E5%B1%95/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="探讨一下 MyBatis 的一些新趋势与扩展。虽然 MyBatis 本身是一个相对成熟和稳定的框架，但其生态系统和应用方式仍在不断发展。  6. MyBatis 的新趋势与扩展6.1 MyBatis-Plus (MP) - 强大的增强工具包是什么？ MyBatis-Plus (简称 MP) 是一个为 MyBatis 量身定制的增强工具包，它在 MyBatis 的基础上只做增强不做改变，旨在简化开发">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.078Z">
+<meta property="article:modified_time" content="2025-06-16T07:28:05.858Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月16日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>探讨一下 MyBatis 的一些新趋势与扩展。虽然 MyBatis 本身是一个相对成熟和稳定的框架，但其生态系统和应用方式仍在不断发展。</p>
+<hr>
+<h3 id="6-MyBatis-的新趋势与扩展"><a href="#6-MyBatis-的新趋势与扩展" class="headerlink" title="6. MyBatis 的新趋势与扩展"></a>6. MyBatis 的新趋势与扩展</h3><h4 id="6-1-MyBatis-Plus-MP-强大的增强工具包"><a href="#6-1-MyBatis-Plus-MP-强大的增强工具包" class="headerlink" title="6.1 MyBatis-Plus (MP) - 强大的增强工具包"></a>6.1 MyBatis-Plus (MP) - 强大的增强工具包</h4><p><strong>是什么？</strong></p>
+<p>MyBatis-Plus (简称 MP) 是一个为 MyBatis 量身定制的<strong>增强工具包</strong>，它在 MyBatis 的基础上<strong>只做增强不做改变</strong>，旨在简化开发、提高效率。它不是要取代 MyBatis，而是作为 MyBatis 的一个得力助手。</p>
+<p><strong>核心特性与优势：</strong></p>
+<ol>
+<li><strong>无侵入</strong>: MP 在 MyBatis 的基础上进行扩展，完全兼容 MyBatis 的原生特性。你可以混合使用 MP 的功能和 MyBatis 的原生 XML&#x2F;注解。</li>
+<li><strong>通用 CRUD 操作</strong>:<ul>
+<li><strong>内置通用 Mapper</strong>: 提供一个 <code>BaseMapper&lt;T&gt;</code> 接口，继承它之后，你的 Mapper 接口就自动拥有了常用的 CRUD 方法 (如 <code>insert</code>, <code>deleteById</code>, <code>deleteByMap</code>, <code>updateById</code>, <code>selectById</code>, <code>selectBatchIds</code>, <code>selectByMap</code>, <code>selectList</code>, <code>selectPage</code> 等)，无需手写任何 SQL 或 XML。</li>
+<li><strong>通用 Service</strong>: 提供 <code>IService&lt;T&gt;</code> 和 <code>ServiceImpl&lt;M extends BaseMapper&lt;T&gt;, T&gt;</code>，封装了更多常用的业务 Service 层逻辑。</li>
+</ul>
+</li>
+<li><strong>强大的条件构造器 (Wrapper)</strong>:<ul>
+<li>MP 提供了一套非常强大的、链式调用的条件构造器 (<code>QueryWrapper</code>, <code>UpdateWrapper</code>, <code>LambdaQueryWrapper</code>, <code>LambdaUpdateWrapper</code>)，用于以编程方式构建复杂的 <code>WHERE</code> 条件、<code>ORDER BY</code>、<code>SELECT</code> 列等，而不需要在 XML 中写大量的动态 SQL <code>&lt;if&gt;</code> 判断。</li>
+<li><strong>Lambda 支持</strong>: <code>LambdaQueryWrapper</code> 和 <code>LambdaUpdateWrapper</code> 支持使用 Lambda 表达式指定列名，避免了硬编码字符串，更具类型安全和重构友好性。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 示例：使用 LambdaQueryWrapper</span><br>LambdaQueryWrapper&lt;User&gt; wrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();<br>wrapper.like(User::getName, <span class="hljs-string">&quot;John&quot;</span>)<br>       .gt(User::getAge, <span class="hljs-number">18</span>)<br>       .eq(User::getStatus, UserStatusEnum.ACTIVE)<br>       .orderByDesc(User::getCreateTime);<br>List&lt;User&gt; userList = userMapper.selectList(wrapper);<br></code></pre></td></tr></table></figure></li>
+<li><strong>主键生成策略</strong>: 支持多种主键生成策略，如雪花算法 (<code>IdType.ASSIGN_ID</code>)、UUID (<code>IdType.ASSIGN_UUID</code>)、数据库自增 (<code>IdType.AUTO</code>)、序列 (<code>IdType.INPUT</code> 配合序列) 等。</li>
+<li><strong>自动填充字段</strong>: 支持在插入或更新时自动填充公共字段，如 <code>createTime</code>, <code>updateTime</code>, <code>operator</code> 等 (通过实现 <code>MetaObjectHandler</code>)。</li>
+<li><strong>乐观锁插件</strong>: 内置了乐观锁插件，只需在实体字段上添加 <code>@Version</code> 注解，并在更新时自动处理版本号。</li>
+<li><strong>逻辑删除</strong>: 支持逻辑删除，通过在实体字段上添加 <code>@TableLogic</code> 注解，并在配置文件中开启，删除操作会自动变为更新标记字段。</li>
+<li><strong>性能分析插件</strong>: 可以打印 SQL 分析结果，帮助发现慢查询。</li>
+<li><strong>多租户支持</strong>: 提供了多租户 SQL 解析器，方便实现 SaaS 应用。</li>
+<li><strong>代码生成器 (MyBatis-Plus Generator)</strong>: 非常强大的代码生成工具，可以根据数据库表结构自动生成 Entity、Mapper 接口、Mapper XML、Service 接口、Service 实现类等，极大提升开发效率。</li>
+<li><strong>分页插件</strong>: MP 内部也集成了自己的分页插件，使用方式与 PageHelper 类似，通过 <code>IPage&lt;T&gt;</code> 接口和 <code>Page&lt;T&gt;</code> 实现类。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">Page&lt;User&gt; page = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Page</span>&lt;&gt;(<span class="hljs-number">1</span>, <span class="hljs-number">10</span>); <span class="hljs-comment">// pageNum, pageSize</span><br>IPage&lt;User&gt; userPage = userMapper.selectPage(page, wrapper);<br><span class="hljs-comment">// userPage.getRecords() 获取数据列表</span><br><span class="hljs-comment">// userPage.getTotal() 获取总记录数</span><br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>与 Spring Boot 集成：</strong></p>
+<p>MP 提供了 <code>mybatis-plus-boot-starter</code>，集成非常方便。</p>
+<ol>
+<li><p><strong>添加依赖 (<code>pom.xml</code>)</strong>:</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.5<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <span class="hljs-comment">&lt;!-- 请使用最新稳定版 --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-comment">&lt;!-- (可选) 代码生成器依赖 --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.baomidou<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-plus-generator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.5.5<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <span class="hljs-comment">&lt;!-- 与 starter 版本一致 --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-comment">&lt;!-- (可选) 模板引擎，如 Velocity 或 Freemarker --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.velocity<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>velocity-engine-core<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>2.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>配置 (<code>application.yml</code>)</strong>:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">mybatis-plus:</span><br>  <span class="hljs-attr">mapper-locations:</span> <span class="hljs-string">classpath:/mapper/**/*.xml</span> <span class="hljs-comment"># XML位置 (如果仍需使用XML)</span><br>  <span class="hljs-attr">type-aliases-package:</span> <span class="hljs-string">com.example.yourproject.entity</span> <span class="hljs-comment"># 实体类别名</span><br>  <span class="hljs-attr">global-config:</span><br>    <span class="hljs-attr">db-config:</span><br>      <span class="hljs-attr">id-type:</span> <span class="hljs-string">assign_id</span> <span class="hljs-comment"># 全局主键策略 (如雪花算法)</span><br>      <span class="hljs-comment"># table-prefix: t_ # 表名前缀 (代码生成器或自动映射时用)</span><br>      <span class="hljs-attr">logic-delete-field:</span> <span class="hljs-string">deleted</span> <span class="hljs-comment"># 全局逻辑删除的实体字段名 (逻辑删除会自动填充)</span><br>      <span class="hljs-attr">logic-delete-value:</span> <span class="hljs-number">1</span> <span class="hljs-comment"># 逻辑已删除值</span><br>      <span class="hljs-attr">logic-not-delete-value:</span> <span class="hljs-number">0</span> <span class="hljs-comment"># 逻辑未删除值</span><br>    <span class="hljs-attr">banner:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 关闭 MP banner 打印</span><br>  <span class="hljs-attr">configuration:</span><br>    <span class="hljs-attr">map-underscore-to-camel-case:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-attr">log-impl:</span> <span class="hljs-string">org.apache.ibatis.logging.slf4j.Slf4jImpl</span><br>  <span class="hljs-comment"># (可选) 插件配置</span><br>  <span class="hljs-comment"># interceptors:</span><br>  <span class="hljs-comment">#   - com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor: # 分页插件 (新版MP推荐)</span><br>  <span class="hljs-comment">#       dbType: MYSQL</span><br>  <span class="hljs-comment">#   - com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor # 乐观锁插件</span><br></code></pre></td></tr></table></figure>
+<p>MP 的新版本 (3.4.0+) 推荐使用 <code>MybatisPlusInterceptor</code> 来统一管理内部插件 (InnerInterceptor)，例如分页插件、乐观锁插件等。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Java Config 方式配置插件 (推荐)</span><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MybatisPlusPluginConfig</span> &#123;<br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> MybatisPlusInterceptor <span class="hljs-title function_">mybatisPlusInterceptor</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">MybatisPlusInterceptor</span> <span class="hljs-variable">interceptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MybatisPlusInterceptor</span>();<br>        <span class="hljs-comment">// 分页插件 (需要指定数据库类型)</span><br>        interceptor.addInnerInterceptor(<span class="hljs-keyword">new</span> <span class="hljs-title class_">PaginationInnerInterceptor</span>(DbType.MYSQL));<br>        <span class="hljs-comment">// 乐观锁插件</span><br>        interceptor.addInnerInterceptor(<span class="hljs-keyword">new</span> <span class="hljs-title class_">OptimisticLockerInnerInterceptor</span>());<br>        <span class="hljs-comment">// 防止全表更新与删除插件 (生产环境推荐)</span><br>        <span class="hljs-comment">// interceptor.addInnerInterceptor(new BlockAttackInnerInterceptor());</span><br>        <span class="hljs-keyword">return</span> interceptor;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>实体类注解：</strong></p>
+<p>MP 使用注解来增强实体类与数据库表的映射。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.entity;<br><br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.annotation.*;<br><span class="hljs-keyword">import</span> lombok.Data;<br><span class="hljs-keyword">import</span> java.io.Serializable;<br><span class="hljs-keyword">import</span> java.time.LocalDateTime;<br><br><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@TableName(&quot;users&quot;)</span> <span class="hljs-comment">// 指定表名 (如果类名与表名不符合驼峰下划线转换规则)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> <span class="hljs-number">1L</span>;<br><br>    <span class="hljs-meta">@TableId(type = IdType.AUTO)</span> <span class="hljs-comment">// 主键注解, type 指定主键策略</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-meta">@TableField(&quot;user_name&quot;)</span> <span class="hljs-comment">// 字段注解, 指定数据库列名 (如果属性名与列名不符合驼峰下划线转换)</span><br>    <span class="hljs-keyword">private</span> String name;<br><br>    <span class="hljs-keyword">private</span> Integer age;<br>    <span class="hljs-keyword">private</span> String email;<br><br>    <span class="hljs-meta">@TableField(fill = FieldFill.INSERT)</span> <span class="hljs-comment">// 插入时自动填充</span><br>    <span class="hljs-keyword">private</span> LocalDateTime createTime;<br><br>    <span class="hljs-meta">@TableField(fill = FieldFill.INSERT_UPDATE)</span> <span class="hljs-comment">// 插入和更新时自动填充</span><br>    <span class="hljs-keyword">private</span> LocalDateTime updateTime;<br><br>    <span class="hljs-meta">@Version</span> <span class="hljs-comment">// 乐观锁版本号字段</span><br>    <span class="hljs-keyword">private</span> Integer version;<br><br>    <span class="hljs-meta">@TableLogic</span> <span class="hljs-comment">// 逻辑删除字段 (值由全局配置或注解属性指定)</span><br>    <span class="hljs-keyword">private</span> Integer deleted;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>Mapper 接口继承 <code>BaseMapper</code>：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.mapper;<br><br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.mapper.BaseMapper;<br><span class="hljs-keyword">import</span> com.example.yourproject.entity.User;<br><span class="hljs-keyword">import</span> org.apache.ibatis.annotations.Mapper;<br><br><span class="hljs-meta">@Mapper</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;User&gt; &#123;<br>    <span class="hljs-comment">// 自动拥有 CRUD 方法</span><br>    <span class="hljs-comment">// 如果需要自定义 SQL, 仍然可以在这里定义方法，并在 XML 中实现或使用 MyBatis 注解</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>总结：</strong><br>MyBatis-Plus 极大地提升了 MyBatis 的开发效率，特别是对于常见的 CRUD 和条件查询。如果你正在使用 MyBatis，引入 MP 通常是一个明智的选择，它能让你更专注于业务逻辑。</p>
+<hr>
+<h4 id="6-2-对响应式编程的探索"><a href="#6-2-对响应式编程的探索" class="headerlink" title="6.2 对响应式编程的探索"></a>6.2 对响应式编程的探索</h4><p>MyBatis 本身是一个<strong>阻塞式 IO</strong> 的框架，其核心设计是基于 JDBC 的，而 JDBC 规范本身是阻塞的。这使得 MyBatis 与 Spring WebFlux 等响应式编程模型的直接、原生集成存在天然的挑战。</p>
+<p><strong>当前状态：</strong></p>
+<ul>
+<li><strong>官方 MyBatis 没有直接的响应式支持</strong>：MyBatis 核心团队目前没有计划将 MyBatis 完全改造成一个响应式框架，因为这需要对底层 JDBC 交互进行根本性重构，或者依赖 R 2 DBC。</li>
+<li><strong>R2DBC (Reactive Relational Database Connectivity)</strong>: R2DBC 是一个旨在为关系型数据库提供响应式 API 的规范。它与 JDBC 是并列的，目标不同。一些数据库已经有了 R2DBC驱动 (如 <code>r2dbc-mysql</code>, <code>r2dbc-postgresql</code>, <code>r2dbc-mssql</code> 等)。</li>
+<li><strong>社区探索与第三方库</strong>：<ul>
+<li>有一些社区项目或个人尝试将 MyBatis 的理念与 R 2 DBC 结合，或者提供某种程度的异步封装。例如，有一些项目尝试在 R 2 DBC 上实现类似 MyBatis XML 解析和动态 SQL 的功能。</li>
+<li><strong><code>mybatis-dynamic-sql</code> 库的异步支持</strong>：MyBatis 官方有一个子项目 <code>mybatis-dynamic-sql</code>，它是一个用于动态构建 SQL 的 Java DSL 库，可以独立于 MyBatis 核心使用。它本身可以与任何 SQL 执行引擎结合。理论上，它可以与 R 2 DBC 客户端一起使用来实现响应式数据访问，但这需要开发者自己处理 R 2 DBC 的执行和结果映射。</li>
+<li><strong><code>jasync-sql</code> + MyBatis-like mappers</strong>: <code>jasync-sql</code> 是一个异步的 JDBC 替代品 (支持 MySQL 和 PostgreSQL)。有一些社区尝试基于它创建类似 MyBatis Mapper 接口的代理，实现异步方法。</li>
+<li><strong>Spring Data R2DBC</strong>: Spring 生态系统提供了 <code>Spring Data R2DBC</code>，它是 Spring Data 家族中针对 R 2 DBC 的实现。它提供了类似 Spring Data JPA&#x2F;JDBC 的 Repository 抽象，可以进行响应式数据操作。如果你追求纯粹的响应式栈，并且可以接受 Spring Data 的编程模型，这是一个更主流的选择。</li>
+</ul>
+</li>
+<li><strong>在响应式项目中使用阻塞式 MyBatis (不推荐，但可能作为过渡)</strong>:<ul>
+<li>可以通过将 MyBatis 的阻塞调用放在一个单独的、有界的线程池 (如 <code>Schedulers.boundedElastic()</code>) 中执行，以避免阻塞 Reactor 的核心线程。</li>
+<li>但这只是将阻塞操作隔离了，并没有真正实现端到端的响应式，依然存在线程切换和资源消耗。只适合在无法立即迁移到 R 2 DBC 或其他响应式数据访问方案时的临时措施。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 示例：在 WebFlux 中“包装”阻塞的 MyBatis 调用</span><br><span class="hljs-comment">// @Service</span><br><span class="hljs-comment">// public class UserService &#123;</span><br><span class="hljs-comment">//     private final UserMapper userMapper; // 阻塞的 MyBatis Mapper</span><br><span class="hljs-comment">//     private final Scheduler jdbcScheduler = Schedulers.boundedElastic();</span><br><span class="hljs-comment">//</span><br><span class="hljs-comment">//     public UserService(UserMapper userMapper) &#123;</span><br><span class="hljs-comment">//         this.userMapper = userMapper;</span><br><span class="hljs-comment">//     &#125;</span><br><span class="hljs-comment">//</span><br><span class="hljs-comment">//     public Mono&lt;User&gt; findByIdReactive(Long id) &#123;</span><br><span class="hljs-comment">//         return Mono.fromCallable(() -&gt; userMapper.findById(id)) // 在Callable中执行阻塞操作</span><br><span class="hljs-comment">//                    .subscribeOn(jdbcScheduler); // 切换到专用线程池</span><br><span class="hljs-comment">//     &#125;</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>结论：</strong></p>
+<p>如果你需要构建一个完全响应式的应用 (例如使用 Spring WebFlux)，并且需要与关系型数据库交互，那么<strong>目前更推荐直接使用 Spring Data R 2 DBC</strong> 或其他原生的 R 2 DBC 客户端库。MyBatis 在响应式领域的原生支持还比较有限。如果你的项目对 MyBatis 的 XML 和动态 SQL 有强依赖，并且希望探索响应式，可能需要关注社区基于 R 2 DBC 的 MyBatis-like 实现，或者接受将阻塞调用包装在独立线程池中的折中方案。</p>
+<hr>
+<h4 id="6-3-与-GraalVM-Native-Image-的兼容性"><a href="#6-3-与-GraalVM-Native-Image-的兼容性" class="headerlink" title="6.3 与 GraalVM Native Image 的兼容性"></a>6.3 与 GraalVM Native Image 的兼容性</h4><p>GraalVM Native Image 是一种将 Java 应用程序预编译 (AOT - Ahead-of-Time) 为独立可执行文件的技术。这样做的好处是<strong>极快的启动速度</strong>和<strong>更低的内存占用</strong>，非常适合 Serverless、微服务和容器化部署。</p>
+<p><strong>MyBatis 与 Native Image 的挑战：</strong></p>
+<p>Java 的动态特性，如反射 (Reflection)、动态代理 (Dynamic Proxies)、资源加载 (Resource Loading)、JNI 等，是 Native Image 构建时需要特别处理的。MyBatis 大量使用了这些特性：</p>
+<ul>
+<li><strong>反射</strong>: 用于实例化对象、调用 getter&#x2F;setter、处理参数和结果映射。</li>
+<li><strong>动态代理</strong>: 用于为 Mapper 接口生成实现类。</li>
+<li><strong>资源加载</strong>: 用于加载 Mapper XML 文件和 <code>mybatis-config.xml</code>。</li>
+</ul>
+<p><strong>Spring Boot 3.x 与 MyBatis 对 Native Image 的支持：</strong></p>
+<ul>
+<li><strong>Spring Boot 3.x</strong> 对 GraalVM Native Image 提供了<strong>一等公民的支持</strong>。它通过 AOT 处理和提供大量的 Native Hint (元数据提示) 来帮助 GraalVM 理解应用的动态行为。</li>
+<li><strong>MyBatis-Spring-Boot-Starter (<code>3.0.0+</code>)</strong> 也为与 Spring Boot 3 的 Native Image 集成做了很多工作。它会尝试自动注册 MyBatis 核心类、Mapper 接口、实体类、XML 文件等所需的反射和资源提示。</li>
+</ul>
+<p><strong>如何配置和构建：</strong></p>
+<ol>
+<li><strong>使用 Spring Boot 3.x 和相应版本的 <code>mybatis-spring-boot-starter</code> (如 <code>3.0.3+</code>)。</strong></li>
+<li><strong>添加 GraalVM Native Build Tools 插件</strong> (<code>org.graalvm.buildtools.native</code>) 到你的 Maven 或 Gradle 构建中。</li>
+<li><strong>提供必要的 Hints (如果自动配置不足)</strong>:<ul>
+<li>虽然 starter 会做很多自动配置，但有时对于特定的实体类、复杂的类型处理器或动态 SQL Provider，你可能仍需要手动提供 Hints。</li>
+<li>Hints 可以通过 <code>@RegisterReflectionForBinding</code>, <code>@RegisterResourceForBinding</code> 等注解，或者通过 <code>RuntimeHintsRegistrar</code> API 以编程方式注册，或者在 <code>META-INF/native-image/.../reflect-config.json</code>, <code>resource-config.json</code> 等 JSON 文件中定义。</li>
+<li>Spring AOT 插件会尝试在编译时处理这些。</li>
+</ul>
+</li>
+<li><strong>Mapper XML 文件</strong>：需要确保 XML 文件被正确地包含在 Native Image 的资源中。<code>mybatis-spring-boot-starter</code> 通常会处理 <code>mybatis.mapper-locations</code> 指定的路径。</li>
+<li><strong>动态 SQL Provider 类</strong>: 如果使用 <code>@...Provider</code> 注解，Provider 类及其方法可能需要反射提示。</li>
+<li><strong>Type Handlers</strong>: 自定义的 Type Handler 类也可能需要反射提示。</li>
+<li><strong>测试</strong>: 在 Native Image 环境下进行充分的测试至关重要，因为有些问题可能只在 Native 模式下出现。Spring Boot 提供了 <code>@NativeImageTest</code> 注解方便进行集成测试。</li>
+</ol>
+<p><strong>示例 (<code>pom.xml</code> 中相关部分):</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.1.5<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <span class="hljs-comment">&lt;!-- 使用 Spring Boot 3.x --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span>/&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.mybatis.spring.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mybatis-spring-boot-starter<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.0.3<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- ... other dependencies ... --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.graalvm.buildtools<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>native-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-comment">&lt;!-- version and configuration as per Spring Boot documentation --&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-comment">&lt;!-- configuration for native image build --&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>当前状况与建议：</strong></p>
+<ul>
+<li>MyBatis 社区和 Spring Boot 团队正在持续改进对 Native Image 的支持。</li>
+<li>对于标准的 MyBatis 用法（XML 映射、简单注解、常见类型），<code>mybatis-spring-boot-starter</code> 提供的自动配置通常能很好地工作。</li>
+<li>如果你的应用使用了非常动态或不常见的 MyBatis 特性，或者大量自定义组件，你可能需要花费更多精力来提供正确的 Native Hints 并进行调试。</li>
+<li>MyBatis-Plus 对 Native Image 的支持也在逐步完善。MP 使用了更多的动态特性，可能需要更仔细的 Hint 配置。</li>
+<li><strong>官方文档和社区资源</strong>是获取最新信息和解决特定兼容性问题的最佳途径。查看 Spring Boot 关于 GraalVM 的文档以及 MyBatis 和 MyBatis-Plus 社区的讨论。</li>
+<li><strong>从简单开始</strong>：如果你计划将 MyBatis 应用迁移到 Native Image，建议从一个简单的 CRUD 示例开始，逐步增加复杂性，并持续测试。</li>
+</ul>
+<hr>
+<p>这些新趋势和扩展表明 MyBatis 仍然是一个活跃发展的生态。MyBatis-Plus 极大地提升了开发体验，而对响应式和 Native Image 的探索则反映了框架适应新技术浪潮的努力。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Data/MyBatis/6.新趋势与扩展/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/mybatis-rg1/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/5.%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%E4%B8%8E%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

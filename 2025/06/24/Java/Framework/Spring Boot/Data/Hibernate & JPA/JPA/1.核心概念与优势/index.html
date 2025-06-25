@@ -1,0 +1,950 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="深入探讨 JPA 的核心概念与优势，并将其与 MyBatis 进行对比，以便更好地理解它们的定位和适用场景。  1. JPA 核心概念与优势1.1 JPA 规范、ORM 理念JPA (Java Persistence API &#x2F; Jakarta Persistence API):  是什么？ JPA 本身不是一个具体的框架或产品，而是一个 Java 规范 (Specification)。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/JPA/1.%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E4%B8%8E%E4%BC%98%E5%8A%BF/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="深入探讨 JPA 的核心概念与优势，并将其与 MyBatis 进行对比，以便更好地理解它们的定位和适用场景。  1. JPA 核心概念与优势1.1 JPA 规范、ORM 理念JPA (Java Persistence API &#x2F; Jakarta Persistence API):  是什么？ JPA 本身不是一个具体的框架或产品，而是一个 Java 规范 (Specification)。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.031Z">
+<meta property="article:modified_time" content="2025-06-16T08:11:44.759Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月16日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>深入探讨 JPA 的核心概念与优势，并将其与 MyBatis 进行对比，以便更好地理解它们的定位和适用场景。</p>
+<hr>
+<h3 id="1-JPA-核心概念与优势"><a href="#1-JPA-核心概念与优势" class="headerlink" title="1. JPA 核心概念与优势"></a>1. JPA 核心概念与优势</h3><h4 id="1-1-JPA-规范、ORM-理念"><a href="#1-1-JPA-规范、ORM-理念" class="headerlink" title="1.1 JPA 规范、ORM 理念"></a>1.1 JPA 规范、ORM 理念</h4><p><strong>JPA (Java Persistence API &#x2F; Jakarta Persistence API)</strong>:</p>
+<ul>
+<li><strong>是什么？</strong> JPA 本身<strong>不是一个具体的框架或产品，而是一个 Java 规范 (Specification)</strong>。它由一系列接口、注解和语义组成，定义了 Java 对象如何映射到关系型数据库的表，以及如何通过面向对象的方式进行数据持久化操作。</li>
+<li><strong>目的</strong>：为 Java 应用提供一个标准的 ORM (Object-Relational Mapping) 解决方案，简化数据访问层的开发，提高开发效率和代码的可移植性。</li>
+<li><strong>历史</strong>：最初作为 EJB 3.0 的一部分发布，后来独立出来。随着 Java EE 迁移到 Eclipse Foundation，现在被称为 Jakarta Persistence。Spring Data JPA 是 Spring 生态对 JPA 规范的封装和增强，使得在 Spring 应用中使用 JPA 更加便捷。</li>
+</ul>
+<p><strong>ORM (Object-Relational Mapping) 理念</strong>:</p>
+<ul>
+<li><strong>核心思想</strong>: 在面向对象的编程语言 (如 Java) 和关系型数据库之间建立一座桥梁。它允许开发者使用操作对象的方式来间接操作数据库中的数据，而不需要直接编写大量的 SQL 语句。</li>
+<li><strong>映射 (Mapping)</strong>: ORM 框架负责将：<ul>
+<li>Java 类 (Class) 映射到数据库表 (Table)。</li>
+<li>Java 对象的属性 (Field&#x2F;Property) 映射到表的列 (Column)。</li>
+<li>Java 对象之间的关系 (如一对一、一对多) 映射到数据库表之间的外键关系。</li>
+</ul>
+</li>
+<li><strong>自动化</strong>: ORM 框架通常会自动处理：<ul>
+<li>SQL 语句的生成 (用于 CRUD 操作)。</li>
+<li>结果集的映射 (将查询结果转换为 Java 对象)。</li>
+<li>事务管理 (与底层事务机制集成)。</li>
+<li>缓存机制 (一级缓存、二级缓存)。</li>
+</ul>
+</li>
+<li><strong>目标</strong>: 让开发者更专注于业务逻辑的实现，而不是底层的 SQL 和数据库交互细节。</li>
+</ul>
+<h4 id="1-2-JPA-核心组件"><a href="#1-2-JPA-核心组件" class="headerlink" title="1.2 JPA 核心组件"></a>1.2 JPA 核心组件</h4><p>理解 JPA 的核心组件对于掌握其工作原理至关重要：</p>
+<ol>
+<li><p><strong>实体 (Entity)</strong>:</p>
+<ul>
+<li><strong>定义</strong>: 一个普通的 Java 类 (POJO - Plain Old Java Object)，通过 JPA 注解 (如 <code>@Entity</code>, <code>@Table</code>, <code>@Id</code>, <code>@Column</code> 等) 标记，表示它映射到数据库中的一张表。</li>
+<li><strong>实例</strong>: 实体的每个实例对应数据库表中的一行数据。</li>
+<li><strong>持久化状态</strong>: 实体对象在其生命周期中可以处于不同的持久化状态（New, Managed, Detached, Removed），由实体管理器管理。</li>
+</ul>
+</li>
+<li><p><strong>实体管理器 (EntityManager)</strong>:</p>
+<ul>
+<li><strong>定义</strong>: 这是 JPA 的核心接口，用于执行持久化操作。它是与持久化上下文 (Persistence Context) 交互的入口。</li>
+<li><strong>职责</strong>:<ul>
+<li>将实体对象持久化到数据库 (<code>persist</code>)。</li>
+<li>将游离态 (Detached) 的实体对象合并回持久化上下文 (<code>merge</code>)。</li>
+<li>从数据库中移除实体对象 (<code>remove</code>)。</li>
+<li>根据主键查找实体对象 (<code>find</code>, <code>getReference</code>)。</li>
+<li>创建和执行 JPQL 查询或原生 SQL 查询。</li>
+<li>管理实体的生命周期和持久化上下文。</li>
+</ul>
+</li>
+<li><strong>获取</strong>: 通常由 JPA 提供者通过依赖注入 (如在 Spring 中使用 <code>@PersistenceContext</code>) 或通过 <code>EntityManagerFactory</code> 创建。</li>
+</ul>
+</li>
+<li><p><strong>持久化单元 (Persistence Unit)</strong>:</p>
+<ul>
+<li><strong>定义</strong>: 在 <code>META-INF/persistence.xml</code> 文件中定义（或者在 Spring Boot 中通过 <code>application.yml/properties</code> 自动配置）。它描述了一组实体类、数据库连接信息、JPA 提供者以及其他配置选项。</li>
+<li><strong>作用</strong>: 定义了一个逻辑上的持久化配置单元。一个应用可以有多个持久化单元，分别连接到不同的数据库或使用不同的配置。</li>
+<li><strong>内容</strong>:<ul>
+<li>持久化提供者 (如 Hibernate)。</li>
+<li>数据源 JNDI 名称或 JDBC 连接属性。</li>
+<li>实体类的列表 (或指定扫描包)。</li>
+<li>事务类型 (JTA 或 RESOURCE_LOCAL)。</li>
+<li>属性配置 (如 DDL 生成策略、方言、缓存设置等)。</li>
+</ul>
+</li>
+<li>在 Spring Boot 中，这些配置大部分通过 <code>application.yml/properties</code> 自动完成，<code>persistence.xml</code> 通常不是必需的。</li>
+</ul>
+</li>
+<li><p><strong>JPQL (Java Persistence Query Language &#x2F; Jakarta Persistence Query Language)</strong>:</p>
+<ul>
+<li><strong>定义</strong>: 一种<strong>面向对象的查询语言</strong>，语法上类似于 SQL，但操作的是<strong>实体 (Entity) 及其持久化属性</strong>，而不是直接操作数据库表和列。</li>
+<li><strong>特点</strong>:<ul>
+<li><strong>数据库无关性</strong>: JPQL 查询由 JPA 提供者转换为特定数据库的 SQL 方言。</li>
+<li><strong>面向对象</strong>: 查询基于实体模型，例如 <code>SELECT e FROM Employee e WHERE e.department.name = :deptName</code>。</li>
+<li>支持 <code>SELECT</code>, <code>UPDATE</code>, <code>DELETE</code> 语句。</li>
+<li>支持丰富的查询子句，如 <code>JOIN</code> (包括 <code>FETCH JOIN</code> 用于优化关联加载)、<code>GROUP BY</code>, <code>HAVING</code>, <code>ORDER BY</code>。</li>
+<li>支持命名参数和位置参数。</li>
+</ul>
+</li>
+<li><strong>执行</strong>: 通过 <code>EntityManager</code> 创建 <code>Query</code> 或 <code>TypedQuery</code> 对象来执行 JPQL。</li>
+</ul>
+</li>
+<li><p><strong>EntityManagerFactory</strong>:</p>
+<ul>
+<li><strong>定义</strong>: 一个工厂类，用于创建 <code>EntityManager</code> 实例。</li>
+<li><strong>生命周期</strong>: 通常在应用启动时创建一个 <code>EntityManagerFactory</code> 实例（重量级对象，创建成本高），并在应用关闭时销毁。</li>
+<li><strong>获取</strong>: 通常通过 <code>Persistence.createEntityManagerFactory(&quot;persistenceUnitName&quot;)</code> 创建，或者在 Spring 中由 Spring 容器管理。</li>
+</ul>
+</li>
+</ol>
+<h4 id="1-3-JPA-提供者-Providers"><a href="#1-3-JPA-提供者-Providers" class="headerlink" title="1.3 JPA 提供者 (Providers)"></a>1.3 JPA 提供者 (Providers)</h4><p>JPA 只是一个规范，它需要具体的实现。这些实现被称为 JPA 提供者 (JPA Provider) 或持久化提供者 (Persistence Provider)。</p>
+<p>最主流的 JPA 提供者包括：</p>
+<ol>
+<li><strong>Hibernate</strong>:<ul>
+<li><strong>历史最悠久、功能最强大、社区最活跃</strong>的 ORM 框架之一，也是事实上的 JPA 标准实现。</li>
+<li>Spring Boot 默认使用的 JPA 提供者就是 Hibernate (如果引入了 <code>spring-boot-starter-data-jpa</code>)。</li>
+<li>提供了许多超出 JPA 规范的扩展功能和优化选项。</li>
+</ul>
+</li>
+<li><strong>EclipseLink</strong>:<ul>
+<li>另一个成熟的 JPA 提供者，是 GlassFish 和 WebLogic 等应用服务器的默认 JPA 实现。</li>
+<li>它也是 JPA 规范的参考实现之一。</li>
+<li>功能丰富，性能良好。</li>
+</ul>
+</li>
+<li><strong>OpenJPA</strong>:<ul>
+<li>Apache 基金会下的一个开源 JPA 实现。</li>
+<li>相对 Hibernate 和 EclipseLink，其市场份额较小，但也是一个完整的 JPA 实现。</li>
+</ul>
+</li>
+</ol>
+<p>当你在项目中使用 JPA 时，你需要选择并配置一个 JPA 提供者。Spring Boot 通过 <code>spring-boot-starter-data-jpa</code> 默认集成了 Hibernate，并简化了其配置。</p>
+<h4 id="1-4-JPA-的优势"><a href="#1-4-JPA-的优势" class="headerlink" title="1.4 JPA 的优势"></a>1.4 JPA 的优势</h4><p>使用 JPA (尤其是通过 Spring Data JPA) 带来了诸多好处：</p>
+<ol>
+<li><strong>面向对象编程 (OOP)</strong>:<ul>
+<li>开发者可以使用熟悉的面向对象的方式来操作数据，将关注点从 SQL 转移到业务对象和领域模型上。</li>
+<li>减少了 Java 对象与关系数据之间的阻抗失配 (impedance mismatch)。</li>
+</ul>
+</li>
+<li><strong>提高开发效率</strong>:<ul>
+<li><strong>减少样板代码</strong>: 对于基本的 CRUD 操作，几乎不需要编写 SQL。Spring Data JPA 的 Repository 甚至可以根据方法名自动生成查询。</li>
+<li><strong>自动化的映射和转换</strong>: JPA 提供者负责处理对象与数据库记录之间的映射和数据类型转换。</li>
+</ul>
+</li>
+<li><strong>数据库无关性 (Portability)</strong>:<ul>
+<li>JPA 和 JPQL 旨在提供数据库无关的数据访问层。理论上，如果遵循 JPA 标准，更换底层数据库时，对应用代码的修改会相对较少（主要是配置文件的更改和对特定数据库方言的兼容性处理）。</li>
+<li>JPA 提供者会根据配置的数据库方言 (Dialect) 生成特定数据库的 SQL。</li>
+</ul>
+</li>
+<li><strong>强大的查询能力</strong>:<ul>
+<li><strong>JPQL</strong>: 提供了一种类型安全的、面向对象的查询语言。</li>
+<li><strong>Criteria API</strong>: 允许以编程方式动态构建类型安全的查询，避免了字符串拼接 JPQL 的风险。</li>
+<li><strong>原生 SQL 支持</strong>: 对于 JPQL 难以表达或需要利用数据库特定功能的复杂查询，仍然可以使用原生 SQL。</li>
+</ul>
+</li>
+<li><strong>与 Java EE &#x2F; Jakarta EE 和 Spring 生态系统良好集成</strong>:<ul>
+<li>JPA 是 Java EE&#x2F;Jakarta EE 的标准组件。</li>
+<li><strong>Spring Data JPA</strong> 极大地简化了在 Spring 环境中使用 JPA 的方式，提供了 Repository 抽象、事务管理集成、方法名派生查询等强大功能。</li>
+</ul>
+</li>
+<li><strong>标准化</strong>:<ul>
+<li>遵循 JPA 规范有助于团队成员之间的协作，降低学习成本 (如果熟悉 JPA，切换到不同的 JPA 提供者或项目会更容易)。</li>
+</ul>
+</li>
+<li><strong>支持高级特性</strong>:<ul>
+<li>如延迟加载、级联操作、乐观锁&#x2F;悲观锁、二级缓存、实体生命周期回调等，这些特性有助于构建复杂的企业级应用。</li>
+</ul>
+</li>
+</ol>
+<h4 id="1-5-JPA-与-MyBatis-的核心差异"><a href="#1-5-JPA-与-MyBatis-的核心差异" class="headerlink" title="1.5 JPA 与 MyBatis 的核心差异"></a>1.5 JPA 与 MyBatis 的核心差异</h4><p>JPA 和 MyBatis 都是 Java 中非常流行的持久层解决方案，但它们的设计理念和使用方式有显著不同：</p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>JPA (以 Hibernate 为例)</th>
+<th>MyBatis</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>定位</strong></td>
+<td><strong>全自动 ORM 框架 (Full-blown ORM)</strong>，遵循 JPA 规范。</td>
+<td><strong>半自动 SQL 映射框架 (SQL Mapper)</strong>。</td>
+</tr>
+<tr>
+<td><strong>SQL 控制</strong></td>
+<td><strong>开发者通常不直接编写 SQL</strong> (框架自动生成)。对 SQL 的控制力较弱，但可以通过原生 SQL 弥补。</td>
+<td><strong>开发者完全控制 SQL 语句</strong> (写在 XML 或注解中)。对 SQL 的优化和定制非常灵活。</td>
+</tr>
+<tr>
+<td><strong>映射方式</strong></td>
+<td><strong>对象-关系映射 (ORM)</strong>。重点是实体对象及其关系。</td>
+<td><strong>SQL 结果集到对象的映射</strong>。重点是 SQL 和参数&#x2F;结果的映射。</td>
+</tr>
+<tr>
+<td><strong>开发模式</strong></td>
+<td>更贴近<strong>领域驱动设计 (DDD)</strong>，以实体为中心。</td>
+<td>更贴近<strong>数据驱动</strong>或面向 SQL 的开发。</td>
+</tr>
+<tr>
+<td><strong>SQL 编写量</strong></td>
+<td><strong>少</strong> (大部分自动生成)。</td>
+<td><strong>多</strong> (需要手写所有 SQL)。</td>
+</tr>
+<tr>
+<td><strong>灵活性</strong></td>
+<td>数据库无关性强，但对于特定数据库的复杂特性利用可能不直接。</td>
+<td>对 SQL 的控制极高，可以充分利用数据库特性，但数据库移植性相对较差。</td>
+</tr>
+<tr>
+<td><strong>学习曲线</strong></td>
+<td><strong>相对陡峭</strong>。需要理解 ORM 概念、实体生命周期、JPA 注解、JPQL、缓存机制等。</td>
+<td><strong>相对平缓</strong>。核心概念是 SQL 映射，易于上手，特别是对于熟悉 SQL 的开发者。</td>
+</tr>
+<tr>
+<td><strong>性能</strong></td>
+<td>自动生成的 SQL 可能不是最优的，需要注意 N+1 问题和缓存配置。通过调优可以达到良好性能。</td>
+<td>SQL 由开发者编写和优化，理论上可以达到最佳性能。</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>对 OOP 和 DDD 要求高，希望快速开发，数据库变动不频繁，对 SQL 控制要求不极致的场景。企业级应用、快速迭代项目。</td>
+<td>对 SQL 性能和控制有极致要求，数据库设计复杂，需要灵活利用数据库特性的场景。遗留系统改造、报表系统。</td>
+</tr>
+<tr>
+<td><strong>数据库移植性</strong></td>
+<td><strong>高</strong>。</td>
+<td><strong>低</strong> (因为 SQL 是手写的)。</td>
+</tr>
+<tr>
+<td><strong>自动化程度</strong></td>
+<td><strong>高</strong> (SQL 生成、对象映射)。</td>
+<td><strong>中等</strong> (只负责参数绑定和结果集映射，SQL 需手写)。</td>
+</tr>
+<tr>
+<td><strong>主要工具</strong></td>
+<td>JPQL, Criteria API, 实体注解。</td>
+<td>XML 映射文件, 动态 SQL 标签, MyBatis 注解。</td>
+</tr>
+</tbody></table>
+<p><strong>简单总结对比：</strong></p>
+<ul>
+<li><strong>JPA (Spring Data JPA)</strong>:<ul>
+<li><strong>优点</strong>: 开发效率高 (尤其对于 CRUD)，面向对象，数据库无关性好，与 Spring 生态结合紧密。</li>
+<li><strong>缺点</strong>: SQL 控制力弱，学习曲线陡峭，自动生成的 SQL 可能需要调优。</li>
+<li><strong>“自动挡豪华轿车”</strong>: 舒适、便捷、功能丰富，但驾驶乐趣和极限操控不如手动挡。</li>
+</ul>
+</li>
+<li><strong>MyBatis</strong>:<ul>
+<li><strong>优点</strong>: SQL 完全可控，性能优化潜力大，学习曲线平缓，灵活。</li>
+<li><strong>缺点</strong>: SQL 编写量大，数据库移植性差，面向对象程度不如 JPA。</li>
+<li><strong>“手动挡性能跑车”</strong>: 操控精准，性能极限高，但日常驾驶可能需要更多操作。</li>
+</ul>
+</li>
+</ul>
+<p><strong>选择哪个？</strong></p>
+<ul>
+<li>如果你的团队更倾向于面向对象开发，希望快速迭代，并且对 SQL 的控制没有极致要求，<strong>JPA (Spring Data JPA)</strong> 通常是更好的选择。</li>
+<li>如果你的项目对 SQL 性能有极高要求，需要精细控制每一个 SQL 语句，或者需要与复杂的遗留数据库打交道，<strong>MyBatis</strong> 可能更适合。</li>
+<li>在一些大型复杂项目中，甚至可能<strong>混合使用</strong>两者，例如主要业务模块使用 JPA 快速开发，而一些性能瓶颈或特定报表模块使用 MyBatis 精细优化 SQL。</li>
+</ul>
+<hr>
+<p>理解这些核心概念和 JPA 的优势，以及它与 MyBatis 的区别，是后续深入学习 JPA 的重要基础。</p>
+<p>接下来，我们将进入第二部分：“Spring Boot 集成 Spring Data JPA”，看看如何在 Spring Boot 项目中快速搭建和使用 JPA。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Data/Hibernate &amp; JPA/JPA/1.核心概念与优势/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/2.%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90%20Spring%20Data%20JPA/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E9%85%8D%E7%BD%AE/" title="配置">
+                        <span class="hidden-mobile">配置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

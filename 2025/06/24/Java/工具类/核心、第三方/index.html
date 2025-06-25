@@ -1,0 +1,1077 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="当我们谈论 Java 中的“所有工具类”时，这是一个非常广泛的话题，因为 Java 生态系统非常庞大，有无数的开源和闭源工具类库。 我将从以下几个层面来为您梳理，力求全面且与时俱进：  JDK 内置的核心工具类：这些是 Java 标准库提供的，无需额外依赖。 业界广泛使用的第三方工具库：这些库极大地扩展了 Java 的功能，是现代 Java 开发的标配。 特定领域或框架相关的工具类：例如 Spri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="核心、第三方">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/%E5%B7%A5%E5%85%B7%E7%B1%BB/%E6%A0%B8%E5%BF%83%E3%80%81%E7%AC%AC%E4%B8%89%E6%96%B9/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="当我们谈论 Java 中的“所有工具类”时，这是一个非常广泛的话题，因为 Java 生态系统非常庞大，有无数的开源和闭源工具类库。 我将从以下几个层面来为您梳理，力求全面且与时俱进：  JDK 内置的核心工具类：这些是 Java 标准库提供的，无需额外依赖。 业界广泛使用的第三方工具库：这些库极大地扩展了 Java 的功能，是现代 Java 开发的标配。 特定领域或框架相关的工具类：例如 Spri">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.823Z">
+<meta property="article:modified_time" content="2025-06-25T02:03:51.347Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>核心、第三方 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="核心、第三方"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">核心、第三方</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月25日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>当我们谈论 Java 中的“所有工具类”时，这是一个非常广泛的话题，因为 Java 生态系统非常庞大，有无数的开源和闭源工具类库。</p>
+<p>我将从以下几个层面来为您梳理，力求全面且与时俱进：</p>
+<ol>
+<li><strong>JDK 内置的核心工具类</strong>：这些是 Java 标准库提供的，无需额外依赖。</li>
+<li><strong>业界广泛使用的第三方工具库</strong>：这些库极大地扩展了 Java 的功能，是现代 Java 开发的标配。</li>
+<li><strong>特定领域或框架相关的工具类</strong>：例如 Spring 框架提供的工具类。</li>
+</ol>
+<p>我会重点介绍那些最常用、最能提高开发效率的工具类。</p>
+<h3 id="一、JDK-内置的核心工具类"><a href="#一、JDK-内置的核心工具类" class="headerlink" title="一、JDK 内置的核心工具类"></a>一、JDK 内置的核心工具类</h3><p>这些工具类通常位于 <code>java.util</code>, <code>java.lang</code>, <code>java.io</code>, <code>java.nio</code>, <code>java.time</code>, <code>java.math</code> 等包中。</p>
+<ol>
+<li><p><strong><code>java.util.Objects</code></strong> (Java 7+)</p>
+<ul>
+<li><strong>作用</strong>：提供了一系列静态方法来操作对象，特别是处理 <code>null</code> 值，避免 <code>NullPointerException</code>。</li>
+<li><strong>常用方法</strong>：<ul>
+<li><code>isNull(Object obj)</code> &#x2F; <code>nonNull(Object obj)</code>: 判断对象是否为 null。</li>
+<li><code>requireNonNull(T obj)</code> &#x2F; <code>requireNonNull(T obj, String message)</code>: 如果对象为null则抛出 <code>NullPointerException</code>，常用于构造函数和方法参数校验。</li>
+<li><code>equals(Object a, Object b)</code>: 安全地比较两个对象是否相等（会处理 null）。</li>
+<li><code>hash(Object... values)</code>: 为一组对象生成哈希码，方便实现 <code>hashCode()</code> 方法。</li>
+<li><code>toString(Object o)</code> &#x2F; <code>toString(Object o, String nullDefault)</code>: 安全地获取对象的字符串表示。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：编写健壮的代码，优雅地处理潜在的 null 值。</li>
+</ul>
+</li>
+<li><p><strong><code>java.util.Arrays</code></strong></p>
+<ul>
+<li><strong>作用</strong>：提供了操作数组（如排序、搜索、填充、比较、转换）的静态方法。</li>
+<li><strong>常用方法</strong>：<ul>
+<li><code>sort(int[] a)</code> &#x2F; <code>sort(T[] a, Comparator&lt;? super T&gt; c)</code>: 排序。</li>
+<li><code>binarySearch(int[] a, int key)</code>: 二分查找（数组需已排序）。</li>
+<li><code>equals(int[] a, int[] a2)</code>: 比较数组内容是否相等。</li>
+<li><code>fill(int[] a, int val)</code>: 填充数组。</li>
+<li><code>copyOf(T[] original, int newLength)</code> &#x2F; <code>copyOfRange(...)</code>: 复制数组。</li>
+<li><code>asList(T... a)</code>: 将数组转换为固定大小的 <code>List</code>（注意：返回的 List 不支持 add&#x2F;remove 操作，修改会影响原数组）。</li>
+<li><code>stream(T[] array)</code>: 将数组转换为流 (Stream API)。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：对数组进行各种便捷操作。</li>
+</ul>
+</li>
+<li><p><strong><code>java.util.Collections</code></strong></p>
+<ul>
+<li><strong>作用</strong>：提供了操作集合（List, Set, Map 等）或返回集合的静态方法。</li>
+<li><strong>常用方法</strong>：<ul>
+<li><code>sort(List&lt;T&gt; list)</code> &#x2F; <code>sort(List&lt;T&gt; list, Comparator&lt;? super T&gt; c)</code>: 排序 List。</li>
+<li><code>binarySearch(List&lt;? extends Comparable&lt;? super T&gt;&gt; list, T key)</code>: 二分查找。</li>
+<li><code>reverse(List&lt;?&gt; list)</code>: 反转 List。</li>
+<li><code>shuffle(List&lt;?&gt; list)</code>: 打乱 List 顺序。</li>
+<li><code>fill(List&lt;? super T&gt; list, T obj)</code>: 填充 List。</li>
+<li><code>copy(List&lt;? super T&gt; dest, List&lt;? extends T&gt; src)</code>: 复制 List。</li>
+<li><code>min(Collection&lt;? extends T&gt; coll)</code> &#x2F; <code>max(...)</code>: 找最小&#x2F;最大元素。</li>
+<li><code>frequency(Collection&lt;?&gt; c, Object o)</code>: 计算元素出现次数。</li>
+<li><code>emptyList()</code> &#x2F; <code>emptySet()</code> &#x2F; <code>emptyMap()</code>: 返回空的不可变集合，节省内存。</li>
+<li><code>singletonList(T o)</code> &#x2F; <code>singletonSet(T o)</code> &#x2F; <code>singletonMap(K key, V value)</code>: 返回只包含一个元素的不可变集合。</li>
+<li><code>unmodifiableList(List&lt;? extends T&gt; list)</code> &#x2F; <code>unmodifiableSet(...)</code> &#x2F; <code>unmodifiableMap(...)</code>: 返回指定集合的不可修改视图。</li>
+<li><code>synchronizedList(List&lt;T&gt; list)</code> &#x2F; <code>synchronizedSet(...)</code> &#x2F; <code>synchronizedMap(...)</code>: 返回线程安全的集合包装器（性能不如 <code>java.util.concurrent</code> 下的集合）。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：对集合框架进行各种便捷操作和转换。</li>
+</ul>
+</li>
+<li><p><strong><code>java.lang.String</code> 本身 (及其相关)</strong></p>
+<ul>
+<li><strong>作用</strong>：虽然 <code>String</code> 是一个类，但它包含了大量的实用方法，使其行为也像一个工具类。</li>
+<li><strong>常用方法</strong>：<ul>
+<li><code>isEmpty()</code> (Java 6+), <code>isBlank()</code> (Java 11+): 判断空或空白。</li>
+<li><code>join(CharSequence delimiter, CharSequence... elements)</code> (Java 8+): 连接字符串。</li>
+<li><code>format(String format, Object... args)</code>: 格式化字符串。</li>
+<li><code>valueOf(Object obj)</code>: 将其他类型转换为字符串。</li>
+<li><code>toCharArray()</code>, <code>getBytes()</code>.</li>
+<li><code>substring()</code>, <code>split()</code>, <code>trim()</code>, <code>replace()</code>, <code>toLowerCase()</code>, <code>toUpperCase()</code>.</li>
+<li><code>startsWith()</code>, <code>endsWith()</code>, <code>contains()</code>, <code>indexOf()</code>, <code>lastIndexOf()</code>.</li>
+<li><code>matches(String regex)</code>: 正则表达式匹配。</li>
+</ul>
+</li>
+<li><strong>相关</strong>：<code>StringBuilder</code> &#x2F; <code>StringBuffer</code> 用于高效构建字符串。<code>java.util.StringJoiner</code> (Java 8+) 提供了更灵活的字符串连接方式。</li>
+<li><strong>应用</strong>：几乎所有的 Java 应用都会大量使用字符串操作。</li>
+</ul>
+</li>
+<li><p><strong><code>java.lang.Math</code> 和 <code>java.lang.StrictMath</code></strong></p>
+<ul>
+<li><strong>作用</strong>：提供标准的数学运算方法。<code>Math</code> 可能使用平台优化的实现，而 <code>StrictMath</code> 保证所有平台结果一致（基于 IEEE 754 标准）。</li>
+<li><strong>常用方法</strong>：<ul>
+<li><code>abs(double a)</code>: 绝对值。</li>
+<li><code>sqrt(double a)</code>: 平方根。</li>
+<li><code>pow(double a, double b)</code>: a 的 b 次方。</li>
+<li><code>sin()</code>, <code>cos()</code>, <code>tan()</code>, <code>asin()</code>, <code>acos()</code>, <code>atan()</code>.</li>
+<li><code>round(float a)</code> &#x2F; <code>round(double a)</code>: 四舍五入。</li>
+<li><code>ceil(double a)</code>: 向上取整。</li>
+<li><code>floor(double a)</code>: 向下取整。</li>
+<li><code>random()</code>: 生成 0.0 到 1.0 之间的随机 double。</li>
+<li><code>max(int a, int b)</code> &#x2F; <code>min(...)</code>.</li>
+</ul>
+</li>
+<li><strong>应用</strong>：进行数学计算。</li>
+</ul>
+</li>
+<li><p><strong><code>java.time</code> 包 (Java 8+)</strong> - 现代日期时间 API</p>
+<ul>
+<li><strong>作用</strong>：提供了全面、清晰、不可变的日期时间处理API，取代了老旧的 <code>java.util.Date</code> 和 <code>java.util.Calendar</code>。</li>
+<li><strong>核心类</strong>：<ul>
+<li><code>LocalDate</code>: 日期 (年-月-日)。</li>
+<li><code>LocalTime</code>: 时间 (时:分:秒.纳秒)。</li>
+<li><code>LocalDateTime</code>: 日期和时间。</li>
+<li><code>ZonedDateTime</code>: 带时区的日期和时间。</li>
+<li><code>Instant</code>: 时间戳（从1970-01-01T00:00:00Z 开始的秒数）。</li>
+<li><code>Duration</code>: 时间段（基于时间，如秒、纳秒）。</li>
+<li><code>Period</code>: 日期段（基于日期，如年、月、日）。</li>
+<li><code>DateTimeFormatter</code>: 用于格式化和解析日期时间对象。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：所有现代 Java 应用中处理日期和时间的首选。</li>
+</ul>
+</li>
+<li><p><strong><code>java.nio.file.Files</code> 和 <code>java.nio.file.Paths</code> (Java 7+)</strong> - 现代文件 I&#x2F;O</p>
+<ul>
+<li><strong>作用</strong>：<code>Paths</code> 用于创建 <code>Path</code> 对象（表示文件或目录路径），<code>Files</code> 提供了大量操作文件和目录的静态方法。</li>
+<li><strong>常用方法 (<code>Files</code>)</strong>：<ul>
+<li><code>exists(Path path, LinkOption... options)</code>: 检查文件或目录是否存在。</li>
+<li><code>createFile(Path path, FileAttribute&lt;?&gt;... attrs)</code> &#x2F; <code>createDirectory(...)</code> &#x2F; <code>createDirectories(...)</code>.</li>
+<li><code>delete(Path path)</code> &#x2F; <code>deleteIfExists(Path path)</code>.</li>
+<li><code>copy(Path source, Path target, CopyOption... options)</code> &#x2F; <code>move(...)</code>.</li>
+<li><code>size(Path path)</code>: 文件大小。</li>
+<li><code>readAllBytes(Path path)</code>: 读取文件所有字节。</li>
+<li><code>readAllLines(Path path, Charset cs)</code>: 读取文件所有行到 List。</li>
+<li><code>write(Path path, byte[] bytes, OpenOption... options)</code>: 写入字节。</li>
+<li><code>write(Path path, Iterable&lt;? extends CharSequence&gt; lines, Charset cs, OpenOption... options)</code>: 写入行。</li>
+<li><code>newInputStream(Path path, OpenOption... options)</code> &#x2F; <code>newOutputStream(...)</code>.</li>
+<li><code>newBufferedReader(Path path, Charset cs)</code> &#x2F; <code>newBufferedWriter(...)</code>.</li>
+<li><code>walkFileTree(Path start, FileVisitor&lt;? super Path&gt; visitor)</code>: 遍历文件树。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：现代 Java 应用中进行文件和目录操作的首选。</li>
+</ul>
+</li>
+<li><p><strong><code>java.util.Base64</code> (Java 8+)</strong></p>
+<ul>
+<li><strong>作用</strong>：提供 Base 64 编码和解码功能。</li>
+<li><strong>常用方法</strong>：<ul>
+<li><code>getEncoder().encodeToString(byte[] src)</code></li>
+<li><code>getDecoder().decode(String src)</code></li>
+<li><code>getUrlEncoder()</code> &#x2F; <code>getUrlDecoder()</code>: URL 安全的 Base 64 编码。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：数据传输、存储时的编码，例如将二进制数据嵌入文本协议。</li>
+</ul>
+</li>
+<li><p><strong><code>java.util.UUID</code></strong></p>
+<ul>
+<li><strong>作用</strong>：生成全局唯一标识符 (Universally Unique Identifier)。</li>
+<li><strong>常用方法</strong>：<code>randomUUID()</code></li>
+<li><strong>应用</strong>：生成数据库主键、分布式系统中的唯一 ID 等。</li>
+</ul>
+</li>
+<li><p><strong><code>java.util.Optional&lt;T&gt;</code> (Java 8+)</strong></p>
+<ul>
+<li><strong>作用</strong>：一个容器对象，可能包含也可能不包含非null值。用于更优雅地处理可能为null的情况，避免 <code>NullPointerException</code>。</li>
+<li><strong>常用方法</strong>：<ul>
+<li><code>of(T value)</code>: 创建一个包含值的 Optional（如果 value 为 null 则抛 NPE）。</li>
+<li><code>ofNullable(T value)</code>: 创建一个 Optional，如果 value 为 null 则为空 Optional。</li>
+<li><code>empty()</code>: 创建一个空的 Optional。</li>
+<li><code>isPresent()</code>: 判断是否包含值。</li>
+<li><code>isEmpty()</code> (Java 11+): 判断是否为空。</li>
+<li><code>get()</code>: 获取值（如果为空则抛 NoSuchElementException）。</li>
+<li><code>orElse(T other)</code>: 如果有值则返回值，否则返回 other。</li>
+<li><code>orElseGet(Supplier&lt;? extends T&gt; other)</code>: 如果有值则返回值，否则返回 Supplier 提供的结果。</li>
+<li><code>orElseThrow(Supplier&lt;? extends X&gt; exceptionSupplier)</code>: 如果有值则返回值，否则抛出 Supplier 提供的异常。</li>
+<li><code>map(Function&lt;? super T, ? extends U&gt; mapper)</code>: 如果有值，则对其应用函数。</li>
+<li><code>flatMap(Function&lt;? super T, Optional&lt;U&gt;&gt; mapper)</code>: 类似于 map，但 mapper 函数返回 Optional。</li>
+<li><code>filter(Predicate&lt;? super T&gt; predicate)</code>: 如果值满足断言则返回此 Optional，否则返回空 Optional。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：作为方法返回值，明确表示结果可能缺失；链式调用处理可能为 null 的对象。</li>
+</ul>
+</li>
+<li><p><strong><code>java.util.stream.Collectors</code> (Java 8+)</strong></p>
+<ul>
+<li><strong>作用</strong>：提供了大量用于 <code>Stream</code> API 的 <code>collect</code> 操作的收集器实现。</li>
+<li><strong>常用方法</strong>：<ul>
+<li><code>toList()</code> &#x2F; <code>toSet()</code> &#x2F; <code>toCollection(Supplier&lt;C&gt; collectionFactory)</code>: 收集到集合。</li>
+<li><code>toMap(Function keyMapper, Function valueMapper)</code> &#x2F; <code>toMap(..., BinaryOperator mergeFunction)</code>: 收集到 Map。</li>
+<li><code>joining(CharSequence delimiter)</code>: 连接字符串。</li>
+<li><code>counting()</code>: 计数。</li>
+<li><code>summingInt(ToIntFunction mapper)</code> &#x2F; <code>summingLong()</code> &#x2F; <code>summingDouble()</code>: 求和。</li>
+<li><code>averagingInt(ToIntFunction mapper)</code> &#x2F; <code>averagingLong()</code> &#x2F; <code>averagingDouble()</code>: 求平均值。</li>
+<li><code>summarizingInt(ToIntFunction mapper)</code> &#x2F; <code>summarizingLong()</code> &#x2F; <code>summarizingDouble()</code>: 获取统计信息（count, sum, min, average, max）。</li>
+<li><code>groupingBy(Function classifier)</code> &#x2F; <code>groupingBy(Function classifier, Collector downstream)</code>: 分组。</li>
+<li><code>partitioningBy(Predicate predicate)</code>: 分区。</li>
+<li><code>minBy(Comparator comparator)</code> &#x2F; <code>maxBy(...)</code>.</li>
+</ul>
+</li>
+<li><strong>应用</strong>：与 Stream API 结合，进行强大的数据转换和聚合。</li>
+</ul>
+</li>
+</ol>
+<h3 id="二、业界广泛使用的第三方工具库"><a href="#二、业界广泛使用的第三方工具库" class="headerlink" title="二、业界广泛使用的第三方工具库"></a>二、业界广泛使用的第三方工具库</h3><p>当 JDK 内置的工具类不满足需求，或者为了更便捷的操作，我们会引入第三方库。</p>
+<ol>
+<li><p><strong>Apache Commons Lang (<code>org.apache.commons:commons-lang3</code>)</strong></p>
+<ul>
+<li><strong>作用</strong>：对 <code>java.lang</code> 包的扩展，提供了大量实用的工具类。</li>
+<li><strong>核心类</strong>：<ul>
+<li><code>StringUtils</code>: 强大的字符串操作（判空、分割、连接、大小写、填充、随机字符串等）。比JDK的String更全面。例如 <code>isBlank()</code>, <code>isNumeric()</code>, <code>join()</code>, <code>capitalize()</code>, <code>defaultString()</code>.</li>
+<li><code>ArrayUtils</code>: 数组操作（添加、删除、查找、反转、合并等）。</li>
+<li><code>ObjectUtils</code>: 对象操作（<code>defaultIfNull()</code>, <code>isEmpty()</code>, <code>isNotEmpty()</code>）。</li>
+<li><code>RandomStringUtils</code>: 生成随机字符串。</li>
+<li><code>NumberUtils</code>: 数字操作（<code>isDigits()</code>, <code>toInt()</code>, <code>toDouble()</code> 带默认值）。</li>
+<li><code>ClassUtils</code>, <code>SystemUtils</code>, <code>SerializationUtils</code> 等。</li>
+<li><code>Validate</code>: 参数校验。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：几乎是 Java 项目的标配，极大简化了日常编码。</li>
+</ul>
+</li>
+<li><p><strong>Apache Commons Collections (<code>org.apache.commons:commons-collections4</code>)</strong></p>
+<ul>
+<li><strong>作用</strong>：对 <code>java.util.Collections</code> 的扩展，提供更多集合操作和新的集合类型。</li>
+<li><strong>核心类&#x2F;功能</strong>：<ul>
+<li><code>CollectionUtils</code>: 集合操作（<code>isEmpty()</code>, <code>isNotEmpty()</code>, <code>union()</code>, <code>intersection()</code>, <code>subtract()</code>, <code>filter()</code>, <code>transform()</code>).</li>
+<li><code>ListUtils</code>, <code>MapUtils</code>, <code>SetUtils</code>: 针对特定集合类型的工具。</li>
+<li><code>IterableUtils</code>: <code>forEach()</code>, <code>find()</code>.</li>
+<li><code>BidiMap</code>: 双向 Map（键和值都唯一，可通过值找键）。</li>
+<li><code>MultiKeyMap</code>: 使用多个键的 Map。</li>
+<li><code>Bag</code>: 允许元素重复的集合，并记录每个元素的数量。</li>
+</ul>
+</li>
+<li><strong>注意</strong>：Java 8 Stream API 在很多方面提供了 <code>CollectionUtils.filter/transform</code> 的替代方案，通常更推荐使用Stream API。但 <code>CollectionUtils</code> 仍然在判空、集合运算等方面有其价值。</li>
+<li><strong>应用</strong>：复杂集合操作，特定集合类型需求。</li>
+</ul>
+</li>
+<li><p><strong>Apache Commons IO (<code>commons-io:commons-io</code>)</strong></p>
+<ul>
+<li><strong>作用</strong>：简化 I&#x2F;O 操作。</li>
+<li><strong>核心类</strong>：<ul>
+<li><code>FileUtils</code>: 文件和目录操作（读写文件、复制、移动、删除目录、比较文件内容、计算校验和等）。比 <code>java.nio.Files</code> 更早出现，有些操作可能更便捷。</li>
+<li><code>IOUtils</code>: 流操作（关闭流、拷贝流、读写流内容到字符串&#x2F;字节数组等）。<code>IOUtils.closeQuietly()</code> 曾非常流行，但在 Java 7 的 try-with-resources 出现后，其必要性降低。</li>
+<li><code>FilenameUtils</code>: 文件名操作（获取扩展名、基本名、路径规范化等）。</li>
+<li><code>FileSystemUtils</code>: 文件系统信息。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：简化文件和流的处理。现代项目中，<code>java.nio.Files</code> 提供了很多功能，可按需选择。</li>
+</ul>
+</li>
+<li><p><strong>Google Guava (<code>com.google.guava:guava</code>)</strong></p>
+<ul>
+<li><strong>作用</strong>：Google 出品的高质量核心 Java 库，包含集合、并发、I&#x2F;O、字符串处理、缓存、原生类型支持、哈希等。</li>
+<li><strong>核心模块&#x2F;类</strong>：<ul>
+<li><strong>集合 (Collections)</strong>：<ul>
+<li>不可变集合 (<code>ImmutableList</code>, <code>ImmutableSet</code>, <code>ImmutableMap</code>): 创建后无法修改，线程安全，高效。</li>
+<li>新集合类型: <code>Multiset</code> (Bag), <code>Multimap</code> (一个键对应多个值), <code>BiMap</code> (双向Map), <code>Table</code> (类似Map&lt;R, C, V&gt;的二维表结构)。</li>
+<li><code>Lists</code>, <code>Sets</code>, <code>Maps</code>: 静态工厂方法和工具方法。</li>
+<li><code>Ordering</code>:强大的比较器工具。</li>
+</ul>
+</li>
+<li><strong>字符串处理 (Strings)</strong>：<code>Strings.isNullOrEmpty()</code>, <code>Strings.padStart()</code>, <code>Splitter</code>, <code>Joiner</code>.</li>
+<li><strong>原生类型支持 (Primitives)</strong>：如 <code>Ints</code>, <code>Longs</code>, <code>Chars</code> 等，提供原生类型数组和 List 的转换、操作。</li>
+<li><strong>I&#x2F;O (<code>com.google.common.io</code>)</strong>: <code>Files</code> (增强), <code>CharStreams</code>, <code>ByteStreams</code>, <code>Resources</code>.</li>
+<li><strong>并发 (<code>com.google.common.util.concurrent</code>)</strong>: <code>ListenableFuture</code>, <code>Futures</code>, <code>MoreExecutors</code>, <code>RateLimiter</code>.</li>
+<li><strong>缓存 (Caching)</strong>：<code>CacheBuilder</code>, <code>LoadingCache</code>，强大的本地缓存实现。</li>
+<li><strong>前置条件 (Preconditions)</strong>：类似 <code>Objects.requireNonNull</code> 但更丰富，用于参数校验。</li>
+<li><strong>Hashing</strong>: <code>Hashing</code> 类提供各种哈希算法。</li>
+<li><strong>Reflection</strong>: <code>TypeToken</code> 解决泛型类型擦除问题。</li>
+<li><strong>EventBus</strong>: 简单的发布-订阅模式实现。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：Guava 功能强大且设计优雅，被广泛应用于各种 Java 项目。许多功能与 Java 8+ 的特性有重叠 (如 Optional, Streams)，但 Guava 仍有其独特价值，尤其是在集合和并发工具方面。</li>
+</ul>
+</li>
+<li><p><strong>Hutool (<code>cn.hutool:hutool-all</code>)</strong> (在中国开发者中非常流行)</p>
+<ul>
+<li><strong>作用</strong>：一个 Java 工具包，提供了大量工具类，旨在“小而全”，避免重复“轮子”。覆盖范围极广。</li>
+<li><strong>核心模块&#x2F;类</strong>：<ul>
+<li><code>StrUtil</code>: 字符串工具。</li>
+<li><code>DateUtil</code>: 日期时间工具（也支持 <code>java.time</code>）。</li>
+<li><code>FileUtil</code>: 文件工具。</li>
+<li><code>IoUtil</code>: IO 工具。</li>
+<li><code>CollUtil</code>: 集合工具。</li>
+<li><code>HttpUtil</code>: HTTP 客户端封装。</li>
+<li><code>SecureUtil</code>: 加密解密工具。</li>
+<li><code>BeanUtil</code>: JavaBean 操作。</li>
+<li><code>ReflectUtil</code>: 反射工具。</li>
+<li><code>Convert</code>: 类型转换工具。</li>
+<li>以及更多：JSON, XML, Excel, Captcha, Cron, Validator, Retry, Qrcode …</li>
+</ul>
+</li>
+<li><strong>应用</strong>：如果想快速引入一个功能全面的工具库，特别是在国内项目中，Hutool 是一个很好的选择。它整合了许多常用功能，减少了对多个小型库的依赖。</li>
+</ul>
+</li>
+</ol>
+<h3 id="三、特定领域或框架相关的工具类"><a href="#三、特定领域或框架相关的工具类" class="headerlink" title="三、特定领域或框架相关的工具类"></a>三、特定领域或框架相关的工具类</h3><p>这些工具类通常与特定的框架或技术栈绑定。</p>
+<ol>
+<li><p><strong>Spring Framework 工具类</strong></p>
+<ul>
+<li><strong><code>org.springframework.util</code> 包</strong>：<ul>
+<li><code>StringUtils</code>: Spring 自己的字符串工具类，功能与 Apache Commons Lang 的类似，但在 Spring 生态内使用更方便。</li>
+<li><code>CollectionUtils</code>: Spring 的集合工具类。</li>
+<li><code>Assert</code>: 断言工具，用于参数校验，类似 Guava 的 Preconditions。</li>
+<li><code>FileCopyUtils</code>: 文件拷贝工具。</li>
+<li><code>ReflectionUtils</code>: 反射工具。</li>
+<li><code>ClassUtils</code>: 类操作工具。</li>
+</ul>
+</li>
+<li><strong><code>org.springframework.beans</code> 包</strong>：<ul>
+<li><code>BeanUtils</code>: JavaBean操作，如属性拷贝 (<code>copyProperties</code>)。</li>
+</ul>
+</li>
+<li><strong>应用</strong>：在 Spring 项目中，优先考虑使用 Spring 自带的工具类，可以减少外部依赖，并与框架更好地集成。</li>
+</ul>
+</li>
+<li><p><strong>JSON 处理库 (Jackson, Gson, Fastjson)</strong></p>
+<ul>
+<li>虽然它们是完整的JSON库，但其核心的 <code>ObjectMapper</code> (Jackson), <code>Gson</code> (Gson), <code>JSON</code> (Fastjson) 对象也扮演了序列化和反序列化的工具角色。</li>
+<li><strong>应用</strong>：API 接口数据交换、配置文件读写。</li>
+</ul>
+</li>
+<li><p><strong>HTTP 客户端库 (Apache HttpClient, OkHttp, Retrofit, Spring RestTemplate&#x2F;WebClient)</strong></p>
+<ul>
+<li>这些库提供了便捷的方法来发送 HTTP 请求和处理响应，是进行网络编程的重要工具。</li>
+<li><strong>应用</strong>：调用外部 API 服务。</li>
+</ul>
+</li>
+</ol>
+<h3 id="如何选择和使用工具类？"><a href="#如何选择和使用工具类？" class="headerlink" title="如何选择和使用工具类？"></a>如何选择和使用工具类？</h3><ol>
+<li><strong>优先 JDK 内置</strong>：如果 JDK 内置的工具类能满足需求（特别是 Java 8+ 增强后），优先使用它们，可以减少项目依赖，保持轻量。</li>
+<li><strong>按需引入第三方库</strong>：当 JDK 功能不足或不够便捷时，选择成熟、广泛使用的第三方库（如 Apache Commons, Guava）。</li>
+<li><strong>避免重复造轮子</strong>：在写一些通用功能前，先检查 JDK 或已引入的库是否已有实现。</li>
+<li><strong>注意库的版本和兼容性</strong>：选择维护良好、社区活跃的库。</li>
+<li><strong>考虑项目整体技术栈</strong>：如果使用 Spring，优先考虑 Spring 自带的工具类。</li>
+<li><strong>不要为了一个小功能引入一个大库</strong>：权衡利弊。但像 Commons Lang 或 Guava 这种基础库，引入后通常物有所值。</li>
+<li><strong>学习现代Java特性</strong>：Java 8及以后版本（如Stream API, Optional, <code>java.time</code>, <code>java.nio.file</code>）提供了很多以前需要第三方库才能实现的功能，应优先掌握和使用。例如，很多集合转换操作可以用 Stream API 更优雅地完成。</li>
+</ol>
+<p>总而言之，Java 的工具类生态非常丰富。掌握核心 JDK 工具类，并熟悉 1-2 个主流的第三方工具库（如 Apache Commons Lang&#x2F;IO&#x2F;Collections 和 Google Guava），能极大地提升开发效率和代码质量。对于国内开发者，Hutool 也是一个值得关注的优秀选择。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%B7%A5%E5%85%B7%E7%B1%BB/" class="category-chain-item">工具类</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>核心、第三方</div>
+      <div>http://example.com/2025/06/24/Java/工具类/核心、第三方/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2010%EF%BC%88Non-LTS%EF%BC%89/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88/%E9%9B%86%E5%90%88%E5%B7%A5%E5%8E%82%E6%96%B9%E6%B3%95/" title="集合工厂方法">
+                        <span class="hidden-mobile">集合工厂方法</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

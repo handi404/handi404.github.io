@@ -1,0 +1,784 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="个人博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/page/13/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="个人博客">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/index.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="繁星的蓝 个人博客"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          style="margin-top: 0">
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/%E5%88%86%E9%A1%B5%E3%80%81%E4%B9%90%E8%A7%82%E9%94%81%E6%8F%92%E4%BB%B6/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/%E5%88%86%E9%A1%B5%E3%80%81%E4%B9%90%E8%A7%82%E9%94%81%E6%8F%92%E4%BB%B6/" target="_self">
+        <div>
+          继续深入 MyBatis-Plus 的插件机制，这些插件极大地增强了 MyBatis 的功能。  3.6 分页插件 (PaginationInnerInterceptor)MyBatis-Plus 提供了一个强大的分页插件，可以方便地实现物理分页，对业务代码侵入小。 配置与使用：  添加插件到 MybatisPlusInterceptor:MP 3.4.0 版本之后，推荐使用 MybatisPlu
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/%E4%B8%BB%E9%94%AE%E7%AD%96%E7%95%A5%E5%92%8C%E8%87%AA%E5%8A%A8%E5%A1%AB%E5%85%85%E5%AD%97%E6%AE%B5/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/%E4%B8%BB%E9%94%AE%E7%AD%96%E7%95%A5%E5%92%8C%E8%87%AA%E5%8A%A8%E5%A1%AB%E5%85%85%E5%AD%97%E6%AE%B5/" target="_self">
+        <div>
+          深入 MyBatis-Plus 的核心功能，重点关注主键策略、自动填充、以及各种实用插件。  3.4 主键策略 (IdType)MyBatis-Plus 提供了灵活的主键生成策略，可以通过全局配置和实体类注解进行设置。 IdType 枚举常量：  AUTO: 数据库ID自增。依赖数据库的自增主键功能 (如 MySQL 的 AUTO_INCREMENT)。实体类主键字段类型通常为数值型。 NONE:
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/MyBatis-Plus%20(MP)/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/MyBatis-Plus%20(MP)/" target="_self">
+        <div>
+          MyBatis-Plus (MP) 是 MyBatis 生态中非常重要且流行的增强工具，值得我们重点全面深入地讲解。它极大地简化了基于 MyBatis 的开发，特别是对于 CRUD 操作和复杂条件的构建。 我将按照以下结构来为你详细阐述 MyBatis-Plus：  MyBatis-Plus 核心理念与优势回顾 (为什么选择 MP) 快速上手与 Spring Boot 集成 依赖引入 (mybat
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/5.%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%8A%80%E5%B7%A7/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/5.%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8%E4%B8%8E%E6%8A%80%E5%B7%A7/" target="_self">
+        <div>
+          探讨 MyBatis-Plus 的一些进阶使用与技巧。这些内容可以帮助你更灵活、更深入地运用 MP，解决一些特定场景下的问题。  5. 进阶使用与技巧5.1 自定义 SQL 与 MP 通用方法结合MyBatis-Plus 的核心优势之一是其通用 CRUD 能力，但实际项目中，复杂的查询和业务逻辑往往需要手写 SQL。MP 与 MyBatis 原生特性完美兼容，因此你可以非常自然地将自定义 SQL
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/4.%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E5%99%A8%20(MyBatis-Plus%20Generator)/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/4.%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90%E5%99%A8%20(MyBatis-Plus%20Generator)/" target="_self">
+        <div>
+          讲解 MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)。这是一个极其实用的工具，能够根据数据库表结构自动生成项目所需的各层代码，大幅减少重复劳动，提高开发效率，并有助于保持代码风格的一致性。  4. MyBatis-Plus 代码生成器 (MyBatis-Plus Generator)MyBatis-Plus Generator (简称 MPG) 是 MP 提
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/2.%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B%E4%B8%8E%20Spring%20Boot%20%E9%9B%86%E6%88%90/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/2.%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B%E4%B8%8E%20Spring%20Boot%20%E9%9B%86%E6%88%90/" target="_self">
+        <div>
+          详细讲解如何在 Spring Boot 项目中快速上手并集成 MyBatis-Plus。MP 官方提供了 mybatis-plus-boot-starter，使得这个过程非常简单。  2. 快速上手与 Spring Boot 集成2.1 依赖引入 (mybatis-plus-boot-starter)要在 Spring Boot 项目中使用 MyBatis-Plus，首先需要在你的 pom.xml
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/1.%E6%A0%B8%E5%BF%83%E7%90%86%E5%BF%B5%E4%B8%8E%E4%BC%98%E5%8A%BF%E5%9B%9E%E9%A1%BE/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/1.%E6%A0%B8%E5%BF%83%E7%90%86%E5%BF%B5%E4%B8%8E%E4%BC%98%E5%8A%BF%E5%9B%9E%E9%A1%BE/" target="_self">
+        <div>
+          1. MyBatis-Plus 核心理念与优势回顾核心理念：  只做增强不做改变: MP 的目标是成为 MyBatis 的好帮手，而不是替代者。它完全兼容 MyBatis 的所有功能，你可以在项目中同时使用 MyBatis 的原生 XML&#x2F;注解和 MP 提供的便利功能。 致力于简化开发、提高效率: 通过提供大量通用的 CRUD 操作、强大的条件构造器和代码生成器等，大幅减少样板代码，让开
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/%E5%85%A8%E9%9D%A2%E5%9C%B0%E6%8E%A2%E8%AE%A8/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/%E5%85%A8%E9%9D%A2%E5%9C%B0%E6%8E%A2%E8%AE%A8/" target="_self">
+        <div>
+          深入全面地探讨 MyBatis，以及它在 Spring Boot 项目中的集成和最佳实践。 MyBatis 是一个非常流行的持久层框架，它以其灵活性、对 SQL 的直接控制以及与关系型数据库的良好集成而著称。我将按照以下结构来为你讲解：  MyBatis 核心概念与优势 (是什么，为什么用) Spring Boot 集成 MyBatis (怎么快速开始) 依赖引入 (mybatis-spring-
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/mybatis%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/mybatis%E8%AF%A6%E7%BB%86%E6%95%99%E7%A8%8B/" target="_self">
+        <div>
+          一、Mybatis概述   1、什么是MyBatis?   MyBatis（官网：https://mybatis.org/mybatis-3/zh/index.html ）是一款优秀的 持久层 框架，用于简化[JDBC]的开发。是 Apache的一个[开源]项目iBatis，2010年这个项目由apache迁移到了google code，并且改名为MyBatis 。2013年11月迁移到Githu
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/mybatis-rg1/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/mybatis-rg1/" target="_self">
+        <div>
+          1mybatis 快速搭建 2mybatis 核心配置文件组成格式	mybatis 核心配置文件-properties	mybatis核心配置文件-typeAliases	mybatis核心配置文件-environments	mybatis核心配置文件-mappers 3mybatis 增删改查&amp;参数传递 4mybatis缓存mybatis获取主键mybatis使用UUID作为主键添加数据
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <a class="extend prev" rel="prev" href="/page/12/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/11/#board">11</a><a class="page-number" href="/page/12/#board">12</a><span class="page-number current">13</span><a class="page-number" href="/page/14/#board">14</a><a class="page-number" href="/page/15/#board">15</a><span class="space">&hellip;</span><a class="page-number" href="/page/20/#board">20</a><a class="extend next" rel="next" href="/page/14/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        jQuery.ajax({
+          type: 'GET',
+          url: 'https://v1.hitokoto.cn/',
+          headers: {},
+          dataType: 'json',
+          success: function(result) {
+            var apiText;
+            if (result) {
+              var keys = 'hitokoto'.split(',');
+              if (result instanceof Array) {
+                result = result[0];
+              }
+              for (const k of keys) {
+                var value = result[k];
+                if (typeof value === 'string') {
+                  apiText = value;
+                  break;
+                } else if (value instanceof Object) {
+                  result = value;
+                }
+              }
+            }
+            apiText ? typing(apiText) : typing(text);
+          },
+          error: function(xhr, status, error) {
+            if (error) {
+              console.error('Failed to request https://v1.hitokoto.cn/:', error);
+            }
+            typing(text);
+          }
+        })
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

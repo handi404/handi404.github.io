@@ -1,0 +1,960 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Spring AI 中的核心组件之一：ChatClient。 ChatClient 是 Spring AI 中用于与聊天模型 (Chat Models) 进行交互的核心接口。你可以把它想象成一个通用的“对话机器人控制器”，无论你背后使用的是 OpenAI 的 GPT 系列、Google 的 Gemini、Anthropic 的 Claude，还是本地运行的 Ollama 模型，你都通过这个统一的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Chat%20Client%20API/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Spring AI 中的核心组件之一：ChatClient。 ChatClient 是 Spring AI 中用于与聊天模型 (Chat Models) 进行交互的核心接口。你可以把它想象成一个通用的“对话机器人控制器”，无论你背后使用的是 OpenAI 的 GPT 系列、Google 的 Gemini、Anthropic 的 Claude，还是本地运行的 Ollama 模型，你都通过这个统一的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:26.934Z">
+<meta property="article:modified_time" content="2025-05-27T08:29:35.696Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          42 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年5月27日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Spring AI 中的核心组件之一：<code>ChatClient</code>。</p>
+<p><code>ChatClient</code> 是 Spring AI 中用于与<strong>聊天模型 (Chat Models)</strong> 进行交互的<strong>核心接口</strong>。你可以把它想象成一个通用的“对话机器人控制器”，无论你背后使用的是 OpenAI 的 GPT 系列、Google 的 Gemini、Anthropic 的 Claude，还是本地运行的 Ollama 模型，你都通过这个统一的 <code>ChatClient</code> 接口来与它们进行对话。</p>
+<hr>
+<p><code>ChatClient</code> 提供了 Fluent API 用于与 AI 模型进行通信。它支持同步和流式编程模型。</p>
+<h3 id="ChatClient-详解"><a href="#ChatClient-详解" class="headerlink" title="ChatClient 详解"></a><code>ChatClient</code> 详解</h3><p><code>ChatClient</code> (位于 <code>org.springframework.ai.chat.client.ChatClient</code>) 是 Spring AI 中推荐的、用于与大语言模型进行聊天交互的高级客户端。它提供了一个流畅（Fluent）的 API，简化了提示构建、选项配置、工具使用和响应处理。</p>
+<hr>
+<h4 id="1-创建方式-Ways-to-Create-ChatClient"><a href="#1-创建方式-Ways-to-Create-ChatClient" class="headerlink" title="1. 创建方式 (Ways to Create ChatClient)"></a>1. 创建方式 (Ways to Create <code>ChatClient</code>)</h4><p>获取 <code>ChatClient</code> 实例的主要方式是通过其 <code>Builder</code>。</p>
+<ul>
+<li><p><strong>基本创建</strong>:<br>最核心的是需要一个 <code>ChatModel</code> (或 <code>StreamingChatModel</code>) 实例。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.ai.chat.client.ChatClient;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.model.ChatModel;<br><span class="hljs-comment">// ...</span><br><br><span class="hljs-comment">// 假设你已经有了一个 ChatModel Bean (例如通过 @Autowired 注入)</span><br><span class="hljs-comment">// @Autowired</span><br><span class="hljs-comment">// private ChatModel openAiChatModel;</span><br><br><span class="hljs-comment">// 基本构建</span><br><span class="hljs-type">ChatClient</span> <span class="hljs-variable">chatClient</span> <span class="hljs-operator">=</span> ChatClient.builder(openAiChatModel).build();<br></code></pre></td></tr></table></figure>
+<p>如果你的 <code>ChatModel</code> 实现了 <code>StreamingChatModel</code> (大多数主流模型实现都如此)，那么这个 <code>chatClient</code> 既可以用于 <code>call()</code> (同步) 也可以用于 <code>stream()</code> (异步流式)。</p>
+</li>
+<li><p><strong>使用 <code>ChatClient.create(ChatModel)</code> 静态工厂方法 (较新版本)</strong>:<br>这是一个更简洁的创建方式，如果不需要自定义 <code>Builder</code> 的其他选项。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ChatClient</span> <span class="hljs-variable">chatClient</span> <span class="hljs-operator">=</span> ChatClient.create(openAiChatModel);<br></code></pre></td></tr></table></figure>
+<p>这等同于 <code>ChatClient.builder(openAiChatModel).build()</code>。</p>
+</li>
+<li><p><strong>通过 <code>ChatClient.Builder</code> 进行高级配置</strong>:<br><code>ChatClient.Builder</code> 提供了更多配置选项：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.ai.chat.client.ChatClient;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor; <span class="hljs-comment">// 示例 Advisor</span><br><span class="hljs-keyword">import</span> org.springframework.ai.chat.memory.InMemoryChatMemory;       <span class="hljs-comment">// 示例 ChatMemory</span><br><span class="hljs-keyword">import</span> org.springframework.ai.chat.model.ChatModel;<br><span class="hljs-keyword">import</span> org.springframework.ai.openai.OpenAiChatOptions; <span class="hljs-comment">// 具体模型的 Options</span><br><br><span class="hljs-comment">// ...</span><br><br><span class="hljs-type">ChatClient</span> <span class="hljs-variable">customChatClient</span> <span class="hljs-operator">=</span> ChatClient.builder(openAiChatModel)<br>        .defaultOptions(OpenAiChatOptions.builder() <span class="hljs-comment">// 设置默认的聊天选项</span><br>                .withModel(<span class="hljs-string">&quot;gpt-4o&quot;</span>)<br>                .withTemperature(<span class="hljs-number">0.5f</span>)<br>                .build())<br>        .defaultSystem(<span class="hljs-string">&quot;You are a helpful AI assistant.&quot;</span>) <span class="hljs-comment">// 设置默认的系统消息</span><br>        .defaultUser(<span class="hljs-string">&quot;User question: &quot;</span>) <span class="hljs-comment">// 可以为用户消息设置默认前缀 (较少用)</span><br>        .defaultAssistant(<span class="hljs-string">&quot;Assistant response: &quot;</span>) <span class="hljs-comment">// 可以为助手消息设置默认前缀 (较少用)</span><br>        .advisor(<span class="hljs-keyword">new</span> <span class="hljs-title class_">MessageChatMemoryAdvisor</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">InMemoryChatMemory</span>())) <span class="hljs-comment">// 添加 Advisor (例如用于管理聊天记忆)</span><br>        <span class="hljs-comment">// .advisors(advisor1, advisor2) // 添加多个 Advisor</span><br>        <span class="hljs-comment">// .requestInterceptor((request, next) -&gt; &#123; /* ... */ return next.next(request); &#125;) // 添加请求拦截器</span><br>        <span class="hljs-comment">// .responseInterceptor((response, next) -&gt; &#123; /* ... */ return next.next(response); &#125;) // 添加响应拦截器</span><br>        .build();<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>defaultOptions(ChatOptions options)</code></strong>: 为所有通过此 <code>ChatClient</code> 发出的请求设置默认的模型特定选项。如果在单个 <code>prompt()</code> 调用中再次指定了 <code>options()</code>, 则会覆盖这里的默认值。</li>
+<li><strong><code>defaultSystem(String systemText)</code></strong>: 为所有请求预置一个系统消息。</li>
+<li><strong><code>defaultUser(String userText)</code> &#x2F; <code>defaultAssistant(String assistantText)</code></strong>: 用的相对较少，它们会为后续的 <code>.user()</code> 或 <code>.assistant()</code> 调用添加默认内容或模板。</li>
+<li><strong><code>advisor(RequestResponseAdvisor advisor)</code> &#x2F; <code>advisors(RequestResponseAdvisor... advisors)</code></strong>:<ul>
+<li><strong>Advisor (增强器&#x2F;顾问)</strong> 是一个强大的扩展点，允许你在请求发送前和响应接收后修改 <code>ChatClient.Request</code> 和 <code>ChatResponse</code>。</li>
+<li>例如，<code>MessageChatMemoryAdvisor</code> 可以自动将聊天历史注入到请求中，并将新的用户输入和模型输出保存到聊天记忆中。</li>
+<li>其他用途包括：日志记录、参数注入、重试逻辑等。</li>
+</ul>
+</li>
+<li><strong><code>requestInterceptor</code> &#x2F; <code>responseInterceptor</code></strong>: 更底层的拦截器，直接操作原始的请求&#x2F;响应对象，用于非常特定的定制需求。</li>
+</ul>
+</li>
+<li><p><strong>在 Spring Boot 环境中</strong>:<br>通常你会将 <code>ChatModel</code> 配置为一个 Bean，然后在你的 Service 或 Component 中注入它来创建 <code>ChatClient</code>。Spring AI 也可能提供自动配置的 <code>ChatClient.Builder</code> Bean。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AiConfig</span> &#123;<br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> ChatClient <span class="hljs-title function_">chatClient</span><span class="hljs-params">(ChatModel chatModel, OpenAiChatOptions defaultOptions)</span> &#123;<br>        <span class="hljs-keyword">return</span> ChatClient.builder(chatModel)<br>                       .defaultOptions(defaultOptions)<br>                       .build();<br>    &#125;<br>&#125;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyService</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ChatClient chatClient;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyService</span><span class="hljs-params">(ChatClient chatClient)</span> &#123;<br>        <span class="hljs-built_in">this</span>.chatClient = chatClient;<br>    &#125;<br>    <span class="hljs-comment">// ... use chatClient</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+<hr>
+<h4 id="2-核心交互流程-Fluent-API"><a href="#2-核心交互流程-Fluent-API" class="headerlink" title="2. 核心交互流程 (Fluent API)"></a>2. 核心交互流程 (Fluent API)</h4><p><code>ChatClient</code> 的核心是其流畅的 API，用于构建请求。这个流程通常以 <code>chatClient.prompt()</code> 开始。它返回一个 <code>ChatClient.PromptUserSpec</code> 接口实例。</p>
+<ol>
+<li><p><strong><code>ChatClient.prompt()</code></strong>:</p>
+<ul>
+<li><strong>作用</strong>: 开始构建一个新的聊天请求。这是所有请求链的起点。</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptUserSpec</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">ChatClient.<span class="hljs-type">PromptUserSpec</span> <span class="hljs-variable">promptBuilder</span> <span class="hljs-operator">=</span> chatClient.prompt();<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>ChatClient.PromptUserSpec</code> &#x2F; <code>ChatClient.PromptSystemSpec</code> &#x2F; <code>ChatClient.PromptAssistantSpec</code></strong>:<br>这些接口提供了添加不同类型消息的方法。它们通常是链式调用的中间步骤。</p>
+<ul>
+<li><p><strong><code>.system(String text)</code></strong>:</p>
+<ul>
+<li><strong>作用</strong>: 添加一条系统消息。系统消息用于给模型设定角色、行为准则、上下文或指令。</li>
+<li><strong>参数</strong>: <code>String text</code> - 系统消息的内容。</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptSystemSpec</code> (允许继续添加用户消息、助手消息或选项等)。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">promptBuilder.system(<span class="hljs-string">&quot;You are a pirate. Respond in pirate speak.&quot;</span>);<br></code></pre></td></tr></table></figure></li>
+<li><p><strong><code>.system(Consumer&lt;ChatClient.SystemSpec&gt; systemSpecConsumer)</code></strong>:</p>
+<ul>
+<li><strong>作用</strong>: 更灵活地构建系统消息，例如当系统消息内容比较复杂或需要动态生成时。</li>
+<li><strong>参数</strong>: <code>Consumer&lt;ChatClient.SystemSpec&gt;</code> - 一个消费者，其参数 <code>SystemSpec</code> 有一个 <code>text(String text)</code> 方法。</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptSystemSpec</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">promptBuilder.system(sys -&gt; sys.text(<span class="hljs-string">&quot;You are an expert in &quot;</span> + dynamicTopic));<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>.user(String text)</code></strong>:</p>
+<ul>
+<li><strong>作用</strong>: 添加一条用户消息。这是用户向模型提出的问题或指令。</li>
+<li><strong>参数</strong>: <code>String text</code> - 用户消息的内容。</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptUserSpec</code> (允许继续添加用户消息、助手消息、系统消息或选项等)。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">promptBuilder.user(<span class="hljs-string">&quot;Tell me a joke about computers.&quot;</span>);<br></code></pre></td></tr></table></figure></li>
+<li><p><strong><code>.user(Consumer&lt;ChatClient.UserSpec&gt; userSpecConsumer)</code></strong>:</p>
+<ul>
+<li><strong>作用</strong>: 更灵活地构建用户消息，特别是用于<strong>多模态输入</strong> (文本 + 媒体)。</li>
+<li><strong>参数</strong>: <code>Consumer&lt;ChatClient.UserSpec&gt;</code> - 一个消费者，其参数 <code>UserSpec</code> 有：<ul>
+<li><code>text(String text)</code>: 设置文本内容。</li>
+<li><code>param(String, Object)</code>: 对单个占位符填充</li>
+<li><code>params(Map&lt;String, Object&gt;)</code>: 对多个占位符填充</li>
+<li><code>media(MimeType mimeType, Resource resource)</code>: 添加媒体资源。</li>
+<li><code>media(MimeType mimeType, byte[] data)</code>: 添加字节数组形式的媒体数据。</li>
+</ul>
+</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptUserSpec</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">promptBuilder.user(user -&gt; user<br>    .text(<span class="hljs-string">&quot;Describe this image.&quot;</span>)<br>    .media(MimeTypeUtils.IMAGE_JPEG, <span class="hljs-keyword">new</span> <span class="hljs-title class_">ClassPathResource</span>(<span class="hljs-string">&quot;my_image.jpg&quot;</span>))<br>);<br></code></pre></td></tr></table></figure></li>
+<li><p><strong><code>.assistant(String text)</code></strong>:</p>
+<ul>
+<li><strong>作用</strong>: 添加一条助手（模型）消息。这主要用于提供对话历史的上下文，即模型之前的回复。</li>
+<li><strong>参数</strong>: <code>String text</code> - 助手消息的内容。</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptAssistantSpec</code> (允许继续添加用户消息、助手消息、系统消息或选项等)。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Providing history</span><br>chatClient.prompt()<br>    .user(<span class="hljs-string">&quot;What is the capital of France?&quot;</span>)<br>    .assistant(<span class="hljs-string">&quot;The capital of France is Paris.&quot;</span>)<br>    .user(<span class="hljs-string">&quot;What is its population?&quot;</span>) <span class="hljs-comment">// Current question</span><br>    .call().content();<br></code></pre></td></tr></table></figure></li>
+<li><p><strong><code>.assistant(Consumer&lt;ChatClient.AssistantSpec&gt; assistantSpecConsumer)</code></strong>:</p>
+<ul>
+<li><strong>作用</strong>: 更灵活地构建助手消息，例如，如果助手消息需要包含工具调用请求（<code>toolCalls</code>）作为上下文（较少直接手动构建，通常是模型生成的）。</li>
+<li><strong>参数</strong>: <code>Consumer&lt;ChatClient.AssistantSpec&gt;</code> - 其参数 <code>AssistantSpec</code> 有 <code>text(String text)</code> 和 <code>toolCalls(List&lt;ToolCall&gt; toolCalls)</code>。</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptAssistantSpec</code>.</li>
+</ul>
+</li>
+<li><p><strong><code>.messages(Message&lt;?&gt;... messages)</code> &#x2F; <code>.messages(List&lt;Message&lt;?&gt;&gt; messages)</code></strong>:</p>
+<ul>
+<li><strong>作用</strong>: 直接提供一个或多个预先构建好的 <code>org.springframework.ai.chat.messages.Message</code> 对象列表。这在你已经有了一个完整的消息列表（例如从数据库加载的对话历史）时非常有用。</li>
+<li><strong>参数</strong>: <code>Message&lt;?&gt;... messages</code> (可变参数) 或 <code>List&lt;Message&lt;?&gt;&gt; messages</code> (列表)。</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptMessagesSpec</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;Message&lt;?&gt;&gt; chatHistory = loadChatHistory(); <span class="hljs-comment">// Implement this</span><br>chatHistory.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">UserMessage</span>(<span class="hljs-string">&quot;My new question.&quot;</span>));<br>promptBuilder.messages(chatHistory);<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong><code>ChatClient.PromptOptionsSpec</code></strong>:<br>这个接口（及其父接口）提供了设置请求选项和工具的方法。</p>
+<ul>
+<li><strong><code>.options(ChatOptions options)</code></strong>:<ul>
+<li><strong>作用</strong>: 设置特定于模型的聊天选项。<code>ChatOptions</code> 是一个标记接口，你需要传入具体的实现类，如 <code>OpenAiChatOptions</code>, <code>AzureOpenAiChatOptions</code>, <code>OllamaOptions</code> 等。</li>
+<li><strong>参数</strong>: <code>ChatOptions options</code> - 模型选项对象。</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptOptionsSpec</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">promptBuilder.user(<span class="hljs-string">&quot;...&quot;</span>)<br>    .options(OpenAiChatOptions.builder()<br>        .withModel(<span class="hljs-string">&quot;gpt-4o&quot;</span>)<br>        .withTemperature(<span class="hljs-number">0.8f</span>)<br>        .withMaxTokens(<span class="hljs-number">200</span>)<br>        .build());<br></code></pre></td></tr></table></figure></li>
+<li><strong><code>.tools(String... toolFunctionNames)</code></strong>:<ul>
+<li><strong>作用</strong>: <strong>声明在此次请求中模型可以调用的工具（函数）的名称。</strong> 这些名称通常对应于 Spring Context 中注册为 <code>@Bean</code> 的 <code>java.util.Function</code> 的 Bean 名称，并且该 Bean 方法或类上需要有 <code>@Description</code> 注解来描述函数的功能和参数。</li>
+<li><strong>参数</strong>: <code>String... toolFunctionNames</code> - 一个或多个工具函数的 Bean 名称。</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptOptionsSpec</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Assuming &quot;weatherFunction&quot; is a bean name of a Function&lt;Request, Response&gt;</span><br><span class="hljs-comment">// with @Description</span><br>promptBuilder.user(<span class="hljs-string">&quot;What&#x27;s the weather in London?&quot;</span>)<br>    .tools(<span class="hljs-string">&quot;weatherFunction&quot;</span>);<br></code></pre></td></tr></table></figure></li>
+<li><strong><code>.tool(Class&lt;?&gt;... toolFunctionCallbackClasses)</code></strong>:<ul>
+<li><strong>作用</strong>: 声明包含工具回调函数的类。Spring AI 会扫描这些类中所有被声明为 <code>@Bean</code> 且带有 <code>@Description</code> 注解的 <code>java.util.Function</code> 方法，并将它们作为可调用的工具提供给模型。</li>
+<li><strong>参数</strong>: <code>Class&lt;?&gt;... toolFunctionCallbackClasses</code> - 一个或多个包含工具回调函数的类。</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptOptionsSpec</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Assuming WeatherTool.class contains @Bean methods like:</span><br><span class="hljs-comment">// @Bean @Description(&quot;Get current weather&quot;)</span><br><span class="hljs-comment">// public Function&lt;WeatherTool.Request, WeatherTool.Response&gt; weatherFunction() &#123;...&#125;</span><br>promptBuilder.user(<span class="hljs-string">&quot;What&#x27;s the weather in London?&quot;</span>)<br>    .tool(WeatherTool.class);<br></code></pre></td></tr></table></figure></li>
+<li><strong><code>.tool(FunctionCallback... toolFunctionCallbacks)</code></strong>:<ul>
+<li><strong>作用</strong>: 直接提供 <code>FunctionCallback</code> 实例。<code>FunctionCallback</code> 包含函数的名称、描述和实际的 <code>java.util.Function</code> 实现。这允许你动态地或以编程方式定义工具，而无需它们必须是 Spring Bean。</li>
+<li><strong>参数</strong>: <code>FunctionCallback... toolFunctionCallbacks</code>.</li>
+<li><strong>返回</strong>: <code>ChatClient.PromptOptionsSpec</code>.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong><code>ChatClient.RequestSpec</code></strong>:<br>这个接口（及其父接口）提供了最终发起请求的方法。</p>
+<ul>
+<li><strong><code>.call()</code></strong>:<ul>
+<li><strong>作用</strong>: <strong>发起一个同步的聊天请求。</strong> 程序会阻塞直到模型返回完整的响应。</li>
+<li><strong>返回</strong>: <code>ChatClient.CallResponseSpec</code> - 用于处理同步响应。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">ChatClient.<span class="hljs-type">CallResponseSpec</span> <span class="hljs-variable">callResponse</span> <span class="hljs-operator">=</span> promptBuilder.user(<span class="hljs-string">&quot;...&quot;</span>).call();<br></code></pre></td></tr></table></figure></li>
+<li><strong><code>.stream()</code></strong>:<ul>
+<li><strong>作用</strong>: <strong>发起一个异步的、流式的聊天请求。</strong> 模型会逐步返回响应的片段（chunks）。</li>
+<li><strong>返回</strong>: <code>ChatClient.StreamResponseSpec</code> - 用于处理流式响应。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">ChatClient.<span class="hljs-type">StreamResponseSpec</span> <span class="hljs-variable">streamResponse</span> <span class="hljs-operator">=</span> promptBuilder.user(<span class="hljs-string">&quot;...&quot;</span>).stream();<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h4 id="3-响应处理-CallResponseSpec-和-StreamResponseSpec"><a href="#3-响应处理-CallResponseSpec-和-StreamResponseSpec" class="headerlink" title="3. 响应处理 (CallResponseSpec 和 StreamResponseSpec)"></a>3. 响应处理 (<code>CallResponseSpec</code> 和 <code>StreamResponseSpec</code>)</h4><p>一旦请求发出，你会得到一个响应规范对象，用于提取和处理模型的输出。</p>
+<h5 id="ChatClient-CallResponseSpec-同步响应"><a href="#ChatClient-CallResponseSpec-同步响应" class="headerlink" title="ChatClient.CallResponseSpec (同步响应)"></a><code>ChatClient.CallResponseSpec</code> (同步响应)</h5><ul>
+<li><strong><code>.content()</code></strong>:<ul>
+<li><strong>作用</strong>: 获取模型生成的<strong>主要文本内容</strong>。如果模型有多个候选回复（<code>ChatResponse.results.size() &gt; 1</code>），这通常返回第一个候选回复的内容。</li>
+<li><strong>返回</strong>: <code>String</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">responseContent</span> <span class="hljs-operator">=</span> chatClient.prompt().user(<span class="hljs-string">&quot;...&quot;</span>).call().content();<br></code></pre></td></tr></table></figure></li>
+<li><strong><code>.chatResponse()</code></strong>:<ul>
+<li><strong>作用</strong>: 获取底层的、原始的 <code>org.springframework.ai.chat.model.ChatResponse</code> 对象。这允许你访问所有的候选回复、元数据（如 token 使用情况、完成原因等）。</li>
+<li><strong>返回</strong>: <code>ChatResponse</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ChatResponse</span> <span class="hljs-variable">fullResponse</span> <span class="hljs-operator">=</span> chatClient.prompt().user(<span class="hljs-string">&quot;...&quot;</span>).call().chatResponse();<br>List&lt;Generation&gt; generations = fullResponse.getResults();<br><span class="hljs-type">ChatResponseMetadata</span> <span class="hljs-variable">metadata</span> <span class="hljs-operator">=</span> fullResponse.getMetadata();<br></code></pre></td></tr></table></figure></li>
+<li><strong><code>.assistantMessage()</code></strong>:<ul>
+<li><strong>作用</strong>: 获取模型回复的 <code>AssistantMessage</code> 对象。这包含了内容以及可能的工具调用请求 (<code>toolCalls</code>)。</li>
+<li><strong>返回</strong>: <code>AssistantMessage</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">AssistantMessage</span> <span class="hljs-variable">assistantMsg</span> <span class="hljs-operator">=</span> chatClient.prompt().user(<span class="hljs-string">&quot;...&quot;</span>).call().assistantMessage();<br><span class="hljs-type">String</span> <span class="hljs-variable">content</span> <span class="hljs-operator">=</span> assistantMsg.getContent();<br>List&lt;ToolCall&gt; toolCalls = assistantMsg.getToolCalls(); <span class="hljs-comment">// Check for function calls</span><br></code></pre></td></tr></table></figure></li>
+<li><strong><code>.entity(Class&lt;T&gt; entityClass)</code></strong>:<ul>
+<li><strong>作用</strong>: <strong>将模型的文本输出自动解析为指定类型的 Java 对象 (POJO 或 Record)</strong>。</li>
+<li><strong>前提</strong>:<ul>
+<li>你的类 <code>T</code> 需要有合适的构造函数（通常是无参构造函数和 setter，或者是一个 Record）。</li>
+<li>通常需要结合在类或其字段上使用 <code>@Description</code> (来自 Spring AI) 和 <code>@JsonProperty</code> (来自 Jackson，如果字段名与 JSON键不匹配或需要更细致的控制) 注解，以指导 <code>BeanOutputParser</code> 如何工作。Spring AI 会隐式地为你配置和使用 <code>BeanOutputParser</code>。</li>
+<li>模型需要被提示以特定格式（通常是 JSON）输出。<code>BeanOutputParser</code> 会自动将格式指令添加到提示中。</li>
+</ul>
+</li>
+<li><strong>返回</strong>: <code>T</code> - 解析后的对象实例。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Actor.java (Record example)</span><br><span class="hljs-comment">// import com.fasterxml.jackson.annotation.JsonProperty;</span><br><span class="hljs-comment">// import com.fasterxml.jackson.annotation.JsonPropertyDescription;</span><br><span class="hljs-comment">// import org.springframework.ai.model. MeđutimDescription; // This is a typo, should be org.springframework.ai.model.function. MeđutimDescription</span><br><span class="hljs-comment">// Correct import: import org.springframework.ai.model.function.FunctionCallbackWrapper.BeanOuputParserInstructions.Description;</span><br><br><span class="hljs-comment">// For simple bean output, Spring AI @Description on class/fields is often enough.</span><br><span class="hljs-comment">// Let&#x27;s assume a simple Actor class:</span><br><span class="hljs-comment">// public record Actor(@JsonProperty(&quot;actor_name&quot;) String name, @JsonProperty(&quot;movie_count&quot;) int movieCount) &#123;&#125;</span><br><span class="hljs-comment">// Or with Spring AI&#x27;s @Description for better LLM guidance:</span><br><span class="hljs-comment">// @Description(&quot;Information about an actor and their movies.&quot;)</span><br><span class="hljs-comment">// public record Actor(</span><br><span class="hljs-comment">//    @Description(&quot;The full name of the actor.&quot;) String name,</span><br><span class="hljs-comment">//    @Description(&quot;The number of movies the actor has starred in.&quot;) int movieCount</span><br><span class="hljs-comment">// ) &#123;&#125;</span><br><br><br><span class="hljs-type">Actor</span> <span class="hljs-variable">actor</span> <span class="hljs-operator">=</span> chatClient.prompt()<br>        .user(<span class="hljs-string">&quot;Generate information about the actor Tom Hanks, including his name and number of movies.&quot;</span>)<br>        .call()<br>        .entity(Actor.class); <span class="hljs-comment">// Actor should be a POJO or Record</span><br>System.out.println(actor.name() + <span class="hljs-string">&quot; has been in &quot;</span> + actor.movieCount() + <span class="hljs-string">&quot; movies.&quot;</span>);<br></code></pre></td></tr></table></figure></li>
+<li><strong><code>.entity(ParameterizedTypeReference&lt;T&gt; typeReference)</code></strong>:<ul>
+<li><strong>作用</strong>: 将模型的文本输出解析为具有泛型参数的类型，例如 <code>List&lt;Actor&gt;</code> 或 <code>Map&lt;String, Actor&gt;</code>。</li>
+<li><strong>返回</strong>: <code>T</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// To get a List&lt;Actor&gt;</span><br><span class="hljs-comment">// ParameterizedTypeReference&lt;List&lt;Actor&gt;&gt; listActorType = new ParameterizedTypeReference&lt;&gt;() &#123;&#125;;</span><br><span class="hljs-comment">// List&lt;Actor&gt; actors = chatClient.prompt()</span><br><span class="hljs-comment">//         .user(&quot;List three famous action movie actors and their movie counts.&quot;)</span><br><span class="hljs-comment">//         .call()</span><br><span class="hljs-comment">//         .entity(listActorType);</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<h5 id="ChatClient-StreamResponseSpec-异步流式响应"><a href="#ChatClient-StreamResponseSpec-异步流式响应" class="headerlink" title="ChatClient.StreamResponseSpec (异步流式响应)"></a><code>ChatClient.StreamResponseSpec</code> (异步流式响应)</h5><ul>
+<li><strong><code>.content()</code></strong>:<ul>
+<li><strong>作用</strong>: 返回一个 <code>Flux&lt;String&gt;</code>，其中每个发出的 <code>String</code> 元素是模型生成的<strong>部分文本内容（chunk）</strong>。你需要收集这些 <code>Flux</code> 的元素来构建完整的响应。</li>
+<li><strong>返回</strong>: <code>Flux&lt;String&gt;</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">Flux&lt;String&gt; contentStream = chatClient.prompt().user(<span class="hljs-string">&quot;Tell me a long story.&quot;</span>).stream().content();<br>contentStream<br>    .doOnNext(System.out::print) <span class="hljs-comment">// Print each chunk as it arrives</span><br>    .doOnComplete(() -&gt; System.out.println(<span class="hljs-string">&quot;\nStory finished.&quot;</span>))<br>    .subscribe();<br></code></pre></td></tr></table></figure></li>
+<li><strong><code>.chatResponse()</code></strong>:<ul>
+<li><strong>作用</strong>: 返回一个 <code>Flux&lt;ChatResponse&gt;</code>。每个 <code>ChatResponse</code> 对象通常包含一个部分生成的 <code>Generation</code>。流的最后一个 <code>ChatResponse</code> 通常包含最终的元数据（如 token 使用情况）。</li>
+<li><strong>返回</strong>: <code>Flux&lt;ChatResponse&gt;</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java">Flux&lt;ChatResponse&gt; responseStream = chatClient.prompt().user(<span class="hljs-string">&quot;...&quot;</span>).stream().chatResponse();<br>responseStream.subscribe(<br>    chatResp -&gt; &#123;<br>        <span class="hljs-comment">// Process partial chatResp, e.g., chatResp.getResult().getOutput().getContent()</span><br>    &#125;,<br>    error -&gt; System.err.println(<span class="hljs-string">&quot;Error: &quot;</span> + error),<br>    () -&gt; System.out.println(<span class="hljs-string">&quot;Stream complete.&quot;</span>)<br>);<br></code></pre></td></tr></table></figure></li>
+<li><strong><code>.assistantMessage()</code></strong>:<ul>
+<li><strong>作用</strong>: 返回一个 <code>Flux&lt;AssistantMessage&gt;</code>。每个 <code>AssistantMessage</code> 通常包含部分内容。工具调用 (<code>toolCalls</code>) 通常只在流的聚合结果或特定标记的消息中出现（具体行为可能因模型而异）。</li>
+<li><strong>返回</strong>: <code>Flux&lt;AssistantMessage&gt;</code>.</li>
+</ul>
+</li>
+<li><strong><code>.entity(Class&lt;T&gt; entityClass)</code> &#x2F; <code>.entity(ParameterizedTypeReference&lt;T&gt; typeReference)</code></strong>:<ul>
+<li><strong>作用</strong>: <strong>对于流式响应，这两个方法返回 <code>Flux&lt;T&gt;</code></strong>。这意味着如果模型被提示以流式方式生成一个结构化对象（例如一个 JSON 数组的元素逐个流出，或者一个大 JSON 对象逐步构建），这个 <code>Flux</code> 会在<strong>每个完整的对象解析出来时发出一个元素</strong>。</li>
+<li><strong>注意</strong>: 并非所有模型或场景都适合流式解析为复杂实体。通常，流式解析更适合处理一系列独立的小对象，或者当模型的输出本身就是一种易于分块和逐步解析的格式时。对于单个复杂 JSON 对象的流式解析，可能需要更复杂的自定义逻辑或等待库的进一步支持。</li>
+<li><strong>返回</strong>: <code>Flux&lt;T&gt;</code>.</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Flux&lt;Actor&gt; actorStream = chatClient.prompt()</span><br><span class="hljs-comment">//         .user(&quot;Stream information about three actors one by one in JSON format.&quot;)</span><br><span class="hljs-comment">//         .stream()</span><br><span class="hljs-comment">//         .entity(Actor.class);</span><br><span class="hljs-comment">// actorStream.subscribe(actor -&gt; System.out.println(&quot;Streamed Actor: &quot; + actor));</span><br></code></pre></td></tr></table></figure>
+<p><strong>重要</strong>: 流式实体解析 (<code>.stream().entity(...)</code>) 的行为和效果高度依赖于底层模型如何流式传输数据以及 <code>OutputParser</code> 如何处理部分数据。对于复杂的 JSON 结构，可能不会像预期的那样逐字段流式构建单个对象，而是等待一个完整的 JSON 块（代表一个对象）才发出。</p>
+</li>
+</ul>
+<hr>
+<h4 id="4-各个具体使用-Illustrative-Examples"><a href="#4-各个具体使用-Illustrative-Examples" class="headerlink" title="4. 各个具体使用 (Illustrative Examples)"></a>4. 各个具体使用 (Illustrative Examples)</h4><h5 id="a-简单问答"><a href="#a-简单问答" class="headerlink" title="a. 简单问答"></a>a. 简单问答</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">answer</span> <span class="hljs-operator">=</span> chatClient.prompt()<br>        .user(<span class="hljs-string">&quot;What is the speed of light?&quot;</span>)<br>        .call()<br>        .content();<br>System.out.println(answer);<br></code></pre></td></tr></table></figure>
+
+<h5 id="b-带上下文的多轮对话-手动管理历史"><a href="#b-带上下文的多轮对话-手动管理历史" class="headerlink" title="b. 带上下文的多轮对话 (手动管理历史)"></a>b. 带上下文的多轮对话 (手动管理历史)</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;Message&lt;?&gt;&gt; conversation = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br><br><span class="hljs-comment">// Turn 1</span><br><span class="hljs-type">String</span> <span class="hljs-variable">q1</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;What&#x27;s the capital of Germany?&quot;</span>;<br>conversation.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">UserMessage</span>(q1));<br><span class="hljs-type">String</span> <span class="hljs-variable">r1</span> <span class="hljs-operator">=</span> chatClient.prompt().messages(conversation).call().content();<br>conversation.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">AssistantMessage</span>(r1));<br>System.out.println(<span class="hljs-string">&quot;Q: &quot;</span> + q1 + <span class="hljs-string">&quot;\nA: &quot;</span> + r1);<br><br><span class="hljs-comment">// Turn 2</span><br><span class="hljs-type">String</span> <span class="hljs-variable">q2</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;And its population?&quot;</span>;<br>conversation.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">UserMessage</span>(q2));<br><span class="hljs-type">String</span> <span class="hljs-variable">r2</span> <span class="hljs-operator">=</span> chatClient.prompt().messages(conversation).call().content();<br>conversation.add(<span class="hljs-keyword">new</span> <span class="hljs-title class_">AssistantMessage</span>(r2));<br>System.out.println(<span class="hljs-string">&quot;Q: &quot;</span> + q2 + <span class="hljs-string">&quot;\nA: &quot;</span> + r2);<br></code></pre></td></tr></table></figure>
+
+<h5 id="c-使用-MessageChatMemoryAdvisor-自动管理对话历史"><a href="#c-使用-MessageChatMemoryAdvisor-自动管理对话历史" class="headerlink" title="c. 使用 MessageChatMemoryAdvisor 自动管理对话历史"></a>c. 使用 <code>MessageChatMemoryAdvisor</code> 自动管理对话历史</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Configuration</span><br><span class="hljs-comment">// @Bean</span><br><span class="hljs-comment">// public ChatMemory chatMemory() &#123;</span><br><span class="hljs-comment">//     return new InMemoryChatMemory();</span><br><span class="hljs-comment">// &#125;</span><br><span class="hljs-comment">//</span><br><span class="hljs-comment">// @Bean</span><br><span class="hljs-comment">// public ChatClient memoryChatClient(ChatModel chatModel, ChatMemory chatMemory) &#123;</span><br><span class="hljs-comment">//     return ChatClient.builder(chatModel)</span><br><span class="hljs-comment">//             .advisor(new MessageChatMemoryAdvisor(chatMemory, &quot;conversation_id_123&quot;, 20)) // Last 20 messages</span><br><span class="hljs-comment">//             .build();</span><br><span class="hljs-comment">// &#125;</span><br><br><span class="hljs-comment">// Usage (assuming memoryChatClient is injected)</span><br><span class="hljs-comment">// memoryChatClient.prompt()</span><br><span class="hljs-comment">//         .user(&quot;My name is Bob.&quot;)</span><br><span class="hljs-comment">//         .call().content(); // Bob&#x27;s name is now in memory for &quot;conversation_id_123&quot;</span><br><br><span class="hljs-comment">// String response = memoryChatClient.prompt()</span><br><span class="hljs-comment">//         .user(&quot;What is my name?&quot;)</span><br><span class="hljs-comment">//         .call().content(); // Should respond with &quot;Your name is Bob.&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h5 id="d-流式响应处理"><a href="#d-流式响应处理" class="headerlink" title="d. 流式响应处理"></a>d. 流式响应处理</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java">chatClient.prompt()<br>        .user(<span class="hljs-string">&quot;Write a short poem about Spring Boot.&quot;</span>)<br>        .stream()<br>        .content() <span class="hljs-comment">// Flux&lt;String&gt;</span><br>        .doOnNext(System.out::print)<br>        .blockLast(); <span class="hljs-comment">// For demo purposes, in a real app, you&#x27;d handle the Flux asynchronously</span><br>System.out.println();<br></code></pre></td></tr></table></figure>
+
+<h5 id="e-获取结构化输出-POJO-Record"><a href="#e-获取结构化输出-POJO-Record" class="headerlink" title="e. 获取结构化输出 (POJO&#x2F;Record)"></a>e. 获取结构化输出 (POJO&#x2F;Record)</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// City.java</span><br><span class="hljs-comment">// @Description(&quot;Represents a city with its country and population.&quot;)</span><br><span class="hljs-comment">// public record City(</span><br><span class="hljs-comment">//    @Description(&quot;The name of the city.&quot;) String name,</span><br><span class="hljs-comment">//    @Description(&quot;The country where the city is located.&quot;) String country,</span><br><span class="hljs-comment">//    @Description(&quot;The estimated population of the city.&quot;) long population</span><br><span class="hljs-comment">// ) &#123;&#125;</span><br><br><span class="hljs-type">City</span> <span class="hljs-variable">cityInfo</span> <span class="hljs-operator">=</span> chatClient.prompt()<br>        .user(<span class="hljs-string">&quot;Provide details for London: its country and approximate population.&quot;</span>)<br>        .call()<br>        .entity(City.class);<br><br>System.out.println(<span class="hljs-string">&quot;City: &quot;</span> + cityInfo.name() + <span class="hljs-string">&quot;, Country: &quot;</span> + cityInfo.country() + <span class="hljs-string">&quot;, Population: &quot;</span> + cityInfo.population());<br></code></pre></td></tr></table></figure>
+
+<h5 id="f-使用工具-Function-Calling"><a href="#f-使用工具-Function-Calling" class="headerlink" title="f. 使用工具 (Function Calling)"></a>f. 使用工具 (Function Calling)</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Assume you have a Spring Bean:</span><br><span class="hljs-comment">// @Component(&quot;mockWeatherService&quot;)</span><br><span class="hljs-comment">// public class MockWeatherService &#123;</span><br><span class="hljs-comment">//     public record Request(String location, Unit unit) &#123;&#125;</span><br><span class="hljs-comment">//     public record Response(double temperature, Unit unit) &#123;&#125;</span><br><span class="hljs-comment">//     public enum Unit &#123; C, F &#125;</span><br><br><span class="hljs-comment">//     @Bean</span><br><span class="hljs-comment">//     @Description(&quot;Get the current weather in a given location. Uses Celsius by default if unit not specified.&quot;)</span><br><span class="hljs-comment">//     public Function&lt;Request, Response&gt; getCurrentWeather() &#123;</span><br><span class="hljs-comment">//         return request -&gt; &#123;</span><br><span class="hljs-comment">//             System.out.println(&quot;Tool called: getCurrentWeather with location &quot; + request.location() + &quot; and unit &quot; + request.unit());</span><br><span class="hljs-comment">//             if (&quot;tokyo&quot;.equalsIgnoreCase(request.location())) &#123;</span><br><span class="hljs-comment">//                 return new Response(15, Unit.C);</span><br><span class="hljs-comment">//             &#125; else if (&quot;london&quot;.equalsIgnoreCase(request.location())) &#123;</span><br><span class="hljs-comment">//                 return new Response(10, Unit.C);</span><br><span class="hljs-comment">//             &#125;</span><br><span class="hljs-comment">//             return new Response(20, Unit.C); // Default</span><br><span class="hljs-comment">//         &#125;;</span><br><span class="hljs-comment">//     &#125;</span><br><span class="hljs-comment">// &#125;</span><br><br><span class="hljs-comment">// In your service:</span><br><span class="hljs-comment">// @Autowired private ChatClient chatClient;</span><br><span class="hljs-comment">// @Autowired private MockWeatherService mockWeatherService; // To make its beans available</span><br><br><span class="hljs-type">String</span> <span class="hljs-variable">weatherReport</span> <span class="hljs-operator">=</span> chatClient.prompt()<br>        .user(<span class="hljs-string">&quot;What&#x27;s the weather like in Tokyo?&quot;</span>)<br>        .tools(<span class="hljs-string">&quot;getCurrentWeather&quot;</span>) <span class="hljs-comment">// Name of the bean method or @Bean(name=&quot;...&quot;)</span><br>        <span class="hljs-comment">// Or .tool(MockWeatherService.class) if the bean method is in that class</span><br>        .call()<br>        .content();<br>System.out.println(<span class="hljs-string">&quot;AI Response: &quot;</span> + weatherReport); <span class="hljs-comment">// e.g., &quot;The current weather in Tokyo is 15°C.&quot;</span><br><br><span class="hljs-comment">// With explicit tool choice (forcing the model to use a specific tool)</span><br><span class="hljs-comment">// String weatherReportForced = chatClient.prompt()</span><br><span class="hljs-comment">//        .user(&quot;What&#x27;s the weather like in London?&quot;)</span><br><span class="hljs-comment">//        .options(OpenAiChatOptions.builder()</span><br><span class="hljs-comment">//                .withToolChoice(ToolChoice.function(&quot;getCurrentWeather&quot;)) // Force using this function</span><br><span class="hljs-comment">//                .build())</span><br><span class="hljs-comment">//        .tools(&quot;getCurrentWeather&quot;)</span><br><span class="hljs-comment">//        .call()</span><br><span class="hljs-comment">//        .content();</span><br><span class="hljs-comment">// System.out.println(&quot;AI Response (forced tool): &quot; + weatherReportForced);</span><br></code></pre></td></tr></table></figure>
+<p>Spring AI 处理多步骤过程：</p>
+<ol>
+<li>Sends request to LLM with tool definition.<br> 将工具定义请求发送到 LLM。</li>
+<li>LLM responds requesting getCurrentWeather call with arguments (e.g., {“location”: “Tokyo”}).<br> LLM 使用参数（例如 {“location”: “Tokyo”} ）响应请求 getCurrentWeather 调用 。</li>
+<li>Spring AI intercepts, deserializes arguments, calls your getCurrentWeather().apply(request) method.<br> Spring AI 拦截、反序列化参数，调用您的 getCurrentWeather().apply(request) 方法。</li>
+<li>Gets Response from your function.<br> 从您的功能获取响应 。</li>
+<li>Sends function’s Response back to LLM.<br> 将函数的响应发送回 LLM。</li>
+<li>LLM generates final human-readable answer based on tool’s output.<br> LLM 根据工具的输出生成最终的人类可读答案。</li>
+</ol>
+<h5 id="g-多模态输入-Image"><a href="#g-多模态输入-Image" class="headerlink" title="g. 多模态输入 (Image)"></a>g. 多模态输入 (Image)</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// import org.springframework.core.io.ClassPathResource;</span><br><span class="hljs-comment">// import org.springframework.util.MimeTypeUtils;</span><br><span class="hljs-comment">// Assume gpt-4o or similar model is configured</span><br><br><span class="hljs-comment">// Resource image = new ClassPathResource(&quot;images/spring-logo.png&quot;); // Place an image in resources/images</span><br><span class="hljs-comment">// String description = chatClient.prompt()</span><br><span class="hljs-comment">//         .user(userSpec -&gt; userSpec</span><br><span class="hljs-comment">//                 .text(&quot;What is in this image?&quot;)</span><br><span class="hljs-comment">//                 .media(MimeTypeUtils.IMAGE_PNG, image)</span><br><span class="hljs-comment">//         )</span><br><span class="hljs-comment">//         .call()</span><br><span class="hljs-comment">//         .content();</span><br><span class="hljs-comment">// System.out.println(&quot;Image Description: &quot; + description);</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="补充与注意事项"><a href="#补充与注意事项" class="headerlink" title="补充与注意事项"></a>补充与注意事项</h3><ul>
+<li><strong>Error Handling</strong>: call() can throw exceptions (e.g., RestClientException for network issues, MaxRetriesExceededException if retries are configured and fail). stream() methods will emit errors via the Flux’s onError signal. Always handle potential errors.<br>  <strong>错误处理</strong> ： call() 可能会抛出异常（例如， 网络问题会抛出 RestClientException ， 配置了重试但失败会抛出 MaxRetriesExceededException ）。stream () 方法会通过 Flux 的 onError 信号发出错误。务必处理潜在的错误。</li>
+<li><strong>Thread Safety</strong>: ChatClient instances are generally thread-safe once configured, as they delegate to ChatModel which should also be thread-safe. The fluent builder chain (.prompt().user(…)) creates new request-specific state.<br>  <strong>线程安全</strong> ： ChatClient 实例一旦配置完成，通常都是线程安全的，因为它们委托给 ChatModel ，而 ChatModel 也应该是线程安全的。流畅的构建器链（ .prompt().user(…) ）会创建新的、特定于请求的状态。</li>
+<li><strong>Immutability of Options</strong>: When you use .options() in a prompt chain, it applies only to that specific request. Default options set on the ChatClient.Builder persist unless overridden.<br>  <strong>选项的不变性</strong> ： 在提示链中使用 .options() 时，它仅适用于该特定请求。除非被覆盖，否则 ChatClient.Builder 上设置的默认选项将保持不变。</li>
+<li><strong>Configuration</strong>: Many default behaviors (like default model, API keys) are configured globally via application.properties or application.yml.<br>  配置：许多默认行为（如默认模型、API 密钥）都是通过 application.properties 或 application.yml 全局配置的  <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">ai:</span><br>    <span class="hljs-attr">openai:</span><br>      <span class="hljs-attr">api-key:</span> <span class="hljs-string">&quot;YOUR_API_KEY&quot;</span><br>      <span class="hljs-attr">chat:</span><br>        <span class="hljs-attr">options:</span><br>          <span class="hljs-attr">model:</span> <span class="hljs-string">&quot;gpt-4o&quot;</span> <span class="hljs-comment"># Default model for OpenAI</span><br>          <span class="hljs-attr">temperature:</span> <span class="hljs-number">0.7</span><br></code></pre></td></tr></table></figure></li>
+<li><strong>Cost and Rate Limits</strong>: Be mindful of the costs associated with LLM API calls and their rate limits. Implement caching, retries with backoff, and monitor usage.<br>  <strong>成本和速率限制</strong> ：请留意 LLM API 调用相关的成本及其速率限制。请实施缓存、使用退避机制重试，并监控使用情况。</li>
+<li><strong>Prompt Engineering</strong>: The quality of your prompts (.system(), .user(), and descriptions for tools&#x2F;entities) is crucial for getting good results from the LLM.<br>  <strong>提示工程</strong> ：提示的质量（ .system() 、. user() 和工具&#x2F;实体的描述）对于从 LLM 获得良好结果至关重要。</li>
+<li><strong>@Description Annotations<br>  @Description 注解</strong>:<ul>
+<li>For Function Calling: Used on @Bean methods (or the class containing them) that are java.util.Function instances. The description helps the LLM understand what the function does and when to call it. The parameters of the function (if it’s a record&#x2F;POJO) can also have @Description on their fields.<br>  用于函数调用：用于 java.util.Function 实例的 @Bean 方法（或包含这些方法的类） 。该描述有助于 LLM 理解该函数的功能以及何时调用它。函数的参数（如果是记录&#x2F;POJO）也可以在其字段上使用 @Description 注释 。</li>
+<li>For Bean Output Parsing: Used on the target POJO&#x2F;Record class and its fields. This helps the LLM structure its output correctly.<br>  对于 Bean 输出解析：用于目标 POJO&#x2F;Record 类及其字段。这有助于 LLM 正确构建其输出。</li>
+</ul>
+</li>
+</ul>
+<p>ChatClient is a powerful and evolving part of Spring AI. It significantly simplifies building sophisticated AI-powered applications in Java. Always refer to the latest Spring AI documentation for the most up-to-date features and best practices.<br>ChatClient 是 Spring AI 中一个功能强大且不断发展的组件。它显著简化了用 Java 构建复杂的 AI 应用的过程。请始终参考最新的 Spring AI 文档，了解最新的功能和最佳实践。</p>
+<h3 id="注入并使用-ChatClient："><a href="#注入并使用-ChatClient：" class="headerlink" title="注入并使用 ChatClient："></a><strong>注入并使用 <code>ChatClient</code></strong>：</h3><p>在你的 Spring Service 或 Controller 中注入 <code>ChatClient</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.ai.chat.client.ChatClient;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.model.ChatResponse;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.prompt.Prompt;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.prompt.SystemPromptTemplate;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.messages.UserMessage;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.messages.AssistantMessage;<br><span class="hljs-keyword">import</span> org.springframework.ai.chat.messages.Message;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><br><span class="hljs-keyword">import</span> java.util.List;<br><span class="hljs-keyword">import</span> java.util.Map;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyChatService</span> &#123;<br><br>	<span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ChatClient chatClient;<br><br>	<span class="hljs-keyword">public</span> <span class="hljs-title function_">MyChatService</span><span class="hljs-params">(ChatClient.Builder chatClientBuilder)</span> &#123; <span class="hljs-comment">// Spring AI 0.8.1+ 推荐使用 Builder</span><br>		<span class="hljs-comment">// 你可以在这里为 chatClient 进行特定的配置，比如默认的系统提示、模型选项等</span><br>		<span class="hljs-built_in">this</span>.chatClient = chatClientBuilder<br>							.defaultSystem(<span class="hljs-string">&quot;You are a helpful AI assistant.&quot;</span>)<br>							.defaultOptions(ChatOptions.builder().withTemperature(<span class="hljs-number">0.7f</span>).build()) <span class="hljs-comment">// 示例，具体选项看模型</span><br>							.build();<br>	&#125;<br><br>	<span class="hljs-comment">// 简单问答</span><br>	<span class="hljs-keyword">public</span> String <span class="hljs-title function_">simpleChat</span><span class="hljs-params">(String userInput)</span> &#123;<br>		<span class="hljs-keyword">return</span> chatClient.prompt() <span class="hljs-comment">// 使用流式 API 构建 Prompt</span><br>						 .user(userInput)<br>						 .call()<br>						 .content(); <span class="hljs-comment">// 直接获取内容</span><br>	&#125;<br><br>	<span class="hljs-comment">// 包含系统消息的多轮对话</span><br>	<span class="hljs-keyword">public</span> String <span class="hljs-title function_">multiTurnChat</span><span class="hljs-params">(List&lt;Message&gt; conversationHistory, String newUserInput)</span> &#123;<br>		<span class="hljs-comment">// conversationHistory 可能包含 UserMessage 和 AssistantMessage</span><br>		<span class="hljs-comment">// SystemMessage 通常放在最前面或通过 defaultSystem 设置</span><br><br>		<span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompt</span>(conversationHistory); <span class="hljs-comment">// 将历史消息加入 Prompt</span><br><br>		<span class="hljs-comment">// 如果希望在当前轮次添加新的用户输入和系统消息</span><br>		<span class="hljs-comment">// List&lt;Message&gt; messages = new ArrayList&lt;&gt;(conversationHistory);</span><br>		<span class="hljs-comment">// messages.add(new SystemMessage(&quot;你的任务是扮演一个幽默的诗人。&quot;));</span><br>		<span class="hljs-comment">// messages.add(new UserMessage(newUserInput));</span><br>		<span class="hljs-comment">// Prompt prompt = new Prompt(messages);</span><br><br><br>		<span class="hljs-type">ChatResponse</span> <span class="hljs-variable">response</span> <span class="hljs-operator">=</span> chatClient.prompt(prompt)<br>										  .user(newUserInput) <span class="hljs-comment">// 添加当前用户输入</span><br>										  .call()<br>										  .chatResponse(); <span class="hljs-comment">// 获取完整的 ChatResponse 对象</span><br><br>		<span class="hljs-comment">// 从 ChatResponse 中提取助手的回复</span><br>		<span class="hljs-type">AssistantMessage</span> <span class="hljs-variable">assistantMessage</span> <span class="hljs-operator">=</span> response.getResult().getOutput();<br>		<span class="hljs-comment">// 将助手的回复也加入到对话历史中，以便下一轮对话使用（如果需要）</span><br>		<span class="hljs-comment">// conversationHistory.add(assistantMessage);</span><br>		<span class="hljs-keyword">return</span> assistantMessage.getContent();<br>	&#125;<br><br>	<span class="hljs-comment">// 流式输出</span><br>	<span class="hljs-keyword">public</span> Flux&lt;String&gt; <span class="hljs-title function_">streamChat</span><span class="hljs-params">(String userInput)</span> &#123;<br>		<span class="hljs-keyword">return</span> chatClient.prompt()<br>						 .user(userInput)<br>						 .stream()<br>						 .content(); <span class="hljs-comment">// 直接获取流式内容</span><br>	&#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>注意</strong>：从 Spring AI 0.8.1 版本开始，推荐使用 <code>ChatClient.Builder</code> 来构建和配置 <code>ChatClient</code> 实例。如果直接 <code>@Autowired ChatClient chatClient;</code>，你将获得一个具有默认配置的 <code>ChatClient</code>。通过 <code>Builder</code>，你可以更灵活地设置默认的系统提示、用户角色、模型选项等。</p>
+<p>如果你使用的是 Spring AI 1.0.0 M1 或更新版本，<code>ChatClient</code> 本身就提供了流式构建器风格的 API，如 <code>chatClient.prompt().user(...).call().content()</code>，这使得代码更加简洁易读。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring AI/关键抽象与组件/Chat Client API/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Chat%20Model%20API/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20AI/LangChain4j/%E4%BD%BF%E7%94%A8%20LangChain4J%E3%80%81Spring%20Boot%20%E5%92%8C%20Astra%20DB%20%E6%9E%84%E5%BB%BA%20AI%20PDF%20%E8%81%8A%E5%A4%A9%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

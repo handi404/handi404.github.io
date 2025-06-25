@@ -1,0 +1,774 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Basics 基础知识Spring Data 提供了完善的支持，可以透明地跟踪实体的创建者或更改者以及更改发生的时间。要使用此功能，您必须为实体类配备审计元数据，这些元数据可以使用注解或实现接口来定义。此外，还必须通过注解配置或 XML 配置来启用审计功能，以注册所需的基础架构组件。请参阅特定于商店的部分以获取配置示例。     仅跟踪创建和修改日期的应用程序不需要让其实体实现 AuditorAw">
+<meta property="og:type" content="article">
+<meta property="og:title" content="审计::Spring Data JPA --- Auditing :: Spring Data JPA">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/Auditing/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Basics 基础知识Spring Data 提供了完善的支持，可以透明地跟踪实体的创建者或更改者以及更改发生的时间。要使用此功能，您必须为实体类配备审计元数据，这些元数据可以使用注解或实现接口来定义。此外，还必须通过注解配置或 XML 配置来启用审计功能，以注册所需的基础架构组件。请参阅特定于商店的部分以获取配置示例。     仅跟踪创建和修改日期的应用程序不需要让其实体实现 AuditorAw">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.004Z">
+<meta property="article:modified_time" content="2025-06-12T00:28:03.877Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="clippings">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>审计::Spring Data JPA --- Auditing :: Spring Data JPA - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="审计::Spring Data JPA --- Auditing :: Spring Data JPA"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          11 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">审计::Spring Data JPA --- Auditing :: Spring Data JPA</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月12日 早上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="Basics-基础知识"><a href="#Basics-基础知识" class="headerlink" title="Basics 基础知识"></a>Basics 基础知识</h2><p>Spring Data 提供了完善的支持，可以透明地跟踪实体的创建者或更改者以及更改发生的时间。要使用此功能，您必须为实体类配备审计元数据，这些元数据可以使用注解或实现接口来定义。此外，还必须通过注解配置或 XML 配置来启用审计功能，以注册所需的基础架构组件。请参阅特定于商店的部分以获取配置示例。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>仅跟踪创建和修改日期的应用程序不需要让其实体实现 <a target="_blank" rel="noopener" href="https://docs.spring.io/spring-data/jpa/reference/#auditing.auditor-aware"><code>AuditorAware</code></a> 。</th>
+</tr>
+</thead>
+</table>
+<h3 id="基于注解的-Auditing-Metadata-审计元数据"><a href="#基于注解的-Auditing-Metadata-审计元数据" class="headerlink" title="基于注解的 Auditing Metadata(审计元数据)"></a>基于注解的 Auditing Metadata(审计元数据)</h3><p>我们提供 <code>@CreatedBy</code> 和 <code>@LastModifiedBy</code> 来捕获创建或修改实体的用户，以及 <code>@CreatedDate</code> 和 <code>@LastModifiedDate</code> 来捕获更改发生的时间。</p>
+<p>受审计实体</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Customer</span> &#123;<br><br>  <span class="hljs-meta">@CreatedBy</span><br>  <span class="hljs-keyword">private</span> User user;<br><br>  <span class="hljs-meta">@CreatedDate</span><br>  <span class="hljs-keyword">private</span> Instant createdDate;<br><br>  <span class="hljs-comment">// … further properties omitted</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如您所见，可以根据要捕获的信息选择性地应用注解。这些注解指示在发生更改时进行捕获，可用于 JDK8 日期和时间类型（ <code>long</code> 、 <code>Long</code> 以及旧版 Java <code>Date</code> 和 <code>Calendar</code> ）的属性。</p>
+<p>审计元数据不一定需要存在于根级实体中，但可以添加到嵌入式实体中（取决于实际使用的存储），如下面的代码片段所示。</p>
+<p>嵌入式实体中的审计元数据</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Customer</span> &#123;<br><br>  <span class="hljs-keyword">private</span> AuditMetadata auditingMetadata;<br><br>  <span class="hljs-comment">// … further properties omitted</span><br>&#125;<br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">AuditMetadata</span> &#123;<br><br>  <span class="hljs-meta">@CreatedBy</span><br>  <span class="hljs-keyword">private</span> User user;<br><br>  <span class="hljs-meta">@CreatedDate</span><br>  <span class="hljs-keyword">private</span> Instant createdDate;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="基于接口的-Auditing-Metadata-审计元数据"><a href="#基于接口的-Auditing-Metadata-审计元数据" class="headerlink" title="基于接口的 Auditing Metadata(审计元数据)"></a>基于接口的 Auditing Metadata(审计元数据)</h3><p>如果您不想使用注解来定义审计元数据，您可以让您的域类实现 <code>Auditable</code> 接口。该接口公开了所有审计属性的设置方法。</p>
+<h3 id="AuditorAware"><a href="#AuditorAware" class="headerlink" title="AuditorAware"></a>AuditorAware</h3><p>如果您使用 <code>@CreatedBy</code> 或 <code>@LastModifiedBy</code> ，审计基础架构需要以某种方式感知当前主体。为此，我们提供了一个 <code>AuditorAware&lt;T&gt;</code> SPI 接口，您必须实现该接口来告知基础架构当前与应用程序交互的用户或系统是谁。泛型 <code>T</code> 定义了使用 <code>@CreatedBy</code> 或 <code>@LastModifiedBy</code> 注解的属性的类型。</p>
+<p>下面的示例展示了使用 Spring Security 的 <code>Authentication</code> 对象的接口的实现：</p>
+<p>基于 Spring Security 的 <code>AuditorAware</code> 实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SpringSecurityAuditorAware</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AuditorAware</span>&lt;User&gt; &#123;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> Optional&lt;User&gt; <span class="hljs-title function_">getCurrentAuditor</span><span class="hljs-params">()</span> &#123;<br><br>    <span class="hljs-keyword">return</span> Optional.ofNullable(SecurityContextHolder.getContext())<br>            .map(SecurityContext::getAuthentication)<br>            .filter(Authentication::isAuthenticated)<br>            .map(Authentication::getPrincipal)<br>            .map(User.class::cast);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>该实现访问 Spring Security 提供的 <code>Authentication</code> 对象，并查找您在 <code>UserDetailsService</code> 实现中创建的自定义 <code>UserDetails</code> 实例。我们假设您通过 <code>UserDetails</code> 实现公开域用户，但根据找到的 <code>Authentication</code> 实例，您也可以从任何地方查找它。</p>
+<h3 id="ReactiveAuditorAware"><a href="#ReactiveAuditorAware" class="headerlink" title="ReactiveAuditorAware"></a>ReactiveAuditorAware</h3><p>使用响应式基础架构时，您可能需要利用上下文信息来提供 <code>@CreatedBy</code> 或 <code>@LastModifiedBy</code> 信息。我们提供了一个 <code>ReactiveAuditorAware&lt;T&gt;</code> SPI 接口，您必须实现该接口来告知基础架构当前与应用程序交互的用户或系统是谁。泛型 <code>T</code> 定义了使用 <code>@CreatedBy</code> 或 <code>@LastModifiedBy</code> 注解的属性的类型。</p>
+<p>以下示例展示了使用反应式 Spring Security 的 <code>Authentication</code> 对象的接口的实现：</p>
+<p>基于 Spring Security 的 <code>ReactiveAuditorAware</code> 实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SpringSecurityAuditorAware</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">ReactiveAuditorAware</span>&lt;User&gt; &#123;<br><br>  <span class="hljs-meta">@Override</span><br>  <span class="hljs-keyword">public</span> Mono&lt;User&gt; <span class="hljs-title function_">getCurrentAuditor</span><span class="hljs-params">()</span> &#123;<br><br>    <span class="hljs-keyword">return</span> ReactiveSecurityContextHolder.getContext()<br>                .map(SecurityContext::getAuthentication)<br>                .filter(Authentication::isAuthenticated)<br>                .map(Authentication::getPrincipal)<br>                .map(User.class::cast);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>该实现访问 Spring Security 提供的 <code>Authentication</code> 对象，并查找您在 <code>UserDetailsService</code> 实现中创建的自定义 <code>UserDetails</code> 实例。我们假设您通过 <code>UserDetails</code> 实现公开域用户，但根据找到的 <code>Authentication</code> 实例，您也可以从任何地方查找它。</p>
+<p>还有一个便捷的基类 <code>AbstractAuditable</code> ，您可以扩展它以避免手动实现接口方法。这样做会增加域类与 Spring Data 的耦合度，而这可能是您想要避免的。通常，基于注解定义审计元数据的方式是首选，因为它侵入性较小且更灵活。</p>
+<h2 id="General-Auditing-Configuration常规审计配置"><a href="#General-Auditing-Configuration常规审计配置" class="headerlink" title="General Auditing Configuration常规审计配置"></a>General Auditing Configuration常规审计配置</h2><p>Spring Data JPA 附带一个实体监听器，可用于触发审计信息的捕获。首先，必须在 <code>orm.xml</code> 文件中注册 <code>AuditingEntityListener</code> ，用于持久化上下文中的所有实体，如下例所示：</p>
+<p>示例 1. 审计配置 orm.xml</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">persistence-unit-metadata</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">persistence-unit-defaults</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">entity-listeners</span>&gt;</span><br>      <span class="hljs-tag">&lt;<span class="hljs-name">entity-listener</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;….data.jpa.domain.support.AuditingEntityListener&quot;</span> /&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">entity-listeners</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">persistence-unit-defaults</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">persistence-unit-metadata</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>您还可以使用 <code>@EntityListeners</code> 注释为每个实体启用 <code>AuditingEntityListener</code> ，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@EntityListeners(AuditingEntityListener.class)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyEntity</span> &#123;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>审计功能需要 <code>spring-aspects.jar</code> 位于类路径上。</th>
+</tr>
+</thead>
+</table>
+<p>通过适当修改 <code>orm.xml</code> 并将 <code>spring-aspects.jar</code> 放在类路径上，激活审计功能只需将 Spring Data JPA <code>auditing</code> 命名空间元素添加到您的配置中，如下所示：</p>
+<p>示例 2. 使用 XML 配置激活审计</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">jpa:auditing</span> <span class="hljs-attr">auditor-aware-ref</span>=<span class="hljs-string">&quot;yourAuditorAwareBean&quot;</span> /&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>从 Spring Data JPA 1.5 开始，您可以通过在配置类上使用 <code>@EnableJpaAuditing</code> 注解来启用审计。您仍然必须修改 <code>orm.xml</code> 文件，并将 <code>spring-aspects.jar</code> 添加到类路径中。以下示例显示如何使用 <code>@EnableJpaAuditing</code> 注解：</p>
+<p>示例 3. 使用 Java 配置激活审计</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Configuration</span><br><span class="hljs-meta">@EnableJpaAuditing</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Config</span> &#123;<br><br>  <span class="hljs-meta">@Bean</span><br>  <span class="hljs-keyword">public</span> AuditorAware&lt;AuditableUser&gt; <span class="hljs-title function_">auditorProvider</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AuditorAwareImpl</span>();<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>如果您将 <code>AuditorAware</code> 类型的 bean 暴露给 <code>ApplicationContext</code> ，则审计基础结构会自动选择该 bean，并使用它来确定要在域类型上设置的当前用户。如果您在 <code>ApplicationContext</code> 中注册了多个实现，则可以通过显式设置 <code>@EnableJpaAuditing</code> 的 <code>auditorAwareRef</code> 属性来选择要使用的实现。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/clippings/" class="print-no-link">#clippings</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>审计::Spring Data JPA --- Auditing :: Spring Data JPA</div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Data/Hibernate &amp; JPA/Auditing/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/Hibernate%20&amp;%20JPA/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Actuator/%E6%A6%82%E8%BF%B0/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

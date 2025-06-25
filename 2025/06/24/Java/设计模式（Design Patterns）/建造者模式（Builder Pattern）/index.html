@@ -1,0 +1,861 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="全面整理 Java 中的建造者模式（Builder Pattern），包括其最新实现方式、适用场景、优缺点，并通过现代代码示例（如支持 Java 17+ 的写法）通俗讲解其工作原理。   Java 中的建造者模式（Builder Pattern）详解定义与设计目的建造者模式是一种创建型设计模式，其核心思想是将复杂对象的构建过程与表示方式分离。通过建造者模式，客户端可以一步步地创建复杂对象，而无需关">
+<meta property="og:type" content="article">
+<meta property="og:title" content="建造者模式（Builder Pattern）">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88Design%20Patterns%EF%BC%89/%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F%EF%BC%88Builder%20Pattern%EF%BC%89/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="全面整理 Java 中的建造者模式（Builder Pattern），包括其最新实现方式、适用场景、优缺点，并通过现代代码示例（如支持 Java 17+ 的写法）通俗讲解其工作原理。   Java 中的建造者模式（Builder Pattern）详解定义与设计目的建造者模式是一种创建型设计模式，其核心思想是将复杂对象的构建过程与表示方式分离。通过建造者模式，客户端可以一步步地创建复杂对象，而无需关">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.884Z">
+<meta property="article:modified_time" content="2025-06-25T02:04:22.160Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>建造者模式（Builder Pattern） - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="建造者模式（Builder Pattern）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">建造者模式（Builder Pattern）</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月25日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>全面整理 Java 中的建造者模式（Builder Pattern），包括其最新实现方式、适用场景、优缺点，并通过现代代码示例（如支持 Java 17+ 的写法）通俗讲解其工作原理。  </p>
+<h1 id="Java-中的建造者模式（Builder-Pattern）详解"><a href="#Java-中的建造者模式（Builder-Pattern）详解" class="headerlink" title="Java 中的建造者模式（Builder Pattern）详解"></a>Java 中的建造者模式（Builder Pattern）详解</h1><h2 id="定义与设计目的"><a href="#定义与设计目的" class="headerlink" title="定义与设计目的"></a>定义与设计目的</h2><p>建造者模式是一种<strong>创建型设计模式</strong>，其核心思想是将复杂对象的<strong>构建过程与表示方式分离</strong>。通过建造者模式，客户端可以一步步地创建复杂对象，而无需关心内部的创建细节。这种模式允许同样的构建过程可以创建不同表示的对象，从而极大提高了构建过程的灵活性。例如，在《Effective Java》中推荐的Builder模式，即通过静态内部类封装构造过程，最终调用 <code>build()</code> 方法得到不可变对象。</p>
+<h2 id="它解决的问题"><a href="#它解决的问题" class="headerlink" title="它解决的问题"></a>它解决的问题</h2><ul>
+<li><p><strong>构造函数参数过多</strong>：当一个类的构造函数参数过多时（尤其是可选参数很多），使用传统构造函数或静态工厂会导致代码臃肿且难以维护。例如采用“<em>伸缩构造函数</em>”模式（Telescoping Constructor）时，需要编写多个构造函数来应对不同组合的参数。这种方式一旦参数较多就非常繁琐。</p>
+</li>
+<li><p><strong>可选参数处理</strong>：许多参数可能是可选的，但使用工厂或构造函数时，不得不给每个可选参数传入 <code>null</code> 或默认值。Builder 模式允许以链式调用的形式设置可选参数，只有需要的参数才调用对应方法，从而避免了传入大量 <code>null</code> 的不便。</p>
+</li>
+<li><p><strong>对象状态不一致</strong>：如果使用普通setter，可能会在构造过程中出现中间状态，导致对象不一致。Builder 模式通过在最终调用 <code>build()</code> 时才创建对象，可以在内部校验参数和保证对象的一致性。</p>
+</li>
+<li><p><strong>代码可读性差</strong>：大量参数的构造函数调用容易出错，阅读时很难分辨各参数含义。Builder 以<strong>流畅接口</strong>（fluent API）的形式设置各个属性，使代码更具可读性 <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/difference-between-builder-design-pattern-and-factory-design-pattern/#:~:text=%2A%20Step,more%20readable%20and%20maintainable%20by">geeksforgeeks.org</a>。例如：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">NutritionFacts</span> <span class="hljs-variable">cocaCola</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NutritionFacts</span>.Builder(<span class="hljs-number">240</span>, <span class="hljs-number">8</span>)<br>    .calories(<span class="hljs-number">100</span>)<br>    .fat(<span class="hljs-number">0</span>)<br>    .build();<br></code></pre></td></tr></table></figure>
+<p>  这段代码相比于 <code>new NutritionFacts(240, 8, 100, 0, 35, 27)</code> 等冗长构造函数更易理解。</p>
+</li>
+</ul>
+<h2 id="标准实现方式（Java-17-）"><a href="#标准实现方式（Java-17-）" class="headerlink" title="标准实现方式（Java 17+）"></a>标准实现方式（Java 17+）</h2><p>在Java中，建造者模式的经典实现通常采用<strong>静态内部类</strong> + <strong>链式调用</strong> 的形式：</p>
+<ul>
+<li><p>定义一个外部类，其字段大多为 <code>private final</code>，并有一个私有构造函数，该构造函数接收一个Builder实例，将Builder中收集的属性值赋给外部类的字段。</p>
+</li>
+<li><p>定义一个静态内部类 <code>Builder</code>，其成员变量与外部类相同。Builder 对必需参数有一个带参构造函数，所有可选参数则通过链式方法（setter样式方法）赋值，方法返回 <code>this</code> 以支持链式调用。</p>
+</li>
+<li><p>Builder 内部提供一个 <code>build()</code> 方法，该方法调用外部类的私有构造函数并返回构建好的对象。</p>
+</li>
+</ul>
+<p>例如，经典的 <code>NutritionFacts</code> 示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NutritionFacts</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> servingSize;  <span class="hljs-comment">// 必需</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> servings;     <span class="hljs-comment">// 必需</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> calories;     <span class="hljs-comment">// 可选</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> fat;          <span class="hljs-comment">// 可选</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> sodium;       <span class="hljs-comment">// 可选</span><br><br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">NutritionFacts</span><span class="hljs-params">(Builder builder)</span> &#123;<br>        <span class="hljs-built_in">this</span>.servingSize = builder.servingSize;<br>        <span class="hljs-built_in">this</span>.servings    = builder.servings;<br>        <span class="hljs-built_in">this</span>.calories    = builder.calories;<br>        <span class="hljs-built_in">this</span>.fat         = builder.fat;<br>        <span class="hljs-built_in">this</span>.sodium      = builder.sodium;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Builder</span> &#123;<br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> servingSize;<br>        <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> servings;<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">calories</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">fat</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> <span class="hljs-variable">sodium</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br><br>        <span class="hljs-keyword">public</span> <span class="hljs-title function_">Builder</span><span class="hljs-params">(<span class="hljs-type">int</span> servingSize, <span class="hljs-type">int</span> servings)</span> &#123;<br>            <span class="hljs-built_in">this</span>.servingSize = servingSize;<br>            <span class="hljs-built_in">this</span>.servings = servings;<br>        &#125;<br>        <span class="hljs-keyword">public</span> Builder <span class="hljs-title function_">calories</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span> &#123; <span class="hljs-built_in">this</span>.calories = val; <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>; &#125;<br>        <span class="hljs-keyword">public</span> Builder <span class="hljs-title function_">fat</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span>      &#123; <span class="hljs-built_in">this</span>.fat = val;      <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>; &#125;<br>        <span class="hljs-keyword">public</span> Builder <span class="hljs-title function_">sodium</span><span class="hljs-params">(<span class="hljs-type">int</span> val)</span>   &#123; <span class="hljs-built_in">this</span>.sodium = val;   <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>; &#125;<br><br>        <span class="hljs-keyword">public</span> NutritionFacts <span class="hljs-title function_">build</span><span class="hljs-params">()</span> &#123;<br>            <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NutritionFacts</span>(<span class="hljs-built_in">this</span>);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>上述实现方式可在 Java 17+ 环境中正常使用。最新 Java 语言特性（如 <strong>记录类（record）</strong>、<strong>链式调用</strong>、<strong>var局部变量类型推断</strong> 等）并不会改变这一模式的本质，但可以简化类的定义。</p>
+<h3 id="现代写法示例"><a href="#现代写法示例" class="headerlink" title="现代写法示例"></a>现代写法示例</h3><ul>
+<li><p><strong>Lombok 注解</strong>：使用 <a target="_blank" rel="noopener" href="https://projectlombok.org/features/Builder">Project Lombok</a> 的 <code>@Builder</code> 注解可以自动生成上述 Builder 模式的模板代码。例如：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@lombok</span>.Builder<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Person</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String name;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> age;<br>&#125;<br><span class="hljs-comment">// 使用示例：</span><br><span class="hljs-type">Person</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> Person.builder()<br>                 .name(<span class="hljs-string">&quot;Alice&quot;</span>)<br>                 .age(<span class="hljs-number">30</span>)<br>                 .build();<br></code></pre></td></tr></table></figure>
+<p>  Lombok 会自动生成一个内部静态 <code>PersonBuilder</code> 类以及链式方法，因此使用起来非常简洁。</p>
+</li>
+<li><p><strong>Record 类</strong>（Java 16+）：<code>record</code> 关键字简化了不可变数据类的定义，但原生不支持 Builder 模式。可以手动为 <code>record</code> 编写 Builder，或使用注解工具（如 <a target="_blank" rel="noopener" href="https://github.com/arnaudroger/record-builder">RecordBuilder</a>）自动生成。例如：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@recordbuilder</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">NameAndAge</span><span class="hljs-params">(String name, <span class="hljs-type">int</span> age)</span> &#123;&#125;<br><span class="hljs-comment">// Lombok或RecordBuilder生成NameAndAgeBuilder，实现链式调用</span><br><span class="hljs-type">NameAndAge</span> <span class="hljs-variable">na</span> <span class="hljs-operator">=</span> NameAndAgeBuilder.builder()<br>                                 .name(<span class="hljs-string">&quot;Bob&quot;</span>)<br>                                 .age(<span class="hljs-number">25</span>)<br>                                 .build();<br></code></pre></td></tr></table></figure>
+<p>  如极道Jdon博文所述，引入 <code>@RecordBuilder</code> 注解可以为 <code>record</code> 自动生成对应的 Builder 类。</p>
+</li>
+<li><p><strong>Java 21新特性</strong>：目前 Java 21 的主要新特性（如记录模式匹配、虚拟线程等）并未直接影响建造者模式本身。可以说，Java 21 引入的**记录模式（Record Pattern）**等使得处理不可变数据更方便，但构建模式依然需要手动实现或借助注解工具。如上所述，<strong>record</strong>（Java 14+）已用于简化数据载体，但仍需额外库（RecordBuilder）来支持 Builder。</p>
+</li>
+</ul>
+<h2 id="示例代码"><a href="#示例代码" class="headerlink" title="示例代码"></a>示例代码</h2><ul>
+<li><p><strong>传统写法</strong>：见上文 <code>NutritionFacts</code> 示例。典型用法是使用嵌套静态 <code>Builder</code> 类，利用链式调用设置属性，最后通过 <code>build()</code> 生成实例。</p>
+</li>
+<li><p><strong>Lombok 写法</strong>：使用 <code>@Builder</code> 注解极大简化代码。示例：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@lombok</span>.Builder<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Computer</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String HDD;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String RAM;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> graphicsCardEnabled;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> bluetoothEnabled;<br>&#125;<br><span class="hljs-comment">// 使用示例：</span><br><span class="hljs-type">Computer</span> <span class="hljs-variable">comp</span> <span class="hljs-operator">=</span> Computer.builder()<br>                        .HDD(<span class="hljs-string">&quot;1TB&quot;</span>)<br>                        .RAM(<span class="hljs-string">&quot;16GB&quot;</span>)<br>                        .graphicsCardEnabled(<span class="hljs-literal">true</span>)<br>                        .build();<br></code></pre></td></tr></table></figure>
+<p>  Lombok 会生成类似于上述传统写法的 Builder 代码。</p>
+</li>
+<li><p><strong>Record + Builder</strong>：假设我们有一个 <code>record</code>：</p>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Point</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Builder</span> &#123;<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> x, y;<br>        <span class="hljs-keyword">public</span> Builder <span class="hljs-title function_">x</span><span class="hljs-params">(<span class="hljs-type">int</span> x)</span> &#123; <span class="hljs-built_in">this</span>.x = x; <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>; &#125;<br>        <span class="hljs-keyword">public</span> Builder <span class="hljs-title function_">y</span><span class="hljs-params">(<span class="hljs-type">int</span> y)</span> &#123; <span class="hljs-built_in">this</span>.y = y; <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>; &#125;<br>        <span class="hljs-keyword">public</span> Point <span class="hljs-title function_">build</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(x, y); &#125;<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Builder <span class="hljs-title function_">builder</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Builder</span>(); &#125;<br>&#125;<br><span class="hljs-comment">// 使用示例：</span><br><span class="hljs-type">Point</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> Point.builder().x(<span class="hljs-number">5</span>).y(<span class="hljs-number">10</span>).build();<br></code></pre></td></tr></table></figure>
+<p>  如上所示，我们手动为 <code>record</code> 添加了一个静态内部 <code>Builder</code> 类和 <code>builder()</code> 方法，实现与普通类相同的 Builder 模式。</p>
+</li>
+</ul>
+<h2 id="与工厂模式的区别"><a href="#与工厂模式的区别" class="headerlink" title="与工厂模式的区别"></a>与工厂模式的区别</h2><ul>
+<li><p><strong>目的不同</strong>：工厂模式（Factory Pattern）关注“一步创建对象”，通常通过工厂方法或静态工厂返回完整对象，而建造者模式关注“逐步构建复杂对象”的过程。</p>
+</li>
+<li><p><strong>灵活性</strong>：Builder 允许在构建过程中灵活选择调用哪些步骤，适用于复杂对象的多变组合；工厂模式一般只提供不同类型产品的一次性创建。正如菜鸟教程所述，“建造者模式更加关注于零件装配的顺序”。</p>
+</li>
+<li><p><strong>示例</strong>：如果对象仅是简单实例化，使用工厂（Factory 或简单构造函数）即可；若对象具有很多可选配置，则推荐使用 Builder 模式。</p>
+</li>
+</ul>
+<h2 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h2><ul>
+<li><p><strong>复杂对象</strong>：对象内部结构复杂、属性众多时，如生成 HTML 文档、构造复杂配置对象等，可以使用建造者模式来组织构建步骤。</p>
+</li>
+<li><p><strong>可选参数多</strong>：当一个对象有多个可选参数时，Builder 提供清晰的链式接口，避免过长的构造函数和大量 <code>null</code> 传参。</p>
+</li>
+<li><p><strong>不可变对象</strong>：需要创建不可变类并在创建前进行多个参数验证时，Builder 模式可以先在 Builder 中收集值，最后通过一次构造产生不可变实例。</p>
+</li>
+<li><p><strong>逐步构建</strong>：如需要在不同场景下按顺序调用不同构造步骤，可使用 Builder 模式将这些步骤封装。</p>
+</li>
+<li><p><strong>Spring 等框架</strong>：许多主流框架中也使用了 Builder 模式。例如 Spring Boot 的 <code>RestTemplateBuilder</code> 用于配置并创建 <code>RestTemplate</code> <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/spring-boot-resttemplatebuilder-with-example/#:~:text=RestTemplateBuilder%20is%20a%20Builder%20that,Let%E2%80%99s%20understand%20the">geeksforgeeks.org</a>，Spring WebFlux 的 <code>WebClient.builder()</code> 用于链式设置参数构建 <code>WebClient</code>，URI 构建器 <code>UriComponentsBuilder</code> 也是典型的 Builder 用例。</p>
+</li>
+</ul>
+<h2 id="不适用场景"><a href="#不适用场景" class="headerlink" title="不适用场景"></a>不适用场景</h2><ul>
+<li><p><strong>简单对象</strong>：如果待构建的对象只包含少量属性或逻辑简单，使用建造者模式会导致类和对象数量增加，反而显得冗余。正如菜鸟教程指出的，“如果产品的属性较少，建造者模式可能会导致代码冗余”。</p>
+</li>
+<li><p><strong>性能敏感</strong>：Builder 会产生额外的对象（Builder 实例），在极端性能敏感的场合可能略有开销。</p>
+</li>
+<li><p><strong>无需多步构造</strong>：如果对象只需一个构造方法即可初始化完成，则不需要使用 Builder。使用 Builder 对于简单职责的类来说是一种过度设计，会增加维护成本（有评论指出，若类仅仅是简单的功能，Builder 模式可能“过度设计”）。<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2829106/disadvantages-of-builder-design-pattern#:~:text=It%20depends,screen%20then%20its%20probably%20overkill">stackoverflow.com</a></p>
+</li>
+</ul>
+<h2 id="优缺点总结"><a href="#优缺点总结" class="headerlink" title="优缺点总结"></a>优缺点总结</h2><ul>
+<li><p><strong>优点</strong>：</p>
+<ul>
+<li><p><em>可读性高</em>：链式调用清晰地展示了各参数含义，构建过程一目了然。</p>
+</li>
+<li><p><em>灵活性强</em>：允许分步构建对象，调用者只需关心所需步骤，不需要按固定顺序调用所有构造函数。</p>
+</li>
+<li><p><em>与表示分离</em>：可以在不同的 <code>Builder</code> 子类中以不同方式构建同一产品，使构建过程可复用。</p>
+</li>
+<li><p><em>易于扩展</em>：当需要增加新的可选参数时，只需在 Builder 中添加新方法，而不必修改现有构造函数签名，兼容性好。</p>
+</li>
+<li><p><em>支持不可变对象</em>：Builder 可以在内部保持可变状态，最终构建出包含所有值的不可变对象。</p>
+</li>
+</ul>
+</li>
+<li><p><strong>缺点</strong>：</p>
+<ul>
+<li><p><em>代码量增加</em>：需要额外定义 Builder 类、链式方法和构造函数，类数量和文件大小增加。</p>
+</li>
+<li><p><em>初期工作量</em>：实现 Builder 模式需要编写更多模板代码（尽管可用 Lombok 等工具减轻）。</p>
+</li>
+<li><p><em>过度设计风险</em>：对于简单对象使用 Builder，会显得臃肿复杂，降低开发效率 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/2829106/disadvantages-of-builder-design-pattern#:~:text=It%20depends,screen%20then%20its%20probably%20overkill">stackoverflow.com</a>。</p>
+</li>
+<li><p><em>学习成本</em>：理解和正确使用 Builder 模式需要一定的设计模式知识，对于初学者来说可能略显复杂。</p>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="案例：主流框架中的应用"><a href="#案例：主流框架中的应用" class="headerlink" title="案例：主流框架中的应用"></a>案例：主流框架中的应用</h2><ul>
+<li><p><strong>Spring 框架</strong>：Spring Boot 提供了多种 Builder。例如 <code>RestTemplateBuilder</code> 可以链式配置后 <code>.build()</code> 得到 <code>RestTemplate</code> <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/spring-boot-resttemplatebuilder-with-example/#:~:text=RestTemplateBuilder%20is%20a%20Builder%20that,Let%E2%80%99s%20understand%20the">geeksforgeeks.org</a> 实例；Spring WebFlux 的 <code>WebClient</code> 也通过 <code>WebClient.builder()</code> 链式设置参数并 <code>.build()</code> 生成客户端 <a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/reference/web/webflux-webclient/client-builder.html#:~:text=The%20simplest%20way%20to%20create,of%20the%20static%20factory%20methods">docs.spring.io</a>；<code>UriComponentsBuilder</code> 则用于灵活地构造 URI。</p>
+</li>
+<li><p><strong>其他库</strong>：许多第三方库也采用 Builder 模式，如 Apache HttpClient 的 <code>HttpRequest.Builder</code>、OkHttp 的 <code>Request.Builder</code> 等，都通过链式方法累积配置并最终 <code>.build()</code> 得到请求对象。</p>
+</li>
+</ul>
+<p>通过以上分析和示例，可以看出建造者模式在 Java 中能够有效地解决构造函数参数过多、可读性差等问题，提高代码可维护性。正确使用时，它能使复杂对象的创建过程清晰、可控；但在简单场景下也要避免无谓的复杂性 <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/difference-between-builder-design-pattern-and-factory-design-pattern/#:~:text=%2A%20Step,more%20readable%20and%20maintainable%20by">geeksforgeeks.org</a>。</p>
+<p><strong>参考资料：</strong> 相关设计模式资料和示例 <a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/difference-between-builder-design-pattern-and-factory-design-pattern/#:~:text=Design%20patterns%20provide%20proven%20solutions,In%20this">geeksforgeeks.org</a><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/spring-boot-resttemplatebuilder-with-example/#:~:text=RestTemplateBuilder%20is%20a%20Builder%20that,Let%E2%80%99s%20understand%20the">geeksforgeeks.org</a><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/reference/web/webflux-webclient/client-builder.html#:~:text=The%20simplest%20way%20to%20create,of%20the%20static%20factory%20methods">docs.spring.io</a> 等。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="category-chain-item">设计模式</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>建造者模式（Builder Pattern）</div>
+      <div>http://example.com/2025/06/24/Java/设计模式（Design Patterns）/建造者模式（Builder Pattern）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/25/Java/Framework/Spring%20Boot/Data/Redis/Spring%20Boot%20using%20Redis/" title="using Redis">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">using Redis</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88Design%20Patterns%EF%BC%89/%E5%88%9B%E5%BB%BA%E5%9E%8B%E3%80%81%E7%BB%93%E6%9E%84%E5%9E%8B%E5%92%8C%E8%A1%8C%E4%B8%BA%E5%9E%8B/" title="创建型、结构型和行为型">
+                        <span class="hidden-mobile">创建型、结构型和行为型</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

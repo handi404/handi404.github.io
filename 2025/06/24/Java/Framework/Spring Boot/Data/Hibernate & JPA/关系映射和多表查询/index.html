@@ -1,0 +1,884 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Hibernate &amp; JPA 的关系映射和多表查询是 Spring Boot 应用数据持久化的核心。我们来深入浅出地探讨一下。 前提：JPA 与 Hibernate  JPA (Jakarta Persistence API)：它是一个 Java 规范&#x2F;标准，定义了一套用于对象关系映射 (ORM) 和管理持久化数据的 API。你可以把它想象成 JDBC 规范，但更高级，是针对对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%E5%92%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Hibernate &amp; JPA 的关系映射和多表查询是 Spring Boot 应用数据持久化的核心。我们来深入浅出地探讨一下。 前提：JPA 与 Hibernate  JPA (Jakarta Persistence API)：它是一个 Java 规范&#x2F;标准，定义了一套用于对象关系映射 (ORM) 和管理持久化数据的 API。你可以把它想象成 JDBC 规范，但更高级，是针对对">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.008Z">
+<meta property="article:modified_time" content="2025-06-08T03:07:31.291Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          25 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月8日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Hibernate &amp; JPA 的关系映射和多表查询是 Spring Boot 应用数据持久化的核心。我们来深入浅出地探讨一下。</p>
+<p><strong>前提：JPA 与 Hibernate</strong></p>
+<ul>
+<li><strong>JPA (Jakarta Persistence API)</strong>：它是一个 Java <strong>规范&#x2F;标准</strong>，定义了一套用于对象关系映射 (ORM) 和管理持久化数据的 API。你可以把它想象成 JDBC 规范，但更高级，是针对对象的。</li>
+<li><strong>Hibernate</strong>：它是 JPA 的一个<strong>实现</strong>。就像 Tomcat 是 Servlet 规范的一个实现一样。Spring Boot 默认使用 Hibernate 作为 JPA 的实现。</li>
+<li><strong>Spring Data JPA</strong>：Spring Data 的一个模块，它在 JPA 之上提供了更高级的抽象，让你能以更简洁的方式（例如通过接口方法命名约定）进行数据库操作，极大地减少了样板代码。</li>
+</ul>
+<p><strong>核心概念：实体 (Entity) 和关系 (Relationship)</strong></p>
+<p>在 JPA 中，你的 Java Pojo 类通过注解映射到数据库表，这些类被称为<strong>实体 (Entity)</strong>。实体之间的关系则映射到数据库表之间的关系。</p>
+<h3 id="一、关系映射注解-Relationship-Mapping-Annotations"><a href="#一、关系映射注解-Relationship-Mapping-Annotations" class="headerlink" title="一、关系映射注解 (Relationship Mapping Annotations)"></a><strong>一、关系映射注解 (Relationship Mapping Annotations)</strong></h3><p>以下是 JPA 中定义实体关系最常用的注解，它们都属于 <code>jakarta.persistence.*</code> 包（在 Spring Boot 3.x 中）：</p>
+<ol>
+<li><p><strong><code>@OneToOne</code> (一对一)</strong></p>
+<ul>
+<li><p><strong>场景</strong>: 一个用户只有一个地址，一个地址也只属于一个用户。</p>
+</li>
+<li><p><strong>注解</strong>:</p>
+<ul>
+<li><code>mappedBy</code>: 在关系的<strong>被拥有方</strong>（inverse side）使用，指向拥有方（owning side）中定义关系的属性名。拥有方负责维护外键。</li>
+<li><code>cascade</code>: 定义级联操作 (如 <code>CascadeType.ALL</code>, <code>CascadeType.PERSIST</code>, <code>CascadeType.REMOVE</code>)。例如，保存用户时级联保存地址。</li>
+<li><code>fetch</code>: 定义加载策略 (<code>FetchType.LAZY</code> - 懒加载，<code>FetchType.EAGER</code> - 即时加载)。对于 <code>@OneToOne</code> 和 <code>@ManyToOne</code>，默认是 <code>EAGER</code>。通常建议显式设置为 <code>LAZY</code> 以避免不必要的查询。</li>
+<li><code>optional</code>: (默认为 <code>true</code>) 表示关联的实体是否可以为 <code>null</code>。如果为 <code>false</code>，则外键列不能为 <code>null</code>。</li>
+<li><code>@JoinColumn</code>: 在<strong>拥有方</strong>使用，指定外键列的名称。</li>
+</ul>
+</li>
+<li><p><strong>示例 (User 拥有 Address 的外键):</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// User.java (Owning Side)</span><br><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String username;<br><br>    <span class="hljs-meta">@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@JoinColumn(name = &quot;address_id&quot;, referencedColumnName = &quot;id&quot;)</span> <span class="hljs-comment">// address_id 是 User 表的外键</span><br>    <span class="hljs-keyword">private</span> Address address;<br>    <span class="hljs-comment">// getters and setters</span><br>&#125;<br><br><span class="hljs-comment">// Address.java (Inverse Side)</span><br><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Address</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String street;<br><br>    <span class="hljs-meta">@OneToOne(mappedBy = &quot;address&quot;, fetch = FetchType.LAZY)</span> <span class="hljs-comment">// &quot;address&quot; 是 User 类中 Address 类型的属性名</span><br>    <span class="hljs-keyword">private</span> User user;<br>    <span class="hljs-comment">// getters and setters</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong><code>@OneToMany</code> (一对多)</strong></p>
+<ul>
+<li><p><strong>场景</strong>: 一个作者可以写多篇文章。</p>
+</li>
+<li><p><strong>注解</strong>:</p>
+<ul>
+<li><code>mappedBy</code>: 必须在<strong>一对多</strong>的“一”方使用，指向“多”方中关联“一”方的属性名。</li>
+<li><code>cascade</code>: 常用于级联保存、删除子实体。</li>
+<li><code>fetch</code>: 默认 <code>FetchType.LAZY</code> (强烈推荐保持)。</li>
+<li><code>orphanRemoval = true</code>: 当一个子实体从父实体的集合中移除时，如果此子实体不再被其他父实体引用，它将被自动从数据库中删除。</li>
+</ul>
+</li>
+<li><p><strong>示例 (Author 有多篇 Post):</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Author.java (&quot;One&quot; side)</span><br><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Author</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String name;<br><br>    <span class="hljs-meta">@OneToMany(mappedBy = &quot;author&quot;, cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)</span><br>    <span class="hljs-keyword">private</span> List&lt;Post&gt; posts = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(); <span class="hljs-comment">// 初始化集合是个好习惯</span><br><br>    <span class="hljs-comment">// Helper method to sync both sides</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addPost</span><span class="hljs-params">(Post post)</span> &#123;<br>        posts.add(post);<br>        post.setAuthor(<span class="hljs-built_in">this</span>);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removePost</span><span class="hljs-params">(Post post)</span> &#123;<br>        posts.remove(post);<br>        post.setAuthor(<span class="hljs-literal">null</span>);<br>    &#125;<br>    <span class="hljs-comment">// getters and setters</span><br>&#125;<br><br><span class="hljs-comment">// Post.java (&quot;Many&quot; side - Owning side of the FK)</span><br><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Post</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String title;<br><br>    <span class="hljs-meta">@ManyToOne(fetch = FetchType.LAZY)</span> <span class="hljs-comment">// 默认 EAGER, 推荐 LAZY</span><br>    <span class="hljs-meta">@JoinColumn(name = &quot;author_id&quot;)</span> <span class="hljs-comment">// Post 表会有 author_id 外键</span><br>    <span class="hljs-keyword">private</span> Author author;<br>    <span class="hljs-comment">// getters and setters</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p><strong><code>@ManyToOne</code> (多对一)</strong></p>
+<ul>
+<li><strong>场景</strong>: 多篇文章可以属于同一个作者 (上面 <code>Post</code> 实体中已展示)。</li>
+<li><strong>注解</strong>:<ul>
+<li><code>cascade</code>: 通常不建议在 <code>@ManyToOne</code> 上使用 <code>CascadeType.REMOVE</code> 或 <code>ALL</code>，除非你确定删除一个“多”方实体时，真的想把关联的“一”方也删掉（这很少见）。</li>
+<li><code>fetch</code>: 默认 <code>FetchType.EAGER</code>。通常建议显式设置为 <code>LAZY</code>。</li>
+<li><code>optional</code>: (默认为 <code>true</code>) 表示关联的实体是否可以为 <code>null</code>。如果为 <code>false</code>，则外键列不能为 <code>null</code>。</li>
+<li><code>@JoinColumn</code>: 指定外键列的名称。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong><code>@ManyToMany</code> (多对多)</strong></p>
+<ul>
+<li><p><strong>场景</strong>: 一个学生可以选择多门课程，一门课程也可以被多个学生选择。</p>
+</li>
+<li><p><strong>注解</strong>:</p>
+<ul>
+<li><strong>需要一个中间连接表 (Join Table)。</strong></li>
+<li><code>@JoinTable</code>: 在<strong>拥有方</strong>使用，定义连接表的名称以及连接列。<ul>
+<li><code>name</code>: 连接表的表名。</li>
+<li><code>joinColumns</code>: 定义连接表中指向拥有方实体主键的外键列 (<code>@JoinColumn</code>)。</li>
+<li><code>inverseJoinColumns</code>: 定义连接表中指向被拥有方实体主键的外键列 (<code>@JoinColumn</code>)。</li>
+</ul>
+</li>
+<li><code>mappedBy</code>: 在<strong>被拥有方</strong>使用，指向拥有方中定义关系的属性名。</li>
+<li><code>cascade</code>: 根据业务需求设置。</li>
+<li><code>fetch</code>: 默认 <code>FetchType.LAZY</code> (强烈推荐保持)。</li>
+</ul>
+</li>
+<li><p><strong>示例 (Student 和 Course):</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Student.java (Owning Side for ManyToMany relationship)</span><br><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Student</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String name;<br><br>    <span class="hljs-meta">@ManyToMany(cascade = &#123;CascadeType.PERSIST, CascadeType.MERGE&#125;, fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@JoinTable(</span><br><span class="hljs-meta">        name = &quot;student_course&quot;, // 连接表名</span><br><span class="hljs-meta">        joinColumns = @JoinColumn(name = &quot;student_id&quot;), // 连接表中，指向 Student 的外键</span><br><span class="hljs-meta">        inverseJoinColumns = @JoinColumn(name = &quot;course_id&quot;) // 连接表中，指向 Course 的外键</span><br><span class="hljs-meta">    )</span><br>    <span class="hljs-keyword">private</span> Set&lt;Course&gt; courses = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;(); <span class="hljs-comment">// 使用 Set 避免重复</span><br><br>    <span class="hljs-comment">// Helper methods</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addCourse</span><span class="hljs-params">(Course course)</span> &#123;<br>        <span class="hljs-built_in">this</span>.courses.add(course);<br>        course.getStudents().add(<span class="hljs-built_in">this</span>);<br>    &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">removeCourse</span><span class="hljs-params">(Course course)</span> &#123;<br>        <span class="hljs-built_in">this</span>.courses.remove(course);<br>        course.getStudents().remove(<span class="hljs-built_in">this</span>);<br>    &#125;<br>    <span class="hljs-comment">// getters and setters</span><br>&#125;<br><br><span class="hljs-comment">// Course.java (Inverse Side)</span><br><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Course</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String title;<br><br>    <span class="hljs-meta">@ManyToMany(mappedBy = &quot;courses&quot;, fetch = FetchType.LAZY)</span> <span class="hljs-comment">// &quot;courses&quot; 是 Student 类中 Set&lt;Course&gt; 属性名</span><br>    <span class="hljs-keyword">private</span> Set&lt;Student&gt; students = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashSet</span>&lt;&gt;();<br>    <span class="hljs-comment">// getters and setters</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<p><strong>重要概念补充:</strong></p>
+<ul>
+<li><strong>拥有方 (Owning Side) vs. 被拥有方 (Inverse Side &#x2F; Non-Owning Side):</strong><ul>
+<li>在双向关系中，只有一方负责维护数据库中的外键关系。这一方称为拥有方。</li>
+<li><code>mappedBy</code> 元素用于标记被拥有方，它告诉 JPA 这个关系是由另一方的哪个属性来维护的。</li>
+<li><strong>谁没有 <code>mappedBy</code>，谁就是拥有方。</strong></li>
+<li>通常，<code>@ManyToOne</code> 端是拥有方，<code>@OneToMany</code> 端是被拥有方。对于 <code>@OneToOne</code>，你可以选择哪一方是拥有方。对于 <code>@ManyToMany</code>，没有 <code>mappedBy</code> 的一方是拥有方，负责维护连接表。</li>
+</ul>
+</li>
+<li><strong>级联操作 (Cascading):</strong><ul>
+<li><code>CascadeType.ALL</code>: 所有操作 (PERSIST, MERGE, REMOVE, REFRESH, DETACH)。</li>
+<li><code>CascadeType.PERSIST</code>: 保存父实体时，级联保存子实体。</li>
+<li><code>CascadeType.MERGE</code>: 更新父实体时，级联更新子实体。</li>
+<li><code>CascadeType.REMOVE</code>: 删除父实体时，级联删除子实体。</li>
+<li><code>CascadeType.REFRESH</code>: 刷新父实体时，级联刷新子实体。</li>
+<li><code>CascadeType.DETACH</code>: 分离父实体时，级联分离子实体。</li>
+<li><strong>谨慎使用 <code>CascadeType.REMOVE</code> 和 <code>ALL</code></strong>，确保你真的想这么做。</li>
+</ul>
+</li>
+<li><strong>抓取策略 (Fetch Strategy):</strong><ul>
+<li><code>FetchType.EAGER</code> (即时加载): 加载父实体时，立即加载关联的子实体。可能导致性能问题（N+1 查询）。</li>
+<li><code>FetchType.LAZY</code> (懒加载): 加载父实体时，不加载关联的子实体。当首次访问子实体时才去数据库加载。这是推荐的策略，特别是对于集合关系。</li>
+<li><strong>N+1 问题</strong>: 当使用 EAGER 加载或在循环中访问 LAZY 加载的集合时，可能会为每个父实体执行一次查询，然后再为每个子实体&#x2F;集合执行一次查询，导致大量的数据库查询。</li>
+</ul>
+</li>
+<li><strong><code>equals()</code> 和 <code>hashCode()</code></strong>: 对于实体类，正确实现 <code>equals()</code> 和 <code>hashCode()</code> 方法非常重要，特别是当实体被放入集合中或在分离状态下使用时。通常基于业务主键（如 <code>id</code>）来实现。</li>
+<li><strong>双向关系中的同步</strong>: 在双向关系中，如果你修改了一方的关系，例如 <code>author.addPost(post)</code>，你需要确保另一方的关系也同步更新，即 <code>post.setAuthor(author)</code>。通常在实体类中提供辅助方法来保证数据一致性。</li>
+</ul>
+<h3 id="二、多表查询-Multi-Table-Queries"><a href="#二、多表查询-Multi-Table-Queries" class="headerlink" title="二、多表查询 (Multi-Table Queries)"></a><strong>二、多表查询 (Multi-Table Queries)</strong></h3><p>一旦关系映射建立，就可以进行多表查询了。Spring Data JPA 提供了多种方式：</p>
+<ol>
+<li><p><strong>JPQL (Jakarta Persistence Query Language)</strong></p>
+<ul>
+<li>面向对象的查询语言，语法类似 SQL，但操作的是实体和它们的属性，而不是表和列。</li>
+<li>使用 <code>@Query</code> 注解在 Repository 接口的方法上。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// PostRepository.java</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">PostRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;Post, Long&gt; &#123;<br><br>    <span class="hljs-comment">// 查找某个作者的所有文章 (隐式 JOIN)</span><br>    List&lt;Post&gt; <span class="hljs-title function_">findByAuthorName</span><span class="hljs-params">(String authorName)</span>; <span class="hljs-comment">// Spring Data JPA 衍生查询</span><br><br>    <span class="hljs-comment">// 使用 JPQL显式 JOIN (根据作者ID)</span><br>    <span class="hljs-meta">@Query(&quot;SELECT p FROM Post p JOIN p.author a WHERE a.id = :authorId&quot;)</span><br>    List&lt;Post&gt; <span class="hljs-title function_">findPostsByAuthorId</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;authorId&quot;)</span> Long authorId)</span>;<br><br>    <span class="hljs-comment">// 使用 JPQL显式 JOIN (根据作者名) 并使用 FETCH JOIN 解决 N+1 问题</span><br>    <span class="hljs-comment">// FETCH JOIN 会在一次查询中将关联的 Author 实体也加载出来</span><br>    <span class="hljs-meta">@Query(&quot;SELECT p FROM Post p JOIN FETCH p.author a WHERE a.name = :authorName&quot;)</span><br>    List&lt;Post&gt; <span class="hljs-title function_">findPostsAndAuthorByAuthorName</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;authorName&quot;)</span> String authorName)</span>;<br><br>    <span class="hljs-comment">// 查找选了某门课程的所有学生</span><br>    <span class="hljs-meta">@Query(&quot;SELECT s FROM Student s JOIN s.courses c WHERE c.title = :courseTitle&quot;)</span><br>    List&lt;Student&gt; <span class="hljs-title function_">findStudentsByCourseTitle</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;courseTitle&quot;)</span> String courseTitle)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>JOIN FETCH</code></strong>: 这是一个非常重要的 JPQL 特性。普通的 <code>JOIN</code> 只是在 SQL层面连接表并在 <code>WHERE</code> 子句中使用，但返回的实体可能仍然是懒加载的。而 <code>JOIN FETCH</code> 会在一次查询中将关联的实体（及其选定属性）一并抓取出来，从而避免 N+1 问题。</li>
+</ul>
+</li>
+<li><p><strong>Spring Data JPA 方法命名约定 (Derived Queries)</strong></p>
+<ul>
+<li>Spring Data JPA 可以根据方法名自动生成查询。对于简单的多表查询（通常是沿着关系链的点导航），这非常方便。</li>
+<li>例如，<code>findByAuthorName(String authorName)</code> 会自动生成类似 <code>SELECT p FROM Post p WHERE p.author.name = ?1</code> 的查询。</li>
+<li><code>findByAuthor_Id(Long authorId)</code> 也是可以的 (注意下划线表示属性导航)。</li>
+</ul>
+</li>
+<li><p><strong>Criteria API</strong></p>
+<ul>
+<li>一个类型安全的、编程式的查询构建方式。比 JPQL 字符串更安全（编译时检查），但代码更冗长。</li>
+<li>适用于动态构建复杂查询。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 在 Service 或自定义 Repository 实现中使用</span><br><span class="hljs-meta">@Autowired</span><br><span class="hljs-keyword">private</span> EntityManager entityManager;<br><br><span class="hljs-keyword">public</span> List&lt;Post&gt; <span class="hljs-title function_">findPostsByAuthorNameUsingCriteria</span><span class="hljs-params">(String authorName)</span> &#123;<br>    <span class="hljs-type">CriteriaBuilder</span> <span class="hljs-variable">cb</span> <span class="hljs-operator">=</span> entityManager.getCriteriaBuilder();<br>    CriteriaQuery&lt;Post&gt; cq = cb.createQuery(Post.class);<br>    Root&lt;Post&gt; post = cq.from(Post.class);<br>    Join&lt;Post, Author&gt; author = post.join(<span class="hljs-string">&quot;author&quot;</span>); <span class="hljs-comment">// &quot;author&quot; 是 Post 实体中 Author 类型的属性名</span><br><br>    cq.select(post)<br>      .where(cb.equal(author.get(<span class="hljs-string">&quot;name&quot;</span>), authorName)); <span class="hljs-comment">// &quot;name&quot; 是 Author 实体中 String 类型的属性名</span><br><br>    <span class="hljs-keyword">return</span> entityManager.createQuery(cq).getResultList();<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>对于需要 <code>FETCH JOIN</code> 的效果，可以使用 <code>post.fetch(&quot;author&quot;)</code> 代替 <code>post.join(&quot;author&quot;)</code>。</li>
+</ul>
+</li>
+<li><p><strong><code>@EntityGraph</code></strong></p>
+<ul>
+<li>JPA 2.1 引入的特性，Spring Data JPA 对其有良好支持。</li>
+<li>允许你定义一个“实体图”，指定在执行查询时要即时加载哪些关联属性，是解决 N+1 问题的另一种强大方式，可以看作是 <code>JOIN FETCH</code> 的注解版本，更灵活。</li>
+<li>可以与 <code>@Query</code> 或派生查询方法一起使用。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Post.java (定义一个命名实体图)</span><br><span class="hljs-meta">@NamedEntityGraph(</span><br><span class="hljs-meta">    name = &quot;Post.withAuthor&quot;,</span><br><span class="hljs-meta">    attributeNodes = @NamedAttributeNode(&quot;author&quot;)</span><br><span class="hljs-meta">)</span><br><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Post</span> &#123; <span class="hljs-comment">/* ... */</span> &#125;<br><br><span class="hljs-comment">// PostRepository.java</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">PostRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;Post, Long&gt; &#123;<br>    <span class="hljs-meta">@EntityGraph(value = &quot;Post.withAuthor&quot;)</span> <span class="hljs-comment">// 使用命名的实体图</span><br>    List&lt;Post&gt; <span class="hljs-title function_">findAllByTitleContaining</span><span class="hljs-params">(String title)</span>;<br><br>    <span class="hljs-meta">@EntityGraph(attributePaths = &#123;&quot;author&quot;, &quot;comments&quot;&#125;)</span> <span class="hljs-comment">// 动态定义实体图</span><br>    Optional&lt;Post&gt; <span class="hljs-title function_">findById</span><span class="hljs-params">(Long id)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>Native SQL Query</strong></p>
+<ul>
+<li>如果 JPQL 或 Criteria API 无法满足复杂的查询需求（例如使用数据库特有的函数或特性），可以回退到原生 SQL。</li>
+<li>使用 <code>@Query(value = &quot;...&quot;, nativeQuery = true)</code>。</li>
+<li>缺点是失去了数据库无关性，并且如果返回的是实体，需要确保列名能正确映射到实体属性。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Query(value = &quot;SELECT p.* FROM post p JOIN author a ON p.author_id = a.id WHERE a.name = :authorName&quot;, nativeQuery = true)</span><br>List&lt;Post&gt; <span class="hljs-title function_">findPostsByAuthorNameNative</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;authorName&quot;)</span> String authorName)</span>;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>应用与扩展:</strong></p>
+<ul>
+<li><strong>DTO (Data Transfer Objects) 投影</strong>: 当你只需要部分字段或需要对数据进行聚合&#x2F;转换时，直接返回实体可能不是最佳选择。可以使用 DTO 投影。<ul>
+<li><strong>接口投影</strong>: 定义一个接口，包含你需要的 getter 方法。</li>
+<li><strong>类投影 (构造函数表达式)</strong>: 在 JPQL 中使用 <code>SELECT new com.example.MyDto(p.title, a.name) ...</code>。</li>
+</ul>
+</li>
+<li><strong>分页和排序</strong>: Spring Data JPA 的 <code>PagingAndSortingRepository</code> (或 <code>JpaRepository</code> 本身) 提供了对分页 (<code>Pageable</code>) 和排序 (<code>Sort</code>) 的内建支持。</li>
+<li><strong>事务管理 (<code>@Transactional</code>)</strong>: Spring Boot 通过 <code>@Transactional</code> 注解简化了事务管理。确保你的服务层方法（尤其是修改数据的）被此注解标记。懒加载的属性通常需要在事务内访问，否则会抛出 <code>LazyInitializationException</code>。</li>
+<li><strong>数据库迁移工具</strong>: 如 Flyway 或 Liquibase，用于管理数据库 schema 的版本和演进，与 JPA 配合使用效果更佳。</li>
+</ul>
+<p><strong>总结最佳实践:</strong></p>
+<ol>
+<li><strong>优先使用 <code>LAZY</code> 加载</strong>，特别是对于集合。</li>
+<li><strong>警惕 N+1 问题</strong>，使用 <code>JOIN FETCH</code> (JPQL) 或 <code>@EntityGraph</code> 来优化。</li>
+<li><strong>正确使用 <code>mappedBy</code></strong> 来定义双向关系，明确拥有方。</li>
+<li><strong>谨慎使用级联操作</strong>，特别是 <code>CascadeType.REMOVE</code>。</li>
+<li>为实体<strong>实现 <code>equals()</code> 和 <code>hashCode()</code></strong>。</li>
+<li>在双向关系中，<strong>提供辅助方法来同步双方状态</strong>。</li>
+<li>对于只读查询且不需要完整实体图的情况，考虑使用 <strong>DTO 投影</strong>以提高性能。</li>
+<li>将数据访问逻辑封装在 <strong>Repository 层</strong>，业务逻辑在 <strong>Service 层</strong>，并使用 <code>@Transactional</code> 管理事务。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Data/Hibernate &amp; JPA/关系映射和多表查询/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%88%86%E9%A1%B5%E3%80%81%E6%9D%A1%E4%BB%B6%E5%88%86%E9%A1%B5%E4%BB%A5%E5%8F%8A%E6%8E%92%E5%BA%8F/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/Hibernate%20&amp;%20JPA/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

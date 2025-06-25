@@ -1,0 +1,834 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="探讨 JPA 中的实体监听器 (@EntityListeners) 与回调方法 (Lifecycle Callback Methods)。这些机制允许你在实体生命周期的特定事件点执行自定义逻辑，非常适用于实现如审计、日志记录、数据校验、自动填充默认值等横切关注点。  4.4 实体监听器 (@EntityListeners) 与回调方法JPA 提供了两种方式来响应实体生命周期事件：  回调方法 (L">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/JPA/4.%E8%BF%9B%E9%98%B6/4.4%E5%AE%9E%E4%BD%93%E7%9B%91%E5%90%AC%E5%99%A8%20(@EntityListeners)%20%E4%B8%8E%E5%9B%9E%E8%B0%83%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="探讨 JPA 中的实体监听器 (@EntityListeners) 与回调方法 (Lifecycle Callback Methods)。这些机制允许你在实体生命周期的特定事件点执行自定义逻辑，非常适用于实现如审计、日志记录、数据校验、自动填充默认值等横切关注点。  4.4 实体监听器 (@EntityListeners) 与回调方法JPA 提供了两种方式来响应实体生命周期事件：  回调方法 (L">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.061Z">
+<meta property="article:modified_time" content="2025-06-16T08:48:38.039Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月16日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>探讨 JPA 中的<strong>实体监听器 (<code>@EntityListeners</code>) 与回调方法 (Lifecycle Callback Methods)</strong>。这些机制允许你在实体生命周期的特定事件点执行自定义逻辑，非常适用于实现如审计、日志记录、数据校验、自动填充默认值等横切关注点。</p>
+<hr>
+<h4 id="4-4-实体监听器-EntityListeners-与回调方法"><a href="#4-4-实体监听器-EntityListeners-与回调方法" class="headerlink" title="4.4 实体监听器 (@EntityListeners) 与回调方法"></a>4.4 实体监听器 (<code>@EntityListeners</code>) 与回调方法</h4><p>JPA 提供了两种方式来响应实体生命周期事件：</p>
+<ol>
+<li><strong>回调方法 (Lifecycle Callback Methods)</strong>: 在实体类自身内部定义特定的、带有特定注解的方法。</li>
+<li><strong>实体监听器类 (Entity Listener Classes)</strong>: 定义一个单独的类，该类中的方法带有特定注解，然后通过 <code>@EntityListeners</code> 注解将这个监听器类关联到一个或多个实体类上。</li>
+</ol>
+<p><strong>生命周期事件及对应的回调注解&#x2F;方法：</strong></p>
+<p>JPA 定义了以下七个标准的生命周期事件，每个事件都有一个对应的注解，可以用于标记回调方法：</p>
+<ol>
+<li><p><strong><code>@PrePersist</code></strong>:</p>
+<ul>
+<li><strong>触发时机</strong>: 在对新实体执行 <code>persist()</code> 操作<strong>之前</strong>，并且在生成主键值之后 (如果主键是生成的)。即，在相应的 <code>INSERT</code> SQL 语句发送到数据库之前。</li>
+<li><strong>用途</strong>: 设置默认值、校验数据、记录创建前的日志等。</li>
+<li><strong>限制</strong>: 在此方法中<strong>不能</strong>访问通过 <code>GeneratedValue</code> 生成的主键值 (因为可能尚未生成)，也<strong>不能</strong>修改其他关联实体或调用 <code>EntityManager</code> 的操作 (除非在新的事务中)。</li>
+</ul>
+</li>
+<li><p><strong><code>@PostPersist</code></strong>:</p>
+<ul>
+<li><strong>触发时机</strong>: 在对新实体执行 <code>persist()</code> 操作<strong>之后</strong>，并且相关的 <code>INSERT</code> SQL 语句已成功发送到数据库 (但不一定已提交事务)。</li>
+<li><strong>用途</strong>: 记录实体创建成功的日志、发送通知、更新相关聚合信息等。</li>
+<li><strong>限制</strong>: 在此方法中对持久化状态的修改<strong>不会</strong>同步到数据库 (除非显式 <code>flush</code> 且在同一事务中，但这不推荐)。通常用于只读操作或外部系统交互。不能保证事务一定会提交。</li>
+</ul>
+</li>
+<li><p><strong><code>@PreUpdate</code></strong>:</p>
+<ul>
+<li><strong>触发时机</strong>: 当一个 Managed 状态的实体的持久化属性发生变化，并且持久化上下文准备将这些变更 <code>flush</code> (同步) 到数据库<strong>之前</strong>。即，在相应的 <code>UPDATE</code> SQL 语句发送到数据库之前。</li>
+<li><strong>用途</strong>: 更新 <code>lastModifiedDate</code> 时间戳、记录更新前的字段值、进行更新前的校验。</li>
+<li><strong>限制</strong>: 不能修改主键。</li>
+</ul>
+</li>
+<li><p><strong><code>@PostUpdate</code></strong>:</p>
+<ul>
+<li><strong>触发时机</strong>: 在实体的变更被成功 <code>flush</code> 到数据库<strong>之后</strong> (相关的 <code>UPDATE</code> SQL 已执行)。</li>
+<li><strong>用途</strong>: 记录更新成功的日志、发送更新通知。</li>
+<li><strong>限制</strong>: 同 <code>@PostPersist</code>，对持久化状态的修改不会自动同步。</li>
+</ul>
+</li>
+<li><p><strong><code>@PreRemove</code></strong>:</p>
+<ul>
+<li><strong>触发时机</strong>: 在对 Managed 状态的实体执行 <code>remove()</code> 操作<strong>之前</strong>，即在相应的 <code>DELETE</code> SQL 语句发送到数据库之前。</li>
+<li><strong>用途</strong>: 执行删除前的清理工作、记录删除日志、检查是否允许删除 (如存在关联数据)。</li>
+<li><strong>限制</strong>: 无特殊。</li>
+</ul>
+</li>
+<li><p><strong><code>@PostRemove</code></strong>:</p>
+<ul>
+<li><strong>触发时机</strong>: 在实体对应的记录从数据库中成功删除<strong>之后</strong> (相关的 <code>DELETE</code> SQL 已执行)。</li>
+<li><strong>用途</strong>: 记录删除成功的日志、清理相关外部资源。</li>
+<li><strong>限制</strong>: 此时实体已不再是 Managed 状态。</li>
+</ul>
+</li>
+<li><p><strong><code>@PostLoad</code></strong>:</p>
+<ul>
+<li><strong>触发时机</strong>: 当实体从数据库加载完成 (通过 <code>find()</code>, <code>getReference()</code> 初始化代理，或 JPQL 查询结果映射) <strong>之后</strong>，并且实体已被置于 Managed 状态。</li>
+<li><strong>用途</strong>: 对加载的数据进行一些后处理、计算瞬时字段的值、初始化非持久化状态。</li>
+<li><strong>限制</strong>: 在此方法中对持久化属性的修改<strong>不会</strong>导致 <code>UPDATE</code> (除非后续有其他修改并 <code>flush</code>)，因为此时脏检查机制可能尚未开始跟踪此实体的“初始”加载状态。</li>
+</ul>
+</li>
+</ol>
+<p><strong>回调方法的定义规则 (在实体类内部)：</strong></p>
+<ul>
+<li>方法必须是 <code>void</code> 返回类型。</li>
+<li>方法不能有参数 (JPA 2.0 之前)。</li>
+<li>JPA 2.0+ 允许回调方法有一个 <code>Object</code> 类型的参数，该参数是实体本身 (通常不直接用，因为方法就在实体类内部，可以直接访问 <code>this</code>)。</li>
+<li>方法可以是 <code>public</code>, <code>protected</code>, <code>private</code>, 或包级私有。</li>
+<li>一个实体类中，每个生命周期事件注解只能标记一个方法。</li>
+<li>回调方法可以定义在实体类自身、其父类 (如果父类是 <code>@MappedSuperclass</code> 或 <code>@Entity</code>)，或者在通过 <code>@EntityListeners</code> 注册的监听器类中。</li>
+</ul>
+<p><strong>示例：在实体类中使用回调方法</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AuditEntry</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-keyword">private</span> String message;<br><br>    <span class="hljs-meta">@Column(updatable = false)</span> <span class="hljs-comment">// 创建后不可更新</span><br>    <span class="hljs-keyword">private</span> LocalDateTime createdDate;<br><br>    <span class="hljs-keyword">private</span> LocalDateTime lastModifiedDate;<br><br>    <span class="hljs-meta">@PrePersist</span> <span class="hljs-comment">// 在持久化之前调用</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onCreate</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-built_in">this</span>.createdDate = LocalDateTime.now();<br>        <span class="hljs-built_in">this</span>.lastModifiedDate = LocalDateTime.now(); <span class="hljs-comment">// 也可以在这里设置</span><br>        System.out.println(<span class="hljs-string">&quot;AuditEntry - @PrePersist: Creating entry with message: &quot;</span> + message);<br>    &#125;<br><br>    <span class="hljs-meta">@PreUpdate</span> <span class="hljs-comment">// 在更新之前调用</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onUpdate</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-built_in">this</span>.lastModifiedDate = LocalDateTime.now();<br>        System.out.println(<span class="hljs-string">&quot;AuditEntry - @PreUpdate: Updating entry ID: &quot;</span> + id);<br>    &#125;<br><br>    <span class="hljs-meta">@PostLoad</span> <span class="hljs-comment">// 在加载后调用</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">onLoad</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;AuditEntry - @PostLoad: Loaded entry ID: &quot;</span> + id + <span class="hljs-string">&quot; with message: &quot;</span> + message);<br>    &#125;<br><br>    <span class="hljs-meta">@PostPersist</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterCreate</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;AuditEntry - @PostPersist: Entry ID &quot;</span> + id + <span class="hljs-string">&quot; persisted.&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@PostUpdate</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterUpdate</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;AuditEntry - @PostUpdate: Entry ID &quot;</span> + id + <span class="hljs-string">&quot; updated.&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-meta">@PreRemove</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">beforeRemove</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;AuditEntry - @PreRemove: Preparing to remove entry ID: &quot;</span> + id);<br>    &#125;<br><br>    <span class="hljs-meta">@PostRemove</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterRemove</span><span class="hljs-params">()</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;AuditEntry - @PostRemove: Entry ID: &quot;</span> + id + <span class="hljs-string">&quot; removed.&quot;</span>);<br>    &#125;<br>    <span class="hljs-comment">// getters, setters</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>实体监听器类 (Entity Listener Classes)：</strong></p>
+<p>当回调逻辑比较复杂，或者希望在多个实体之间共享回调逻辑时，使用实体监听器类是更好的选择。</p>
+<ol>
+<li><p><strong>创建监听器类</strong>:</p>
+<ul>
+<li>一个普通的 Java 类。</li>
+<li>其中包含带有 JPA 生命周期回调注解的方法。</li>
+<li>监听器方法<strong>必须</strong>接受一个参数，该参数是被监听的实体对象 (类型为 <code>Object</code> 或具体的实体类型)。</li>
+<li>监听器类必须有一个公共的无参构造函数。</li>
+<li>监听器类本身<strong>不是</strong>实体，通常也不需要 <code>@Component</code> (除非你需要 Spring 注入依赖到监听器中，这需要额外配置)。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.listener;<br><br><span class="hljs-keyword">import</span> com.example.yourproject.entity.AuditEntry; <span class="hljs-comment">// 可以是具体实体类型</span><br><span class="hljs-keyword">import</span> jakarta.persistence.*; <span class="hljs-comment">// 或 javax.persistence.*</span><br><span class="hljs-keyword">import</span> java.time.LocalDateTime;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AuditTrailListener</span> &#123;<br><br>    <span class="hljs-meta">@PrePersist</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">beforePersist</span><span class="hljs-params">(Object entity)</span> &#123; <span class="hljs-comment">// 参数类型可以是 Object 或具体实体</span><br>        <span class="hljs-keyword">if</span> (entity <span class="hljs-keyword">instanceof</span> Auditable) &#123; <span class="hljs-comment">// 假设有一个 Auditable 接口</span><br>            ((Auditable) entity).setCreatedDate(LocalDateTime.now());<br>            ((Auditable) entity).setLastModifiedDate(LocalDateTime.now());<br>        &#125;<br>        System.out.println(<span class="hljs-string">&quot;[AuditTrailListener] @PrePersist for entity: &quot;</span> + entity.getClass().getSimpleName());<br>    &#125;<br><br>    <span class="hljs-meta">@PreUpdate</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">beforeUpdate</span><span class="hljs-params">(Object entity)</span> &#123;<br>        <span class="hljs-keyword">if</span> (entity <span class="hljs-keyword">instanceof</span> Auditable) &#123;<br>            ((Auditable) entity).setLastModifiedDate(LocalDateTime.now());<br>        &#125;<br>        System.out.println(<span class="hljs-string">&quot;[AuditTrailListener] @PreUpdate for entity: &quot;</span> + entity.getClass().getSimpleName());<br>    &#125;<br><br>    <span class="hljs-comment">// 可以定义其他回调方法...</span><br>    <span class="hljs-meta">@PostLoad</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">afterLoad</span><span class="hljs-params">(AuditEntry auditEntry)</span> &#123; <span class="hljs-comment">// 也可以是具体实体类型</span><br>         System.out.println(<span class="hljs-string">&quot;[AuditTrailListener] @PostLoad for AuditEntry ID: &quot;</span> + auditEntry.getId());<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// (可选) 定义一个接口，方便类型检查和统一处理</span><br><span class="hljs-comment">// public interface Auditable &#123;</span><br><span class="hljs-comment">//     void setCreatedDate(LocalDateTime createdDate);</span><br><span class="hljs-comment">//     void setLastModifiedDate(LocalDateTime lastModifiedDate);</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>将监听器关联到实体类 (<code>@EntityListeners</code>)</strong>:<br>在实体类上使用 <code>@EntityListeners</code> 注解，并指定监听器类的 <code>Class</code> 对象。可以关联多个监听器。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.example.yourproject.listener.AuditTrailListener;<br><span class="hljs-comment">// ...</span><br><br><span class="hljs-meta">@Entity</span><br><span class="hljs-meta">@EntityListeners(AuditTrailListener.class)</span> <span class="hljs-comment">// 关联监听器</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Auditable</span> &#123; <span class="hljs-comment">// 假设实现了 Auditable 接口</span><br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String name;<br><br>    <span class="hljs-comment">// Эти поля будут заполнены через AuditTrailListener</span><br>    <span class="hljs-keyword">private</span> LocalDateTime createdDate;<br>    <span class="hljs-keyword">private</span> LocalDateTime lastModifiedDate;<br><br>    <span class="hljs-comment">// 实现 Auditable 接口的方法</span><br>    <span class="hljs-comment">// @Override public void setCreatedDate(LocalDateTime cd) &#123; this.createdDate = cd; &#125;</span><br>    <span class="hljs-comment">// @Override public void setLastModifiedDate(LocalDateTime lmd) &#123; this.lastModifiedDate = lmd; &#125;</span><br>    <span class="hljs-comment">// getters, setters for id, name, createdDate, lastModifiedDate</span><br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>回调顺序和继承：</strong></p>
+<ul>
+<li><strong>执行顺序</strong>:<ol>
+<li>如果实体类本身、其父类 (<code>@MappedSuperclass</code> 或 <code>@Entity</code>) 以及通过 <code>@EntityListeners</code> 注册的监听器都定义了针对同一个生命周期事件的回调方法，它们的执行顺序如下：<ul>
+<li>首先执行 <code>@EntityListeners</code> 中注册的监听器类的方法 (如果多个监听器，按 <code>@EntityListeners</code> 中声明的顺序)。</li>
+<li>然后执行父类 (<code>@MappedSuperclass</code> 或 <code>@Entity</code>) 中的回调方法 (从继承层级最顶层开始向下)。</li>
+<li>最后执行实体类自身的回调方法。</li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><strong>默认监听器</strong>: 可以在 <code>persistence.xml</code> (或通过 JPA 提供者特定配置) 中定义默认的实体监听器，它们会在 <code>@EntityListeners</code> 之前执行。</li>
+</ul>
+</li>
+<li><strong>回调方法覆盖</strong>: 子类中的回调方法会覆盖父类中同名、同参数 (如果 JPA 2.0+) 且针对同一生命周期事件的回调方法。但如果注解不同，则不会覆盖。</li>
+<li><strong><code>@ExcludeDefaultListeners</code></strong>: 可以用在实体类或父类上，以排除默认监听器的执行。</li>
+<li><strong><code>@ExcludeSuperclassListeners</code></strong>: 可以用在实体类上，以排除其父类中回调方法的执行。</li>
+</ul>
+<p><strong>注意事项：</strong></p>
+<ul>
+<li><strong>事务性</strong>: 回调方法通常在触发它们的持久化操作所在的事务中执行。</li>
+<li><strong>异常</strong>: 如果回调方法抛出未受检异常 (RuntimeException)，通常会导致当前事务回滚。</li>
+<li><strong>依赖注入</strong>:<ul>
+<li>在实体类自身的回调方法中，<strong>不能直接使用依赖注入</strong> (如 <code>@Autowired</code>)，因为实体是由 JPA 实例化和管理的，而不是 Spring。</li>
+<li>对于 <code>@EntityListeners</code> 注册的监听器类：<ul>
+<li>如果监听器本身<strong>不是 Spring Bean</strong> (即没有 <code>@Component</code> 等注解，JPA 提供者直接实例化)，则无法在监听器内部使用 Spring 的依赖注入。</li>
+<li>如果监听器<strong>是 Spring Bean</strong> (通过 <code>@Component</code> 注册，并且 JPA 提供者能够从 Spring 上下文中获取它，例如 Hibernate 在与 Spring 集成时支持这一点)，则可以在监听器中使用 <code>@Autowired</code> 注入其他 Spring Bean。这是实现更复杂逻辑 (如调用其他 Service) 的常用方式。Spring Data JPA 的审计功能 (Auditing) 就是利用了这个机制。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>可移植性</strong>: JPA 标准回调注解是可移植的。但如果监听器依赖于特定 JPA 提供者的特性或 Spring 的注入，可移植性会降低。</li>
+<li><strong>性能</strong>: 过多的或过于复杂的回调逻辑可能会影响持久化操作的性能。</li>
+</ul>
+<p>回调方法和实体监听器为 JPA 应用提供了一个强大的扩展点，使得在不侵入核心业务逻辑的情况下，实现通用的、与实体生命周期相关的操作成为可能。Spring Data JPA 的审计功能就是基于这个机制的一个优秀实践。</p>
+<hr>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Data/Hibernate &amp; JPA/JPA/4.进阶/4.4实体监听器 (@EntityListeners) 与回调方法/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/4.%E8%BF%9B%E9%98%B6/4.5%E5%AE%A1%E8%AE%A1%20(Auditing)/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/4.%E8%BF%9B%E9%98%B6/4.3%E4%BA%8C%E7%BA%A7%E7%BC%93%E5%AD%98%20(L2%20Cache)/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

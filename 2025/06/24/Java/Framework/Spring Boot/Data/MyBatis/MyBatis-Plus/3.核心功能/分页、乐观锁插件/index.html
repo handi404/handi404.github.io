@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="继续深入 MyBatis-Plus 的插件机制，这些插件极大地增强了 MyBatis 的功能。  3.6 分页插件 (PaginationInnerInterceptor)MyBatis-Plus 提供了一个强大的分页插件，可以方便地实现物理分页，对业务代码侵入小。 配置与使用：  添加插件到 MybatisPlusInterceptor:MP 3.4.0 版本之后，推荐使用 MybatisPlu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/%E5%88%86%E9%A1%B5%E3%80%81%E4%B9%90%E8%A7%82%E9%94%81%E6%8F%92%E4%BB%B6/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="继续深入 MyBatis-Plus 的插件机制，这些插件极大地增强了 MyBatis 的功能。  3.6 分页插件 (PaginationInnerInterceptor)MyBatis-Plus 提供了一个强大的分页插件，可以方便地实现物理分页，对业务代码侵入小。 配置与使用：  添加插件到 MybatisPlusInterceptor:MP 3.4.0 版本之后，推荐使用 MybatisPlu">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.106Z">
+<meta property="article:modified_time" content="2025-06-16T07:54:28.961Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月16日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>继续深入 MyBatis-Plus 的插件机制，这些插件极大地增强了 MyBatis 的功能。</p>
+<hr>
+<h4 id="3-6-分页插件-PaginationInnerInterceptor"><a href="#3-6-分页插件-PaginationInnerInterceptor" class="headerlink" title="3.6 分页插件 (PaginationInnerInterceptor)"></a>3.6 分页插件 (PaginationInnerInterceptor)</h4><p>MyBatis-Plus 提供了一个强大的分页插件，可以方便地实现物理分页，对业务代码侵入小。</p>
+<p><strong>配置与使用：</strong></p>
+<ol>
+<li><p><strong>添加插件到 <code>MybatisPlusInterceptor</code></strong>:<br>MP 3.4.0 版本之后，推荐使用 <code>MybatisPlusInterceptor</code> 来统一管理所有内部插件 (<code>InnerInterceptor</code>)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.config;<br><br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.annotation.DbType;<br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;<br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MybatisPlusPluginConfig</span> &#123;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> MybatisPlusInterceptor <span class="hljs-title function_">mybatisPlusInterceptor</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">MybatisPlusInterceptor</span> <span class="hljs-variable">interceptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MybatisPlusInterceptor</span>();<br><br>        <span class="hljs-comment">// 1. 添加分页插件</span><br>        <span class="hljs-type">PaginationInnerInterceptor</span> <span class="hljs-variable">paginationInterceptor</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PaginationInnerInterceptor</span>();<br><br>        <span class="hljs-comment">// (可选) 设置请求的页面大于最大页后操作，true调回到首页，false继续请求，默认false</span><br>        <span class="hljs-comment">// paginationInterceptor.setOverflow(false);</span><br>        <span class="hljs-comment">// (可选) 设置最大单页限制数量，默认 500 条，-1 不受限制</span><br>        <span class="hljs-comment">// paginationInterceptor.setMaxLimit(500L);</span><br>        <span class="hljs-comment">// (可选) 设置数据库类型 (如果 MP 无法自动识别，或者你想强制指定)</span><br>        paginationInterceptor.setDbType(DbType.MYSQL); <span class="hljs-comment">// 例如 MySQL</span><br><br>        interceptor.addInnerInterceptor(paginationInterceptor);<br><br>        <span class="hljs-comment">// 还可以添加其他插件，如下面的乐观锁插件等</span><br>        <span class="hljs-comment">// interceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());</span><br><br>        <span class="hljs-keyword">return</span> interceptor;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>DbType</code></strong>: 务必正确设置你的数据库类型，分页插件会根据不同的数据库类型生成不同的分页 SQL。MP 会尝试自动识别，但显式指定更保险。常用的有 <code>MYSQL</code>, <code>ORACLE</code>, <code>POSTGRE_SQL</code>, <code>SQL_SERVER</code>, <code>MARIADB</code>, <code>DB2</code>, <code>H2</code>, <code>SQLITE</code> 等。</li>
+<li><code>setOverflow(boolean overflow)</code>: 当请求的页码超出总页数时：<ul>
+<li><code>true</code> (溢出处理): 会查询第一页的数据 (或最后一页，取决于具体实现和版本)。</li>
+<li><code>false</code> (默认): 继续请求，通常会返回空列表。</li>
+</ul>
+</li>
+<li><code>setMaxLimit(Long maxLimit)</code>: 设置单页查询的最大记录数，防止一次查询过多数据。默认是 500。设置为 <code>-1</code> 表示不限制。</li>
+</ul>
+</li>
+<li><p><strong>在 Service 或 Mapper 方法中使用</strong>:<br>分页插件的使用非常简单，通常是在调用 Mapper 的查询方法之前，创建一个分页对象。</p>
+<p><strong><code>IPage&lt;T&gt;</code> 和 <code>Page&lt;T&gt;</code> 对象:</strong></p>
+<ul>
+<li><code>com.baomidou.mybatisplus.core.metadata.IPage&lt;T&gt;</code>: 分页参数和结果的接口。</li>
+<li><code>com.baomidou.mybatisplus.extension.plugins.pagination.Page&lt;T&gt;</code>: <code>IPage</code> 的标准实现类。</li>
+</ul>
+<p><strong>使用示例 (在 Service 层):</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;<br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.core.metadata.IPage;<br><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.extension.plugins.pagination.Page;<br><span class="hljs-keyword">import</span> com.example.yourproject.entity.User;<br><span class="hljs-keyword">import</span> com.example.yourproject.mapper.UserMapper;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserServiceImpl</span> &#123; <span class="hljs-comment">// 假设继承了 ServiceImpl&lt;UserMapper, User&gt;</span><br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> UserMapper userMapper; <span class="hljs-comment">// 或者通过 baseMapper 访问</span><br><br>    <span class="hljs-keyword">public</span> IPage&lt;User&gt; <span class="hljs-title function_">findUsersByPage</span><span class="hljs-params">(<span class="hljs-type">int</span> pageNum, <span class="hljs-type">int</span> pageSize, String nameKeyword)</span> &#123;<br>        <span class="hljs-comment">// 1. 创建 Page 对象，传入当前页码 (pageNum) 和每页数量 (pageSize)</span><br>        <span class="hljs-comment">// Page 构造函数: Page(long current, long size)</span><br>        <span class="hljs-comment">// Page(long current, long size, boolean searchCount) // searchCount: 是否进行 count 查询，默认 true</span><br>        <span class="hljs-comment">// Page(long current, long size, long total) // 如果已知总数，可以传入</span><br>        Page&lt;User&gt; pageRequest = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Page</span>&lt;&gt;(pageNum, pageSize);<br><br>        <span class="hljs-comment">// (可选) 构建查询条件</span><br>        LambdaQueryWrapper&lt;User&gt; queryWrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();<br>        <span class="hljs-keyword">if</span> (nameKeyword != <span class="hljs-literal">null</span> &amp;&amp; !nameKeyword.isEmpty()) &#123;<br>            queryWrapper.like(User::getName, nameKeyword);<br>        &#125;<br>        queryWrapper.orderByDesc(User::getCreateTime);<br><br>        <span class="hljs-comment">// 2. 调用 Mapper 的 selectPage 方法 (或 IService 提供的 page 方法)</span><br>        <span class="hljs-comment">// 这个 selectPage 方法是 BaseMapper 提供的，它会自动被分页插件拦截</span><br>        IPage&lt;User&gt; userPageResult = userMapper.selectPage(pageRequest, queryWrapper);<br><br>        <span class="hljs-comment">// userPageResult 对象现在包含了分页信息和当前页的数据列表</span><br>        System.out.println(<span class="hljs-string">&quot;总记录数: &quot;</span> + userPageResult.getTotal());<br>        System.out.println(<span class="hljs-string">&quot;总页数: &quot;</span> + userPageResult.getPages());<br>        System.out.println(<span class="hljs-string">&quot;当前页数据: &quot;</span> + userPageResult.getRecords());<br>        System.out.println(<span class="hljs-string">&quot;当前页码: &quot;</span> + userPageResult.getCurrent());<br>        System.out.println(<span class="hljs-string">&quot;每页数量: &quot;</span> + userPageResult.getSize());<br><br>        <span class="hljs-keyword">return</span> userPageResult;<br>    &#125;<br><br>    <span class="hljs-comment">// 使用 IService 提供的 page 方法更简洁</span><br>    <span class="hljs-comment">// public IPage&lt;User&gt; findUsersByPageWithIService(int pageNum, int pageSize, String nameKeyword) &#123;</span><br>    <span class="hljs-comment">//     Page&lt;User&gt; pageRequest = new Page&lt;&gt;(pageNum, pageSize);</span><br>    <span class="hljs-comment">//     LambdaQueryWrapper&lt;User&gt; queryWrapper = new LambdaQueryWrapper&lt;&gt;();</span><br>    <span class="hljs-comment">//     if (nameKeyword != null &amp;&amp; !nameKeyword.isEmpty()) &#123;</span><br>    <span class="hljs-comment">//         queryWrapper.like(User::getName, nameKeyword);</span><br>    <span class="hljs-comment">//     &#125;</span><br>    <span class="hljs-comment">//     return this.page(pageRequest, queryWrapper); // this 指向 ServiceImpl</span><br>    <span class="hljs-comment">// &#125;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>关键点:</strong></p>
+<ul>
+<li>Mapper 的 <code>selectPage</code> 方法的<strong>第一个参数必须是 <code>IPage</code> 类型</strong>，分页插件会识别这个参数并进行拦截处理。</li>
+<li>插件会自动执行两条 SQL：一条是查询总记录数的 <code>COUNT(*)</code> SQL (除非 <code>Page</code> 对象设置了 <code>searchCount=false</code> 或者总数已传入)，另一条是带有分页条件 (如 <code>LIMIT</code>) 的数据查询 SQL。</li>
+<li><code>IPage</code> 返回对象包含了丰富的分页信息，可以直接返回给前端。</li>
+</ul>
+<p><strong>自定义 XML 中的分页查询：</strong><br>如果你的分页查询 SQL 是在 XML 中自定义的，分页插件<strong>默认也能生效</strong>，只要你的 Mapper 方法的第一个参数是 <code>IPage</code> 类型。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- UserMapper.xml --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">select</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;findActiveUsersWithPagination&quot;</span> <span class="hljs-attr">resultType</span>=<span class="hljs-string">&quot;com.example.yourproject.entity.User&quot;</span>&gt;</span><br>    SELECT * FROM user_info<br>    <span class="hljs-tag">&lt;<span class="hljs-name">where</span>&gt;</span><br>        status = &#x27;ACTIVE&#x27;<br>        <span class="hljs-tag">&lt;<span class="hljs-name">if</span> <span class="hljs-attr">test</span>=<span class="hljs-string">&quot;ew != null and ew.sqlSegment != null and ew.sqlSegment != &#x27;&#x27;&quot;</span>&gt;</span><br>            AND $&#123;ew.sqlSegment&#125;<br>        <span class="hljs-tag">&lt;/<span class="hljs-name">if</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">where</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- 不需要在这里写 LIMIT，分页插件会自动添加 --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">select</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// UserMapper.java</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserMapper</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">BaseMapper</span>&lt;User&gt; &#123;<br>    IPage&lt;User&gt; <span class="hljs-title function_">findActiveUsersWithPagination</span><span class="hljs-params">(IPage&lt;User&gt; page, <span class="hljs-meta">@Param(Constants.WRAPPER)</span> Wrapper&lt;User&gt; queryWrapper)</span>;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<h4 id="3-7-乐观锁插件-OptimisticLockerInnerInterceptor"><a href="#3-7-乐观锁插件-OptimisticLockerInnerInterceptor" class="headerlink" title="3.7 乐观锁插件 (OptimisticLockerInnerInterceptor)"></a>3.7 乐观锁插件 (OptimisticLockerInnerInterceptor)</h4><p>乐观锁是一种在并发环境下控制数据一致性的策略。它假设数据冲突的概率较低，在更新数据时不加锁，而是在提交更新时检查数据在此期间是否被其他事务修改过。通常通过版本号 (version) 字段实现。</p>
+<p><strong>配置与使用：</strong></p>
+<ol>
+<li><p><strong>在实体类中添加版本号字段并使用 <code>@Version</code> 注解：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.baomidou.mybatisplus.annotation.Version;<br><span class="hljs-keyword">import</span> java.time.LocalDateTime;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> &#123;<br>    <span class="hljs-meta">@TableId</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> Integer stock;<br><br>    <span class="hljs-meta">@Version</span> <span class="hljs-comment">// 标记这是版本号字段</span><br>    <span class="hljs-keyword">private</span> Integer version; <span class="hljs-comment">// 类型可以是 Integer, Long, Date, Timestamp, LocalDateTime</span><br><br>    <span class="hljs-comment">// (可选) 如果希望在插入时自动填充初始版本号 (如 1)</span><br>    <span class="hljs-comment">// @TableField(fill = FieldFill.INSERT)</span><br>    <span class="hljs-comment">// private Integer version;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>版本号字段的初始值通常是 0 或 1。</li>
+<li>当更新时，MP 会在 <code>WHERE</code> 条件中带上 <code>AND version = #&#123;oldVersion&#125;</code>，并在 <code>SET</code> 子句中 <code>SET version = version + 1</code>。</li>
+</ul>
+</li>
+<li><p><strong>添加 <code>OptimisticLockerInnerInterceptor</code> 插件到 <code>MybatisPlusInterceptor</code></strong>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 在 MybatisPlusPluginConfig.java 中的 mybatisPlusInterceptor() 方法内添加</span><br><span class="hljs-comment">// ...</span><br>interceptor.addInnerInterceptor(<span class="hljs-keyword">new</span> <span class="hljs-title class_">OptimisticLockerInnerInterceptor</span>());<br><span class="hljs-comment">// ...</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>使用 <code>updateById</code> 或 <code>update</code> 方法进行更新：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ProductService</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">ServiceImpl</span>&lt;ProductMapper, Product&gt; &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">decreaseStock</span><span class="hljs-params">(Long productId, <span class="hljs-type">int</span> quantityToDecrease)</span> &#123;<br>        <span class="hljs-comment">// 1. 先查询出商品信息，获取当前版本号</span><br>        <span class="hljs-type">Product</span> <span class="hljs-variable">product</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.getById(productId); <span class="hljs-comment">// 或者 baseMapper.selectById(productId)</span><br>        <span class="hljs-keyword">if</span> (product == <span class="hljs-literal">null</span>) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;商品不存在&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">if</span> (product.getStock() &lt; quantityToDecrease) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;库存不足&quot;</span>);<br>        &#125;<br><br>        <span class="hljs-comment">// 2. 修改库存</span><br>        product.setStock(product.getStock() - quantityToDecrease);<br>        <span class="hljs-comment">// product.setVersion(product.getVersion()); // 版本号由插件自动处理，无需手动设置新版本号</span><br><br>        <span class="hljs-comment">// 3. 执行更新 (updateById 或 update)</span><br>        <span class="hljs-comment">// MP 会在 SQL 中加入 version 条件: WHERE id = ? AND version = ?</span><br>        <span class="hljs-comment">// 并自动将 version + 1: SET stock = ?, version = version + 1</span><br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">success</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.updateById(product);<br>        <span class="hljs-comment">// 或者:</span><br>        <span class="hljs-comment">// LambdaUpdateWrapper&lt;Product&gt; uw = new LambdaUpdateWrapper&lt;&gt;();</span><br>        <span class="hljs-comment">// uw.eq(Product::getId, productId)</span><br>        <span class="hljs-comment">//   .eq(Product::getVersion, product.getVersion()) // 显式带上版本号条件 (插件也会自动加)</span><br>        <span class="hljs-comment">//   .set(Product::getStock, product.getStock());</span><br>        <span class="hljs-comment">// success = this.update(uw); // 注意: 这种方式下，版本号的自增需要 UpdateWrapper 支持或数据库触发器</span><br><br>        <span class="hljs-keyword">if</span> (!success) &#123;<br>            <span class="hljs-comment">// 更新失败，说明数据可能已被其他事务修改 (版本号不匹配)</span><br>            <span class="hljs-comment">// 可以进行重试或抛出并发异常</span><br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;更新失败，数据可能已被修改，请重试&quot;</span>);<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>工作原理：</strong></p>
+<ul>
+<li>当你调用 <code>updateById(entity)</code> 或 <code>update(entity, wrapper)</code> 时，如果实体类中有 <code>@Version</code> 注解的字段：<ul>
+<li>MP 会从 <code>entity</code> 对象中获取当前的 <code>version</code> 值。</li>
+<li>在生成的 <code>UPDATE</code> 语句的 <code>WHERE</code> 子句中，会自动追加 <code>AND version = #&#123;currentVersion&#125;</code>。</li>
+<li>在 <code>SET</code> 子句中，会自动追加 <code>version = version + 1</code>。</li>
+</ul>
+</li>
+<li>如果 <code>WHERE</code> 条件中的 <code>version</code> 与数据库中的 <code>version</code> 不匹配（说明在你查询到更新期间，数据已被其他事务修改），则 <code>UPDATE</code> 语句不会更新任何行 (返回影响行数为 0)。</li>
+<li>你需要检查 <code>updateById</code> 或 <code>update</code> 方法的返回值 (通常是 <code>boolean</code> 或 <code>int</code>) 来判断更新是否成功。如果不成功，通常表示发生了并发冲突。</li>
+</ul>
+</li>
+</ol>
+<p><strong>注意事项：</strong></p>
+<ul>
+<li>乐观锁只对 <code>updateById(T entity)</code> 和 <code>update(T entity, Wrapper&lt;T&gt; updateWrapper)</code> 方法生效。对于自定义 SQL 的 <code>update</code>，你需要手动实现乐观锁逻辑。</li>
+<li>如果使用 <code>update(Wrapper&lt;T&gt; updateWrapper)</code> 仅通过 Wrapper 来更新（第一个实体参数为 <code>null</code>），乐观锁插件<strong>默认不会自动处理版本号</strong>，因为没有实体对象来获取旧版本号。你需要自己在 <code>UpdateWrapper</code> 的 <code>eq</code> 中加入版本号条件，并在 <code>setSql</code> 中 <code>version = version + 1</code>。或者，确保你的 Wrapper 是基于一个带有正确版本号的实体构建的。</li>
+<li>并发冲突时，需要应用层决定如何处理（如重试、提示用户、记录日志等）。</li>
+</ul>
+<hr>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Data/MyBatis/MyBatis-Plus/3.核心功能/分页、乐观锁插件/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/%E5%AE%9E%E4%BD%93%E7%B1%BB%E6%B3%A8%E8%A7%A3/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/%E4%B8%BB%E9%94%AE%E7%AD%96%E7%95%A5%E5%92%8C%E8%87%AA%E5%8A%A8%E5%A1%AB%E5%85%85%E5%AD%97%E6%AE%B5/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

@@ -1,0 +1,982 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="详解 MyBatis-Plus 的这些核心功能。这部分内容非常关键，掌握了它们，你就能充分利用 MP 的强大能力。  3. 核心功能详解3.1 通用 CRUD (BaseMapper &amp; IService)BaseMapper&lt;T&gt; 是 MP 提供的一个基础 Mapper 接口，你的自定义 Mapper 接口继承它之后，就自动拥有了丰富的 CRUD 方法，无需编写任何 SQL。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/%E9%80%9A%E7%94%A8%20CRUD%20%E5%92%8C%E6%9D%A1%E4%BB%B6%E6%9E%84%E9%80%A0%E5%99%A8/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="详解 MyBatis-Plus 的这些核心功能。这部分内容非常关键，掌握了它们，你就能充分利用 MP 的强大能力。  3. 核心功能详解3.1 通用 CRUD (BaseMapper &amp; IService)BaseMapper&lt;T&gt; 是 MP 提供的一个基础 Mapper 接口，你的自定义 Mapper 接口继承它之后，就自动拥有了丰富的 CRUD 方法，无需编写任何 SQL。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.111Z">
+<meta property="article:modified_time" content="2025-06-16T07:43:54.705Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月16日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>详解 MyBatis-Plus 的这些核心功能。这部分内容非常关键，掌握了它们，你就能充分利用 MP 的强大能力。</p>
+<hr>
+<h3 id="3-核心功能详解"><a href="#3-核心功能详解" class="headerlink" title="3. 核心功能详解"></a>3. 核心功能详解</h3><h4 id="3-1-通用-CRUD-BaseMapper-IService"><a href="#3-1-通用-CRUD-BaseMapper-IService" class="headerlink" title="3.1 通用 CRUD (BaseMapper &amp; IService)"></a>3.1 通用 CRUD (BaseMapper &amp; IService)</h4><p><code>BaseMapper&lt;T&gt;</code> 是 MP 提供的一个基础 Mapper 接口，你的自定义 Mapper 接口继承它之后，就自动拥有了丰富的 CRUD 方法，无需编写任何 SQL。<br><code>IService&lt;T&gt;</code> 是 MP 提供的 Service 层基础接口，通常由 <code>ServiceImpl&lt;M extends BaseMapper&lt;T&gt;, T&gt;</code> 实现，它在 <code>BaseMapper</code> 的基础上封装了更多常用的业务方法，并提供了一些便利的批量操作和链式调用。</p>
+<p><strong>以下是 <code>BaseMapper&lt;T&gt;</code> 中一些核心的通用方法 ( <code>IService&lt;T&gt;</code> 也封装了这些方法，并可能提供更便捷的调用方式)：</strong></p>
+<p><strong>插入操作：</strong></p>
+<ul>
+<li><strong><code>int insert(T entity)</code></strong>:<ul>
+<li>插入一条记录。</li>
+<li><strong>行为</strong>：会插入实体中<strong>所有非 null</strong> 的字段。如果字段为 null，则数据库对应列会使用其默认值 (如果定义了) 或 null。</li>
+<li><strong>主键</strong>：如果主键策略是 <code>IdType.AUTO</code> (数据库自增) 或 <code>IdType.ASSIGN_ID</code> &#x2F; <code>ASSIGN_UUID</code> (MP生成)，MP 会在插入后将生成的主键值回填到 <code>entity</code> 对象的对应主键属性上。</li>
+<li><strong>返回值</strong>：受影响的行数 (通常是 1)。</li>
+</ul>
+</li>
+</ul>
+<p><strong>删除操作：</strong></p>
+<ul>
+<li><strong><code>int deleteById(Serializable id)</code></strong>:<ul>
+<li>根据主键 ID 删除一条记录。</li>
+<li><strong>参数</strong>：主键值。</li>
+<li><strong>返回值</strong>：受影响的行数。</li>
+</ul>
+</li>
+<li><strong><code>int deleteById(T entity)</code></strong>: (MP 3.1.0+ 新增)<ul>
+<li>根据实体 <code>entity</code> 的主键进行删除，主键值从 <code>entity</code> 中获取。</li>
+</ul>
+</li>
+<li><strong><code>int deleteByMap(Map&lt;String, Object&gt; columnMap)</code></strong>:<ul>
+<li>根据 <code>columnMap</code> 构建的 <code>WHERE</code> 条件删除记录 (条件之间是 <code>AND</code> 连接)。</li>
+<li><strong>参数</strong>：<code>key</code> 是数据库列名 (不是实体属性名)，<code>value</code> 是列对应的值。</li>
+<li><strong>返回值</strong>：受影响的行数。</li>
+<li><strong>示例</strong>：<code>map.put(&quot;user_name&quot;, &quot;John&quot;); map.put(&quot;age&quot;, 30);</code> 会删除 <code>user_name = &#39;John&#39; AND age = 30</code> 的记录。</li>
+</ul>
+</li>
+<li><strong><code>int deleteBatchIds(Collection&lt;? extends Serializable&gt; idList)</code></strong>:<ul>
+<li>根据主键 ID 列表批量删除记录。</li>
+<li><strong>参数</strong>：主键 ID 的集合。</li>
+<li><strong>返回值</strong>：受影响的行数。</li>
+</ul>
+</li>
+<li><strong><code>int delete(Wrapper&lt;T&gt; wrapper)</code></strong>:<ul>
+<li>根据 <code>Wrapper</code> (条件构造器) 构建的 <code>WHERE</code> 条件删除记录。</li>
+<li>这是进行复杂条件删除的主要方式。</li>
+<li><strong>返回值</strong>：受影响的行数。</li>
+<li><strong>注意安全</strong>：如果没有条件 (wrapper 为空或 <code>Wrappers.emptyWrapper()</code>)，可能会删除全表数据！(MP 有防止全表更新&#x2F;删除插件)</li>
+</ul>
+</li>
+</ul>
+<p><strong>更新操作：</strong></p>
+<ul>
+<li><strong><code>int updateById(T entity)</code></strong>:<ul>
+<li>根据主键 ID 更新一条记录。</li>
+<li><strong>行为</strong>：只会更新 <code>entity</code> 中<strong>非 null</strong> 的字段。如果想将某个字段更新为 <code>null</code>，此方法做不到。</li>
+<li><strong>WHERE 条件</strong>：<code>WHERE id = #&#123;entity.id&#125;</code>。</li>
+<li><strong>返回值</strong>：受影响的行数。</li>
+</ul>
+</li>
+<li><strong><code>int update(T entity, Wrapper&lt;T&gt; updateWrapper)</code></strong>:<ul>
+<li>根据 <code>updateWrapper</code> 构建的 <code>WHERE</code> 条件更新记录。</li>
+<li><code>entity</code> 参数用于提供要更新的字段值 (SET 部分)，<strong>仍然是只更新 <code>entity</code> 中非 null 的字段</strong>。</li>
+<li>如果你想将字段更新为 <code>null</code>，或者只更新特定字段而不受 <code>entity</code> 中 null 值的影响，应该使用 <code>UpdateWrapper</code> 的 <code>set</code> 或 <code>setSql</code> 方法。</li>
+<li><strong>返回值</strong>：受影响的行数。</li>
+<li><strong>示例 (将字段更新为 null)</strong>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 错误方式：userToUpdate.setEmail(null); userMapper.update(userToUpdate, wrapper); // email 不会被更新为 null</span><br><span class="hljs-comment">// 正确方式：</span><br>UpdateWrapper&lt;User&gt; uw = <span class="hljs-keyword">new</span> <span class="hljs-title class_">UpdateWrapper</span>&lt;&gt;();<br>uw.eq(<span class="hljs-string">&quot;id&quot;</span>, userId).set(<span class="hljs-string">&quot;email&quot;</span>, <span class="hljs-literal">null</span>); <span class="hljs-comment">// 直接在 UpdateWrapper 中设置要更新的字段和值</span><br>userMapper.update(<span class="hljs-literal">null</span>, uw); <span class="hljs-comment">// 第一个参数 entity 可以传 null，因为更新的字段和值已在 uw 中定义</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p><strong>查询操作 (返回实体对象列表或单个实体)：</strong></p>
+<ul>
+<li><strong><code>T selectById(Serializable id)</code></strong>:<ul>
+<li>根据主键 ID 查询一条记录。</li>
+<li><strong>返回值</strong>：实体对象，如果不存在则返回 <code>null</code>。</li>
+</ul>
+</li>
+<li><strong><code>List&lt;T&gt; selectBatchIds(Collection&lt;? extends Serializable&gt; idList)</code></strong>:<ul>
+<li>根据主键 ID 列表查询多条记录。</li>
+<li><strong>返回值</strong>：实体对象列表。</li>
+</ul>
+</li>
+<li><strong><code>List&lt;T&gt; selectByMap(Map&lt;String, Object&gt; columnMap)</code></strong>:<ul>
+<li>根据 <code>columnMap</code> 构建的 <code>WHERE</code> 条件查询记录 (条件之间是 <code>AND</code> 连接)。</li>
+<li><strong>参数</strong>：<code>key</code> 是数据库列名，<code>value</code> 是值。</li>
+<li><strong>返回值</strong>：实体对象列表。</li>
+</ul>
+</li>
+<li><strong><code>T selectOne(Wrapper&lt;T&gt; queryWrapper)</code></strong>:<ul>
+<li>根据 <code>queryWrapper</code> 构建的 <code>WHERE</code> 条件查询一条记录。</li>
+<li><strong>行为</strong>：如果查询结果有多条，会抛出 <code>TooManyResultsException</code> 异常。如果查询结果没有，返回 <code>null</code>。</li>
+<li>常用于查询唯一性记录或期望只返回一条记录的场景。</li>
+<li><strong>返回值</strong>：单个实体对象或 <code>null</code>。</li>
+</ul>
+</li>
+<li><strong><code>List&lt;T&gt; selectList(Wrapper&lt;T&gt; queryWrapper)</code></strong>:<ul>
+<li>根据 <code>queryWrapper</code> 构建的 <code>WHERE</code> 条件查询多条记录。</li>
+<li>如果 <code>queryWrapper</code> 为 <code>null</code> 或 <code>Wrappers.emptyWrapper()</code>，则查询所有记录 (全表扫描，慎用)。</li>
+<li><strong>返回值</strong>：实体对象列表。</li>
+</ul>
+</li>
+</ul>
+<p><strong>查询操作 (返回统计结果或特定投影)：</strong></p>
+<ul>
+<li><strong><code>Long selectCount(Wrapper&lt;T&gt; queryWrapper)</code></strong>: (MP 3.4.0 版本之前返回 <code>Integer</code>)<ul>
+<li>根据 <code>queryWrapper</code> 构建的 <code>WHERE</code> 条件查询记录总数。</li>
+<li><strong>返回值</strong>：记录总数。</li>
+</ul>
+</li>
+<li><strong><code>List&lt;Map&lt;String, Object&gt;&gt; selectMaps(Wrapper&lt;T&gt; queryWrapper)</code></strong>:<ul>
+<li>根据 <code>queryWrapper</code> 构建的 <code>WHERE</code> 条件查询记录，每条记录封装成一个 <code>Map&lt;String, Object&gt;</code>。</li>
+<li><code>Map</code> 的 <code>key</code> 是数据库列名 (如果开启了 <code>map-underscore-to-camel-case</code> 且 Wrapper 中没有显式 <code>select</code> 列名，则可能是驼峰属性名，具体行为需验证)。通常是列名。</li>
+<li>可以通过 <code>queryWrapper.select(&quot;col1&quot;, &quot;col2&quot;)</code> 指定查询的列。</li>
+<li><strong>返回值</strong>：<code>Map</code> 对象列表。</li>
+</ul>
+</li>
+<li><strong><code>List&lt;Object&gt; selectObjs(Wrapper&lt;T&gt; queryWrapper)</code></strong>:<ul>
+<li>根据 <code>queryWrapper</code> 构建的 <code>WHERE</code> 条件查询记录。</li>
+<li><strong>行为</strong>：只返回结果集中的<strong>第一列</strong>的值。</li>
+<li>常用于查询单个字段的列表，如 <code>List&lt;Long&gt; userIds = userMapper.selectObjs(Wrappers.&lt;User&gt;lambdaQuery().select(User::getId));</code></li>
+<li><strong>返回值</strong>：对象列表，每个对象是第一列的值。</li>
+</ul>
+</li>
+</ul>
+<p><strong>分页查询操作：</strong></p>
+<ul>
+<li><strong><code>IPage&lt;T&gt; selectPage(IPage&lt;T&gt; page, Wrapper&lt;T&gt; queryWrapper)</code></strong>:<ul>
+<li>根据 <code>queryWrapper</code> 构建的 <code>WHERE</code> 条件进行分页查询。</li>
+<li>需要配置分页插件 (<code>PaginationInnerInterceptor</code>)。</li>
+<li><strong>参数</strong>：<ul>
+<li><code>page</code>: 实现了 <code>IPage</code> 接口的分页参数对象 (通常是 <code>new Page&lt;&gt;(pageNum, pageSize)</code>)。</li>
+<li><code>queryWrapper</code>: 查询条件。</li>
+</ul>
+</li>
+<li><strong>返回值</strong>：<code>IPage&lt;T&gt;</code> 对象，其中包含了分页信息 (总记录数、总页数、当前页数据列表等)。</li>
+</ul>
+</li>
+<li><strong><code>IPage&lt;Map&lt;String, Object&gt;&gt; selectMapsPage(IPage&lt;T&gt; page, Wrapper&lt;T&gt; queryWrapper)</code></strong>:<ul>
+<li>类似 <code>selectPage</code>，但返回的是 <code>Map</code> 对象的列表。</li>
+</ul>
+</li>
+</ul>
+<p><strong><code>IService&lt;T&gt;</code> 接口提供的额外便利方法 (部分示例)：</strong></p>
+<ul>
+<li><code>boolean save(T entity)</code>: 对应 <code>BaseMapper.insert</code>。</li>
+<li><code>boolean saveBatch(Collection&lt;T&gt; entityList)</code>: 批量插入。</li>
+<li><code>boolean saveOrUpdate(T entity)</code>: 如果实体主键存在则更新，否则插入。</li>
+<li><code>boolean saveOrUpdateBatch(Collection&lt;T&gt; entityList)</code>: 批量保存或更新。</li>
+<li><code>boolean removeById(Serializable id)</code>: 对应 <code>BaseMapper.deleteById</code>。</li>
+<li><code>boolean removeByIds(Collection&lt;? extends Serializable&gt; idList)</code>: 对应 <code>BaseMapper.deleteBatchIds</code>。</li>
+<li><code>boolean remove(Wrapper&lt;T&gt; queryWrapper)</code>: 对应 <code>BaseMapper.delete</code>。</li>
+<li><code>boolean updateById(T entity)</code>: P对应 <code>BaseMapper.updateById</code>。</li>
+<li><code>boolean update(Wrapper&lt;T&gt; updateWrapper)</code>: 只使用 Wrapper 进行更新 (如 <code>set</code> 子句在 Wrapper 中定义)。</li>
+<li><code>boolean update(T entity, Wrapper&lt;T&gt; updateWrapper)</code>: 对应 <code>BaseMapper.update</code>。</li>
+<li><code>boolean updateBatchById(Collection&lt;T&gt; entityList)</code>: 批量根据 ID 更新。</li>
+<li><code>T getById(Serializable id)</code>: 对应 <code>BaseMapper.selectById</code>。</li>
+<li><code>List&lt;T&gt; listByIds(Collection&lt;? extends Serializable&gt; idList)</code>: 对应 <code>BaseMapper.selectBatchIds</code>。</li>
+<li><code>T getOne(Wrapper&lt;T&gt; queryWrapper)</code>: 对应 <code>BaseMapper.selectOne</code> (如果结果不唯一，默认不抛异常，返回第一条，可通过第二个布尔参数控制是否抛异常)。</li>
+<li><code>long count()</code>: 查询总记录数 (无条件)。</li>
+<li><code>long count(Wrapper&lt;T&gt; queryWrapper)</code>: 对应 <code>BaseMapper.selectCount</code>。</li>
+<li><code>List&lt;T&gt; list()</code>: 查询所有记录 (无条件)。</li>
+<li><code>List&lt;T&gt; list(Wrapper&lt;T&gt; queryWrapper)</code>: 对应 <code>BaseMapper.selectList</code>。</li>
+<li><code>List&lt;Map&lt;String, Object&gt;&gt; listMaps()</code>: 查询所有记录为 Map 列表。</li>
+<li><code>List&lt;Map&lt;String, Object&gt;&gt; listMaps(Wrapper&lt;T&gt; queryWrapper)</code>: 对应 <code>BaseMapper.selectMaps</code>。</li>
+<li><code>List&lt;Object&gt; listObjs()</code>: 查询所有记录的第一列。</li>
+<li><code>List&lt;Object&gt; listObjs(Wrapper&lt;T&gt; queryWrapper)</code>: 对应 <code>BaseMapper.selectObjs</code>。</li>
+<li><code>IPage&lt;T&gt; page(IPage&lt;T&gt; page)</code>: 分页查询所有。</li>
+<li><code>IPage&lt;T&gt; page(IPage&lt;T&gt; page, Wrapper&lt;T&gt; queryWrapper)</code>: 对应 <code>BaseMapper.selectPage</code>。</li>
+<li><code>IPage&lt;Map&lt;String, Object&gt;&gt; pageMaps(IPage&lt;Map&lt;String, Object&gt;&gt; page)</code>: 分页查询所有为 Map 列表。</li>
+<li><code>IPage&lt;Map&lt;String, Object&gt;&gt; pageMaps(IPage&lt;Map&lt;String, Object&gt;&gt; page, Wrapper&lt;T&gt; queryWrapper)</code>: 对应 <code>BaseMapper.selectMapsPage</code>。</li>
+<li><code>QueryChainWrapper&lt;T&gt; query()</code>: 返回一个 <code>QueryChainWrapper</code>，可以进行链式查询，最后通过 <code>.one()</code>, <code>.list()</code>, <code>.count()</code> 等方法获取结果。</li>
+<li><code>LambdaQueryChainWrapper&lt;T&gt; lambdaQuery()</code>: 返回 Lambda 版本的链式查询器。</li>
+<li><code>UpdateChainWrapper&lt;T&gt; update()</code>: 返回一个 <code>UpdateChainWrapper</code>，可以进行链式更新。</li>
+<li><code>LambdaUpdateChainWrapper&lt;T&gt; lambdaUpdate()</code>: 返回 Lambda 版本的链式更新器。</li>
+</ul>
+<p><strong>链式调用示例 (IService):</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 使用 IService 的 LambdaQueryChainWrapper</span><br>List&lt;User&gt; users = userService.lambdaQuery()<br>                              .like(User::getName, <span class="hljs-string">&quot;Admin&quot;</span>)<br>                              .gt(User::getAge, <span class="hljs-number">20</span>)<br>                              .orderByAsc(User::getCreateTime)<br>                              .list();<br><br><span class="hljs-type">boolean</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> userService.lambdaUpdate()<br>                            .eq(User::getStatus, <span class="hljs-string">&quot;INACTIVE&quot;</span>)<br>                            .set(User::getStatus, <span class="hljs-string">&quot;ARCHIVED&quot;</span>)<br>                            .update();<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h4 id="3-2-强大的条件构造器-Wrapper"><a href="#3-2-强大的条件构造器-Wrapper" class="headerlink" title="3.2 强大的条件构造器 (Wrapper)"></a>3.2 强大的条件构造器 (Wrapper)</h4><p>Wrapper 是 MP 的精髓之一，它允许你以编程方式、面向对象地构建 SQL 的 <code>WHERE</code> 条件、<code>ORDER BY</code>、<code>SELECT</code> 列等，而无需手写 XML 中的动态 SQL。</p>
+<p><strong>主要类型：</strong></p>
+<ul>
+<li><strong><code>AbstractWrapper</code> (抽象父类)</strong><ul>
+<li><code>QueryWrapper&lt;T&gt;</code>: 用于构建查询条件的 Wrapper。</li>
+<li><code>UpdateWrapper&lt;T&gt;</code>: 用于构建更新操作的 Wrapper (可以定义 <code>SET</code> 和 <code>WHERE</code> 部分)。</li>
+</ul>
+</li>
+<li><strong><code>AbstractLambdaWrapper</code> (支持 Lambda 的抽象父类)</strong><ul>
+<li><code>LambdaQueryWrapper&lt;T&gt;</code>: <code>QueryWrapper</code> 的 Lambda 版本，可以使用方法引用 (如 <code>User::getName</code>) 来指定列，具有类型安全和重构友好性。<strong>强烈推荐使用</strong>。</li>
+<li><code>LambdaUpdateWrapper&lt;T&gt;</code>: <code>UpdateWrapper</code> 的 Lambda 版本。<strong>强烈推荐使用</strong>。</li>
+</ul>
+</li>
+</ul>
+<p><strong>创建 Wrapper 实例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// QueryWrapper</span><br>QueryWrapper&lt;User&gt; queryWrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">QueryWrapper</span>&lt;&gt;();<br><span class="hljs-comment">// 或者使用工具类 Wrappers (更简洁)</span><br>QueryWrapper&lt;User&gt; qw = Wrappers.query();<br>QueryWrapper&lt;User&gt; qwEntity = Wrappers.query(<span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>().setName(<span class="hljs-string">&quot;Tom&quot;</span>)); <span class="hljs-comment">// 根据实体非空属性构建条件</span><br><br><span class="hljs-comment">// LambdaQueryWrapper</span><br>LambdaQueryWrapper&lt;User&gt; lambdaQueryWrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaQueryWrapper</span>&lt;&gt;();<br><span class="hljs-comment">// 或者使用工具类 Wrappers</span><br>LambdaQueryWrapper&lt;User&gt; lqw = Wrappers.lambdaQuery();<br>LambdaQueryWrapper&lt;User&gt; lqwEntity = Wrappers.lambdaQuery(<span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>().setName(<span class="hljs-string">&quot;Tom&quot;</span>));<br><br><span class="hljs-comment">// UpdateWrapper</span><br>UpdateWrapper&lt;User&gt; updateWrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">UpdateWrapper</span>&lt;&gt;();<br>UpdateWrapper&lt;User&gt; uw = Wrappers.update();<br><br><span class="hljs-comment">// LambdaUpdateWrapper</span><br>LambdaUpdateWrapper&lt;User&gt; lambdaUpdateWrapper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LambdaUpdateWrapper</span>&lt;&gt;();<br>LambdaUpdateWrapper&lt;User&gt; luw = Wrappers.lambdaUpdate();<br></code></pre></td></tr></table></figure>
+
+<p><strong>常用方法 (以 <code>LambdaQueryWrapper</code> 为例，<code>QueryWrapper</code> 方法名类似，只是参数为字符串列名)：</strong></p>
+<ul>
+<li><strong>等值比较：</strong><ul>
+<li><code>eq(R column, Object val)</code>: 等于 (<code>=</code>)。<code>User::getName</code>, “John” -&gt; <code>name = &#39;John&#39;</code></li>
+<li><code>ne(R column, Object val)</code>: 不等于 (<code>!=</code> 或 <code>&lt;&gt;</code>)。</li>
+</ul>
+</li>
+<li><strong>范围比较：</strong><ul>
+<li><code>gt(R column, Object val)</code>: 大于 (<code>&gt;</code>)。</li>
+<li><code>ge(R column, Object val)</code>: 大于等于 (<code>&gt;=</code>)。</li>
+<li><code>lt(R column, Object val)</code>: 小于 (<code>&lt;</code>)。</li>
+<li><code>le(R column, Object val)</code>: 小于等于 (<code>&lt;=</code>)。</li>
+<li><code>between(R column, Object val1, Object val2)</code>: <code>BETWEEN val1 AND val2</code>。</li>
+<li><code>notBetween(R column, Object val1, Object val2)</code>: <code>NOT BETWEEN val1 AND val2</code>。</li>
+</ul>
+</li>
+<li><strong>模糊匹配：</strong><ul>
+<li><code>like(R column, Object val)</code>: <code>LIKE &#39;%val%&#39;</code>。</li>
+<li><code>notLike(R column, Object val)</code>: <code>NOT LIKE &#39;%val%&#39;</code>。</li>
+<li><code>likeLeft(R column, Object val)</code>: <code>LIKE &#39;%val&#39;</code> (左模糊)。</li>
+<li><code>likeRight(R column, Object val)</code>: <code>LIKE &#39;val%&#39;</code> (右模糊)。</li>
+</ul>
+</li>
+<li><strong>IN &#x2F; NULL 判断：</strong><ul>
+<li><code>in(R column, Collection&lt;?&gt; coll)</code>: <code>IN (...)</code>。</li>
+<li><code>in(R column, Object... values)</code>: <code>IN (...)</code>。</li>
+<li><code>notIn(R column, Collection&lt;?&gt; coll)</code>: <code>NOT IN (...)</code>。</li>
+<li><code>notIn(R column, Object... values)</code>: <code>NOT IN (...)</code>。</li>
+<li><code>isNull(R column)</code>: <code>IS NULL</code>。</li>
+<li><code>isNotNull(R column)</code>: <code>IS NOT NULL</code>。</li>
+</ul>
+</li>
+<li><strong>排序：</strong><ul>
+<li><code>orderByAsc(R... columns)</code>: 升序排序。</li>
+<li><code>orderByDesc(R... columns)</code>: 降序排序。</li>
+<li><code>orderBy(boolean condition, boolean isAsc, R... columns)</code>: 条件排序。</li>
+</ul>
+</li>
+<li><strong>分组与聚合：</strong><ul>
+<li><code>groupBy(R... columns)</code>: <code>GROUP BY ...</code>。</li>
+<li><code>having(String sqlHaving, Object... params)</code>: <code>HAVING ...</code> (可以包含占位符 <code>?</code> 或 <code>$&#123;i&#125;</code>，对应 params)。</li>
+</ul>
+</li>
+<li><strong>逻辑连接：</strong><ul>
+<li><code>and(Consumer&lt;Param&gt; consumer)</code>: <code>AND ( ... )</code>，用于嵌套条件。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">lqw.eq(User::getStatus, <span class="hljs-number">1</span>)<br>   .and(wq -&gt; wq.like(User::getName, <span class="hljs-string">&quot;A&quot;</span>).or().like(User::getEmail, <span class="hljs-string">&quot;example.com&quot;</span>));<br><span class="hljs-comment">// SQL: status = 1 AND (name LIKE &#x27;%A%&#x27; OR email LIKE &#x27;%example.com%&#x27;)</span><br></code></pre></td></tr></table></figure></li>
+<li><code>or()</code>: <code>OR</code>，连接下一个条件。</li>
+<li><code>or(Consumer&lt;Param&gt; consumer)</code>: <code>OR ( ... )</code>，用于嵌套条件。</li>
+<li><code>nested(Consumer&lt;Param&gt; consumer)</code>: <code>( ... )</code>，用于更自由的嵌套。</li>
+</ul>
+</li>
+<li><strong>SQL 注入与自定义 SQL 片段：</strong><ul>
+<li><code>apply(String applySql, Object... params)</code>: 拼接原生 SQL 到 <code>WHERE</code> 子句中，<strong>务必注意 SQL 注入风险</strong>，通常用于数据库函数或复杂表达式。<code>applySql</code> 中可以使用 <code>&#123;i&#125;</code> 作为占位符对应 params。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// lqw.apply(&quot;date_format(create_time, &#x27;%Y-%m-%d&#x27;) = &#123;0&#125;&quot;, &quot;2023-01-01&quot;);</span><br><span class="hljs-comment">// lqw.apply(&quot;find_in_set(&#123;0&#125;, tags)&quot;, tagValue);</span><br></code></pre></td></tr></table></figure></li>
+<li><code>last(String lastSql)</code>: 无视优化规则，直接拼接到 SQL 的最后。<strong>只能调用一次，多次调用以最后一次为准，有 SQL 注入风险</strong>。常用于 <code>LIMIT 1</code> 等。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// lqw.last(&quot;LIMIT 1&quot;); // 不推荐，分页有专门插件</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>EXISTS &#x2F; NOT EXISTS：</strong><ul>
+<li><code>exists(String existsSql, Object... params)</code>: <code>EXISTS ( subquery )</code>。</li>
+<li><code>notExists(String existsSql, Object... params)</code>: <code>NOT EXISTS ( subquery )</code>。</li>
+</ul>
+</li>
+<li><strong>选择查询字段 ( Projection )：</strong><ul>
+<li><code>select(R... columns)</code>: 指定查询返回的字段。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// lqw.select(User::getId, User::getName, User::getEmail);</span><br></code></pre></td></tr></table></figure></li>
+<li><code>select(Class&lt;T&gt; entityClass, Predicate&lt;TableFieldInfo&gt; predicate)</code>: 根据实体字段的元信息动态选择列。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// lqw.select(User.class, field -&gt; !field.getProperty().equals(&quot;password&quot;)); // 查询除 password 外所有字段</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><strong>条件判断 (<code>condition</code> 参数)</strong>:<ul>
+<li>很多 Wrapper 方法都有一个重载版本，第一个参数是 <code>boolean condition</code>。只有当 <code>condition</code> 为 <code>true</code> 时，该条件才会应用到 SQL 中。这使得动态构建条件非常方便，替代了大量 <code>&lt;if&gt;</code> 标签。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">nameParam</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Test&quot;</span>; <span class="hljs-comment">// 可能为 null 或 empty</span><br><span class="hljs-type">Integer</span> <span class="hljs-variable">ageParam</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;  <span class="hljs-comment">// 可能为 null</span><br><br>lqw.like(StringUtils.isNotBlank(nameParam), User::getName, nameParam) <span class="hljs-comment">// 只有 nameParam 不为空白时才添加 like 条件</span><br>   .gt(ageParam != <span class="hljs-literal">null</span> &amp;&amp; ageParam &gt; <span class="hljs-number">0</span>, User::getAge, ageParam); <span class="hljs-comment">// 只有 ageParam 有效时才添加 gt 条件</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<p><strong><code>UpdateWrapper</code> &#x2F; <code>LambdaUpdateWrapper</code> 特有方法：</strong></p>
+<ul>
+<li><strong><code>set(R column, Object val)</code></strong>: 设置要更新的字段和值 (<code>SET column = val</code>)。</li>
+<li><strong><code>setSql(String sql)</code></strong>: 设置 <code>SET</code> 子句的 SQL 片段 (如 <code>SET score = score + 1</code>)。<strong>注意 SQL 注入</strong>。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java">LambdaUpdateWrapper&lt;User&gt; luw = Wrappers.lambdaUpdate();<br>luw.eq(User::getId, <span class="hljs-number">1L</span>)<br>   .set(User::getAge, <span class="hljs-number">30</span>)<br>   .set(User::getEmail, <span class="hljs-literal">null</span>) <span class="hljs-comment">// 可以将字段更新为 null</span><br>   .setSql(<span class="hljs-string">&quot;login_count = login_count + 1&quot;</span>);<br>userMapper.update(<span class="hljs-literal">null</span>, luw); <span class="hljs-comment">// 或者 userService.update(luw);</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>LambdaQueryWrapper 的优势：</strong></p>
+<ol>
+<li><strong>类型安全</strong>: 使用方法引用 (如 <code>User::getName</code>) 而不是字符串列名 (“name”)，编译器可以检查属性是否存在，减少运行时错误。</li>
+<li><strong>重构友好</strong>: 如果实体类的属性名发生变化，IDE 的重构功能可以自动更新 Lambda 表达式中的方法引用。而字符串列名则需要手动查找和修改，容易遗漏。</li>
+<li><strong>代码更简洁易读</strong>: 对于熟悉 Lambda 的开发者，可读性更强。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Data/MyBatis/MyBatis-Plus/3.核心功能/通用 CRUD 和条件构造器/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/%E9%80%BB%E8%BE%91%E5%88%A0%E9%99%A4/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/MyBatis/MyBatis-Plus/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90%E5%92%8C%E5%A4%9A%E7%A7%9F%E6%88%B7%E7%9B%B8%E5%85%B3%E6%8F%92%E4%BB%B6/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

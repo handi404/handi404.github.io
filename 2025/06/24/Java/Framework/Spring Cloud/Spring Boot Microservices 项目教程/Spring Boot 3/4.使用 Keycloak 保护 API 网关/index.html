@@ -1,0 +1,771 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在本系列教程的第 4 部分，我们将使用 Keycloak 来保护我们的 API 网关参考：[[5.安全性(Security)]] 什么是 Keycloak？Keycloak 是一个开源的授权服务器，可以用来将我们的应用程序的认证和授权外包出去。Keycloak 支持各种认证和授权协议，如 OAuth2、OpenID Connect、SAML 等。它还提供了一些开箱即用的功能，例如单点登录（SSO）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Cloud/Spring%20Boot%20Microservices%20%E9%A1%B9%E7%9B%AE%E6%95%99%E7%A8%8B/Spring%20Boot%203/4.%E4%BD%BF%E7%94%A8%20Keycloak%20%E4%BF%9D%E6%8A%A4%20API%20%E7%BD%91%E5%85%B3/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="在本系列教程的第 4 部分，我们将使用 Keycloak 来保护我们的 API 网关参考：[[5.安全性(Security)]] 什么是 Keycloak？Keycloak 是一个开源的授权服务器，可以用来将我们的应用程序的认证和授权外包出去。Keycloak 支持各种认证和授权协议，如 OAuth2、OpenID Connect、SAML 等。它还提供了一些开箱即用的功能，例如单点登录（SSO）">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.428Z">
+<meta property="article:modified_time" content="2025-03-26T03:16:04.806Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年3月26日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在本系列教程的第 4 部分，我们将使用 Keycloak 来保护我们的 API 网关<br>参考：[[5.安全性(Security)]]</p>
+<h2 id="什么是-Keycloak？"><a href="#什么是-Keycloak？" class="headerlink" title="什么是 Keycloak？"></a>什么是 Keycloak？</h2><p>Keycloak 是一个开源的授权服务器，可以用来将我们的应用程序的认证和授权外包出去。Keycloak 支持各种认证和授权协议，如 OAuth2、OpenID Connect、SAML 等。它还提供了一些开箱即用的功能，例如单点登录（SSO）和多因素认证（MFA）。</p>
+<p>如果你想了解更多关于 OAuth2 和 OIDC 的信息，可以参考以下文档<br><a target="_blank" rel="noopener" href="https://oauth.net/2/">https://oauth.net/2/</a> 和 <a target="_blank" rel="noopener" href="https://openid.net/developers/how-connect-works/">https://openid.net/developers/how-connect-works/</a></p>
+<h2 id="下载-Keycloak"><a href="#下载-Keycloak" class="headerlink" title="下载 Keycloak"></a>下载 Keycloak</h2><p>下载 Keycloak，我们必须在 API 网关项目中创建 docker-compose.yml 文件。</p>
+<p><strong>docker-compose.yml</strong></p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs nix"><span class="hljs-params">version:</span> &#x27;<span class="hljs-number">3.8</span>&#x27;<br><span class="hljs-params">services:</span><br>  <span class="hljs-params">keycloak-mysql:</span><br>    <span class="hljs-params">container_name:</span> keycloak-mysql<br>    <span class="hljs-params">image:</span> mysql:<span class="hljs-number">8</span><br>    <span class="hljs-params">volumes:</span><br>      <span class="hljs-operator">-</span> .<span class="hljs-operator">/</span>volume-data<span class="hljs-operator">/</span>mysql_keycloak_data:<span class="hljs-symbol">/var/lib/mysql</span><br>    <span class="hljs-params">environment:</span><br>      <span class="hljs-params">MYSQL_ROOT_PASSWORD:</span> root<br>      <span class="hljs-params">MYSQL_DATABASE:</span> keycloak<br>      <span class="hljs-params">MYSQL_USER:</span> keycloak<br>      <span class="hljs-params">MYSQL_PASSWORD:</span> password<br>  <span class="hljs-params">keycloak:</span><br>    <span class="hljs-params">container_name:</span> keycloak<br>    <span class="hljs-params">image:</span> quay.io<span class="hljs-operator">/</span>keycloak<span class="hljs-operator">/</span>keycloak:<span class="hljs-number">24.0</span>.<span class="hljs-number">1</span><br>    <span class="hljs-params">command:</span> [ <span class="hljs-string">&quot;start-dev&quot;</span>, <span class="hljs-string">&quot;--import-realm&quot;</span> ]<br>    <span class="hljs-params">environment:</span><br>      <span class="hljs-params">DB_VENDOR:</span> MYSQL<br>      <span class="hljs-params">DB_ADDR:</span> mysql<br>      <span class="hljs-params">DB_DATABASE:</span> keycloak<br>      <span class="hljs-params">DB_USER:</span> keycloak<br>      <span class="hljs-params">DB_PASSWORD:</span> password<br>      <span class="hljs-params">KEYCLOAK_ADMIN:</span> admin<br>      <span class="hljs-params">KEYCLOAK_ADMIN_PASSWORD:</span> admin<br>    <span class="hljs-params">ports:</span><br>      <span class="hljs-operator">-</span> <span class="hljs-string">&quot;8181:8080&quot;</span><br>    <span class="hljs-params">volumes:</span><br>      <span class="hljs-operator">-</span> .<span class="hljs-operator">/</span>docker<span class="hljs-operator">/</span>keycloak<span class="hljs-operator">/</span>realms<span class="hljs-operator">/</span>:<span class="hljs-operator">/</span>opt<span class="hljs-operator">/</span>keycloak<span class="hljs-operator">/</span>data<span class="hljs-operator">/</span><span class="hljs-built_in">import</span><span class="hljs-symbol">/</span><br>    <span class="hljs-params">depends_on:</span><br>      <span class="hljs-operator">-</span> keycloak-mysql<br></code></pre></td></tr></table></figure>
+
+<p>上述文件设置了 Keycloak 和 MySQL 数据库以存储 keycloak 配置。目前，我们正在使用通过 docker-compose 配置文件中的命令字段提供的’start-dev’参数在开发环境中启动 Keycloak。</p>
+<p>现在你可以运行以下命令来启动 Keycloak Docker 容器：</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">docker compose up -d</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="密钥-cloak-配置"><a href="#密钥-cloak-配置" class="headerlink" title="密钥 cloak 配置"></a>密钥 cloak 配置</h2><p>启动 Keycloak Docker 容器后，现在是时候设置 Keycloak 了，打开 URL <a target="_blank" rel="noopener" href="http://localhost:8181/">http://localhost:8181</a> ，这应该会打开 Keycloak 的主页，使用 admin&#x2F;admin 作为凭据，因为我们已经在 docker-compose 文件中配置了它。</p>
+<p>在 Keycloak 中，与特定应用程序（或）一组应用程序相关的所有客户端、用户和角色都位于一个称为域（Realm）的内部。域是相互独立的，因此如果您在一个域中创建了一个客户端&#x2F;用户，则无法在另一个域中使用它。</p>
+<p>在我们的项目中，我们将使用客户端凭据授权（Client Credentials grant），与 API 网关通信并获取访问令牌（Access Token），然后 API 网关将验证此访问令牌。</p>
+<p>要开始，使用上述凭证登录 Keycloak 管理员页面，我们将要做的第一件事是创建域。</p>
+<ul>
+<li><p>登录后，点击左上角带有“Keycloak”文本的下拉菜单，然后点击创建域按钮</p>
+</li>
+<li><p>提供域的名称（例如：spring-microservices-realm）并点击 <strong>创建</strong> 按钮</p>
+</li>
+<li><p>现在应该已成功创建领域</p>
+</li>
+<li><p>接下来，点击左侧边栏的 <strong>客户端</strong> 链接，然后点击 <strong>创建客户端</strong></p>
+</li>
+<li><p>提供您喜欢的任何客户端 ID，例如：test-client-id，然后点击 <strong>下一步</strong></p>
+</li>
+<li><p>将客户端身份验证设置为开启</p>
+</li>
+<li><p>在身份验证流程中，选择 <strong>服务账户角色</strong> 并取消选择所有其他选项，这确保我们的客户端支持客户端凭据授权</p>
+</li>
+<li><p>点击 <strong>下一步</strong> 然后点击 <strong>保存</strong></p>
+</li>
+<li><p>最后，点击凭据选项卡，在这里您可以查看自动生成的客户端密钥，您还可以重新生成一个新的客户端密钥。请确保复制客户端密钥，我们将在后续部分使用它来请求访问 API 网关的令牌</p>
+</li>
+</ul>
+<h2 id="配置-API-网关中的-Keycloak"><a href="#配置-API-网关中的-Keycloak" class="headerlink" title="配置 API 网关中的 Keycloak"></a>配置 API 网关中的 Keycloak</h2><p>现在让我们在我们的 API 网关应用程序中配置 Keycloak，为此我们需要将 ` <strong>spring-security-oauth2-resource-server</strong> ` 依赖项添加到我们的 pom.xml 文件中。</p>
+<p>以下是添加依赖项后我们的 pom.xml 文件的样子。</p>
+<p><strong>pom.xml</strong></p>
+<figure class="highlight dust"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><code class="hljs dust"><span class="language-xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span></span><br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">project</span> <span class="hljs-attr">xmlns</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0&quot;</span> <span class="hljs-attr">xmlns:xsi</span>=<span class="hljs-string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="hljs-tag"><span class="language-xml">	<span class="hljs-attr">xsi:schemaLocation</span>=<span class="hljs-string">&quot;http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd&quot;</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">modelVersion</span>&gt;</span>4.0.0<span class="hljs-tag">&lt;/<span class="hljs-name">modelVersion</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">parent</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-parent<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.2.4<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;<span class="hljs-name">relativePath</span>/&gt;</span> <span class="hljs-comment">&lt;!-- lookup parent from repository --&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;/<span class="hljs-name">parent</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.programming.techie<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>api-gateway<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>0.0.1-SNAPSHOT<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>api-gateway<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">description</span>&gt;</span>API Gateway<span class="hljs-tag">&lt;/<span class="hljs-name">description</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">properties</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;<span class="hljs-name">java.version</span>&gt;</span>21<span class="hljs-tag">&lt;/<span class="hljs-name">java.version</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;<span class="hljs-name">spring-cloud.version</span>&gt;</span>2023.0.1<span class="hljs-tag">&lt;/<span class="hljs-name">spring-cloud.version</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;/<span class="hljs-name">properties</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="language-xml">			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="language-xml">			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-starter-gateway-mvc<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="language-xml">			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="language-xml">			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="language-xml">			<span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="language-xml">			<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="language-xml">			<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-oauth2-resource-server<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">dependencyManagement</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span></span><br><span class="language-xml">			<span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="language-xml">				<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.cloud<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="language-xml">				<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-cloud-dependencies<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="language-xml">				<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$</span><span class="hljs-template-variable">&#123;spring-cloud.version&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span></span><br><span class="language-xml">				<span class="hljs-tag">&lt;<span class="hljs-name">type</span>&gt;</span>pom<span class="hljs-tag">&lt;/<span class="hljs-name">type</span>&gt;</span></span><br><span class="language-xml">				<span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>import<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span></span><br><span class="language-xml">			<span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;/<span class="hljs-name">dependencyManagement</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml">	<span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span></span><br><span class="language-xml">			<span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span></span><br><span class="language-xml">				<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span></span><br><span class="language-xml">				<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span></span><br><span class="language-xml">			<span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span></span><br><span class="language-xml">		<span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span></span><br><span class="language-xml">	<span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span></span><br><span class="language-xml"></span><br><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">project</span>&gt;</span></span><br></code></pre></td></tr></table></figure>
+
+<p>现在让我们配置 application.properties 文件，并添加授权服务器的详细信息。为此，首先我们需要获取我们授权服务器的发行者 URI。对于 Keycloak，它通常是以下格式：<br><code>http://&lt;key-cloak-url&gt;/realm/&lt;realm-name&gt;</code></p>
+<p>对于我们在上一步创建的域，发行者 URI 将是：[<a target="_blank" rel="noopener" href="http://localhost:8181/realms/spring-microservices-realm/](http://localhost:8181/realms/spring-microservices-realm)">http://localhost:8181/realms/spring-microservices-realm\](http://localhost:8181/realms/spring-microservices-realm)</a></p>
+<p>现在让我们继续在我们的 Spring Boot API 网关应用程序中配置它。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs stylus">spring<span class="hljs-selector-class">.security</span><span class="hljs-selector-class">.oauth2</span><span class="hljs-selector-class">.resourceserver</span><span class="hljs-selector-class">.jwt</span>.issuer-uri=http:<span class="hljs-comment">//localhost:8181/realms/spring-microservices-realm</span><br></code></pre></td></tr></table></figure>
+
+<p>下一步是创建安全配置类，让我们创建一个名为 config 的包，并在该包内创建一个名为 SecurityConfig.class 的类</p>
+<figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs kotlin"><span class="hljs-keyword">package</span> com.programming.techie.gateway.config;<br><br><span class="hljs-keyword">import</span> org.springframework.context.<span class="hljs-keyword">annotation</span>.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.<span class="hljs-keyword">annotation</span>.Configuration;<br><span class="hljs-keyword">import</span> org.springframework.security.config.Customizer;<br><span class="hljs-keyword">import</span> org.springframework.security.config.<span class="hljs-keyword">annotation</span>.web.builders.HttpSecurity;<br><span class="hljs-keyword">import</span> org.springframework.security.web.SecurityFilterChain;<br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SecurityConfig</span> &#123;<br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception &#123;<br>        <span class="hljs-keyword">return</span> httpSecurity.authorizeHttpRequests(authorize -&gt; authorize<br>                        .anyRequest().authenticated())<br>                .oauth2ResourceServer(oauth2 -&gt; oauth2.jwt(Customizer.withDefaults()))<br>                .build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>这是基本的 安全配置，Spring Security 默认为我们创建，你也可以选择忽略添加此文件，如果你不需要添加任何额外的配置。</p>
+<p>现在让我们运行 ApiGatewayApplication.java 类，并使用 Postman 测试我们的端点。</p>
+<ul>
+<li>打开 Postman 客户端，在请求窗口中，点击授权标签，然后选择 OAuth2。</li>
+<li>选择授权类型为客户端凭据</li>
+<li>输入我们在上一步骤中创建的客户端的客户端 ID 和客户端密钥</li>
+<li>其余字段保持不变，然后点击“获取新的访问令牌”按钮。</li>
+<li>这将调用令牌端点并获取新的访问令牌。</li>
+<li>点击“使用令牌”方法，将令牌添加到我们的请求上下文窗口中。</li>
+<li>选择您想要发出的任何请求，例如：调用产品服务端点 - GET <a target="_blank" rel="noopener" href="http://localhost:9000/api/product">HTTP://localhost:9000/api/product</a> 并点击发送</li>
+</ul>
+<p>您应该从 API 网关收到一个成功的响应。</p>
+<p>在下一部分，我们将学习如何使用 Resilience4J 和 Spring Cloud Circuit Breaker 项目实现断路器模式。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Cloud/Spring Boot Microservices 项目教程/Spring Boot 3/4.使用 Keycloak 保护 API 网关/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Cloud/Spring%20Boot%20Microservices%20%E9%A1%B9%E7%9B%AE%E6%95%99%E7%A8%8B/Spring%20Boot%203/5.OpenAPI/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Cloud/Spring%20Boot%20Microservices%20%E9%A1%B9%E7%9B%AE%E6%95%99%E7%A8%8B/Spring%20Boot%203/2.%E6%9C%8D%E5%8A%A1%E9%97%B4%E9%80%9A%E4%BF%A1/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

@@ -1,0 +1,774 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="spring boot 最重要的是哪一层？ Spring Boot 是一个用于创建独立的、生产级的 Spring 基础应用的框架，它简化了基于 Spring 的应用开发。Spring Boot 并不是一个单一的层次，而是提供了一套完整的基础设施支持来帮助开发者快速构建应用。 在传统的分层架构中，通常会有以下几层：  表现层（Presentation Layer）：也称为用户界面层或前端层，负责与用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/%E8%AE%A8%E8%AE%BA%E4%BC%A0%E7%BB%9F%E7%9A%84%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84%E4%B8%AD%E8%BE%83%E4%B8%BA%E9%87%8D%E8%A6%81%E7%9A%84%E5%B1%82/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="spring boot 最重要的是哪一层？ Spring Boot 是一个用于创建独立的、生产级的 Spring 基础应用的框架，它简化了基于 Spring 的应用开发。Spring Boot 并不是一个单一的层次，而是提供了一套完整的基础设施支持来帮助开发者快速构建应用。 在传统的分层架构中，通常会有以下几层：  表现层（Presentation Layer）：也称为用户界面层或前端层，负责与用">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:26.987Z">
+<meta property="article:modified_time" content="2024-12-06T06:16:53.902Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2024年12月6日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>spring boot 最重要的是哪一层？</p>
+<p>Spring Boot 是一个用于创建独立的、生产级的 Spring 基础应用的框架，它简化了基于 Spring 的应用开发。Spring Boot 并不是一个单一的层次，而是提供了一套完整的基础设施支持来帮助开发者快速构建应用。</p>
+<p>在传统的分层架构中，通常会有以下几层：</p>
+<ol>
+<li><p><strong>表现层（Presentation Layer）</strong>：也称为用户界面层或前端层，负责与用户交互。对于 Spring Boot 应用来说，这可能涉及到 RESTful Web 服务端点、Thymeleaf 模板引擎或者其他视图技术。</p>
+</li>
+<li><p><strong>业务逻辑层（Business Logic Layer, BLL 或 Service Layer）</strong>：包含应用程序的核心功能和业务规则。这是最核心的一层，因为所有的业务处理都在这里进行。</p>
+</li>
+<li><p><strong>数据访问层（Data Access Layer, DAL 或 Repository Layer）</strong>：负责与数据库或其他持久化存储进行交互。Spring Boot 中常用的是 JPA (Java Persistence API) 和 Spring Data 来简化对数据库的操作。</p>
+</li>
+<li><p><strong>配置层（Configuration Layer）</strong>：虽然不是传统意义上的“层”，但配置是 Spring Boot 应用程序的关键部分，因为它管理着整个应用程序的行为，包括连接池设置、安全配置等。</p>
+</li>
+</ol>
+<p>如果要选择其中最重要的一层，那么业务逻辑层（Service Layer）往往被认为是最关键的，因为它包含了应用程序的核心业务逻辑和规则。但是，每个层次都有其重要性，缺少任何一层都可能导致应用程序的功能不完整。此外，在 Spring Boot 中，自动配置和起步依赖（starter dependencies）也是特别重要的特性，它们极大地简化了项目的搭建和配置。</p>
+<p>controller层呢？</p>
+<p>在 Spring Boot 应用中，<strong>Controller 层</strong>（也称为表现层或 Web 层）扮演着重要的角色。它是应用程序的前端和后端之间的桥梁，主要负责接收 HTTP 请求、调用业务逻辑层中的服务来处理请求，并将处理结果返回给客户端。以下是 Controller 层的一些关键特性：</p>
+<ol>
+<li><p><strong>请求处理</strong>：Controller 类中的方法通常会使用注解如 <code>@GetMapping</code>, <code>@PostMapping</code> 等来映射特定的 HTTP 请求到相应的处理逻辑。</p>
+</li>
+<li><p><strong>数据验证</strong>：可以在此层进行输入数据的初步验证，确保传入的数据格式正确，比如使用 <code>@Valid</code> 或 <code>@Validated</code> 注解配合 JSR-303 Bean Validation 的约束注解。</p>
+</li>
+<li><p><strong>响应构建</strong>：根据业务逻辑的结果构建并返回适当的 HTTP 响应给客户端，这可能包括视图解析（对于传统的 MVC 模式）或直接返回 JSON&#x2F;XML 数据（对于 RESTful 服务）。</p>
+</li>
+<li><p><strong>异常处理</strong>：可以通过全局异常处理器或者局部异常处理器来捕获并处理可能出现的异常情况，以保证系统的稳定性和用户体验。</p>
+</li>
+<li><p><strong>安全控制</strong>：可以在这一层添加安全相关的逻辑，例如检查用户是否已经认证或授权来进行某些操作。</p>
+</li>
+<li><p><strong>跨切关注点处理</strong>：通过 AOP（面向切面编程），可以轻松地在 Controller 方法上应用横切关注点，如日志记录、事务管理等。</p>
+</li>
+</ol>
+<p>尽管 Controller 层非常重要，但它本质上是围绕着业务逻辑层工作的。它的主要职责是确保请求被正确地路由到业务逻辑层，并且将业务逻辑层的结果适当地反馈给客户端。因此，在设计良好的系统中，Controller 层应当保持简洁，复杂的业务逻辑应该放在 Service 层中实现。这样不仅有助于代码的可维护性，也有利于测试和分离关注点。</p>
+<p>controller层应如何学习？</p>
+<p>学习如何有效设计和实现 Spring Boot 应用中的 Controller 层，可以通过以下步骤来进行：</p>
+<h3 id="1-理解基础知识"><a href="#1-理解基础知识" class="headerlink" title="1. 理解基础知识"></a>1. <strong>理解基础知识</strong></h3><ul>
+<li><strong>掌握 HTTP 协议</strong>：了解 HTTP 方法（GET、POST、PUT、DELETE 等）以及状态码的意义。</li>
+<li><strong>熟悉 RESTful 设计原则</strong>：学习如何设计资源导向的 API，包括 URL 结构、HTTP 方法映射到 CRUD 操作等。</li>
+</ul>
+<h3 id="2-深入研究-Spring-MVC"><a href="#2-深入研究-Spring-MVC" class="headerlink" title="2. 深入研究 Spring MVC"></a>2. <strong>深入研究 Spring MVC</strong></h3><ul>
+<li><strong>Spring Web 注解</strong>：学习如 <code>@Controller</code>, <code>@RestController</code>, <code>@RequestMapping</code>, <code>@GetMapping</code>, <code>@PostMapping</code> 等注解的使用方法。</li>
+<li><strong>请求参数绑定</strong>：理解如何通过 <code>@PathVariable</code>, <code>@RequestParam</code>, <code>@RequestBody</code> 等注解将请求参数绑定到方法参数上。</li>
+<li><strong>响应处理</strong>：掌握如何返回 JSON 或 XML 数据，以及如何使用视图解析器来渲染 HTML 页面。</li>
+<li><strong>异常处理</strong>：了解全局异常处理器 <code>@ControllerAdvice</code> 和局部异常处理器 <code>@ExceptionHandler</code> 的使用。</li>
+</ul>
+<h3 id="3-实践编码"><a href="#3-实践编码" class="headerlink" title="3. 实践编码"></a>3. <strong>实践编码</strong></h3><ul>
+<li><strong>创建简单的控制器</strong>：从简单的 CRUD 操作开始练习，逐步增加复杂度。</li>
+<li><strong>集成测试</strong>：编写单元测试和集成测试确保控制器按预期工作。可以使用 MockMvc 来模拟 HTTP 请求进行测试。</li>
+<li><strong>安全性配置</strong>：学习如何在控制器层添加安全措施，例如用户认证和授权。</li>
+</ul>
+<h3 id="4-关注最佳实践"><a href="#4-关注最佳实践" class="headerlink" title="4. 关注最佳实践"></a>4. <strong>关注最佳实践</strong></h3><ul>
+<li><strong>保持控制器轻量级</strong>：尽量让控制器只负责接收请求和转发给服务层，避免在控制器中加入过多业务逻辑。</li>
+<li><strong>使用 DTO（数据传输对象）</strong>：为了防止泄露内部模型细节或暴露不必要的字段，可以在控制器与客户端之间传递 DTO。</li>
+<li><strong>分页和排序支持</strong>：为列表查询提供分页和排序功能，提高用户体验。</li>
+<li><strong>输入验证</strong>：利用 Bean Validation（JSR-303&#x2F;349）对传入的数据进行校验，并返回友好的错误信息。</li>
+</ul>
+<h3 id="5-探索高级特性"><a href="#5-探索高级特性" class="headerlink" title="5. 探索高级特性"></a>5. <strong>探索高级特性</strong></h3><ul>
+<li><strong>异步处理</strong>：学习如何使用 <code>@Async</code> 和 <code>CompletableFuture</code> 实现非阻塞的操作。</li>
+<li><strong>缓存机制</strong>：了解如何在控制器层使用 <code>@Cacheable</code>, <code>@CachePut</code>, <code>@CacheEvict</code> 等注解来优化性能。</li>
+<li><strong>跨域资源共享（CORS）</strong>：对于需要支持浏览器访问的 API，学习如何配置 CORS 政策。</li>
+</ul>
+<h3 id="6-持续学习和改进"><a href="#6-持续学习和改进" class="headerlink" title="6. 持续学习和改进"></a>6. <strong>持续学习和改进</strong></h3><ul>
+<li><strong>阅读官方文档和社区文章</strong>：Spring 官方文档是权威的学习资源，同时也可以参考博客、教程和其他开发者分享的经验。</li>
+<li><strong>参与开源项目或实际项目开发</strong>：通过实际操作加深理解和技能水平。</li>
+</ul>
+<p>通过上述步骤，你可以系统地提升自己在 Spring Boot 中设计和实现 Controller 层的能力。记住，编程是一项实践性很强的技能，因此不断的练习和应用所学知识是非常重要的。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/讨论传统的分层架构中较为重要的层/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Actuator/%E4%BD%BF%E7%94%A8%20Grafana%20Stack%20%E5%AE%9E%E7%8E%B0%E5%8F%AF%E8%A7%82%E5%AF%9F%E6%80%A7/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%20(Auto-Configuration)/" title="自动配置 (Auto-Configuration)">
+                        <span class="hidden-mobile">自动配置 (Auto-Configuration)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

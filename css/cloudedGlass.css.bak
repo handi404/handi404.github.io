@@ -1,0 +1,5 @@
+/* 毛玻璃滤镜 */
+#board {
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}

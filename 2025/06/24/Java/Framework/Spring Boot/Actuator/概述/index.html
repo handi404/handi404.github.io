@@ -1,0 +1,849 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Spring Boot Actuator 是 Spring Boot 提供的一个非常强大的子项目，它能帮助你监控和管理你的应用程序。可以把它想象成你应用的“仪表盘”和“控制台”，让你在应用运行时能够洞察其内部状态，并在必要时进行一些操作。 核心价值：为生产环境的应用提供即用型的监控和管理端点。 最新特性与趋势 (Spring Boot 3.x):  Micrometer 深度集成: Actuato">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Actuator/%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Spring Boot Actuator 是 Spring Boot 提供的一个非常强大的子项目，它能帮助你监控和管理你的应用程序。可以把它想象成你应用的“仪表盘”和“控制台”，让你在应用运行时能够洞察其内部状态，并在必要时进行一些操作。 核心价值：为生产环境的应用提供即用型的监控和管理端点。 最新特性与趋势 (Spring Boot 3.x):  Micrometer 深度集成: Actuato">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:26.995Z">
+<meta property="article:modified_time" content="2025-05-27T10:06:31.242Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年5月27日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Spring Boot Actuator 是 Spring Boot 提供的一个非常强大的子项目，它能帮助你<strong>监控和管理你的应用程序</strong>。可以把它想象成你应用的“仪表盘”和“控制台”，让你在应用运行时能够洞察其内部状态，并在必要时进行一些操作。</p>
+<p><strong>核心价值：为生产环境的应用提供即用型的监控和管理端点。</strong></p>
+<p><strong>最新特性与趋势 (Spring Boot 3.x):</strong></p>
+<ul>
+<li><strong>Micrometer 深度集成</strong>: Actuator 底层使用 Micrometer 来收集指标数据，Micrometer 是一个通用的应用指标门面，可以对接多种监控系统 (Prometheus, Graphite, Datadog, InfluxDB 等)。</li>
+<li><strong>Observation API</strong>: Spring Framework 6 和 Spring Boot 3 引入了新的 Observation API（也基于 Micrometer），用于统一记录指标和追踪（Tracing）。Actuator 的很多端点现在也利用了这个 API。</li>
+<li><strong>更细致的端点暴露控制</strong>: 可以通过配置文件更灵活地控制哪些端点暴露，以及通过哪种方式暴露 (HTTP, JMX)。</li>
+<li><strong>Health Indicators 的改进</strong>: 健康检查指示器更加丰富和可定制。</li>
+<li><strong>对 GraalVM Native Image 的良好支持</strong>。</li>
+</ul>
+<p><strong>如何启用 Actuator？</strong></p>
+<p>非常简单，只需要在你的 <code>pom.xml</code> (Maven) 或 <code>build.gradle</code> (Gradle) 中添加依赖：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- pom.xml --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-actuator<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>一旦添加了这个依赖，Spring Boot 会自动配置 Actuator，并默认暴露一些端点。</p>
+<p><strong>核心功能：端点 (Endpoints)</strong></p>
+<p>Actuator 的核心功能是通过一系列的 HTTP 端点 (或 JMX MBeans) 来暴露信息。默认情况下，出于安全考虑，只有 <code>/health</code> 和 <code>/info</code> 端点会通过 HTTP 暴露。</p>
+<p>你可以通过配置文件 (<code>application.properties</code> 或 <code>application.yml</code>) 来控制哪些端点被暴露以及如何暴露：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># application.properties</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 暴露所有 Web 端点 (生产环境慎用，通常选择性暴露)</span><br><span class="hljs-attr">management.endpoints.web.exposure.include</span>=<span class="hljs-string">*</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 只暴露 health 和 info (这是默认行为，如果上面一行不设置)</span><br><span class="hljs-comment"># management.endpoints.web.exposure.include=health,info</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 排除某个端点</span><br><span class="hljs-comment"># management.endpoints.web.exposure.exclude=env</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 改变 Actuator 端点的基础路径 (默认为 /actuator)</span><br><span class="hljs-attr">management.endpoints.web.base-path</span>=<span class="hljs-string">/manage</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># 启用或禁用特定端点</span><br><span class="hljs-attr">management.endpoint.health.enabled</span>=<span class="hljs-string">true</span><br><span class="hljs-attr">management.endpoint.beans.enabled</span>=<span class="hljs-string">false</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>一些常用的 Actuator 端点：</strong></p>
+<ol>
+<li><p><strong><code>/actuator/health</code></strong>:</p>
+<ul>
+<li><strong>用途</strong>: 显示应用程序的健康状况。这是最重要的端点之一，常用于负载均衡器或容器编排系统 (如 Kubernetes) 的健康检查。</li>
+<li><strong>信息</strong>: 汇总了多个 <code>HealthIndicator</code> 的状态 (如数据库连接、磁盘空间、消息队列连接等)。</li>
+<li><strong>状态</strong>: <code>UP</code>, <code>DOWN</code>, <code>OUT_OF_SERVICE</code>, <code>UNKNOWN</code>。</li>
+<li><strong>定制</strong>: 你可以轻松实现自己的 <code>HealthIndicator</code> Bean 来添加自定义的健康检查。</li>
+<li><strong>详细信息</strong>: 默认只显示总体状态。可以通过 <code>management.endpoint.health.show-details=always</code> (或 <code>when-authorized</code> 配合 Spring Security) 来显示详细的组件健康信息。</li>
+</ul>
+</li>
+<li><p><strong><code>/actuator/info</code></strong>:</p>
+<ul>
+<li><strong>用途</strong>: 显示任意的应用信息。</li>
+<li><strong>信息</strong>: 可以是静态信息，也可以是 Git 提交信息、构建信息等。</li>
+<li><strong>配置</strong>:<ul>
+<li>在 <code>application.properties</code> 中配置 <code>info.*</code> 属性：<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">info.app.name</span>=My Awesome App<br><span class="hljs-attr">info.app.version</span>=<span class="hljs-number">1.0</span>.<span class="hljs-number">0</span><br><span class="hljs-attr">info.app.description</span>=This is a demo application.<br></code></pre></td></tr></table></figure></li>
+<li>集成 Git 属性 (需要 <code>git-commit-id-plugin</code> for Maven or Gradle):<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- Maven: pom.xml --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>io.github.git-commit-id<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>git-commit-id-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span><br></code></pre></td></tr></table></figure>
+这会自动将 <code>git.branch</code>, <code>git.commit.id</code>, <code>git.commit.time</code> 等信息添加到 <code>/info</code> 端点。</li>
+<li>集成构建信息 (需要 <code>spring-boot-maven-plugin</code> 的 <code>build-info</code> goal):<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-comment">&lt;!-- Maven: pom.xml --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">build</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">plugins</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-maven-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>            <span class="hljs-tag">&lt;<span class="hljs-name">executions</span>&gt;</span><br>                <span class="hljs-tag">&lt;<span class="hljs-name">execution</span>&gt;</span><br>                    <span class="hljs-tag">&lt;<span class="hljs-name">goals</span>&gt;</span><br>                        <span class="hljs-tag">&lt;<span class="hljs-name">goal</span>&gt;</span>build-info<span class="hljs-tag">&lt;/<span class="hljs-name">goal</span>&gt;</span><br>                    <span class="hljs-tag">&lt;/<span class="hljs-name">goals</span>&gt;</span><br>                <span class="hljs-tag">&lt;/<span class="hljs-name">execution</span>&gt;</span><br>            <span class="hljs-tag">&lt;/<span class="hljs-name">executions</span>&gt;</span><br>        <span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">plugins</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">build</span>&gt;</span><br></code></pre></td></tr></table></figure>
+这会将构建时间、版本等信息添加到 <code>/info</code> 端点。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong><code>/actuator/metrics</code></strong>:</p>
+<ul>
+<li><strong>用途</strong>: 显示应用程序的各种指标。</li>
+<li><strong>信息</strong>: 如 JVM 内存使用、CPU 使用、HTTP 请求统计、Tomcat 线程池等。</li>
+<li><strong>查看特定指标</strong>: <code>/actuator/metrics/&#123;metric.name&#125;</code>，例如 <code>/actuator/metrics/jvm.memory.used</code>。</li>
+<li><strong>Micrometer 集成</strong>:<ul>
+<li>Spring Boot Actuator 使用 Micrometer 收集这些指标。</li>
+<li>你可以添加特定监控系统的 Micrometer 依赖 (如 <code>micrometer-registry-prometheus</code>)，Spring Boot 会自动配置将指标导出到该系统。</li>
+<li>例如，添加 Prometheus 依赖后，会额外暴露 <code>/actuator/prometheus</code> 端点，供 Prometheus 服务抓取。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong><code>/actuator/env</code></strong>:</p>
+<ul>
+<li><strong>用途</strong>: 显示应用程序环境中的所有属性 (包括系统属性、环境变量、配置文件属性等)。</li>
+<li><strong>查看特定属性</strong>: <code>/actuator/env/&#123;property.name&#125;</code>。</li>
+<li><strong>安全警告</strong>: 这个端点可能暴露敏感信息 (如数据库密码)，默认情况下，只有经过身份验证的用户才能访问属性值，并且某些敏感属性键会被打星号。务必谨慎暴露。</li>
+</ul>
+</li>
+<li><p><strong><code>/actuator/loggers</code></strong>:</p>
+<ul>
+<li><strong>用途</strong>: 查看和动态修改应用程序的日志级别。</li>
+<li><strong>操作</strong>:<ul>
+<li>查看所有 logger 或特定 logger 的级别: <code>GET /actuator/loggers</code> 或 <code>GET /actuator/loggers/&#123;logger.name&#125;</code>。</li>
+<li>修改特定 logger 的级别: <code>POST /actuator/loggers/&#123;logger.name&#125;</code>  with body <code>&#123;&quot;configuredLevel&quot;: &quot;DEBUG&quot;&#125;</code>。</li>
+</ul>
+</li>
+<li><strong>非常有用</strong>: 在生产环境中临时调高某个类的日志级别以排查问题，而无需重启应用。</li>
+</ul>
+</li>
+<li><p><strong><code>/actuator/beans</code></strong>:</p>
+<ul>
+<li><strong>用途</strong>: 显示应用程序上下文中的所有 Spring Bean 及其关系。</li>
+<li><strong>信息</strong>: Bean 的名称、类型、作用域、依赖等。</li>
+</ul>
+</li>
+<li><p><strong><code>/actuator/mappings</code></strong>:</p>
+<ul>
+<li><strong>用途</strong>: 显示所有 <code>@RequestMapping</code> 路径 (包括 Spring MVC 和 WebFlux)。</li>
+<li><strong>信息</strong>: Controller 方法、HTTP 方法、路径模式、处理的媒体类型等。</li>
+</ul>
+</li>
+<li><p><strong><code>/actuator/httpexchanges</code> (或 <code>/actuator/httptrace</code> 在旧版本)</strong>:</p>
+<ul>
+<li><strong>用途</strong>: 显示最近的 HTTP 请求-响应交换的追踪信息 (默认存储最近 100 条)。</li>
+<li><strong>信息</strong>: 请求方法、路径、状态码、时间、头部等。</li>
+<li><strong>注意</strong>: 默认使用的是内存存储 (<code>InMemoryHttpExchangeRepository</code>)，生产环境如果需要长期存储或大量追踪，应考虑自定义实现。</li>
+</ul>
+</li>
+<li><p><strong><code>/actuator/threaddump</code></strong>:</p>
+<ul>
+<li><strong>用途</strong>: 执行并显示线程转储，用于分析线程状态、死锁等问题。</li>
+</ul>
+</li>
+<li><p><strong><code>/actuator/heapdump</code></strong>:</p>
+<ul>
+<li><strong>用途</strong>: 生成一个堆转储 (heap dump) 文件。这是一个重量级操作，会冻结应用一小段时间。</li>
+<li><strong>安全</strong>: 默认情况下，此端点是禁用的，并且不通过 HTTP 暴露。需要通过 JMX 或显式配置才能启用。生成的文件可能很大，需要注意磁盘空间。</li>
+</ul>
+</li>
+<li><p><strong><code>/actuator/shutdown</code></strong>:</p>
+<ul>
+<li><strong>用途</strong>: 优雅地关闭应用程序。</li>
+<li><strong>安全</strong>: 默认情况下是禁用的。需要通过 <code>management.endpoint.shutdown.enabled=true</code> 启用，并且通常只应该通过安全的内部网络或 JMX 访问。</li>
+</ul>
+</li>
+</ol>
+<p><strong>安全性考虑：</strong></p>
+<ul>
+<li><strong>默认保护</strong>: Spring Security 会自动保护 Actuator 端点（如果 <code>spring-boot-starter-security</code> 在 classpath 中）。你需要有合适的权限才能访问大部分端点（<code>health</code> 和 <code>info</code> 通常是例外，取决于你的安全配置）。</li>
+<li><strong>暴露策略</strong>: 如上所述，使用 <code>management.endpoints.web.exposure.include</code> 和 <code>exclude</code> 来精确控制暴露哪些端点。<strong>不要在生产环境中使用 <code>include=*</code> 除非你有严格的安全措施。</strong></li>
+<li><strong>敏感信息</strong>: <code>env</code>, <code>configprops</code> 等端点可能暴露敏感配置。Actuator 会对已知的敏感键 (如包含 <code>password</code>, <code>secret</code>, <code>key</code> 的) 进行屏蔽 (sanitization)，显示为 <code>******</code>。你可以通过 <code>management.endpoint.env.keys-to-sanitize</code> 或 <code>management.endpoint.configprops.keys-to-sanitize</code> 自定义需要屏蔽的键。</li>
+<li><strong>独立的管理端口</strong>: 可以将 Actuator 端点配置在与主应用程序不同的端口上，以增加安全性。<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">management.server.port</span>=<span class="hljs-number">9090</span> <span class="hljs-comment"># Actuator 运行在 9090 端口</span><br><span class="hljs-attr">management.server.address</span>=<span class="hljs-number">127.0</span>.<span class="hljs-number">0.1</span> <span class="hljs-comment"># 只允许本地访问 Actuator 端口</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+<p><strong>扩展与应用：</strong></p>
+<ol>
+<li><p><strong>自定义 Health Indicators</strong>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.boot.actuate.health.Health;<br><span class="hljs-keyword">import</span> org.springframework.boot.actuate.health.HealthIndicator;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Component;<br><br><span class="hljs-meta">@Component(&quot;myCustomService&quot;)</span> <span class="hljs-comment">// bean name 会作为 health indicator 的一部分</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCustomServiceHealthIndicator</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">HealthIndicator</span> &#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Health <span class="hljs-title function_">health</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 检查你的自定义服务状态</span><br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">isServiceUp</span> <span class="hljs-operator">=</span> checkServiceStatus();<br>        <span class="hljs-keyword">if</span> (isServiceUp) &#123;<br>            <span class="hljs-keyword">return</span> Health.up().withDetail(<span class="hljs-string">&quot;message&quot;</span>, <span class="hljs-string">&quot;Service is running smoothly&quot;</span>).build();<br>        &#125;<br>        <span class="hljs-keyword">return</span> Health.down().withDetail(<span class="hljs-string">&quot;error&quot;</span>, <span class="hljs-string">&quot;Service is not responding&quot;</span>).build();<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">checkServiceStatus</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 实际的检查逻辑</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>自定义 Metrics</strong>:<br>使用 Micrometer 的 <code>MeterRegistry</code> 来注册自定义指标。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> io.micrometer.core.instrument.Counter;<br><span class="hljs-keyword">import</span> io.micrometer.core.instrument.MeterRegistry;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyCustomMetricsService</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Counter customOperationsCounter;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyCustomMetricsService</span><span class="hljs-params">(MeterRegistry registry)</span> &#123;<br>        <span class="hljs-built_in">this</span>.customOperationsCounter = Counter.builder(<span class="hljs-string">&quot;custom.operations.total&quot;</span>)<br>            .description(<span class="hljs-string">&quot;Total number of custom operations performed&quot;</span>)<br>            .tag(<span class="hljs-string">&quot;type&quot;</span>, <span class="hljs-string">&quot;important&quot;</span>)<br>            .register(registry);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">performOperation</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// ... 执行操作 ...</span><br>        <span class="hljs-built_in">this</span>.customOperationsCounter.increment();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>集成监控系统</strong>:</p>
+<ul>
+<li><strong>Prometheus</strong>: 添加 <code>micrometer-registry-prometheus</code> 依赖，暴露 <code>/actuator/prometheus</code> 端点。</li>
+<li><strong>Grafana</strong>: 使用 Grafana 连接到 Prometheus (或其他指标后端) 来可视化 Actuator 收集的指标。</li>
+<li><strong>Spring Boot Admin</strong>: 一个社区项目，提供了一个漂亮的 UI 来展示和管理 Actuator 端点信息，非常方便。</li>
+</ul>
+</li>
+</ol>
+<p><strong>总结：</strong></p>
+<p>Spring Boot Actuator 是一个用于为你的 Spring Boot 应用添加生产就绪特性的关键模块。它通过一系列 HTTP&#x2F;JMX 端点提供了对应用内部状态的洞察力 (健康、指标、环境、日志等) 和一些管理能力 (修改日志级别、关闭应用等)。务必理解其暴露机制和安全含义，并根据需求进行配置。结合 Micrometer，它可以轻松集成到各种流行的监控和告警系统中，是现代云原生应用开发的重要组成部分。</p>
+<p>特定端点的配置细节，或者与监控系统的集成方式</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Actuator/概述/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/Auditing/" title="审计::Spring Data JPA --- Auditing :: Spring Data JPA">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">审计::Spring Data JPA --- Auditing :: Spring Data JPA</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Actuator/%E4%BD%BF%E7%94%A8%20Grafana%20Stack%20%E5%AE%9E%E7%8E%B0%E5%8F%AF%E8%A7%82%E5%AF%9F%E6%80%A7/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

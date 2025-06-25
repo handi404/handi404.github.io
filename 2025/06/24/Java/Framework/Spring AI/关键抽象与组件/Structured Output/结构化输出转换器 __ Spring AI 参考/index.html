@@ -1,0 +1,848 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="[[2025-05-26]]     自 2024 年 5 月 2 日起，旧的 OutputParser 、 BeanOutputParser 、 ListOutputParser 和 MapOutputParser 类已弃用，取而代之的是新的 StructuredOutputConverter 、 BeanOutputConverter 、 ListOutputConverter 和 MapOu">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Structured%20Output/%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA%E8%BD%AC%E6%8D%A2%E5%99%A8%20__%20Spring%20AI%20%E5%8F%82%E8%80%83/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="[[2025-05-26]]     自 2024 年 5 月 2 日起，旧的 OutputParser 、 BeanOutputParser 、 ListOutputParser 和 MapOutputParser 类已弃用，取而代之的是新的 StructuredOutputConverter 、 BeanOutputConverter 、 ListOutputConverter 和 MapOu">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://docs.spring.io/spring-ai/reference/_images/structured-output-architecture.jpg">
+<meta property="og:image" content="https://docs.spring.io/spring-ai/reference/_images/structured-output-api.jpg">
+<meta property="og:image" content="https://docs.spring.io/spring-ai/reference/_images/structured-output-hierarchy4.jpg">
+<meta property="article:published_time" content="2025-06-24T13:34:26.953Z">
+<meta property="article:modified_time" content="2025-05-26T07:51:29.210Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://docs.spring.io/spring-ai/reference/_images/structured-output-architecture.jpg">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年5月26日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>[[2025-05-26]]</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>自 2024 年 5 月 2 日起，旧的 <code>OutputParser</code> 、 <code>BeanOutputParser</code> 、 <code>ListOutputParser</code> 和 <code>MapOutputParser</code> 类已弃用，取而代之的是新的 <code>StructuredOutputConverter</code> 、 <code>BeanOutputConverter</code> 、 <code>ListOutputConverter</code> 和 <code>MapOutputConverter</code> 实现。后者是前者的直接替代品，并提供相同的功能。更改的原因主要是命名方面，因为不再进行任何解析，同时也与 Spring <code>org.springframework.core.convert.converter</code> 包保持一致，带来了一些改进的功能。</th>
+</tr>
+</thead>
+</table>
+<p>LLM 生成结构化输出的能力对于依赖可靠解析输出值的下游应用程序至关重要。开发人员希望快速将 AI 模型的结果转换为可传递给其他应用程序函数和方法的数据类型，例如 JSON、XML 或 Java 类。</p>
+<p>Spring AI <code>Structured Output Converters</code> 有助于将 LLM 输出转换为结构化格式。如下图所示，此方法围绕 LLM 文本补全端点运行：</p>
+<p><img src="https://docs.spring.io/spring-ai/reference/_images/structured-output-architecture.jpg" srcset="/img/loading.gif" lazyload alt="Structured Output Converter Architecture"></p>
+<p>使用通用补全 API 从大型语言模型 (LLM) 生成结构化输出需要仔细处理输入和输出。结构化输出转换器在 LLM 调用前后起着至关重要的作用，确保实现所需的输出结构。</p>
+<p>在 LLM 调用之前，转换器会将格式指令附加到提示中，为模型提供生成所需输出结构的明确指导。这些指令充当蓝图，塑造模型的响应以符合指定的格式。</p>
+<p>LLM 调用后，转换器会获取模型的输出文本，并将其转换为结构化类型的实例。此转换过程包括解析原始文本输出并将其映射到相应的结构化数据表示形式，例如 JSON、XML 或特定于域的数据结构。</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>StructuredOutputConverter</code> 尽力将模型输出转换为结构化输出。AI 模型无法保证按要求返回结构化输出。模型可能无法理解提示或无法按要求生成结构化输出。请考虑实施验证机制，以确保模型输出符合预期。</th>
+</tr>
+</thead>
+</table>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>StructuredOutputConverter</code> 不用于 LLM <a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/tools.html">Tool Calling</a> ，因为此功能本身默认提供结构化输出。</th>
+</tr>
+</thead>
+</table>
+<h2 id="Structured-Output-API"><a href="#Structured-Output-API" class="headerlink" title="Structured Output API"></a>Structured Output API</h2><p>The <code>StructuredOutputConverter</code> interface allows you to obtain structured output, such as mapping the output to a Java class or an array of values from the text-based AI Model output. The interface definition is:<br><code>StructuredOutputConverter</code> 接口允许您获取结构化输出，例如将基于文本的 AI 模型输出映射到 Java 类或值数组。接口定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">StructuredOutputConverter</span>&lt;T&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Converter</span>&lt;String, T&gt;, FormatProvider &#123;<br><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>它结合了 Spring <a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/convert/converter/Converter.html">Converter&lt;String、T&gt;</a> 接口和 <code>FormatProvider</code> 接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">FormatProvider</span> &#123;<br>    String <span class="hljs-title function_">getFormat</span><span class="hljs-params">()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>下图显示了使用 structured output API 时的数据流。</p>
+<p><img src="https://docs.spring.io/spring-ai/reference/_images/structured-output-api.jpg" srcset="/img/loading.gif" lazyload alt="Structured Output API"></p>
+<p>The <code>FormatProvider</code> supplies specific formatting guidelines to the AI Model, enabling it to produce text outputs that can be converted into the designated target type <code>T</code> using the <code>Converter</code>. Here is an example of such formatting instructions:<br><code>FormatProvider</code> 为 AI 模型提供特定的格式指南，使其能够生成文本输出，并使用 <code>Converter</code> 将其转换为指定的目标类型 <code>T</code> 以下是此类格式指令的示例：</p>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">Your response should be <span class="hljs-keyword">in</span> <span class="hljs-type">JSON</span> <span class="hljs-keyword">format</span>.<br>  The data structure <span class="hljs-keyword">for</span> the <span class="hljs-type">JSON</span> should match this Java <span class="hljs-keyword">class</span>: java.util.HashMap<br>  <span class="hljs-keyword">Do</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">include</span> <span class="hljs-keyword">any</span> explanations, <span class="hljs-keyword">only</span> provide a RFC8259 compliant <span class="hljs-type">JSON</span> response <span class="hljs-keyword">following</span> this <span class="hljs-keyword">format</span> <span class="hljs-keyword">without</span> deviation.<br>您的响应应为 <span class="hljs-type">JSON</span> 格式。<br>  <span class="hljs-type">JSON</span> 的数据结构应符合以下 Java 类：java.util.HashMap<br>  请勿包含任何解释，只需按照此格式提供符合 RFC8259 标准的 <span class="hljs-type">JSON</span> 响应，不得有任何偏差。<br></code></pre></td></tr></table></figure>
+
+<p>格式说明通常使用 <a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/prompt.html#_prompttemplate">PromptTemplate</a> 附加到用户输入的末尾，如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">StructuredOutputConverter</span> <span class="hljs-variable">outputConverter</span> <span class="hljs-operator">=</span> ...<br>    <span class="hljs-type">String</span> <span class="hljs-variable">userInputTemplate</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">                ... user text input ....</span><br><span class="hljs-string">                &#123;format&#125;</span><br><span class="hljs-string">                &quot;&quot;&quot;</span>; <span class="hljs-comment">// 带有“format”占位符的用户输入.</span><br>    <span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompt</span>(<br>       <span class="hljs-keyword">new</span> <span class="hljs-title class_">PromptTemplate</span>(<br>               <span class="hljs-built_in">this</span>.userInputTemplate,<br>          Map.of(..., <span class="hljs-string">&quot;format&quot;</span>, outputConverter.getFormat()) <span class="hljs-comment">// 用转换器的格式替换“format”占位符。</span><br>       ).createMessage());<br></code></pre></td></tr></table></figure>
+
+<p>Converter&lt;String, T&gt; 负责将模型中的输出文本转换为指定类型 <code>T</code> 的实例。</p>
+<h3 id="可用的转换器"><a href="#可用的转换器" class="headerlink" title="可用的转换器"></a>可用的转换器</h3><p>目前，Spring AI 提供 <code>AbstractConversionServiceOutputConverter</code> 、 <code>AbstractMessageOutputConverter</code> 、 <code>BeanOutputConverter</code> 、 <code>MapOutputConverter</code> 和 <code>ListOutputConverter</code> 实现：</p>
+<p><img src="https://docs.spring.io/spring-ai/reference/_images/structured-output-hierarchy4.jpg" srcset="/img/loading.gif" lazyload alt="Structured Output Class Hierarchy"></p>
+<ul>
+<li><p><code>AbstractConversionServiceOutputConverter&lt;T&gt;</code> - 提供预配置的 <a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/convert/support/GenericConversionService.html">GenericConversionService</a> ，用于将 LLM 输出转换为所需格式。不提供默认的 <code>FormatProvider</code> 实现。</p>
+</li>
+<li><p><code>AbstractMessageOutputConverter&lt;T&gt;</code> - 提供预配置的 <a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/jms/support/converter/MessageConverter.html">MessageConverter</a> ，用于将 LLM 输出转换为所需格式。不提供默认的 <code>FormatProvider</code> 实现。</p>
+</li>
+<li><p><code>BeanOutputConverter&lt;T&gt;</code> - 此转换器配置了指定的 Java 类（例如 Bean）或 <a target="_blank" rel="noopener" href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/core/ParameterizedTypeReference.html">ParameterizedTypeReference</a> ，并采用 <code>FormatProvider</code> 实现，指示 AI 模型生成符合 <code>DRAFT_2020_12</code> 的 JSON 响应，该响应 <code>JSON Schema</code> 源自指定的 Java 类。随后，它利用 <code>ObjectMapper</code> 将 JSON 输出反序列化为目标类的 Java 对象实例。</p>
+</li>
+<li><p><code>MapOutputConverter</code> - 通过 <code>FormatProvider</code> 实现扩展了 <code>AbstractMessageOutputConverter</code> 的功能，该实现可指导 AI 模型生成符合 RFC8259 标准的 JSON 响应。此外，它还包含一个转换器实现，该实现利用提供的 <code>MessageConverter</code> 将 JSON 负载转换为 <code>java.util.Map&lt;String, Object&gt;</code> 实例。</p>
+</li>
+<li><p><code>ListOutputConverter</code> - 扩展了 <code>AbstractConversionServiceOutputConverter</code> ，并包含一个专为逗号分隔列表输出而定制的 <code>FormatProvider</code> 实现。该转换器实现使用提供的 <code>ConversionService</code> 将模型文本输出转换为 <code>java.util.List</code> 。</p>
+</li>
+</ul>
+<h2 id="Using-Converters"><a href="#Using-Converters" class="headerlink" title="Using Converters"></a>Using Converters</h2><p>以下部分提供了如何使用可用的转换器生成结构化输出的指南。</p>
+<h3 id="Bean-Output-Converter"><a href="#Bean-Output-Converter" class="headerlink" title="Bean Output Converter"></a>Bean Output Converter</h3><p>下面的示例展示如何使用 <code>BeanOutputConverter</code> 生成演员的电影作品。</p>
+<p>此 record 代表演员电影作品：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">record</span> <span class="hljs-title class_">ActorsFilms</span><span class="hljs-params">(String actor, List&lt;String&gt; movies)</span> &#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>以下是如何使用高级、流畅的 <code>ChatClient</code> API 应用 BeanOutputConverter：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ActorsFilms</span> <span class="hljs-variable">actorsFilms</span> <span class="hljs-operator">=</span> ChatClient.create(chatModel).prompt()<br>        .user(u -&gt; u.text(<span class="hljs-string">&quot;Generate the filmography of 5 movies for &#123;actor&#125;.&quot;</span>)<br>                    .param(<span class="hljs-string">&quot;actor&quot;</span>, <span class="hljs-string">&quot;Tom Hanks&quot;</span>))<br>        .call()<br>        .entity(ActorsFilms.class);<br></code></pre></td></tr></table></figure>
+
+<p>或者直接使用低级 <code>ChatModel</code> API：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java">BeanOutputConverter&lt;ActorsFilms&gt; beanOutputConverter =<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">BeanOutputConverter</span>&lt;&gt;(ActorsFilms.class);<br><br><span class="hljs-type">String</span> <span class="hljs-variable">format</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.beanOutputConverter.getFormat();<br><br><span class="hljs-type">String</span> <span class="hljs-variable">actor</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Tom Hanks&quot;</span>;<br><br><span class="hljs-type">String</span> <span class="hljs-variable">template</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        Generate the filmography of 5 movies for &#123;actor&#125;.</span><br><span class="hljs-string">        &#123;format&#125;</span><br><span class="hljs-string">        &quot;&quot;&quot;</span>;<br><br><span class="hljs-type">Generation</span> <span class="hljs-variable">generation</span> <span class="hljs-operator">=</span> chatModel.call(<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">PromptTemplate</span>(<span class="hljs-built_in">this</span>.template, Map.of(<span class="hljs-string">&quot;actor&quot;</span>, <span class="hljs-built_in">this</span>.actor, <span class="hljs-string">&quot;format&quot;</span>, <span class="hljs-built_in">this</span>.format)).create()).getResult();<br><br><span class="hljs-type">ActorsFilms</span> <span class="hljs-variable">actorsFilms</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.beanOutputConverter.convert(<span class="hljs-built_in">this</span>.generation.getOutput().getText());<br></code></pre></td></tr></table></figure>
+
+<h3 id="生成的架构中的属性排序"><a href="#生成的架构中的属性排序" class="headerlink" title="生成的架构中的属性排序"></a>生成的架构中的属性排序</h3><p><code>BeanOutputConverter</code> 通过 <code>@JsonPropertyOrder</code> 注解支持在生成的 JSON Schema 中自定义属性排序。此注解允许您指定属性在 Schema 中出现的精确顺序，而无需考虑它们在类或 record 中的声明顺序。</p>
+<p>例如，为了确保 <code>ActorsFilms</code> 记录中的属性的特定顺序：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@JsonPropertyOrder(&#123;&quot;actor&quot;, &quot;movies&quot;&#125;)</span><br><span class="hljs-keyword">record</span> <span class="hljs-title class_">ActorsFilms</span><span class="hljs-params">(String actor, List&lt;String&gt; movies)</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+
+<p>此注释适用于 record 和常规 Java 类。</p>
+<h4 id="Generic-Bean-Types-通用-Bean-类型"><a href="#Generic-Bean-Types-通用-Bean-类型" class="headerlink" title="Generic Bean Types 通用 Bean 类型"></a>Generic Bean Types 通用 Bean 类型</h4><p>使用 <code>ParameterizedTypeReference</code> 构造函数指定更复杂的目标类结构。例如，要表示演员及其电影作品列表：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;ActorsFilms&gt; actorsFilms = ChatClient.create(chatModel).prompt()<br>        .user(<span class="hljs-string">&quot;Generate the filmography of 5 movies for Tom Hanks and Bill Murray.&quot;</span>)<br>        .call()<br>        .entity(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ParameterizedTypeReference</span>&lt;List&lt;ActorsFilms&gt;&gt;() &#123;&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>或者直接使用低级 <code>ChatModel</code> API：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java">BeanOutputConverter&lt;List&lt;ActorsFilms&gt;&gt; outputConverter = <span class="hljs-keyword">new</span> <span class="hljs-title class_">BeanOutputConverter</span>&lt;&gt;(<br>        <span class="hljs-keyword">new</span> <span class="hljs-title class_">ParameterizedTypeReference</span>&lt;List&lt;ActorsFilms&gt;&gt;() &#123; &#125;);<br><br><span class="hljs-type">String</span> <span class="hljs-variable">format</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.outputConverter.getFormat();<br><span class="hljs-type">String</span> <span class="hljs-variable">template</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        Generate the filmography of 5 movies for Tom Hanks and Bill Murray.</span><br><span class="hljs-string">        &#123;format&#125;</span><br><span class="hljs-string">        &quot;&quot;&quot;</span>;<br><br><span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PromptTemplate</span>(<span class="hljs-built_in">this</span>.template, Map.of(<span class="hljs-string">&quot;format&quot;</span>, <span class="hljs-built_in">this</span>.format)).create();<br><br><span class="hljs-type">Generation</span> <span class="hljs-variable">generation</span> <span class="hljs-operator">=</span> chatModel.call(<span class="hljs-built_in">this</span>.prompt).getResult();<br><br>List&lt;ActorsFilms&gt; actorsFilms = <span class="hljs-built_in">this</span>.outputConverter.convert(<span class="hljs-built_in">this</span>.generation.getOutput().getText());<br></code></pre></td></tr></table></figure>
+
+<h3 id="Map-Output-Converter"><a href="#Map-Output-Converter" class="headerlink" title="Map Output Converter"></a>Map Output Converter</h3><p>以下代码片段展示了如何使用 <code>MapOutputConverter</code> 将模型输出转换为 map 中的数字列表。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">Map&lt;String, Object&gt; result = ChatClient.create(chatModel).prompt()<br>        .user(u -&gt; u.text(<span class="hljs-string">&quot;Provide me a List of &#123;subject&#125;&quot;</span>)<br>                    .param(<span class="hljs-string">&quot;subject&quot;</span>, <span class="hljs-string">&quot;an array of numbers from 1 to 9 under they key name &#x27;numbers&#x27;&quot;</span>))<br>        .call()<br>        .entity(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ParameterizedTypeReference</span>&lt;Map&lt;String, Object&gt;&gt;() &#123;&#125;);<br></code></pre></td></tr></table></figure>
+
+<p>或者直接使用低级 <code>ChatModel</code> API：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">MapOutputConverter</span> <span class="hljs-variable">mapOutputConverter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MapOutputConverter</span>();<br><br><span class="hljs-type">String</span> <span class="hljs-variable">format</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.mapOutputConverter.getFormat();<br><span class="hljs-type">String</span> <span class="hljs-variable">template</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        Provide me a List of &#123;subject&#125;</span><br><span class="hljs-string">        &#123;format&#125;</span><br><span class="hljs-string">        &quot;&quot;&quot;</span>;<br><br><span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PromptTemplate</span>(<span class="hljs-built_in">this</span>.template,<br>        Map.of(<span class="hljs-string">&quot;subject&quot;</span>, <span class="hljs-string">&quot;an array of numbers from 1 to 9 under they key name &#x27;numbers&#x27;&quot;</span>, <span class="hljs-string">&quot;format&quot;</span>, <span class="hljs-built_in">this</span>.format)).create();<br><br><span class="hljs-type">Generation</span> <span class="hljs-variable">generation</span> <span class="hljs-operator">=</span> chatModel.call(<span class="hljs-built_in">this</span>.prompt).getResult();<br><br>Map&lt;String, Object&gt; result = <span class="hljs-built_in">this</span>.mapOutputConverter.convert(<span class="hljs-built_in">this</span>.generation.getOutput().getText());<br></code></pre></td></tr></table></figure>
+
+<h3 id="List-Output-Converter"><a href="#List-Output-Converter" class="headerlink" title="List Output Converter"></a>List Output Converter</h3><p>以下代码片段显示如何使用 <code>ListOutputConverter</code> 将模型输出转换为冰淇淋口味列表。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;String&gt; flavors = ChatClient.create(chatModel).prompt()<br>                .user(u -&gt; u.text(<span class="hljs-string">&quot;List five &#123;subject&#125;&quot;</span>)<br>                            .param(<span class="hljs-string">&quot;subject&quot;</span>, <span class="hljs-string">&quot;ice cream flavors&quot;</span>))<br>                .call()<br>                .entity(<span class="hljs-keyword">new</span> <span class="hljs-title class_">ListOutputConverter</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultConversionService</span>()));<br></code></pre></td></tr></table></figure>
+
+<p>或者直接使用低级 <code>ChatModel API</code> ：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ListOutputConverter</span> <span class="hljs-variable">listOutputConverter</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ListOutputConverter</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">DefaultConversionService</span>());<br><br><span class="hljs-type">String</span> <span class="hljs-variable">format</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.listOutputConverter.getFormat();<br><span class="hljs-type">String</span> <span class="hljs-variable">template</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        List five &#123;subject&#125;</span><br><span class="hljs-string">        &#123;format&#125;</span><br><span class="hljs-string">        &quot;&quot;&quot;</span>;<br><br><span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PromptTemplate</span>(<span class="hljs-built_in">this</span>.template,<br>        Map.of(<span class="hljs-string">&quot;subject&quot;</span>, <span class="hljs-string">&quot;ice cream flavors&quot;</span>, <span class="hljs-string">&quot;format&quot;</span>, <span class="hljs-built_in">this</span>.format)).create();<br><br><span class="hljs-type">Generation</span> <span class="hljs-variable">generation</span> <span class="hljs-operator">=</span> <span class="hljs-built_in">this</span>.chatModel.call(<span class="hljs-built_in">this</span>.prompt).getResult();<br><br>List&lt;String&gt; list = <span class="hljs-built_in">this</span>.listOutputConverter.convert(<span class="hljs-built_in">this</span>.generation.getOutput().getText());<br></code></pre></td></tr></table></figure>
+
+<h2 id="支持的-AI-模型"><a href="#支持的-AI-模型" class="headerlink" title="支持的 AI 模型"></a>支持的 AI 模型</h2><p>以下 AI 模型已经过测试，支持 List、Map 和 Bean 结构化输出。</p>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>Integration Tests &#x2F; Samples   集成测试&#x2F;示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html">OpenAI</a></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-ai/blob/main/models/spring-ai-openai/src/test/java/org/springframework/ai/openai/chat/OpenAiChatModelIT.java">OpenAiChatModelIT</a></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/chat/anthropic-chat.html">Anthropic Claude 3 人性克劳德3</a></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-ai/blob/main/models/spring-ai-anthropic/src/test/java/org/springframework/ai/anthropic/AnthropicChatModelIT.java">AnthropicChatModelIT.java</a></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/chat/azure-openai-chat.html">Azure OpenAI</a></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-ai/blob/main/models/spring-ai-azure-openai/src/test/java/org/springframework/ai/azure/openai/AzureOpenAiChatModelIT.java">AzureOpenAiChatModelIT.java</a></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html">Mistral AI 米斯特拉尔人工智能</a></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-ai/blob/main/models/spring-ai-mistral-ai/src/test/java/org/springframework/ai/mistralai/MistralAiChatModelIT.java">MistralAiChatModelIT.java</a></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html">Ollama 奥拉马</a></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-ai/blob/main/models/spring-ai-ollama/src/test/java/org/springframework/ai/ollama/OllamaChatModelIT.java">OllamaChatModelIT.java</a></td>
+</tr>
+<tr>
+<td><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/chat/vertexai-gemini-chat.html">Vertex AI Gemini</a></td>
+<td><a target="_blank" rel="noopener" href="https://github.com/spring-projects/spring-ai/blob/main/models/spring-ai-vertex-ai-gemini/src/test/java/org/springframework/ai/vertexai/gemini/VertexAiGeminiChatModelIT.java">VertexAiGeminiChatModelIT.java</a></td>
+</tr>
+</tbody></table>
+<h2 id="内置-JSON-模式"><a href="#内置-JSON-模式" class="headerlink" title="内置 JSON 模式"></a>内置 JSON 模式</h2><p>Some AI Models provide dedicated configuration options to generate structured (usually JSON) output.<br>一些 AI 模型提供专用的配置选项来生成结构化（通常是 JSON）输出。</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html#_structured_outputs">OpenAI 结构化输出</a> 可以确保您的模型生成的响应严格符合您提供的 JSON 模式。您可以选择 <code>JSON_OBJECT</code> 或 <code>JSON_SCHEMA</code> ，前者保证模型生成的消息为有效的 JSON，后者提供指定的模式，确保模型生成的响应与您提供的模式匹配（ <code>spring.ai.openai.chat.options.responseFormat</code> 选项）。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/chat/azure-openai-chat.html">Azure OpenAI</a> - 提供 <code>spring.ai.azure.openai.chat.options.responseFormat</code> 个选项，用于指定模型必须输出的格式。设置为 <code>&#123; &quot;type&quot;: &quot;json_object&quot; &#125;</code> 可启用 JSON 模式，从而保证模型生成的消息是有效的 JSON。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/chat/ollama-chat.html">Ollama</a> - 提供 <code>spring.ai.ollama.chat.options.format</code> 选项来指定返回响应的格式。目前，唯一接受的值是 <code>json</code> 。</li>
+<li><a target="_blank" rel="noopener" href="https://docs.spring.io/spring-ai/reference/api/chat/mistralai-chat.html">Mistral AI</a> - 提供 <code>spring.ai.mistralai.chat.options.responseFormat</code> 选项来指定返回响应的格式。将其设置为 <code>&#123; &quot;type&quot;: &quot;json_object&quot; &#125;</code> 可启用 JSON 模式，从而保证模型生成的消息是有效的 JSON。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring AI/关键抽象与组件/Structured Output/结构化输出转换器 __ Spring AI 参考/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/@Configuration%20and%20@Bean/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/%E6%9C%AA%E5%91%BD%E5%90%8D/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

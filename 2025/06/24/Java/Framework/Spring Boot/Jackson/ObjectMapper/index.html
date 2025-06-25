@@ -1,0 +1,930 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Jackson 的核心引擎：ObjectMapper。它是你在 Java 中进行 JSON 序列化（Java 对象转 JSON）和反序列化（JSON 转 Java 对象）时交互最多的类。  1. ObjectMapper 是什么？ObjectMapper (全称 com.fasterxml.jackson.databind.ObjectMapper) 是 Jackson 库中最主要、最核心的类。你">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Jackson/ObjectMapper/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Jackson 的核心引擎：ObjectMapper。它是你在 Java 中进行 JSON 序列化（Java 对象转 JSON）和反序列化（JSON 转 Java 对象）时交互最多的类。  1. ObjectMapper 是什么？ObjectMapper (全称 com.fasterxml.jackson.databind.ObjectMapper) 是 Jackson 库中最主要、最核心的类。你">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:27.188Z">
+<meta property="article:modified_time" content="2025-06-09T02:57:35.745Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          37 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月9日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Jackson 的核心引擎：<code>ObjectMapper</code>。它是你在 Java 中进行 JSON 序列化（Java 对象转 JSON）和反序列化（JSON 转 Java 对象）时交互最多的类。</p>
+<hr>
+<h3 id="1-ObjectMapper-是什么？"><a href="#1-ObjectMapper-是什么？" class="headerlink" title="1. ObjectMapper 是什么？"></a>1. <code>ObjectMapper</code> 是什么？</h3><p><code>ObjectMapper</code> (全称 <code>com.fasterxml.jackson.databind.ObjectMapper</code>) 是 Jackson 库中最主要、最核心的类。你可以把它想象成一个<strong>高度可配置的 JSON 处理工厂</strong>或<strong>转换器</strong>。</p>
+<p>它的主要职责包括：</p>
+<ul>
+<li><strong>读取 JSON</strong>: 将 JSON 字符串、流或文件解析成 Java 对象 (POJOs)、<code>Map</code>、<code>List</code> 或 <code>JsonNode</code> (树模型)。</li>
+<li><strong>写入 JSON</strong>: 将 Java 对象 (POJOs)、<code>Map</code>、<code>List</code> 转换成 JSON 字符串或写入流&#x2F;文件。</li>
+</ul>
+<p><code>ObjectMapper</code> 实例包含了所有用于执行这些转换的配置信息，例如使用哪些特性、模块、命名策略、注解解释器等。</p>
+<hr>
+<h3 id="2-为什么-ObjectMapper-如此重要？"><a href="#2-为什么-ObjectMapper-如此重要？" class="headerlink" title="2. 为什么 ObjectMapper 如此重要？"></a>2. 为什么 <code>ObjectMapper</code> 如此重要？</h3><ol>
+<li><strong>功能中心</strong>：几乎所有 Jackson 的功能（如注解处理、特性开关、模块注册、自定义序列化&#x2F;反序列化器）都是通过配置和使用 <code>ObjectMapper</code> 来实现的。</li>
+<li><strong>易用性</strong>：它提供了简单直观的 API (如 <code>writeValueAsString()</code>, <code>readValue()</code>) 来执行常见的 JSON 操作。</li>
+<li><strong>可配置性</strong>：提供了丰富的配置选项，允许你精细控制 JSON 的序列化和反序列化行为，以适应各种复杂需求。</li>
+<li><strong>可扩展性</strong>：通过模块化设计 (Modules)，可以轻松扩展其功能以支持新的数据类型 (如 Java 8 时间 API, Guava 类型) 或格式 (如 XML, CSV, YAML - 虽然这里我们主要关注 JSON)。</li>
+<li><strong>线程安全</strong>：一旦 <code>ObjectMapper</code> 被配置完成，其 <code>readValue()</code> 和 <code>writeValue()</code> 等核心方法是线程安全的。这意味着你可以创建一个 <code>ObjectMapper</code> 实例并在多个线程中安全地共享和重用它（这通常是推荐的做法，因为创建 <code>ObjectMapper</code> 有一定开销）。</li>
+</ol>
+<hr>
+<h3 id="3-ObjectMapper-如何工作（简要原理）？"><a href="#3-ObjectMapper-如何工作（简要原理）？" class="headerlink" title="3. ObjectMapper 如何工作（简要原理）？"></a>3. <code>ObjectMapper</code> 如何工作（简要原理）？</h3><p>虽然内部机制复杂，但我们可以概括一下：</p>
+<ul>
+<li><p><strong>序列化 (Java -&gt; JSON)</strong>:</p>
+<ol>
+<li>当你调用如 <code>writeValueAsString(myObject)</code> 时，<code>ObjectMapper</code> 会获取 <code>myObject</code> 的类信息。</li>
+<li>它会查找并应用该类及其属性上的 Jackson 注解 (如 <code>@JsonProperty</code>, <code>@JsonIgnore</code> 等)。</li>
+<li>根据配置（如 <code>SerializationFeature</code>、命名策略），它会决定哪些属性被包含以及如何命名。</li>
+<li>对于每个属性，它会找到合适的 <code>JsonSerializer</code> (可以是默认的，也可以是自定义的或模块提供的)。</li>
+<li><code>JsonSerializer</code> 将属性值转换为 JSON 表示形式。</li>
+<li>最终，所有部分组合成一个完整的 JSON 字符串或流。</li>
+</ol>
+</li>
+<li><p><strong>反序列化 (JSON -&gt; Java)</strong>:</p>
+<ol>
+<li>当你调用如 <code>readValue(jsonString, MyClass.class)</code> 时，<code>ObjectMapper</code> 会解析 <code>jsonString</code>。</li>
+<li>它会尝试根据 <code>MyClass.class</code> 的结构（构造函数、setter、字段，以及 <code>@JsonCreator</code>, <code>@JsonProperty</code> 等注解）来创建 <code>MyClass</code> 的实例。</li>
+<li>它会将 JSON 字段的值映射到 Java 对象的相应属性上。</li>
+<li>对于每个属性，它会找到合适的 <code>JsonDeserializer</code> 来将 JSON 值转换为 Java 类型。</li>
+<li>如果 JSON 中包含未在 Java 类中定义的字段，其行为取决于 <code>DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES</code> 的设置（Spring Boot 默认设为 <code>false</code>，即忽略未知字段）。</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="4-ObjectMapper-的核心用法"><a href="#4-ObjectMapper-的核心用法" class="headerlink" title="4. ObjectMapper 的核心用法"></a>4. <code>ObjectMapper</code> 的核心用法</h3><h4 id="a-创建-ObjectMapper-实例"><a href="#a-创建-ObjectMapper-实例" class="headerlink" title="a. 创建 ObjectMapper 实例"></a>a. 创建 <code>ObjectMapper</code> 实例</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper;<br><span class="hljs-keyword">import</span> com.fasterxml.jackson.datatype.jsr310.JavaTimeModule; <span class="hljs-comment">// For Java 8 Date/Time</span><br><br><span class="hljs-comment">// 1. 基本创建</span><br><span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">objectMapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br><br><span class="hljs-comment">// 2. 推荐：注册常用模块 (Spring Boot 会自动做这些)</span><br>objectMapper.registerModule(<span class="hljs-keyword">new</span> <span class="hljs-title class_">JavaTimeModule</span>());<br><span class="hljs-comment">// objectMapper.registerModule(new Jdk8Module()); // for Optional, etc.</span><br><br><span class="hljs-comment">// 3. 在 Spring Boot 中，通常直接注入 ObjectMapper 实例</span><br><span class="hljs-comment">// @Autowired</span><br><span class="hljs-comment">// private ObjectMapper springManagedObjectMapper;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="b-序列化：Java-对象-JSON"><a href="#b-序列化：Java-对象-JSON" class="headerlink" title="b. 序列化：Java 对象 -&gt; JSON"></a>b. 序列化：Java 对象 -&gt; JSON</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-keyword">public</span> String name;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> age;<br>    <span class="hljs-comment">// 构造函数, getters, setters...</span><br>&#125;<br><br><span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-number">30</span>);<br><br><span class="hljs-comment">// 1. 序列化为 JSON 字符串 (最常用)</span><br><span class="hljs-type">String</span> <span class="hljs-variable">jsonString</span> <span class="hljs-operator">=</span> objectMapper.writeValueAsString(user);<br><span class="hljs-comment">// jsonString: &#123;&quot;name&quot;:&quot;Alice&quot;,&quot;age&quot;:30&#125;</span><br><br><span class="hljs-comment">// 2. 序列化为格式化的 (pretty-printed) JSON 字符串</span><br>objectMapper.enable(SerializationFeature.INDENT_OUTPUT); <span class="hljs-comment">// 或 configure(SerializationFeature.INDENT_OUTPUT, true);</span><br><span class="hljs-type">String</span> <span class="hljs-variable">prettyJsonString</span> <span class="hljs-operator">=</span> objectMapper.writeValueAsString(user);<br><span class="hljs-comment">/* prettyJsonString:</span><br><span class="hljs-comment">&#123;</span><br><span class="hljs-comment">  &quot;name&quot; : &quot;Alice&quot;,</span><br><span class="hljs-comment">  &quot;age&quot; : 30</span><br><span class="hljs-comment">&#125;</span><br><span class="hljs-comment">*/</span><br>objectMapper.disable(SerializationFeature.INDENT_OUTPUT); <span class="hljs-comment">// 如果之后不需要，可以关闭</span><br><br><span class="hljs-comment">// 3. 序列化为字节数组</span><br><span class="hljs-type">byte</span>[] jsonBytes = objectMapper.writeValueAsBytes(user);<br><br><span class="hljs-comment">// 4. 序列化到文件</span><br><span class="hljs-comment">// objectMapper.writeValue(new File(&quot;user.json&quot;), user);</span><br><br><span class="hljs-comment">// 5. 序列化到 OutputStream</span><br><span class="hljs-comment">// OutputStream outputStream = ...;</span><br><span class="hljs-comment">// objectMapper.writeValue(outputStream, user);</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="c-反序列化：JSON-Java-对象"><a href="#c-反序列化：JSON-Java-对象" class="headerlink" title="c. 反序列化：JSON -&gt; Java 对象"></a>c. 反序列化：JSON -&gt; Java 对象</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">jsonInput</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&#123;\&quot;name\&quot;:\&quot;Bob\&quot;,\&quot;age\&quot;:25&#125;&quot;</span>;<br><br><span class="hljs-comment">// 1. 从 JSON 字符串反序列化 (最常用)</span><br><span class="hljs-type">User</span> <span class="hljs-variable">bob</span> <span class="hljs-operator">=</span> objectMapper.readValue(jsonInput, User.class);<br><span class="hljs-comment">// bob.getName() -&gt; &quot;Bob&quot;, bob.getAge() -&gt; 25</span><br><br><span class="hljs-comment">// 2. 从文件反序列化</span><br><span class="hljs-comment">// User userFromFile = objectMapper.readValue(new File(&quot;user.json&quot;), User.class);</span><br><br><span class="hljs-comment">// 3. 从 InputStream 反序列化</span><br><span class="hljs-comment">// InputStream inputStream = ...;</span><br><span class="hljs-comment">// User userFromStream = objectMapper.readValue(inputStream, User.class);</span><br><br><span class="hljs-comment">// 4. 反序列化为泛型集合 (如 List&lt;User&gt;) - 需要 TypeReference</span><br><span class="hljs-type">String</span> <span class="hljs-variable">jsonListInput</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;[&#123;\&quot;name\&quot;:\&quot;Carol\&quot;,\&quot;age\&quot;:35&#125;,&#123;\&quot;name\&quot;:\&quot;Dave\&quot;,\&quot;age\&quot;:40&#125;]&quot;</span>;<br>List&lt;User&gt; users = objectMapper.readValue(jsonListInput, <span class="hljs-keyword">new</span> <span class="hljs-title class_">TypeReference</span>&lt;List&lt;User&gt;&gt;() &#123;&#125;);<br><span class="hljs-comment">// users.get(0).getName() -&gt; &quot;Carol&quot;</span><br><br><span class="hljs-comment">// 如果没有 TypeReference，直接用 List.class 会得到 List&lt;LinkedHashMap&lt;String, Object&gt;&gt;</span><br><span class="hljs-comment">// List wrongUsers = objectMapper.readValue(jsonListInput, List.class);</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="d-处理-JSON-树模型-JsonNode"><a href="#d-处理-JSON-树模型-JsonNode" class="headerlink" title="d. 处理 JSON 树模型 (JsonNode)"></a>d. 处理 JSON 树模型 (<code>JsonNode</code>)</h4><p>当你需要处理结构不确定或只想读取部分 JSON 数据时，<code>JsonNode</code> 非常有用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">complexJson</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&#123;\&quot;name\&quot;:\&quot;Eve\&quot;,\&quot;details\&quot;:&#123;\&quot;city\&quot;:\&quot;Wonderland\&quot;,\&quot;active\&quot;:true&#125;,\&quot;tags\&quot;:[\&quot;friendly\&quot;,\&quot;smart\&quot;]&#125;&quot;</span>;<br><br><span class="hljs-comment">// 1. 读取 JSON 为 JsonNode</span><br><span class="hljs-type">JsonNode</span> <span class="hljs-variable">rootNode</span> <span class="hljs-operator">=</span> objectMapper.readTree(complexJson);<br><br><span class="hljs-comment">// 2. 访问节点数据</span><br><span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> rootNode.path(<span class="hljs-string">&quot;name&quot;</span>).asText(); <span class="hljs-comment">// &quot;Eve&quot;</span><br><span class="hljs-type">String</span> <span class="hljs-variable">city</span> <span class="hljs-operator">=</span> rootNode.path(<span class="hljs-string">&quot;details&quot;</span>).path(<span class="hljs-string">&quot;city&quot;</span>).asText(); <span class="hljs-comment">// &quot;Wonderland&quot;</span><br><span class="hljs-type">boolean</span> <span class="hljs-variable">isActive</span> <span class="hljs-operator">=</span> rootNode.path(<span class="hljs-string">&quot;details&quot;</span>).path(<span class="hljs-string">&quot;active&quot;</span>).asBoolean(); <span class="hljs-comment">// true</span><br><span class="hljs-type">JsonNode</span> <span class="hljs-variable">tagsNode</span> <span class="hljs-operator">=</span> rootNode.path(<span class="hljs-string">&quot;tags&quot;</span>);<br><span class="hljs-keyword">if</span> (tagsNode.isArray()) &#123;<br>    <span class="hljs-keyword">for</span> (JsonNode tagNode : tagsNode) &#123;<br>        System.out.println(tagNode.asText()); <span class="hljs-comment">// &quot;friendly&quot;, &quot;smart&quot;</span><br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 3. 将 JsonNode 转换为 POJO</span><br><span class="hljs-type">User</span> <span class="hljs-variable">eve</span> <span class="hljs-operator">=</span> objectMapper.treeToValue(rootNode, User.class); <span class="hljs-comment">// 如果结构匹配</span><br><br><span class="hljs-comment">// 4. 将 POJO 转换为 JsonNode</span><br><span class="hljs-type">User</span> <span class="hljs-variable">anotherUser</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-string">&quot;Frank&quot;</span>, <span class="hljs-number">50</span>);<br><span class="hljs-type">JsonNode</span> <span class="hljs-variable">userNode</span> <span class="hljs-operator">=</span> objectMapper.valueToTree(anotherUser);<br><span class="hljs-comment">// userNode.path(&quot;name&quot;).asText() -&gt; &quot;Frank&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="e-对象转换"><a href="#e-对象转换" class="headerlink" title="e. 对象转换"></a>e. 对象转换</h4><p><code>ObjectMapper</code> 也可以在不同的 Java 类型之间进行转换（只要它们在结构上兼容 Jackson 的序列化&#x2F;反序列化规则）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java">Map&lt;String, Object&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>map.put(<span class="hljs-string">&quot;name&quot;</span>, <span class="hljs-string">&quot;Grace&quot;</span>);<br>map.put(<span class="hljs-string">&quot;age&quot;</span>, <span class="hljs-number">28</span>);<br><br><span class="hljs-comment">// Map -&gt; POJO</span><br><span class="hljs-type">User</span> <span class="hljs-variable">grace</span> <span class="hljs-operator">=</span> objectMapper.convertValue(map, User.class);<br><br><span class="hljs-comment">// POJO -&gt; Map</span><br>Map&lt;String, Object&gt; graceMap = objectMapper.convertValue(grace, <span class="hljs-keyword">new</span> <span class="hljs-title class_">TypeReference</span>&lt;Map&lt;String, Object&gt;&gt;() &#123;&#125;);<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="5-ObjectMapper-的关键配置"><a href="#5-ObjectMapper-的关键配置" class="headerlink" title="5. ObjectMapper 的关键配置"></a>5. <code>ObjectMapper</code> 的关键配置</h3><p><code>ObjectMapper</code> 有大量配置选项，通过 <code>configure()</code>, <code>enable()</code>, <code>disable()</code> 方法或直接设置特性。</p>
+<ul>
+<li><p><strong><code>SerializationFeature</code></strong>: 控制序列化行为。</p>
+<ul>
+<li><code>INDENT_OUTPUT</code>: 是否美化输出 JSON。</li>
+<li><code>WRITE_DATES_AS_TIMESTAMPS</code>: 日期序列化为时间戳 (long) 还是 ISO-8601 字符串 (需要 <code>JavaTimeModule</code> 且此特性为 <code>false</code>)。Spring Boot 默认将日期序列化为 ISO-8601 字符串。</li>
+<li><code>FAIL_ON_EMPTY_BEANS</code>: 当序列化一个没有可识别属性的 Bean 时是否失败。</li>
+</ul>
+</li>
+<li><p><strong><code>DeserializationFeature</code></strong>: 控制反序列化行为。</p>
+<ul>
+<li><code>FAIL_ON_UNKNOWN_PROPERTIES</code>: JSON 中有未知属性时是否失败。Spring Boot 默认设为 <code>false</code> (忽略未知属性)。</li>
+<li><code>ACCEPT_EMPTY_STRING_AS_NULL_OBJECT</code>: 是否接受空字符串作为 <code>null</code> 对象。</li>
+<li><code>ACCEPT_SINGLE_VALUE_AS_ARRAY</code>: 当期望一个数组但 JSON 中只提供单个值时，是否自动包装成单元素数组。</li>
+</ul>
+</li>
+<li><p><strong><code>MapperFeature</code></strong>: 通用映射器特性。</p>
+<ul>
+<li><code>DEFAULT_VIEW_INCLUSION</code>: 与 <code>@JsonView</code> 相关。</li>
+<li><code>SORT_PROPERTIES_ALPHABETICALLY</code>: 是否按字母顺序序列化属性。</li>
+<li><code>ACCEPT_CASE_INSENSITIVE_PROPERTIES</code>: 反序列化时是否忽略属性名的大小写。</li>
+</ul>
+</li>
+<li><p><strong><code>JsonParser.Feature</code></strong>: 底层 JSON 解析器特性。</p>
+</li>
+<li><p><strong><code>JsonGenerator.Feature</code></strong>: 底层 JSON 生成器特性。</p>
+</li>
+</ul>
+<p><strong>配置示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ObjectMapper</span> <span class="hljs-variable">customMapper</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ObjectMapper</span>();<br>customMapper.registerModule(<span class="hljs-keyword">new</span> <span class="hljs-title class_">JavaTimeModule</span>());<br><br><span class="hljs-comment">// 序列化配置</span><br>customMapper.configure(SerializationFeature.INDENT_OUTPUT, <span class="hljs-literal">true</span>);<br>customMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, <span class="hljs-literal">false</span>); <span class="hljs-comment">// 使用 ISO-8601</span><br><br><span class="hljs-comment">// 反序列化配置</span><br>customMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, <span class="hljs-literal">false</span>);<br>customMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, <span class="hljs-literal">true</span>);<br><br><span class="hljs-comment">// 命名策略 (PropertyNamingStrategy 在 Jackson 2.12+ 中变为 PropertyNamingStrategies)</span><br><span class="hljs-comment">// import com.fasterxml.jackson.databind.PropertyNamingStrategies;</span><br>customMapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE); <span class="hljs-comment">// e.g., userName -&gt; user_name</span><br><br><span class="hljs-comment">// 设置默认的日期格式 (主要用于 java.util.Date，对于 Java 8 Time API，@JsonFormat 更常用)</span><br><span class="hljs-comment">// SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd HH:mm:ss&quot;);</span><br><span class="hljs-comment">// customMapper.setDateFormat(sdf);</span><br><br><span class="hljs-comment">// 设置全局的属性包含规则 (类似类级别的 @JsonInclude)</span><br><span class="hljs-comment">// import com.fasterxml.jackson.annotation.JsonInclude;</span><br><span class="hljs-comment">// customMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="6-与-Spring-Boot-的集成"><a href="#6-与-Spring-Boot-的集成" class="headerlink" title="6. 与 Spring Boot 的集成"></a>6. 与 Spring Boot 的集成</h3><p>Spring Boot 极大地简化了 <code>ObjectMapper</code> 的使用：</p>
+<ol>
+<li><p><strong>自动配置</strong>: Spring Boot 会自动创建一个 <code>ObjectMapper</code> Bean 并将其配置为合理的默认值。</p>
+<ul>
+<li><code>spring-boot-starter-json</code> (通常由 <code>spring-boot-starter-web</code> 引入) 负责此功能。</li>
+<li>自动注册 <code>JavaTimeModule</code>, <code>Jdk8Module</code>, <code>ParameterNamesModule</code> 等。</li>
+<li>默认 <code>DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES</code> 为 <code>false</code>。</li>
+<li>默认 <code>SerializationFeature.WRITE_DATES_AS_TIMESTAMPS</code> 为 <code>false</code> (使用 ISO-8601 字符串)。</li>
+</ul>
+</li>
+<li><p><strong>通过 <code>application.properties</code> &#x2F; <code>application.yml</code> 配置</strong>:</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># application.yml</span><br><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">jackson:</span><br>    <span class="hljs-attr">serialization:</span><br>      <span class="hljs-attr">indent-output:</span> <span class="hljs-literal">true</span> <span class="hljs-comment"># 美化输出</span><br>      <span class="hljs-attr">write-dates-as-timestamps:</span> <span class="hljs-literal">false</span><br>    <span class="hljs-attr">deserialization:</span><br>      <span class="hljs-attr">fail-on-unknown-properties:</span> <span class="hljs-literal">false</span><br>    <span class="hljs-attr">property-naming-strategy:</span> <span class="hljs-string">SNAKE_CASE</span> <span class="hljs-comment"># e.g., com.fasterxml.jackson.databind.PropertyNamingStrategies.SNAKE_CASE</span><br>    <span class="hljs-attr">default-property-inclusion:</span> <span class="hljs-string">non_null</span> <span class="hljs-comment"># 类似 @JsonInclude(JsonInclude.Include.NON_NULL)</span><br>    <span class="hljs-attr">date-format:</span> <span class="hljs-string">&quot;yyyy-MM-dd HH:mm:ss&quot;</span> <span class="hljs-comment"># 对 java.util.Date 生效</span><br>    <span class="hljs-attr">time-zone:</span> <span class="hljs-string">&quot;GMT+8&quot;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><p><strong>自定义 <code>ObjectMapper</code></strong>:</p>
+<ul>
+<li><strong><code>Jackson2ObjectMapperBuilderCustomizer</code></strong>: 这是推荐的、细粒度的自定义方式。你可以定义一个或多个此类型的 Bean，它们会按顺序应用于 Spring Boot 自动配置的 <code>Jackson2ObjectMapperBuilder</code>。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.fasterxml.jackson.databind.PropertyNamingStrategies;<br><span class="hljs-keyword">import</span> org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">JacksonConfig</span> &#123;<br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> Jackson2ObjectMapperBuilderCustomizer <span class="hljs-title function_">customJackson</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> builder -&gt; &#123;<br>            builder.indentOutput(<span class="hljs-literal">true</span>);<br>            builder.propertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE);<br>            <span class="hljs-comment">// builder.modulesToInstall(new MyCustomModule());</span><br>        &#125;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure></li>
+<li><strong>提供一个 <code>@Primary ObjectMapper</code> Bean</strong>: 如果你需要完全控制 <code>ObjectMapper</code> 的创建，可以定义自己的 <code>ObjectMapper</code> Bean 并标记为 <code>@Primary</code>。这将覆盖 Spring Boot 的自动配置。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// @Bean</span><br><span class="hljs-comment">// @Primary</span><br><span class="hljs-comment">// public ObjectMapper primaryObjectMapper() &#123;</span><br><span class="hljs-comment">//     ObjectMapper objectMapper = new ObjectMapper();</span><br><span class="hljs-comment">//     // ...你的完整配置...</span><br><span class="hljs-comment">//     return objectMapper;</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure></li>
+<li><strong>使用 <code>Jackson2ObjectMapperBuilder</code></strong>: Spring Boot 也提供了一个 <code>Jackson2ObjectMapperBuilder</code> Bean，你可以注入它来构建具有 Spring Boot 默认设置基础的 <code>ObjectMapper</code> 实例。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;</span><br><span class="hljs-comment">// @Autowired</span><br><span class="hljs-comment">// private Jackson2ObjectMapperBuilder builder;</span><br><span class="hljs-comment">// ObjectMapper customMapper = builder.build(); // 基于Spring Boot配置，可以再定制</span><br><span class="hljs-comment">// ObjectMapper snakeCaseMapper = builder.createXmlMapper(false) // 这是一个例子，说明builder可以创建不同mapper</span><br><span class="hljs-comment">//                                      .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)</span><br><span class="hljs-comment">//                                      .build();</span><br></code></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="7-最新进展与高级主题-Spring-Boot-3-x-视角"><a href="#7-最新进展与高级主题-Spring-Boot-3-x-视角" class="headerlink" title="7. 最新进展与高级主题 (Spring Boot 3.x 视角)"></a>7. 最新进展与高级主题 (Spring Boot 3.x 视角)</h3><ul>
+<li><strong>Java Records 良好支持</strong>: Jackson 对 Java 14+ 的 Records 类型有出色的原生支持。<code>ObjectMapper</code> 可以无缝序列化和反序列化 Records，通常不需要额外注解（除非要自定义名称或行为）。</li>
+<li><strong>GraalVM Native Image</strong>: Spring Boot 3.x 重点支持 GraalVM。Jackson 通常能很好地与 Native Image 配合。Spring AOT (Ahead-Of-Time) 编译会为 <code>ObjectMapper</code> 和你代码中用到的 DTO 生成必要的反射和序列化 hints。对于非常动态或复杂的自定义序列化器&#x2F;反序列化器，可能需要手动添加 <code>@RegisterReflectionForBinding</code> 或编程注册 hints。</li>
+<li><strong>性能考量 - <code>ObjectReader</code> 和 <code>ObjectWriter</code></strong>:<ul>
+<li>对于性能敏感且需要重复序列化&#x2F;反序列化相同类型和配置的场景，<code>ObjectMapper</code> 提供了 <code>readerFor(Class&lt;T&gt;)</code> 和 <code>writerFor(Class&lt;T&gt;)</code> (以及其他重载版本如 <code>writerWithView()</code>)。</li>
+<li>这些方法返回 <code>ObjectReader</code> 和 <code>ObjectWriter</code> 实例，它们是预配置且不可变的，可以安全重用，并且比直接使用 <code>ObjectMapper.readValue/writeValue</code> 略快，因为它们缓存了类型信息和部分配置。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">ObjectReader</span> <span class="hljs-variable">userReader</span> <span class="hljs-operator">=</span> objectMapper.readerFor(User.class);<br><span class="hljs-type">ObjectWriter</span> <span class="hljs-variable">userWriter</span> <span class="hljs-operator">=</span> objectMapper.writerFor(User.class);<br><br><span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> userReader.readValue(jsonInput);<br><span class="hljs-type">String</span> <span class="hljs-variable">jsonOutput</span> <span class="hljs-operator">=</span> userWriter.writeValueAsString(user);<br></code></pre></td></tr></table></figure></li>
+<li><strong>模块化生态</strong>: Jackson 拥有丰富的模块生态系统，如：<ul>
+<li><code>jackson-module-afterburner</code>: 通过字节码生成加速序列化&#x2F;反序列化（对现代 JVM 和 Records 带来的性能提升可能边际递减）。</li>
+<li><code>jackson-dataformat-xml</code>: 支持 XML。</li>
+<li><code>jackson-module-kotlin</code>: 更好地支持 Kotlin 特性。<br>Spring Boot 会根据 classpath 上的依赖自动注册一些模块。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="8-最佳实践与提示"><a href="#8-最佳实践与提示" class="headerlink" title="8. 最佳实践与提示"></a>8. 最佳实践与提示</h3><ol>
+<li><strong>重用 <code>ObjectMapper</code></strong>: <code>ObjectMapper</code> 实例是线程安全的（一旦配置完成）。创建它有一定开销，所以应该尽可能重用（Spring Boot 自动管理的 Bean 就是单例的）。</li>
+<li><strong>使用 <code>TypeReference</code> 处理泛型</strong>: 反序列化泛型集合（如 <code>List&lt;MyClass&gt;</code>）时，务必使用 <code>new TypeReference&lt;List&lt;MyClass&gt;&gt;() &#123;&#125;</code> 来保留泛型类型信息。</li>
+<li><strong>理解配置优先级</strong>: 注解 (<code>@JsonProperty</code> 等) &gt; <code>ObjectMapper</code> 实例配置 &gt; 全局默认配置。Spring Boot 的 <code>application.properties</code> 配置会影响自动配置的 <code>ObjectMapper</code> 实例。</li>
+<li><strong>模块化你的配置</strong>: 在 Spring Boot 中，使用 <code>Jackson2ObjectMapperBuilderCustomizer</code> 是推荐的模块化配置方式。</li>
+<li><strong>谨慎对待 <code>FAIL_ON_UNKNOWN_PROPERTIES</code></strong>: Spring Boot 默认将其设为 <code>false</code> (忽略未知属性)，这通常更具弹性，能更好地适应 API 的演进。但在某些需要严格校验的场景下，你可能希望将其设为 <code>true</code>。</li>
+</ol>
+<hr>
+<p>总结来说，<code>ObjectMapper</code> 是 Jackson 库的心脏。理解它的核心功能、配置选项以及如何与 Spring Boot 集成，对于任何使用 Spring Boot 进行 JSON 处理的开发者来说都至关重要。它提供了强大的灵活性和控制力，以满足各种 JSON 处理需求。</p>
+<h2 id="objectMapper-writeValue-response-getOutputStream-dataObject"><a href="#objectMapper-writeValue-response-getOutputStream-dataObject" class="headerlink" title="objectMapper.writeValue(response.getOutputStream(), dataObject)"></a>objectMapper.writeValue(response.getOutputStream(), dataObject)</h2><p>在 <code>void</code> 返回类型的方法中，通过 <code>HttpServletResponse</code> 对象，调用 <code>objectMapper.writeValue(response.getOutputStream(), dataObject)</code> 这种方式来发送 JSON 响应。</p>
+<p>这确实是一种直接且有效的方法，在传统的 Servlet API 环境下 (如 Spring MVC) 可以工作。让我们详细分析一下这种具体用法：</p>
+<hr>
+<h3 id="使用-objectMapper-writeValue-response-getOutputStream-object"><a href="#使用-objectMapper-writeValue-response-getOutputStream-object" class="headerlink" title="使用 objectMapper.writeValue(response.getOutputStream(), object)"></a>使用 <code>objectMapper.writeValue(response.getOutputStream(), object)</code></h3><p>这种方法的核心思想是：</p>
+<ol>
+<li>获取 <code>HttpServletResponse</code> 对象。</li>
+<li>设置响应的 <code>Content-Type</code> 为 <code>application/json</code> (以及可选的字符编码)。</li>
+<li>从 <code>response</code> 对象获取底层的 <code>ServletOutputStream</code>。</li>
+<li>使用 <code>ObjectMapper</code> 的 <code>writeValue()</code> 方法，将你的 Java 对象直接序列化为 JSON 字节流，并写入到该 <code>ServletOutputStream</code> 中。</li>
+</ol>
+<p><strong>示例代码 (与之前类似，但聚焦于 <code>getOutputStream()</code>):</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper;<br><span class="hljs-keyword">import</span> org.springframework.beans.factory.annotation.Autowired;<br><span class="hljs-keyword">import</span> org.springframework.http.MediaType;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Controller;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;<br><span class="hljs-keyword">import</span> jakarta.servlet.http.HttpServletResponse; <span class="hljs-comment">// 使用 jakarta.servlet</span><br><span class="hljs-keyword">import</span> java.io.IOException;<br><br><span class="hljs-meta">@Controller</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyMvcController</span> &#123;<br><br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> ObjectMapper objectMapper; <span class="hljs-comment">// Spring Boot 自动配置的 ObjectMapper</span><br><br>    <span class="hljs-meta">@GetMapping(&quot;/send-data-via-outputstream&quot;)</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">sendDataViaOutputStream</span><span class="hljs-params">(HttpServletResponse response)</span> &#123;<br>        <span class="hljs-type">MyDataObject</span> <span class="hljs-variable">data</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyDataObject</span>(<span class="hljs-string">&quot;example via OutputStream&quot;</span>, <span class="hljs-number">456</span>);<br><br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 1. 设置响应内容类型和编码 (非常重要！)</span><br>            <span class="hljs-comment">// 必须在获取 OutputStream 之前设置，或者至少在响应提交之前。</span><br>            response.setContentType(MediaType.APPLICATION_JSON_VALUE); <span class="hljs-comment">// &quot;application/json&quot;</span><br>            response.setCharacterEncoding(<span class="hljs-string">&quot;UTF-8&quot;</span>); <span class="hljs-comment">// 明确指定UTF-8总是好的</span><br><br>            <span class="hljs-comment">// 2. 将对象直接序列化到响应的输出流</span><br>            <span class="hljs-comment">// ObjectMapper 会处理将对象转换为 JSON 字节并写入流</span><br>            objectMapper.writeValue(response.getOutputStream(), data);<br><br>            <span class="hljs-comment">// response.getOutputStream().flush(); // 一般 objectMapper.writeValue 会处理 flush，但显式调用有时有益</span><br>                                              <span class="hljs-comment">// 或者让 Servlet 容器在请求结束时处理。</span><br><br>        &#125; <span class="hljs-keyword">catch</span> (IOException e) &#123;<br>            <span class="hljs-comment">// 异常处理：记录日志，也许尝试发送一个错误响应 (如果可能)</span><br>            e.printStackTrace();<br>            <span class="hljs-comment">// 如果头部还未提交，可以尝试设置错误状态码</span><br>            <span class="hljs-keyword">if</span> (!response.isCommitted()) &#123;<br>                <span class="hljs-keyword">try</span> &#123;<br>                    response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, <span class="hljs-string">&quot;Error writing JSON response&quot;</span>);<br>                &#125; <span class="hljs-keyword">catch</span> (IOException ex) &#123;<br>                    ex.printStackTrace(); <span class="hljs-comment">// 如果连错误都发送不了，就只能记录了</span><br>                &#125;<br>            &#125;<br>        &#125;<br>        <span class="hljs-comment">// 方法返回 void，Spring MVC 知道响应已经由你手动处理</span><br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 假设 MyDataObject 类已定义 (如之前的例子)</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MyDataObject</span> &#123;<br>    <span class="hljs-keyword">public</span> String name;<br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> value;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">MyDataObject</span><span class="hljs-params">(String name, <span class="hljs-type">int</span> value)</span> &#123;<br>        <span class="hljs-built_in">this</span>.name = name;<br>        <span class="hljs-built_in">this</span>.value = value;<br>    &#125;<br>    <span class="hljs-comment">// getters/setters or public fields for Jackson</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<hr>
+<h3 id="优点和考虑因素："><a href="#优点和考虑因素：" class="headerlink" title="优点和考虑因素："></a>优点和考虑因素：</h3><ol>
+<li><p><strong>效率 (相对于先转 String 再写入 <code>PrintWriter</code>)</strong>:</p>
+<ul>
+<li><code>objectMapper.writeValue(OutputStream, Object)</code> 通常比 <code>objectMapper.writeValueAsString(Object)</code> 然后 <code>printWriter.print(String)</code> 更高效。</li>
+<li>因为它直接将序列化后的字节写入输出流，避免了创建一个完整的中间 JSON 字符串对象的开销，特别是对于大的 JSON 对象，这可以减少内存分配和拷贝。</li>
+</ul>
+</li>
+<li><p><strong>直接控制</strong>:</p>
+<ul>
+<li>你对响应的生成有完全的控制。</li>
+</ul>
+</li>
+<li><p><strong>适用于流式大数据</strong>:</p>
+<ul>
+<li>虽然这个例子中的 <code>MyDataObject</code> 很小，但如果 <code>data</code> 是一个可以被 Jackson 流式序列化的大型对象或集合（例如，通过 <code>JsonGenerator</code> 手动控制），这种方式是合适的。</li>
+</ul>
+</li>
+<li><p><strong>与 <code>void</code> 返回类型兼容</strong>:</p>
+<ul>
+<li>完美契合 <code>void</code> 方法，因为你显式地处理了响应的写入。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="注意事项和最佳实践："><a href="#注意事项和最佳实践：" class="headerlink" title="注意事项和最佳实践："></a>注意事项和最佳实践：</h3><ol>
+<li><p><strong><code>Content-Type</code> 和 <code>CharacterEncoding</code></strong>:</p>
+<ul>
+<li><strong>至关重要</strong>: 必须在调用 <code>response.getOutputStream()</code> 并开始写入之前，或者至少在响应被提交（flushed）之前，通过 <code>response.setContentType()</code> 和 <code>response.setCharacterEncoding()</code> 设置正确的响应头。</li>
+<li>对于 JSON，<code>Content-Type</code> 通常是 <code>application/json</code>。</li>
+<li><code>CharacterEncoding</code> 推荐设置为 <code>UTF-8</code>。</li>
+</ul>
+</li>
+<li><p><strong>异常处理</strong>:</p>
+<ul>
+<li><code>objectMapper.writeValue()</code> 和 <code>response.getOutputStream()</code> 都可能抛出 <code>IOException</code>。必须妥善处理这些异常。</li>
+<li>一旦开始向 <code>OutputStream</code> 写入数据，响应头通常就已经提交了。这意味着如果后续发生 <code>IOException</code>，你可能无法再通过 <code>response.setStatus()</code> 或 <code>response.sendError()</code> 来改变 HTTP 状态码或发送标准的错误页面（因为头部可能已经发送给客户端了）。日志记录是主要的补救措施。</li>
+<li>你可以尝试在发生错误时，如果响应还未提交 (<code>!response.isCommitted()</code>)，则发送错误状态码。</li>
+</ul>
+</li>
+<li><p><strong>关闭流 (Servlet Container 管理)</strong>:</p>
+<ul>
+<li>你<strong>不应该</strong>手动关闭从 <code>HttpServletResponse.getOutputStream()</code> 获取的流 (<code>servletOutputStream.close()</code>)。Servlet 容器会负责在请求处理完毕后关闭它。手动关闭可能会导致问题。</li>
+</ul>
+</li>
+<li><p><strong><code>flush()</code></strong>:</p>
+<ul>
+<li><code>objectMapper.writeValue()</code> 在完成时通常会刷新底层流，确保数据被发送。显式调用 <code>response.getOutputStream().flush()</code> 一般不是必需的，但有时为了确保数据立即发送（例如在长连接或流式传输中），可能会使用。对于一次性写入完整 JSON 响应的场景，通常让 Servlet 容器在请求结束时处理最终的 flush 即可。</li>
+</ul>
+</li>
+<li><p><strong>Spring MVC 的替代方案</strong>:</p>
+<ul>
+<li>再次强调，虽然这种方法可行，但在典型的 Spring MVC 应用中，返回对象并让 <code>@ResponseBody</code> (或 <code>@RestController</code>) 和 Spring 的 <code>HttpMessageConverter</code> (它内部使用 <code>ObjectMapper</code>) 来处理响应是更常见、更简洁、更易于测试和维护的方式。</li>
+<li>只有当你确实需要这种底层的、直接的流操作时，或者在一些非标准集成场景下，才应该选择这种手动写入的方式。</li>
+</ul>
+</li>
+<li><p><strong>线程安全</strong>:</p>
+<ul>
+<li><code>ObjectMapper</code> 实例（如果正确配置且不修改其配置）的 <code>writeValue</code> 方法是线程安全的。</li>
+<li><code>HttpServletResponse</code> 对象本身是特定于单个请求的，因此在单个请求处理线程中使用是安全的。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><code>objectMapper.writeValue(response.getOutputStream(), dataObject)</code> 是一个在 <code>void</code> 返回类型的 Spring MVC 方法中直接将 Java 对象序列化为 JSON 并发送到客户端的有效技术。它比先转换为字符串再写入 <code>PrintWriter</code> 更高效，因为它避免了中间字符串的创建。</p>
+<p>然而，你需要负责正确设置响应头 (<code>Content-Type</code>, <code>CharacterEncoding</code>) 并处理可能发生的 <code>IOException</code>。</p>
+<p><strong>何时使用这种方法？</strong></p>
+<ul>
+<li>当你需要对响应写入过程进行非常精细的控制时。</li>
+<li>当性能是极致的考量，并且避免中间字符串转换能带来可观的收益时（通常针对非常大的对象或高吞吐量场景）。</li>
+<li>当与某些期望直接操作输出流的第三方库或旧代码集成时。</li>
+<li>在 <code>void</code> 方法中，这是发送二进制（如 JSON 字节）响应的直接方式。</li>
+</ul>
+<p>如果这些不是你的主要驱动因素，那么利用 Spring MVC 提供的更高级别的抽象（如返回对象 + <code>@ResponseBody</code>）通常是更好、更简洁的选择。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Jackson/ObjectMapper/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Jackson/%E5%B8%B8%E7%94%A8%E4%B8%94%E6%A0%B8%E5%BF%83%E7%9A%84%E6%B3%A8%E8%A7%A3/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Jackson/Jackson/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

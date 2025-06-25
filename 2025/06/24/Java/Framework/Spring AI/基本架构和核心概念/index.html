@@ -1,0 +1,773 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Spring AI 基本架构和核心概念一、Spring AI 概述Spring AI 是 Spring 团队在 2023 年推出的框架，专门用于简化 AI 应用开发。它遵循 Spring 的设计哲学：简化复杂性、提供抽象层、支持多种实现。 二、核心架构设计2.1 分层架构1234567应用层 (Application Layer)    ↓抽象层 (Abstraction Layer) - Spr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="繁星的蓝">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20AI/%E5%9F%BA%E6%9C%AC%E6%9E%B6%E6%9E%84%E5%92%8C%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Spring AI 基本架构和核心概念一、Spring AI 概述Spring AI 是 Spring 团队在 2023 年推出的框架，专门用于简化 AI 应用开发。它遵循 Spring 的设计哲学：简化复杂性、提供抽象层、支持多种实现。 二、核心架构设计2.1 分层架构1234567应用层 (Application Layer)    ↓抽象层 (Abstraction Layer) - Spr">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-24T13:34:26.920Z">
+<meta property="article:modified_time" content="2025-05-25T09:23:26.421Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text=""></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 21:34" pubdate>
+          2025年6月24日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          901 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          8 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header"></h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年5月25日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Spring-AI-基本架构和核心概念"><a href="#Spring-AI-基本架构和核心概念" class="headerlink" title="Spring AI 基本架构和核心概念"></a>Spring AI 基本架构和核心概念</h1><h2 id="一、Spring-AI-概述"><a href="#一、Spring-AI-概述" class="headerlink" title="一、Spring AI 概述"></a>一、Spring AI 概述</h2><p>Spring AI 是 Spring 团队在 2023 年推出的框架，专门用于简化 AI 应用开发。它遵循 Spring 的设计哲学：<strong>简化复杂性、提供抽象层、支持多种实现</strong>。</p>
+<h2 id="二、核心架构设计"><a href="#二、核心架构设计" class="headerlink" title="二、核心架构设计"></a>二、核心架构设计</h2><h3 id="2-1-分层架构"><a href="#2-1-分层架构" class="headerlink" title="2.1 分层架构"></a>2.1 分层架构</h3><figure class="highlight scss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs scss">应用层 (Application Layer)<br>    ↓<br>抽象层 (Abstraction Layer) - Spring AI Core<br>    ↓<br>适配器层 (Adapter Layer) - 各种 AI 服务实现<br>    ↓<br>AI 服务层 (AI Services) - OpenAI、Azure、Ollama 等<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-2-核心模块划分"><a href="#2-2-核心模块划分" class="headerlink" title="2.2 核心模块划分"></a>2.2 核心模块划分</h3><p><strong>spring-ai-core</strong>: 核心抽象和接口 <strong>spring-ai-spring-boot-autoconfigure</strong>: 自动配置 <strong>spring-ai-openai</strong>: OpenAI 集成 <strong>spring-ai-azure-openai</strong>: Azure OpenAI 集成 <strong>spring-ai-ollama</strong>: 本地模型支持 <strong>spring-ai-vectordbs</strong>: 向量数据库集成</p>
+<h2 id="三、核心概念详解"><a href="#三、核心概念详解" class="headerlink" title="三、核心概念详解"></a>三、核心概念详解</h2><h3 id="3-1-ChatClient-对话客户端"><a href="#3-1-ChatClient-对话客户端" class="headerlink" title="3.1 ChatClient - 对话客户端"></a>3.1 ChatClient - 对话客户端</h3><p>这是最核心的抽象，统一了所有 AI 模型的对话接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 基本用法</span><br><span class="hljs-type">ChatResponse</span> <span class="hljs-variable">response</span> <span class="hljs-operator">=</span> chatClient.call(<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompt</span>(<span class="hljs-string">&quot;解释什么是 Spring AI&quot;</span>)<br>);<br><br><span class="hljs-comment">// 流式响应</span><br>Flux&lt;ChatResponse&gt; stream = chatClient.stream(<br>    <span class="hljs-keyword">new</span> <span class="hljs-title class_">Prompt</span>(<span class="hljs-string">&quot;写一首关于春天的诗&quot;</span>)<br>);<br></code></pre></td></tr></table></figure>
+
+<p><strong>设计优势</strong>：</p>
+<ul>
+<li>统一接口，切换模型只需改配置</li>
+<li>支持同步和异步调用</li>
+<li>内置重试和错误处理</li>
+</ul>
+<h3 id="3-2-Prompt-Template-提示词模板"><a href="#3-2-Prompt-Template-提示词模板" class="headerlink" title="3.2 Prompt Template - 提示词模板"></a>3.2 Prompt Template - 提示词模板</h3><p>类似于 Spring 的 JdbcTemplate，提供模板化的提示词构建：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TranslationService</span> &#123;<br>    <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">PromptTemplate</span> <span class="hljs-variable">promptTemplate</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">PromptTemplate</span>(<br>        <span class="hljs-string">&quot;将以下&#123;sourceLanguage&#125;文本翻译成&#123;targetLanguage&#125;：&#123;text&#125;&quot;</span><br>    );<br>    <br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">translate</span><span class="hljs-params">(String text, String from, String to)</span> &#123;<br>        Map&lt;String, Object&gt; variables = Map.of(<br>            <span class="hljs-string">&quot;sourceLanguage&quot;</span>, from,<br>            <span class="hljs-string">&quot;targetLanguage&quot;</span>, to,<br>            <span class="hljs-string">&quot;text&quot;</span>, text<br>        );<br>        <br>        <span class="hljs-type">Prompt</span> <span class="hljs-variable">prompt</span> <span class="hljs-operator">=</span> promptTemplate.create(variables);<br>        <span class="hljs-keyword">return</span> chatClient.call(prompt).getResult().getOutput().getContent();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-3-VectorStore-向量存储抽象"><a href="#3-3-VectorStore-向量存储抽象" class="headerlink" title="3.3 VectorStore - 向量存储抽象"></a>3.3 VectorStore - 向量存储抽象</h3><p>为 RAG 应用提供统一的向量数据库接口：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">VectorStore</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">add</span><span class="hljs-params">(List&lt;Document&gt; documents)</span>;<br>    List&lt;Document&gt; <span class="hljs-title function_">similaritySearch</span><span class="hljs-params">(String query)</span>;<br>    List&lt;Document&gt; <span class="hljs-title function_">similaritySearch</span><span class="hljs-params">(SearchRequest request)</span>;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(List&lt;String&gt; idList)</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p><strong>支持的向量数据库</strong>：</p>
+<ul>
+<li>Chroma</li>
+<li>Pinecone</li>
+<li>Weaviate</li>
+<li>Redis</li>
+<li>PostgreSQL (pgvector)</li>
+</ul>
+<h3 id="3-4-Document-文档抽象"><a href="#3-4-Document-文档抽象" class="headerlink" title="3.4 Document - 文档抽象"></a>3.4 Document - 文档抽象</h3><p>标准化的文档表示，包含内容和元数据：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Document</span> &#123;<br>    <span class="hljs-keyword">private</span> String content;          <span class="hljs-comment">// 文档内容</span><br>    <span class="hljs-keyword">private</span> Map&lt;String, Object&gt; metadata;  <span class="hljs-comment">// 元数据</span><br>    <span class="hljs-keyword">private</span> List&lt;Double&gt; embedding;  <span class="hljs-comment">// 向量表示</span><br>    <br>    <span class="hljs-comment">// 构造和访问方法</span><br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-5-EmbeddingClient-嵌入向量客户端"><a href="#3-5-EmbeddingClient-嵌入向量客户端" class="headerlink" title="3.5 EmbeddingClient - 嵌入向量客户端"></a>3.5 EmbeddingClient - 嵌入向量客户端</h3><p>专门处理文本向量化：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DocumentService</span> &#123;<br>    <br>    <span class="hljs-meta">@Autowired</span><br>    <span class="hljs-keyword">private</span> EmbeddingClient embeddingClient;<br>    <br>    <span class="hljs-keyword">public</span> List&lt;Double&gt; <span class="hljs-title function_">getEmbedding</span><span class="hljs-params">(String text)</span> &#123;<br>        <span class="hljs-type">EmbeddingResponse</span> <span class="hljs-variable">response</span> <span class="hljs-operator">=</span> embeddingClient.embedForResponse(<br>            List.of(text)<br>        );<br>        <span class="hljs-keyword">return</span> response.getResults().get(<span class="hljs-number">0</span>).getOutput();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="四、设计模式和原则"><a href="#四、设计模式和原则" class="headerlink" title="四、设计模式和原则"></a>四、设计模式和原则</h2><h3 id="4-1-策略模式"><a href="#4-1-策略模式" class="headerlink" title="4.1 策略模式"></a>4.1 策略模式</h3><p>不同的 AI 服务提供商通过策略模式实现：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 可以无缝切换</span><br><span class="hljs-type">ChatClient</span> <span class="hljs-variable">openAiClient</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">OpenAiChatClient</span>();<br><span class="hljs-type">ChatClient</span> <span class="hljs-variable">azureClient</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">AzureOpenAiChatClient</span>();<br><span class="hljs-type">ChatClient</span> <span class="hljs-variable">ollamaClient</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">OllamaChatClient</span>();<br></code></pre></td></tr></table></figure>
+
+<h3 id="4-2-模板方法模式"><a href="#4-2-模板方法模式" class="headerlink" title="4.2 模板方法模式"></a>4.2 模板方法模式</h3><p>PromptTemplate 使用模板方法模式，标准化提示词构建流程。</p>
+<h3 id="4-3-观察者模式"><a href="#4-3-观察者模式" class="headerlink" title="4.3 观察者模式"></a>4.3 观察者模式</h3><p>支持回调和监听器，用于监控 AI 调用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java">chatClient.call(prompt, <br>    ChatOptions.builder()<br>        .withResponseCallback(response -&gt; &#123;<br>            <span class="hljs-comment">// 处理响应回调</span><br>        &#125;)<br>        .build()<br>);<br></code></pre></td></tr></table></figure>
+
+<h2 id="五、关键特性"><a href="#五、关键特性" class="headerlink" title="五、关键特性"></a>五、关键特性</h2><h3 id="5-1-自动配置"><a href="#5-1-自动配置" class="headerlink" title="5.1 自动配置"></a>5.1 自动配置</h3><p>利用 Spring Boot 的自动配置机制：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># application.properties</span><br><span class="hljs-attr">spring.ai.openai.api-key</span>=<span class="hljs-string">your-api-key</span><br><span class="hljs-attr">spring.ai.openai.base-url</span>=<span class="hljs-string">https://api.openai.com</span><br><span class="hljs-attr">spring.ai.vectorstore.chroma.initialize-schema</span>=<span class="hljs-string">true</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="5-2-类型安全"><a href="#5-2-类型安全" class="headerlink" title="5.2 类型安全"></a>5.2 类型安全</h3><p>通过泛型和强类型确保编译时安全：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TypedChatService</span> &#123;<br>    <br>    <span class="hljs-keyword">public</span> &lt;T&gt; T <span class="hljs-title function_">callWithType</span><span class="hljs-params">(String prompt, Class&lt;T&gt; responseType)</span> &#123;<br>        <span class="hljs-comment">// 类型安全的响应处理</span><br>        <span class="hljs-keyword">return</span> chatClient.call(prompt, responseType);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="5-3-可观测性"><a href="#5-3-可观测性" class="headerlink" title="5.3 可观测性"></a>5.3 可观测性</h3><p>集成 Spring Boot Actuator，提供监控指标：</p>
+<ul>
+<li>AI 调用次数</li>
+<li>响应时间</li>
+<li>成功&#x2F;失败率</li>
+<li>Token 使用量</li>
+</ul>
+<h2 id="六、架构优势"><a href="#六、架构优势" class="headerlink" title="六、架构优势"></a>六、架构优势</h2><h3 id="6-1-厂商中立"><a href="#6-1-厂商中立" class="headerlink" title="6.1 厂商中立"></a>6.1 厂商中立</h3><p>通过抽象层隔离具体实现，避免厂商锁定。</p>
+<h3 id="6-2-Spring-生态集成"><a href="#6-2-Spring-生态集成" class="headerlink" title="6.2 Spring 生态集成"></a>6.2 Spring 生态集成</h3><p>无缝集成 Spring Security、Spring Boot、Spring Cloud 等。</p>
+<h3 id="6-3-企业级特性"><a href="#6-3-企业级特性" class="headerlink" title="6.3 企业级特性"></a>6.3 企业级特性</h3><ul>
+<li>连接池管理</li>
+<li>重试机制</li>
+<li>熔断器支持</li>
+<li>缓存集成</li>
+</ul>
+<h3 id="6-4-扩展性"><a href="#6-4-扩展性" class="headerlink" title="6.4 扩展性"></a>6.4 扩展性</h3><p>清晰的接口设计，便于添加新的 AI 服务提供商。</p>
+<p>这个架构设计体现了 Spring 框架一贯的设计理念：<strong>简化复杂性的同时保持灵活性和扩展性</strong>。通过这种设计，开发者可以专注于业务逻辑，而不必关心底层 AI 服务的复杂性。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div></div>
+      <div>http://example.com/2025/06/24/Java/Framework/Spring AI/基本架构和核心概念/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20AI/%E6%8F%90%E4%BE%9B%E5%95%86/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/Framework/Spring%20AI/OpenAI%20%E4%B8%8E%20Spring%20Boot%20%E9%9B%86%E6%88%90/" title="">
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
