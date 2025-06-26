@@ -19,23 +19,26 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="先掌握：[[JWT 注销]] 刷新令牌允许客户端请求新的访问令牌，而无需用户在每次访问令牌过期时重新进行身份验证，从而提高应用程序的安全性和用户体验。 什么是 refresh token(刷新令牌) refresh token 一种令牌，是用来刷新我们的 access token(访问令牌)，这有助于我们改进和提高应用程序的安全性。 可以降低令牌的可用性或有效性，每当我们的客户端或其他客户端需要新">
+    <meta name="description" content="先掌握：JWT 注销 刷新令牌允许客户端请求新的访问令牌，而无需用户在每次访问令牌过期时重新进行身份验证，从而提高应用程序的安全性和用户体验。 什么是 refresh token(刷新令牌) refresh token 一种令牌，是用来刷新我们的 access token(访问令牌)，这有助于我们改进和提高应用程序的安全性。 可以降低令牌的可用性或有效性，每当我们的客户端或其他客户端需要新令牌时，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="繁星的蓝">
-<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Security/Refresh%20token/index.html">
+<meta property="og:title" content="刷新令牌">
+<meta property="og:url" content="http://example.com/2025/04/23/Java/Framework/Spring%20Boot/Security/Refresh%20token/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="先掌握：[[JWT 注销]] 刷新令牌允许客户端请求新的访问令牌，而无需用户在每次访问令牌过期时重新进行身份验证，从而提高应用程序的安全性和用户体验。 什么是 refresh token(刷新令牌) refresh token 一种令牌，是用来刷新我们的 access token(访问令牌)，这有助于我们改进和提高应用程序的安全性。 可以降低令牌的可用性或有效性，每当我们的客户端或其他客户端需要新">
+<meta property="og:description" content="先掌握：JWT 注销 刷新令牌允许客户端请求新的访问令牌，而无需用户在每次访问令牌过期时重新进行身份验证，从而提高应用程序的安全性和用户体验。 什么是 refresh token(刷新令牌) refresh token 一种令牌，是用来刷新我们的 access token(访问令牌)，这有助于我们改进和提高应用程序的安全性。 可以降低令牌的可用性或有效性，每当我们的客户端或其他客户端需要新令牌时，">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-06-24T13:34:27.224Z">
-<meta property="article:modified_time" content="2025-06-09T03:08:59.553Z">
+<meta property="og:image" content="http://example.com/img/java/spring.png">
+<meta property="article:published_time" content="2025-04-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T13:44:19.606Z">
 <meta property="article:author" content="Han Di">
+<meta property="article:tag" content="spring security">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/spring.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>繁星的蓝</title>
+  <title>刷新令牌 - 繁星的蓝</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -207,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="刷新令牌"></span>
           
         </div>
 
@@ -218,8 +221,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-06-24 21:34" pubdate>
-          2025年6月24日 晚上
+        <time datetime="2025-04-23 00:00" pubdate>
+          2025年4月23日 凌晨
         </time>
       </span>
     
@@ -287,12 +290,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header"></h1>
+            <h1 id="seo-header">刷新令牌</h1>
             
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年6月9日 上午
+                    本文最后更新于 2025年6月26日 晚上
                   
                 
               </p>
@@ -300,7 +303,7 @@
             
               <div class="markdown-body">
                 
-                <p>先掌握：[[JWT 注销]]</p>
+                <p>先掌握：<a href="/2025/04/23/Java/Framework/Spring%20Boot/Security/JWT%20%E6%B3%A8%E9%94%80/" title="JWT 注销">JWT 注销</a></p>
 <p>刷新令牌允许客户端请求新的访问令牌，而无需用户在每次访问令牌过期时重新进行身份验证，从而提高应用程序的安全性和用户体验。</p>
 <h2 id="什么是-refresh-token-刷新令牌">什么是 refresh token(刷新令牌)</h2>
 <p>refresh token 一种令牌，是用来刷新我们的 access token(访问令牌)，这有助于我们改进和提高应用程序的安全性。<br>
@@ -313,8 +316,7 @@
 </ul>
 <h2 id="扩展-AuthenticationResponse">扩展 AuthenticationResponse</h2>
 <p>刷新令牌，我们需要考虑如何实现它</p>
-<p>增强和扩展身份验证响应开始，因为当我们谈论刷新令牌时，我们需要返回访问令牌加上刷新令牌<br>
-[[@JsonProperty]]</p>
+<p>增强和扩展身份验证响应开始，因为当我们谈论刷新令牌时，我们需要返回访问令牌加上刷新令牌</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-meta">@Data</span><br><span class="hljs-meta">@Builder</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AuthenticationResponse</span> &#123;<br><br>    <span class="hljs-comment">// 自定义 Java 对象属性与 JSON 字段之间的映射关系</span><br>    <span class="hljs-meta">@JsonProperty(&quot;access_token&quot;)</span><br>    <span class="hljs-keyword">private</span> String accessToken;<br><br>    <span class="hljs-meta">@JsonProperty(&quot;refresh_token&quot;)</span><br>    <span class="hljs-keyword">private</span> String refreshToken;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>所以现在我们有了访问令牌和刷新令牌属性</p>
 <p>由于更改了 response, 现在需要更改 AuthenticationService 以返回正确的 response。不过在这之前，需要调整我们的 JwtService，需要一种新的方法来帮助我们生成刷新令牌。</p>
@@ -353,6 +355,55 @@ refresh token 仍是相同，access token 不同<br>
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Security/" class="category-chain-item">Security</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/spring-security/" class="print-no-link">#spring security</a>
+      
+    </div>
   
 </div>
 
@@ -362,8 +413,8 @@ refresh token 仍是相同，access token 不同<br>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
-      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Security/Refresh token/</div>
+      <div>刷新令牌</div>
+      <div>http://example.com/2025/04/23/Java/Framework/Spring Boot/Security/Refresh token/</div>
     </div>
     <div class="license-meta">
       
@@ -375,7 +426,7 @@ refresh token 仍是相同，access token 不同<br>
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年6月24日</div>
+          <div>2025年4月23日</div>
         </div>
       
       
@@ -407,9 +458,9 @@ refresh token 仍是相同，access token 不同<br>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Roles%20and%20Permissions/" title="">
+                      <a href="/2025/04/23/Java/Framework/Spring%20Boot/Security/Change%20password/" title="Change Password">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">Change Password</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -417,8 +468,8 @@ refresh token 仍是相同，access token 不同<br>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/JWT%20%E6%B3%A8%E9%94%80/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2025/04/23/Java/Framework/Spring%20Boot/Security/Roles%20and%20Permissions/" title="Roles 和 Permission">
+                        <span class="hidden-mobile">Roles 和 Permission</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -19,23 +19,26 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="先掌握 [[Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API]] Spring 提供 logout 机制吗？ 当我们有一个 JWT 系统来保护我们的后端时，spring 是否提供任何默认实现或任何内置实现来注销 答案是：当使用带有 JWT 令牌的 Spring Security 时，没有内置的注销实现，因为 JWT 令牌的无状态特性意味">
+    <meta name="description" content="先掌握 Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API Spring 提供 logout 机制吗？ 当我们有一个 JWT 系统来保护我们的后端时，spring 是否提供任何默认实现或任何内置实现来注销 答案是：当使用带有 JWT 令牌的 Spring Security 时，没有内置的注销实现，因为 JWT 令牌的无状态特性意味着服务器">
 <meta property="og:type" content="article">
-<meta property="og:title" content="繁星的蓝">
-<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Security/JWT%20%E6%B3%A8%E9%94%80/index.html">
+<meta property="og:title" content="JWT 注销">
+<meta property="og:url" content="http://example.com/2025/04/23/Java/Framework/Spring%20Boot/Security/JWT%20%E6%B3%A8%E9%94%80/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="先掌握 [[Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API]] Spring 提供 logout 机制吗？ 当我们有一个 JWT 系统来保护我们的后端时，spring 是否提供任何默认实现或任何内置实现来注销 答案是：当使用带有 JWT 令牌的 Spring Security 时，没有内置的注销实现，因为 JWT 令牌的无状态特性意味">
+<meta property="og:description" content="先掌握 Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API Spring 提供 logout 机制吗？ 当我们有一个 JWT 系统来保护我们的后端时，spring 是否提供任何默认实现或任何内置实现来注销 答案是：当使用带有 JWT 令牌的 Spring Security 时，没有内置的注销实现，因为 JWT 令牌的无状态特性意味着服务器">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-06-24T13:34:27.221Z">
-<meta property="article:modified_time" content="2025-06-09T00:50:03.104Z">
+<meta property="og:image" content="http://example.com/img/java/spring.png">
+<meta property="article:published_time" content="2025-04-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T13:45:34.525Z">
 <meta property="article:author" content="Han Di">
+<meta property="article:tag" content="spring security">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/spring.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>繁星的蓝</title>
+  <title>JWT 注销 - 繁星的蓝</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -207,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="JWT 注销"></span>
           
         </div>
 
@@ -218,8 +221,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-06-24 21:34" pubdate>
-          2025年6月24日 晚上
+        <time datetime="2025-04-23 00:00" pubdate>
+          2025年4月23日 凌晨
         </time>
       </span>
     
@@ -287,12 +290,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header"></h1>
+            <h1 id="seo-header">JWT 注销</h1>
             
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年6月9日 早上
+                    本文最后更新于 2025年6月26日 晚上
                   
                 
               </p>
@@ -300,7 +303,7 @@
             
               <div class="markdown-body">
                 
-                <p>先掌握 [[Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API]]</p>
+                <p>先掌握 <a href="/2025/04/23/Java/Framework/Spring%20Boot/Security/Spring%20Boot%203%20+%20Spring%20Security%206%20-%20%E4%BD%BF%E7%94%A8%20JWT%20Token%20%E4%BF%9D%E6%8A%A4%20API/" title="Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API">Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API</a></p>
 <h2 id="Spring-提供-logout-机制吗？">Spring 提供 logout 机制吗？</h2>
 <p>当我们有一个 JWT 系统来保护我们的后端时，spring 是否提供任何默认实现或任何内置实现来注销<br>
 答案是：当使用带有 JWT 令牌的 Spring Security 时，没有内置的注销实现，因为 <strong>JWT 令牌的无状态特性意味着服务器不存储或保留任何用户会话的跟踪</strong>，这就是为什么没有内置或默认的注销实现的主要原因。</p>
@@ -308,7 +311,7 @@
 <p>因此，为了简化，spring 为我们提供了一些东西，就像我们有一些 <strong>LogoutHandler(注销处理程序)</strong> 和一些 <strong>logoutSuccessHandler(注销成功处理程序)</strong>。<br>
 所以当执行注销操作时，我们需要做的就是提供一个端点，然后 <strong>spring 将为我们提供一个监视处理，我们可以在那里实现我们的逻辑</strong>，决定如何使无效或注销或删除或取消验证该令牌。</p>
 <h2 id="注销机制想法">注销机制想法</h2>
-<p>![[2025-06-08_10-09-10.png]]</p>
+<p><img src="2025-06-08_10-09-10.png" srcset="/img/loading.gif" lazyload alt=""></p>
 <p>记得这张图，它解释了安全流程是如何工作的，我们如何使用 JWT 令牌保护我们的 API。</p>
 <p>需要在这个级别上添加或调整一点，以便能够实现我们的 logout 系统<br>
 首先，我们需要为每个用户存储生成的令牌，并且每次用户尝试登录或尝试访问受保护的资源时，我们都需要进行双重检查。</p>
@@ -322,7 +325,7 @@ JwtAuthFilter 是第一个过滤器的入口点，该过滤器将执行。(<stro
 一旦获得这两个结果(boolean 类型)，我们就会将它们传递给 Calculate 并基于结果，如果为真，它是一个有效令牌，否则是无效令牌，我们需要将授权或 403 发送回用户。</li>
 </ul>
 <h2 id="扩展类图">扩展类图</h2>
-<p>![[2025-06-08_10-36-14.png]]<br>
+<p><img src="2025-06-08_10-36-14.png" srcset="/img/loading.gif" lazyload alt=""><br>
 之前只围绕一个实体工作，那就是用户。<br>
 现在我们需要扩展类图，需要添加一个新表 token，我们将在其中存储用户的所有令牌。<br>
 包含一个 ID；<br>
@@ -331,7 +334,7 @@ JwtAuthFilter 是第一个过滤器的入口点，该过滤器将执行。(<stro
 将有两个 Boolean 标志，第一个标志 expired(已过期)，第二个标志 revoked(已撤销)</p>
 <p>User 与 Token 的关系：一个用户意味着他至少有一个令牌(一对多)</p>
 <h2 id="Token">Token</h2>
-<p>[[关系映射和多表查询]]</p>
+<a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%E5%92%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2/" title="Java&#x2F;Framework&#x2F;Spring Boot&#x2F;Data&#x2F;Hibernate &amp; JPA&#x2F;关系映射和多表查询">Java&#x2F;Framework&#x2F;Spring Boot&#x2F;Data&#x2F;Hibernate &amp; JPA&#x2F;关系映射和多表查询</a>
 <h3 id="创建-Token-实体">创建 Token 实体</h3>
 <p>在 token 包中创建 Token</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Getter</span><br><span class="hljs-meta">@Setter</span><br><span class="hljs-meta">@AllArgsConstructor</span><br><span class="hljs-meta">@NoArgsConstructor</span><br><span class="hljs-meta">@Builder</span><br><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Token</span> &#123;<br><br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-meta">@GeneratedValue</span><br>    <span class="hljs-keyword">private</span> Integer id;<br><br>    <span class="hljs-keyword">private</span> String token;<br><br>    <span class="hljs-meta">@Enumerated(EnumType.STRING)</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">TokenType</span> <span class="hljs-variable">tokenType</span> <span class="hljs-operator">=</span> TokenType.BEARER;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> revoked;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-type">boolean</span> expired;<br>	<span class="hljs-comment">// 与User进行关联</span><br>    <span class="hljs-meta">@ManyToOne(fetch = FetchType.LAZY)</span><br>    <span class="hljs-meta">@JoinColumn(name = &quot;user_id&quot;)</span><br>    <span class="hljs-keyword">private</span> User user;<br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">TokenType</span> &#123;  <br>    BEARER  <br>&#125;<br></code></pre></td></tr></table></figure>
@@ -407,6 +410,55 @@ JwtAuthFilter 是第一个过滤器的入口点，该过滤器将执行。(<stro
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Security/" class="category-chain-item">Security</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/spring-security/" class="print-no-link">#spring security</a>
+      
+    </div>
   
 </div>
 
@@ -416,8 +468,8 @@ JwtAuthFilter 是第一个过滤器的入口点，该过滤器将执行。(<stro
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
-      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Security/JWT 注销/</div>
+      <div>JWT 注销</div>
+      <div>http://example.com/2025/04/23/Java/Framework/Spring Boot/Security/JWT 注销/</div>
     </div>
     <div class="license-meta">
       
@@ -429,7 +481,7 @@ JwtAuthFilter 是第一个过滤器的入口点，该过滤器将执行。(<stro
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年6月24日</div>
+          <div>2025年4月23日</div>
         </div>
       
       
@@ -461,9 +513,9 @@ JwtAuthFilter 是第一个过滤器的入口点，该过滤器将执行。(<stro
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Refresh%20token/" title="">
+                      <a href="/2025/04/23/Java/Framework/Spring%20Boot/Security/Spring%20Security%20%E7%9A%84%20JPA%20Auditing/" title="Spring Security 的 JPA Auditing(审计)">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">Spring Security 的 JPA Auditing(审计)</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -471,8 +523,8 @@ JwtAuthFilter 是第一个过滤器的入口点，该过滤器将执行。(<stro
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Change%20password/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2025/04/23/Java/Framework/Spring%20Boot/Stripe/%E5%9F%BA%E7%A1%80/" title="spring boot 集成 Stripe (demo)">
+                        <span class="hidden-mobile">spring boot 集成 Stripe (demo)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

@@ -237,15 +237,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E6%9C%AA%E5%91%BD%E5%90%8D%201/" target="_self">
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/2.Basic%20Auth%E5%92%8C%E7%BC%96%E5%86%99SecurityFilterChain/" target="_self">
           
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E6%9C%AA%E5%91%BD%E5%90%8D%201/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/2.Basic%20Auth%E5%92%8C%E7%BC%96%E5%86%99SecurityFilterChain/" target="_self">
         <div>
-          DaoAuthenticationProvider.setUserDetailsService() 方法确实已被弃用。这里有几种替代方案： 1. 使用构造函数注入（推荐） 最直接的替代方案是使用 DaoAuthenticationProvider 的构造函数： 123456@Beanpublic DaoAuthenticationProvider authenticationProvider()
+          编写SecurityFilterChain 如果你使用的是 REST API，那么表单就不适合你了。所以在 REST API 中你没有界面，通常会使用 Postman 之类的工具。 所以还有一种不同于基于表单的身份验证的用户身份验证方法，它被称为 Basic Authentication (基本身份验证)。 顾名思义，basic 就是借助用户名和密码对用户进行身份验证的基本方法 配置 spring
         </div>
       </a>
 
@@ -270,15 +270,213 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Spring%20Security%20%E7%9A%84%20JPA%20Auditing/" target="_self">
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/1.%E5%85%A5%E9%97%A8%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A1%A8%E5%8D%95%E7%9A%84%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81/" target="_self">
           
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Spring%20Security%20%E7%9A%84%20JPA%20Auditing/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/1.%E5%85%A5%E9%97%A8%E5%92%8C%E5%9F%BA%E4%BA%8E%E8%A1%A8%E5%8D%95%E7%9A%84%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81/" target="_self">
         <div>
-          介绍 JPA Auditing(审计)，该功能可以自动跟踪数据库实体的创建、修改和删除。我们将通过实际示例和代码演示，讲解如何在 Spring Boot 应用程序中实现审计功能。如何轻松地将 Auditing 注解（例如 @CreatedDate、@LastModifiedDate 和 @CreatedBy）集成到实体类中，以捕获关键元数据。  在使用数据库时，你需要跟踪谁做了什么以及何时做了什么
+          Spring Security 入门 创建项目 https://start.spring.io/ 依赖项：Spring Web 创建一个简单的 controller： 12345678@RestControllerpublic class GreetingController &#123;    @GetMapping(&quot;/hello&quot;)    public String he
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/PKCE%20%E6%8E%88%E6%9D%83%E4%BB%A3%E7%A0%81%E6%B5%81%E6%BC%94%E7%A4%BA/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/PKCE%20%E6%8E%88%E6%9D%83%E4%BB%A3%E7%A0%81%E6%B5%81%E6%BC%94%E7%A4%BA/" target="_self">
+        <div>
+          以下是一个简化的 PKCE 授权代码流的分步演示，使用 伪代码 和 HTTP 请求示例，展示 PKCE 的核心流程：  1. 生成 Code Verifier 和 Challenge 123456# 生成 code_verifier（随机 64 位字符串，Base64 安全字符）code_verifier = &quot;w2bXx59qE8Kp7LzSfT3rA1vYyZ4uI6oO0jGkHl
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/OAuth%202.0%20%E6%A0%B8%E5%BF%83%E6%9C%AF%E8%AF%AD/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/OAuth%202.0%20%E6%A0%B8%E5%BF%83%E6%9C%AF%E8%AF%AD/" target="_self">
+        <div>
+          OAuth 2.0 核心术语速览：   角色与组件  资源所有者（Resource Owner）：用户（如微信账号持有者）。 客户端（Client）：第三方应用（如用微信登录的 App）。 授权服务器（Authorization Server）：颁发令牌的服务器（如微信登录授权页）。还将验证访问令牌是否有效，市场上有许多可用于授权服务器的选项:  Optionsin Market：  AWS Co
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/Keycloak%20%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%90%AF%E5%8A%A8/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/Keycloak%20%E6%9C%8D%E5%8A%A1%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%90%AF%E5%8A%A8/" target="_self">
+        <div>
+          Keycloak介绍 Keycloak是一个开源的身份认证和授权管理系统，它提供了一系列的功能，包括单点登录（SSO）、身份验证、社交登录、用户管理、角色管理、权限管理等等。Keycloak可以被集成到各种应用程序中，包括Web应用程序、移动应用程序和服务。它支持OpenID Connect、OAuth 2.0、SAML 2.0标准协议，拥有简单易用的管理控制台，并提供对LDAP、Active D
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E8%8E%B7%E5%BE%97%E8%BF%9E%E6%8E%A5%E7%9A%84%E7%94%A8%E6%88%B7/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E8%8E%B7%E5%BE%97%E8%BF%9E%E6%8E%A5%E7%9A%84%E7%94%A8%E6%88%B7/" target="_self">
+        <div>
+          这是一个非常实际且常用的需求。当你的端点（Endpoint，通常指 Controller 中的一个处理方法）被 Spring Security 保护起来后，意味着在执行你的业务逻辑之前，用户已经成功通过了认证。这时，你自然希望能够获取到当前登录用户的信息。 Spring Security 提供了多种优雅的方式来获取已认证的用户信息。以下是最常用且推荐的方法，我会从最便捷到更底层的方式进行介绍： 1
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E7%9B%AE%E5%BD%95/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E7%9B%AE%E5%BD%95/" target="_self">
+        <div>
+          [[Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API]] [[JWT 注销]] [[Java/Spring/Spring Boot/Security/Refresh token|Refresh token]] [[Roles and Permissions]] [[Change password]] [[Spring Security
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E6%9C%AA%E5%91%BD%E5%90%8D%201/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E6%9C%AA%E5%91%BD%E5%90%8D%201/" target="_self">
+        <div>
+          DaoAuthenticationProvider.setUserDetailsService() 方法确实已被弃用。这里有几种替代方案： 1. 使用构造函数注入（推荐） 最直接的替代方案是使用 DaoAuthenticationProvider 的构造函数： 123456@Beanpublic DaoAuthenticationProvider authenticationProvider()
         </div>
       </a>
 
@@ -336,171 +534,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Spring%20Boot%203%20+%20Spring%20Security%206%20-%20%E4%BD%BF%E7%94%A8%20JWT%20Token%20%E4%BF%9D%E6%8A%A4%20API/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Spring%20Boot%203%20+%20Spring%20Security%206%20-%20%E4%BD%BF%E7%94%A8%20JWT%20Token%20%E4%BF%9D%E6%8A%A4%20API/" target="_self">
-        <div>
-          将学习如何使用 Spring Security 6 和 Postgres 数据库在 Spring Boot 3.0 应用程序中实现 JWT 身份验证和授权以存储用户凭据。 您将看到使用 JSON Web Tokens 保护应用程序和终端是多么简单。 我们将首先设置 Postgres 数据库并创建一个用户表来存储我们的凭证。 然后，我们将配置 Spring Security 以使用 JWT，并为我们
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Roles%20and%20Permissions/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Roles%20and%20Permissions/" target="_self">
-        <div>
-          先掌握：[[Java/Spring/Spring Boot/Security/Refresh token|Refresh token]] ✅ 在您的 Spring Boot 应用程序中实现基于角色和基于权限的授权。 ✅ 为您的用例选择正确的授权方法。 ✅ 使用注释和基于配置的授权来保护您的应用程序。 ✅ 创建自定义权限评估器并利用 Spring 表达语言 (SpEL) 来制定复杂的安全规则。 了解
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Refresh%20token/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Refresh%20token/" target="_self">
-        <div>
-          先掌握：[[JWT 注销]] 刷新令牌允许客户端请求新的访问令牌，而无需用户在每次访问令牌过期时重新进行身份验证，从而提高应用程序的安全性和用户体验。 什么是 refresh token(刷新令牌) refresh token 一种令牌，是用来刷新我们的 access token(访问令牌)，这有助于我们改进和提高应用程序的安全性。 可以降低令牌的可用性或有效性，每当我们的客户端或其他客户端需要新
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/JWT%20%E6%B3%A8%E9%94%80/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/JWT%20%E6%B3%A8%E9%94%80/" target="_self">
-        <div>
-          先掌握 [[Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API]] Spring 提供 logout 机制吗？ 当我们有一个 JWT 系统来保护我们的后端时，spring 是否提供任何默认实现或任何内置实现来注销 答案是：当使用带有 JWT 令牌的 Spring Security 时，没有内置的注销实现，因为 JWT 令牌的无状态特性意味
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Change%20password/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Change%20password/" target="_self">
-        <div>
-          先掌握：[[Roles and Permissions]] 添加 UserController，我们在里面添加更改密码的端点，因此此端点不应处于 auth 之下，因为 AuthenticationController 或此 /api/v1/auth 是公共的。 然后我们需要一个更改密码请求类型的对象（ChangePasswordRequest），因此它将保存更改密码的信息。 使用 UserServ
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2025/06/24/Java/Framework/Spring%20Boot/Lombok/@Builder/" target="_self">
           
         </a>
@@ -510,39 +543,6 @@
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Lombok/@Builder/" target="_self">
         <div>
           Lombok 中的 @Builder 注解（注意：并非 @Build）用于简化对象的构造过程，通过自动生成 Builder 模式代码，使得创建对象变得更直观和可读，尤其适用于构造参数较多或者部分参数为可选的场景。  为什么使用 @Builder？   提高可读性 当类中包含多个参数时，直接使用构造方法可能会让代码难以理解，容易发生参数顺序混乱的问题。使用 Builder 模式，可以通过链式调用明确
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Jackson/%E5%BF%BD%E7%95%A5%E5%AD%97%E6%AE%B5/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Jackson/%E5%BF%BD%E7%95%A5%E5%AD%97%E6%AE%B5/" target="_self">
-        <div>
-          你可以借助 Jackson 的注解，告诉序列化时跳过 password 和 tokens 这两个属性。有两种常用的做法：  1. 在 User 类上统一忽略 1234567891011@Entity@Table(name = &quot;_user&quot;)@JsonIgnoreProperties(&#123;&quot;password&quot;, &quot;tokens&quot;&
         </div>
       </a>
 

@@ -19,23 +19,26 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="先掌握：[[Roles and Permissions]] 添加 UserController，我们在里面添加更改密码的端点，因此此端点不应处于 auth 之下，因为 AuthenticationController 或此 &#x2F;api&#x2F;v1&#x2F;auth 是公共的。 然后我们需要一个更改密码请求类型的对象（ChangePasswordRequest），因此它将保存更改密码的信息。 使用 UserServ">
+    <meta name="description" content="先掌握：Roles 和 Permission 添加 UserController，我们在里面添加更改密码的端点，因此此端点不应处于 auth 之下，因为 AuthenticationController 或此 &#x2F;api&#x2F;v1&#x2F;auth 是公共的。 然后我们需要一个更改密码请求类型的对象（ChangePasswordRequest），因此它将保存更改密码的信息。 使用 UserService 实现">
 <meta property="og:type" content="article">
-<meta property="og:title" content="繁星的蓝">
-<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Security/Change%20password/index.html">
+<meta property="og:title" content="Change Password">
+<meta property="og:url" content="http://example.com/2025/04/23/Java/Framework/Spring%20Boot/Security/Change%20password/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="先掌握：[[Roles and Permissions]] 添加 UserController，我们在里面添加更改密码的端点，因此此端点不应处于 auth 之下，因为 AuthenticationController 或此 &#x2F;api&#x2F;v1&#x2F;auth 是公共的。 然后我们需要一个更改密码请求类型的对象（ChangePasswordRequest），因此它将保存更改密码的信息。 使用 UserServ">
+<meta property="og:description" content="先掌握：Roles 和 Permission 添加 UserController，我们在里面添加更改密码的端点，因此此端点不应处于 auth 之下，因为 AuthenticationController 或此 &#x2F;api&#x2F;v1&#x2F;auth 是公共的。 然后我们需要一个更改密码请求类型的对象（ChangePasswordRequest），因此它将保存更改密码的信息。 使用 UserService 实现">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-06-24T13:34:27.218Z">
-<meta property="article:modified_time" content="2025-06-10T08:55:12.990Z">
+<meta property="og:image" content="http://example.com/img/java/spring.png">
+<meta property="article:published_time" content="2025-04-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T13:45:43.339Z">
 <meta property="article:author" content="Han Di">
+<meta property="article:tag" content="spring security">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/spring.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>繁星的蓝</title>
+  <title>Change Password - 繁星的蓝</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -207,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="Change Password"></span>
           
         </div>
 
@@ -218,8 +221,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-06-24 21:34" pubdate>
-          2025年6月24日 晚上
+        <time datetime="2025-04-23 00:00" pubdate>
+          2025年4月23日 凌晨
         </time>
       </span>
     
@@ -287,12 +290,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header"></h1>
+            <h1 id="seo-header">Change Password</h1>
             
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年6月10日 下午
+                    本文最后更新于 2025年6月26日 晚上
                   
                 
               </p>
@@ -300,7 +303,7 @@
             
               <div class="markdown-body">
                 
-                <p>先掌握：[[Roles and Permissions]]</p>
+                <p>先掌握：<a href="/2025/04/23/Java/Framework/Spring%20Boot/Security/Roles%20and%20Permissions/" title="Roles 和 Permission">Roles 和 Permission</a></p>
 <p>添加 UserController，我们在里面添加更改密码的端点，因此此端点不应处于 auth 之下，因为 AuthenticationController 或此 /api/v1/auth 是公共的。</p>
 <p>然后我们需要一个更改密码请求类型的对象（ChangePasswordRequest），因此它将保存更改密码的信息。<br>
 使用 UserService 实现 changePassword 方法。</p>
@@ -320,8 +323,8 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">changePassword</span><span class="hljs-params">(ChangePasswordRequest request)</span> &#123;<br><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>我们需要知道我们正在为哪个用户更改密码，对于这个，你可能会问为什么我没有从 ChangePasswordRequest 中添加用户 ID，我们不需要它，因为这个端点是一个安全的端点，<strong>当端点是安全的时，这意味着我们可以获得连接的用户</strong>。</p>
 <h3 id="获得连接的用户">获得连接的用户</h3>
-<p>[[获得连接的用户]]<br>
-如何获得连接的用户，我们可以注入一个名为 <code>Principal</code> 的对象<br>
+<a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E8%8E%B7%E5%BE%97%E8%BF%9E%E6%8E%A5%E7%9A%84%E7%94%A8%E6%88%B7/" title="Java&#x2F;Framework&#x2F;Spring Boot&#x2F;Security&#x2F;获得连接的用户">Java&#x2F;Framework&#x2F;Spring Boot&#x2F;Security&#x2F;获得连接的用户</a>
+<p>如何获得连接的用户，我们可以注入一个名为 <code>Principal</code> 的对象<br>
 然后将其传递给我们的更改密码方法</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api/v1/users&quot;)</span><br><span class="hljs-meta">@RequiredArgsConstructor</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserController</span> &#123;<br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> UserService userService;<br><br>    <span class="hljs-meta">@PutMapping</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;?&gt; changePassword(<br>            <span class="hljs-meta">@RequestBody</span> ChangePasswordRequest request,<br>            Principal connectedUser<br>    ) &#123;<br>        userService.changePassword(request, connectedUser);<br>        <span class="hljs-keyword">return</span> ResponseEntity.ok().build();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
 <p>Principal 接口</p>
@@ -339,6 +342,55 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Security/" class="category-chain-item">Security</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/spring-security/" class="print-no-link">#spring security</a>
+      
+    </div>
   
 </div>
 
@@ -348,8 +400,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
-      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Security/Change password/</div>
+      <div>Change Password</div>
+      <div>http://example.com/2025/04/23/Java/Framework/Spring Boot/Security/Change password/</div>
     </div>
     <div class="license-meta">
       
@@ -361,7 +413,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年6月24日</div>
+          <div>2025年4月23日</div>
         </div>
       
       
@@ -393,9 +445,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/JWT%20%E6%B3%A8%E9%94%80/" title="">
+                      <a href="/2025/05/13/Java/Framework/Spring%20AI/OpenAI%20%E4%B8%8E%20Spring%20Boot%20%E9%9B%86%E6%88%90/" title="OpenAI 与 Spring Boot 集成">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">OpenAI 与 Spring Boot 集成</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -403,8 +455,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Lombok/@Builder/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2025/04/23/Java/Framework/Spring%20Boot/Security/Refresh%20token/" title="刷新令牌">
+                        <span class="hidden-mobile">刷新令牌</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

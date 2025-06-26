@@ -19,23 +19,26 @@
   <meta name="author" content="Han Di">
   <meta name="keywords" content="">
   
-    <meta name="description" content="先掌握：[[Java&#x2F;Spring&#x2F;Spring Boot&#x2F;Security&#x2F;Refresh token|Refresh token]] ✅ 在您的 Spring Boot 应用程序中实现基于角色和基于权限的授权。 ✅ 为您的用例选择正确的授权方法。 ✅ 使用注释和基于配置的授权来保护您的应用程序。 ✅ 创建自定义权限评估器并利用 Spring 表达语言 (SpEL) 来制定复杂的安全规则。 了解">
+    <meta name="description" content="先掌握：刷新令牌 了解 Role(角色)和 Permission(权限)  在我们的应用程序中，我们有一个用户(有专用的端点来注册和验证用户)，用户有一个角色(可以更改它，可以为用户分配多个角色)。 一个用户有一个角色，规则是在全局应用程序级别。 比如说用户有一个 role_a，然后当我们谈论资源或想要更深入的细节时，我们会讨论 Permission(权限)。正如图中所看到的，role_a 它有多">
 <meta property="og:type" content="article">
-<meta property="og:title" content="繁星的蓝">
-<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Security/Roles%20and%20Permissions/index.html">
+<meta property="og:title" content="Roles 和 Permission">
+<meta property="og:url" content="http://example.com/2025/04/23/Java/Framework/Spring%20Boot/Security/Roles%20and%20Permissions/index.html">
 <meta property="og:site_name" content="繁星的蓝">
-<meta property="og:description" content="先掌握：[[Java&#x2F;Spring&#x2F;Spring Boot&#x2F;Security&#x2F;Refresh token|Refresh token]] ✅ 在您的 Spring Boot 应用程序中实现基于角色和基于权限的授权。 ✅ 为您的用例选择正确的授权方法。 ✅ 使用注释和基于配置的授权来保护您的应用程序。 ✅ 创建自定义权限评估器并利用 Spring 表达语言 (SpEL) 来制定复杂的安全规则。 了解">
+<meta property="og:description" content="先掌握：刷新令牌 了解 Role(角色)和 Permission(权限)  在我们的应用程序中，我们有一个用户(有专用的端点来注册和验证用户)，用户有一个角色(可以更改它，可以为用户分配多个角色)。 一个用户有一个角色，规则是在全局应用程序级别。 比如说用户有一个 role_a，然后当我们谈论资源或想要更深入的细节时，我们会讨论 Permission(权限)。正如图中所看到的，role_a 它有多">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-06-24T13:34:27.227Z">
-<meta property="article:modified_time" content="2025-06-09T10:14:00.321Z">
+<meta property="og:image" content="http://example.com/img/java/spring.png">
+<meta property="article:published_time" content="2025-04-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T13:45:14.745Z">
 <meta property="article:author" content="Han Di">
+<meta property="article:tag" content="spring security">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/spring.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>繁星的蓝</title>
+  <title>Roles 和 Permission - 繁星的蓝</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -207,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="Roles 和 Permission"></span>
           
         </div>
 
@@ -218,8 +221,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-06-24 21:34" pubdate>
-          2025年6月24日 晚上
+        <time datetime="2025-04-23 00:00" pubdate>
+          2025年4月23日 凌晨
         </time>
       </span>
     
@@ -230,7 +233,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          2.8k 字
+          2.7k 字
         
       </span>
     
@@ -241,7 +244,7 @@
         
         
         
-          24 分钟
+          23 分钟
         
       </span>
     
@@ -287,12 +290,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header"></h1>
+            <h1 id="seo-header">Roles 和 Permission</h1>
             
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年6月9日 晚上
+                    本文最后更新于 2025年6月26日 晚上
                   
                 
               </p>
@@ -300,13 +303,9 @@
             
               <div class="markdown-body">
                 
-                <p>先掌握：[[Java/Spring/Spring Boot/Security/Refresh token|Refresh token]]</p>
-<p>✅ 在您的 Spring Boot 应用程序中实现基于角色和基于权限的授权。<br>
-✅ 为您的用例选择正确的授权方法。<br>
-✅ 使用注释和基于配置的授权来保护您的应用程序。<br>
-✅ 创建自定义权限评估器并利用 Spring 表达语言 (SpEL) 来制定复杂的安全规则。</p>
+                <p>先掌握：<a href="/2025/04/23/Java/Framework/Spring%20Boot/Security/Refresh%20token/" title="刷新令牌">刷新令牌</a></p>
 <h2 id="了解-Role-角色-和-Permission-权限">了解 Role(角色)和 Permission(权限)</h2>
-<p>![[2025-06-09_15-10-54.png]]<br>
+<p><img src="2025-06-09_15-10-54.png" srcset="/img/loading.gif" lazyload alt=""><br>
 在我们的应用程序中，我们有一个用户(有专用的端点来注册和验证用户)，用户有一个角色(可以更改它，可以为用户分配多个角色)。</p>
 <p>一个用户有一个角色，规则是在全局应用程序级别。</p>
 <p>比如说用户有一个 role_a，然后当我们谈论资源或想要更深入的细节时，我们会讨论 Permission(权限)。正如图中所看到的，role_a 它有多个权限，并且权限是针对每个资源的，因此权限将以这种方式存在。<br>
@@ -320,8 +319,8 @@
 <h2 id="创建角色和权限">创建角色和权限</h2>
 <p>向 Role 添加 MANAGER</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Role</span> &#123;  <br>    USER,  <br>    ADMIN,  <br>    MANAGER  <br>&#125;<br></code></pre></td></tr></table></figure>
-<p>每个角色可以拥有多个权限，所以在这种情况下，首先创建一个新的枚举类：<code>Permission</code>，如图中所看到的，这个枚举将保存<strong>不同资源的不同权限</strong>。<br>
-[[enum]]</p>
+<p>每个角色可以拥有多个权限，所以在这种情况下，首先创建一个新的枚举类：<code>Permission</code>，如图中所看到的，这个枚举将保存<strong>不同资源的不同权限</strong>。</p>
+<a href="/2025/06/24/Java/%E5%9F%BA%E7%A1%80/Class/enum/" title="enum">enum</a>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RequiredArgsConstructor</span>  <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Permission</span> &#123;  <br>  <br>    ADMIN_READ(<span class="hljs-string">&quot;admin:read&quot;</span>),  <br>    ADMIN_UPDATE(<span class="hljs-string">&quot;admin:update&quot;</span>),  <br>    ADMIN_CREATE(<span class="hljs-string">&quot;admin:create&quot;</span>),  <br>    ADMIN_DELETE(<span class="hljs-string">&quot;admin:delete&quot;</span>),  <br>    MANAGER_READ(<span class="hljs-string">&quot;management:read&quot;</span>),  <br>    MANAGER_UPDATE(<span class="hljs-string">&quot;management:update&quot;</span>),  <br>    MANAGER_CREATE(<span class="hljs-string">&quot;management:create&quot;</span>),  <br>    MANAGER_DELETE(<span class="hljs-string">&quot;management:delete&quot;</span>);  <br>  <br>    <span class="hljs-meta">@Getter</span> <span class="hljs-comment">// @Getter: 为类中的所有非静态字段或指定字段自动生成 `getXxx()`(对于boolean类型是 `isXxx()`) 方法。  </span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> String permission;  <br>&#125;<br></code></pre></td></tr></table></figure>
 <p>枚举可以有构造方法，但它<strong>必须是 <code>private</code> 或包级私有</strong>（默认）。<br>
 构造方法在定义枚举常量时自动调用。<br>
@@ -373,6 +372,55 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Security/" class="category-chain-item">Security</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/spring-security/" class="print-no-link">#spring security</a>
+      
+    </div>
   
 </div>
 
@@ -382,8 +430,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
-      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Security/Roles and Permissions/</div>
+      <div>Roles 和 Permission</div>
+      <div>http://example.com/2025/04/23/Java/Framework/Spring Boot/Security/Roles and Permissions/</div>
     </div>
     <div class="license-meta">
       
@@ -395,7 +443,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年6月24日</div>
+          <div>2025年4月23日</div>
         </div>
       
       
@@ -427,9 +475,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Spring%20Boot%203%20+%20Spring%20Security%206%20-%20%E4%BD%BF%E7%94%A8%20JWT%20Token%20%E4%BF%9D%E6%8A%A4%20API/" title="">
+                      <a href="/2025/04/23/Java/Framework/Spring%20Boot/Security/Refresh%20token/" title="刷新令牌">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">刷新令牌</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -437,8 +485,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Refresh%20token/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2025/04/23/Java/Framework/Spring%20Boot/Security/Spring%20Security%20%E7%9A%84%20JPA%20Auditing/" title="Spring Security 的 JPA Auditing(审计)">
+                        <span class="hidden-mobile">Spring Security 的 JPA Auditing(审计)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
