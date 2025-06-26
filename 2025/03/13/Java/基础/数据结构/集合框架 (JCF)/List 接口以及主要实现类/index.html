@@ -1,0 +1,1067 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="核心部分——List&lt;E&gt; 接口以及它的两个主要实现类：ArrayList&lt;E&gt; 和 LinkedList&lt;E&gt;。 List 是我们日常编程中使用频率最高的集合类型之一。  List&lt;E&gt; 接口：有序、可重复   定义与特性：  java.util.List&lt;E&gt; 接口继承自 Collection&lt;E&gt; 接口。 它代表一个有序">
+<meta property="og:type" content="article">
+<meta property="og:title" content="List 接口以及主要实现类">
+<meta property="og:url" content="http://example.com/2025/03/13/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%20(JCF)/List%20%E6%8E%A5%E5%8F%A3%E4%BB%A5%E5%8F%8A%E4%B8%BB%E8%A6%81%E5%AE%9E%E7%8E%B0%E7%B1%BB/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="核心部分——List&lt;E&gt; 接口以及它的两个主要实现类：ArrayList&lt;E&gt; 和 LinkedList&lt;E&gt;。 List 是我们日常编程中使用频率最高的集合类型之一。  List&lt;E&gt; 接口：有序、可重复   定义与特性：  java.util.List&lt;E&gt; 接口继承自 Collection&lt;E&gt; 接口。 它代表一个有序">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/Java.png">
+<meta property="article:published_time" content="2025-03-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T07:33:23.492Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/Java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>List 接口以及主要实现类 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="List 接口以及主要实现类"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-13 00:00" pubdate>
+          2025年3月13日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">List 接口以及主要实现类</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月26日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>核心部分——<strong><code>List&lt;E&gt;</code> 接口</strong>以及它的两个主要实现类：<code>ArrayList&lt;E&gt;</code> 和 <code>LinkedList&lt;E&gt;</code>。</p>
+<p><code>List</code> 是我们日常编程中使用频率最高的集合类型之一。</p>
+<hr>
+<h3 id="List-E-接口：有序、可重复"><code>List&lt;E&gt;</code> 接口：有序、可重复</h3>
+<ul>
+<li>
+<p><strong>定义与特性：</strong></p>
+<ul>
+<li><code>java.util.List&lt;E&gt;</code> 接口继承自 <code>Collection&lt;E&gt;</code> 接口。</li>
+<li>它代表一个<strong>有序的 (ordered)</strong> 集合，也称为<strong>序列 (sequence)</strong>。</li>
+<li><strong>有序：</strong> 元素在 <code>List</code> 中有明确的插入顺序，并且这个顺序会被保持。当你迭代 <code>List</code> 时，元素会按照它们被插入的顺序出现（除非 <code>List</code> 被显式地重新排序）。</li>
+<li><strong>可重复：</strong> <code>List</code> 允许存储重复的元素。你可以向一个 <code>List</code> 中添加多个内容相同（根据 <code>equals()</code> 判断）的对象。</li>
+<li><strong>基于索引的访问：</strong> <code>List</code> 接口的核心特性是它允许通过<strong>整数索引 (位置)</strong> 来访问和操作元素，这与数组非常相似。索引从 <code>0</code> 开始。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>List&lt;E&gt;</code> 接口在 <code>Collection&lt;E&gt;</code> 基础上新增/覆盖的核心方法：</strong></p>
+<ol>
+<li>
+<p><strong>位置访问 (Positional Access)：</strong></p>
+<ul>
+<li><code>E get(int index)</code>: 返回列表中指定位置的元素。</li>
+<li><code>E set(int index, E element)</code>: 用指定的元素替换列表中指定位置的元素，并返回被替换的旧元素。</li>
+<li><code>void add(int index, E element)</code>: 在列表的指定位置插入指定的元素，后续元素向后移动。</li>
+<li><code>E remove(int index)</code>: 移除列表中指定位置的元素，并返回被移除的元素，后续元素向前移动。</li>
+</ul>
+</li>
+<li>
+<p><strong>搜索操作 (Search Operations)：</strong></p>
+<ul>
+<li><code>int indexOf(Object o)</code>: 返回此列表中第一次出现的指定元素的索引；如果列表不包含此元素，则返回 -1。比较时使用 <code>o.equals(element)</code>。</li>
+<li><code>int lastIndexOf(Object o)</code>: 返回此列表中最后一次出现的指定元素的索引；如果列表不包含此元素，则返回 -1。</li>
+</ul>
+</li>
+<li>
+<p><strong>列表迭代器 (List Iterator)：</strong></p>
+<ul>
+<li><code>ListIterator&lt;E&gt; listIterator()</code>: 返回此列表元素的列表迭代器 (从列表的开头开始)。</li>
+<li><code>ListIterator&lt;E&gt; listIterator(int index)</code>: 返回此列表元素的列表迭代器 (从列表的指定位置开始)。</li>
+<li><strong><code>ListIterator&lt;E&gt;</code> 接口：</strong>
+<ul>
+<li>继承自 <code>Iterator&lt;E&gt;</code>。</li>
+<li>除了 <code>Iterator</code> 的 <code>hasNext()</code>, <code>next()</code>, <code>remove()</code> 方法外，还增加了：
+<ul>
+<li><code>boolean hasPrevious()</code>: 如果反向迭代列表，列表迭代器有多个元素，则返回 <code>true</code>。</li>
+<li><code>E previous()</code>: 返回列表中的前一个元素，并将光标位置向后移动。</li>
+<li><code>int nextIndex()</code>: 返回后续调用 <code>next()</code> 所返回元素的索引。</li>
+<li><code>int previousIndex()</code>: 返回后续调用 <code>previous()</code> 所返回元素的索引。</li>
+<li><code>void set(E e)</code>: 用指定元素替换 <code>next()</code> 或 <code>previous()</code> 最后返回的元素 (可选操作)。</li>
+<li><code>void add(E e)</code>: 将指定的元素插入列表，插入位置在 <code>next()</code> 将返回的元素之前，或者 <code>previous()</code> 将返回的元素之后 (可选操作)。</li>
+</ul>
+</li>
+<li><code>ListIterator</code> 允许双向遍历列表，并且可以在迭代期间修改列表 (添加、移除、设置元素)。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>子列表视图 (Sublist View)：</strong></p>
+<ul>
+<li><code>List&lt;E&gt; subList(int fromIndex, int toIndex)</code>: 返回列表中指定的 <code>fromIndex</code> (包含)和 <code>toIndex</code> (不包含)之间的部分视图。</li>
+<li><strong>重要特性：</strong> 返回的 <code>List</code> 是<strong>原始列表的视图 (view)，而不是一个独立的副本</strong>。对子列表的任何结构性修改 (如添加、删除元素) 都会反映在原始列表中，反之亦然。对子列表的非结构性修改 (如 <code>set()</code>) 也会影响原始列表。</li>
+<li>如果在获取子列表后，原始列表发生了结构性修改（通过原始列表自身的方法，而不是通过子列表），那么对子列表的后续操作行为是未定义的 (通常会导致 <code>ConcurrentModificationException</code>)。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>equals()</code> 和 <code>hashCode()</code> 的约定：</strong></p>
+<ul>
+<li><code>List</code> 接口对其 <code>equals()</code> 和 <code>hashCode()</code> 方法有严格的约定：
+<ul>
+<li>如果两个列表包含相同顺序的相同元素（根据元素的 <code>equals()</code> 方法判断），则它们是 <code>equals()</code> 的。</li>
+<li><code>hashCode()</code> 的计算也必须基于列表中元素的顺序和它们的 <code>hashCode()</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Java 8+ <code>default void sort(Comparator&lt;? super E&gt; c)</code>:</strong></p>
+<ul>
+<li>使用指定的 <code>Comparator</code> 对此列表进行排序。如果 <code>c</code> 为 <code>null</code>，则使用元素的自然顺序 (元素必须实现 <code>Comparable</code>)。</li>
+<li>这个方法通常会直接修改列表本身。</li>
+</ul>
+</li>
+<li>
+<p><strong>Java 9+ 静态工厂方法 <code>List.of(...)</code>:</strong></p>
+<ul>
+<li><code>static &lt;E&gt; List&lt;E&gt; of()</code></li>
+<li><code>static &lt;E&gt; List&lt;E&gt; of(E e1)</code></li>
+<li><code>static &lt;E&gt; List&lt;E&gt; of(E e1, E e2, ... E e10)</code> (多个重载版本，最多 10 个元素)</li>
+<li><code>static &lt;E&gt; List&lt;E&gt; of(E... elements)</code> (可变参数版本)</li>
+<li>这些方法用于创建<strong>不可变的 (immutable)</strong> <code>List</code> 实例。</li>
+<li><strong>特性：</strong>
+<ul>
+<li>返回的列表是不可变的：不能添加、删除、替换元素 (会抛 <code>UnsupportedOperationException</code>)。</li>
+<li>不允许 <code>null</code> 元素 (会抛 <code>NullPointerException</code>)。</li>
+<li>通常比创建可变列表然后用 <code>Collections.unmodifiableList()</code> 包装更高效，内存占用也可能更少。</li>
+<li>返回的实际类型是 JDK 内部的特定不可变实现，不是 <code>ArrayList</code> 或 <code>LinkedList</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="ArrayList-E-基于动态数组的实现"><code>ArrayList&lt;E&gt;</code>: 基于动态数组的实现</h3>
+<ul>
+<li>
+<p><strong>底层数据结构：</strong> <code>ArrayList</code> 内部使用一个<strong>动态数组 (Object[])</strong> 来存储元素。这个数组的名称通常是 <code>elementData</code>。</p>
+</li>
+<li>
+<p><strong>核心特性与性能：</strong></p>
+<ul>
+<li><strong>随机访问高效 (O(1))：</strong> 由于底层是数组，通过索引 <code>get(index)</code> 和 <code>set(index, element)</code> 操作非常快，时间复杂度是 O(1)。</li>
+<li><strong>尾部添加/删除摊销 O(1)：</strong>
+<ul>
+<li><code>add(E element)</code> (添加到末尾): 如果数组还有空间，时间复杂度是 O(1)。如果数组已满，需要进行<strong>扩容 (grow)</strong>，这涉及到创建一个更大的新数组并将旧数组元素复制到新数组，这个操作是 O(n) 的。但是，由于扩容不是每次添加都发生，经过<strong>摊销分析 (amortized analysis)</strong>，平均下来尾部添加的复杂度是 O(1)。</li>
+</ul>
+</li>
+<li><strong>中间插入/删除低效 (O(n))：</strong>
+<ul>
+<li><code>add(int index, E element)</code> (在中间插入) 或 <code>remove(int index)</code> (从中间移除)：这些操作需要移动索引之后的所有元素，平均时间复杂度是 O(n)。</li>
+</ul>
+</li>
+<li><strong>空间占用：</strong>
+<ul>
+<li><code>ArrayList</code> 会预留一些额外的空间以备后续添加，所以实际占用的内存可能比存储的元素多。</li>
+<li>可以通过构造函数指定初始容量 <code>initialCapacity</code>，或者使用 <code>trimToSize()</code> 方法来减少底层数组到实际元素数量的大小。</li>
+</ul>
+</li>
+<li><strong>线程不安全：</strong> <code>ArrayList</code> 不是线程安全的。如果在多线程环境中使用，必须进行外部同步（例如使用 <code>Collections.synchronizedList(new ArrayList&lt;&gt;())</code>）或者使用并发集合如 <code>CopyOnWriteArrayList</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>扩容机制 (Grow Mechanism)：</strong></p>
+<ul>
+<li>当调用 <code>add()</code> 方法且当前 <code>elementData</code> 数组已满时，<code>ArrayList</code> 会进行扩容。</li>
+<li>JDK 8 及以后的典型扩容策略是：<strong>新容量 = 旧容量 + (旧容量 &gt;&gt; 1)</strong>，即新容量大约是旧容量的 1.5 倍。 (例如，10 -&gt; 15, 15 -&gt; 22, 22 -&gt; 33)</li>
+<li>如果计算出的新容量仍然不足以容纳添加的元素（例如，批量添加 <code>addAll</code>），则新容量会调整为至少满足需求的最小容量。</li>
+<li>扩容是一个相对耗时的操作，因为它涉及内存分配和数组复制。合理设置初始容量可以减少不必要的扩容次数。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// ArrayList 源码片段 (简化示意)</span><br><span class="hljs-comment">// private Object[] elementData;</span><br><span class="hljs-comment">// private int size;</span><br><span class="hljs-comment">// private static final int DEFAULT_CAPACITY = 10;</span><br><br><span class="hljs-comment">// private void grow(int minCapacity) &#123;</span><br><span class="hljs-comment">//     int oldCapacity = elementData.length;</span><br><span class="hljs-comment">//     int newCapacity = oldCapacity + (oldCapacity &gt;&gt; 1); // 1.5倍</span><br><span class="hljs-comment">//     if (newCapacity - minCapacity &lt; 0)</span><br><span class="hljs-comment">//         newCapacity = minCapacity;</span><br><span class="hljs-comment">//     if (newCapacity - MAX_ARRAY_SIZE &gt; 0) // MAX_ARRAY_SIZE 是 Integer.MAX_VALUE - 8 左右</span><br><span class="hljs-comment">//         newCapacity = hugeCapacity(minCapacity);</span><br><span class="hljs-comment">//     elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>构造函数：</strong></p>
+<ul>
+<li><code>ArrayList()</code>: 创建一个初始容量为 10 的空列表。</li>
+<li><code>ArrayList(int initialCapacity)</code>: 创建一个具有指定初始容量的空列表。
+<ul>
+<li>如果 <code>initialCapacity</code> 为 0，会使用一个共享的空数组实例 <code>EMPTY_ELEMENTDATA</code>。第一次添加元素时会扩容到默认容量 (通常是 10，除非第一次添加的是一个集合)。</li>
+</ul>
+</li>
+<li><code>ArrayList(Collection&lt;? extends E&gt; c)</code>: 创建一个包含指定集合元素的列表，元素的顺序由集合的迭代器返回的顺序决定。初始容量是 <code>c.size()</code> 的 110% (JDK 8) 或略大于 <code>c.size()</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>适用场景：</strong></p>
+<ul>
+<li><strong>读多写少</strong>的场景，特别是需要频繁进行随机访问 (通过索引 <code>get()</code>) 的情况。</li>
+<li>当元素数量相对稳定，或者可以预估元素数量以设置合适的初始容量时。</li>
+<li>作为方法返回值或局部变量存储一组数据时非常常用。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>subList()</code> 的特殊性：</strong></p>
+<ul>
+<li><code>ArrayList</code> 的 <code>subList()</code> 方法返回的是 <code>ArrayList</code> 内部的一个名为 <code>SubList</code> 的私有类实例。</li>
+<li>这个 <code>SubList</code> 实例<strong>直接操作原始 <code>ArrayList</code> 的 <code>elementData</code> 数组</strong>，通过偏移量和大小来界定子列表范围。</li>
+<li>因此，对 <code>SubList</code> 的修改会直接影响原始 <code>ArrayList</code>。</li>
+<li><strong><code>ConcurrentModificationException</code> 风险：</strong> 如果在创建 <code>SubList</code> 后，原始 <code>ArrayList</code> 通过其自身的方法（而不是通过 <code>SubList</code>）进行了结构性修改 (增删元素导致 <code>modCount</code> 变化)，那么对这个 <code>SubList</code> 的任何后续操作（如 <code>get</code>, <code>size</code>, <code>add</code>）都会抛出 <code>ConcurrentModificationException</code>。这是因为 <code>SubList</code> 内部也会检查 <code>modCount</code>。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java">ArrayList&lt;String&gt; mainList = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(List.of(<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>, <span class="hljs-string">&quot;c&quot;</span>, <span class="hljs-string">&quot;d&quot;</span>, <span class="hljs-string">&quot;e&quot;</span>));<br>List&lt;String&gt; sub = mainList.subList(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">// sub 包含 &quot;b&quot;, &quot;c&quot;</span><br><br>System.out.println(<span class="hljs-string">&quot;MainList: &quot;</span> + mainList); <span class="hljs-comment">// [a, b, c, d, e]</span><br>System.out.println(<span class="hljs-string">&quot;SubList: &quot;</span> + sub);     <span class="hljs-comment">// [b, c]</span><br><br>sub.set(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;X&quot;</span>); <span class="hljs-comment">// 修改 sub，会影响 mainList</span><br>System.out.println(<span class="hljs-string">&quot;MainList after sub.set: &quot;</span> + mainList); <span class="hljs-comment">// [a, X, c, d, e]</span><br>System.out.println(<span class="hljs-string">&quot;SubList after sub.set: &quot;</span> + sub);     <span class="hljs-comment">// [X, c]</span><br><br>sub.add(<span class="hljs-string">&quot;Y&quot;</span>); <span class="hljs-comment">// 通过 sub 添加，也会影响 mainList</span><br>System.out.println(<span class="hljs-string">&quot;MainList after sub.add: &quot;</span> + mainList); <span class="hljs-comment">// [a, X, Y, c, d, e]</span><br>System.out.println(<span class="hljs-string">&quot;SubList after sub.add: &quot;</span> + sub);     <span class="hljs-comment">// [X, Y, c] (sub 范围也变了)</span><br><br><span class="hljs-comment">// !! 危险操作 !!</span><br><span class="hljs-comment">// mainList.add(&quot;Z&quot;); // 通过 mainList 进行结构性修改</span><br><span class="hljs-comment">// System.out.println(sub.get(0)); // 此时会抛出 ConcurrentModificationException</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="LinkedList-E-基于双向链表的实现"><code>LinkedList&lt;E&gt;</code>: 基于双向链表的实现</h3>
+<ul>
+<li>
+<p><strong>底层数据结构：</strong> <code>LinkedList</code> 内部使用一个<strong>双向链表 (doubly linked list)</strong> 来存储元素。每个节点 (Node) 包含元素本身、一个指向前一个节点的引用 (prev) 和一个指向后一个节点的引用 (next)。它还会维护 <code>first</code> 和 <code>last</code> 节点引用以及 <code>size</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// LinkedList.Node 内部类简化示意</span><br><span class="hljs-comment">// private static class Node&lt;E&gt; &#123;</span><br><span class="hljs-comment">//     E item;</span><br><span class="hljs-comment">//     Node&lt;E&gt; next;</span><br><span class="hljs-comment">//     Node&lt;E&gt; prev;</span><br><span class="hljs-comment">//     Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next) &#123; ... &#125;</span><br><span class="hljs-comment">// &#125;</span><br><span class="hljs-comment">// transient Node&lt;E&gt; first;</span><br><span class="hljs-comment">// transient Node&lt;E&gt; last;</span><br><span class="hljs-comment">// transient int size = 0;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>核心特性与性能：</strong></p>
+<ul>
+<li><strong>插入和删除高效 (O(1) 如果有引用，否则 O(n) 查找 + O(1) 操作)：</strong>
+<ul>
+<li>在链表的头部 (<code>addFirst</code>, <code>removeFirst</code>) 或尾部 (<code>addLast</code>, <code>removeLast</code>) 进行插入和删除操作的时间复杂度是 O(1)，因为可以直接操作 <code>first</code> 或 <code>last</code> 节点。</li>
+<li><code>ListIterator</code> 的 <code>add()</code> 和 <code>remove()</code> 方法也是 O(1) 的，因为它持有当前节点的引用。</li>
+<li>通过索引 <code>add(int index, E element)</code> 或 <code>remove(int index)</code>，首先需要遍历链表找到指定索引的节点，这个查找过程平均是 O(n) (最坏 O(n)，<code>LinkedList</code> 会从头或尾开始查找，取决于索引离哪端更近)，然后实际的节点插入/删除是 O(1)。所以整体是 O(n)。</li>
+</ul>
+</li>
+<li><strong>随机访问低效 (O(n))：</strong>
+<ul>
+<li><code>get(int index)</code> 和 <code>set(int index, E element)</code> 操作需要从头或尾开始遍历链表直到找到指定索引的节点，平均时间复杂度是 O(n)。</li>
+</ul>
+</li>
+<li><strong>空间占用：</strong>
+<ul>
+<li>除了存储元素本身，每个元素还需要额外的空间来存储前后节点的引用，所以 <code>LinkedList</code> 的内存开销通常比 <code>ArrayList</code> 大。</li>
+</ul>
+</li>
+<li><strong>线程不安全：</strong> <code>LinkedList</code> 也不是线程安全的。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Deque&lt;E&gt;</code> 接口的实现：</strong></p>
+<ul>
+<li><code>LinkedList</code> 同时实现了 <code>List&lt;E&gt;</code> 和 <code>Deque&lt;E&gt;</code> (双端队列) 接口。</li>
+<li>因此，<code>LinkedList</code> 不仅可以用作列表，还可以高效地用作<strong>栈 (Stack)</strong> 或<strong>队列 (Queue)</strong>。</li>
+<li>作为栈：<code>push()</code> (等同于 <code>addFirst()</code>), <code>pop()</code> (等同于 <code>removeFirst()</code>), <code>peek()</code> (等同于 <code>peekFirst()</code>)。</li>
+<li>作为队列：<code>offer()</code> (等同于 <code>offerLast()</code> / <code>addLast()</code>), <code>poll()</code> (等同于 <code>pollFirst()</code> / <code>removeFirst()</code>), <code>peek()</code> (等同于 <code>peekFirst()</code>)。</li>
+<li><strong>推荐使用 <code>ArrayDeque</code> 作为栈和队列</strong>，如果不需要 <code>List</code> 的功能，因为 <code>ArrayDeque</code> 通常性能更好（基于循环数组）。但如果需要在列表操作和队列/栈操作之间切换，<code>LinkedList</code> 是一个方便的选择。</li>
+</ul>
+</li>
+<li>
+<p><strong>构造函数：</strong></p>
+<ul>
+<li><code>LinkedList()</code>: 创建一个空列表。</li>
+<li><code>LinkedList(Collection&lt;? extends E&gt; c)</code>: 创建一个包含指定集合元素的列表。</li>
+</ul>
+</li>
+<li>
+<p><strong>适用场景：</strong></p>
+<ul>
+<li><strong>写多读少</strong>的场景，特别是需要频繁在列表的<strong>头部或尾部</strong>进行插入和删除操作。</li>
+<li>当需要同时具备 <code>List</code> 和 <code>Deque</code> (栈或队列) 的功能时。</li>
+<li>当对内存占用不是非常敏感，且随机访问性能不是主要瓶颈时。</li>
+<li><code>ListIterator</code> 的 <code>add()</code> 和 <code>remove()</code> 操作非常高效。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="ArrayList-vs-LinkedList-总结对比"><code>ArrayList</code> vs <code>LinkedList</code> 总结对比</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th><code>ArrayList&lt;E&gt;</code></th>
+<th><code>LinkedList&lt;E&gt;</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>底层结构</strong></td>
+<td>动态数组</td>
+<td>双向链表</td>
+</tr>
+<tr>
+<td><strong>随机访问 (get/set)</strong></td>
+<td><strong>O(1)</strong></td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td><strong>头部插入/删除</strong></td>
+<td>O(n)</td>
+<td><strong>O(1)</strong></td>
+</tr>
+<tr>
+<td><strong>尾部插入/删除</strong></td>
+<td>摊销 O(1) (无扩容 O(1), 扩容 O(n))</td>
+<td><strong>O(1)</strong></td>
+</tr>
+<tr>
+<td><strong>中间插入/删除</strong></td>
+<td>O(n)</td>
+<td>O(n) (查找 O(n) + 操作 O(1))</td>
+</tr>
+<tr>
+<td><strong><code>ListIterator</code> 增删</strong></td>
+<td>O(n) (因元素移动)</td>
+<td><strong>O(1)</strong></td>
+</tr>
+<tr>
+<td><strong>内存占用</strong></td>
+<td>相对较小，但可能有预留空间</td>
+<td>相对较大 (每个节点有额外指针开销)</td>
+</tr>
+<tr>
+<td><strong>实现接口</strong></td>
+<td><code>List</code>, <code>RandomAccess</code>, <code>Cloneable</code>, <code>Serializable</code></td>
+<td><code>List</code>, <code>Deque</code>, <code>Cloneable</code>, <code>Serializable</code></td>
+</tr>
+<tr>
+<td><strong><code>RandomAccess</code></strong></td>
+<td>是 (标记接口，表示支持快速随机访问)</td>
+<td>否</td>
+</tr>
+<tr>
+<td><strong>适用场景</strong></td>
+<td>读多写少，频繁随机访问</td>
+<td>写多读少，频繁头尾操作，或用作栈/队列</td>
+</tr>
+<tr>
+<td><strong>线程安全</strong></td>
+<td>否</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>RandomAccess</code> 接口：</strong></p>
+<ul>
+<li>这是一个<strong>标记接口 (marker interface)</strong>，没有方法。</li>
+<li>如果一个 <code>List</code> 实现类实现了 <code>RandomAccess</code>，它表明该列表支持快速（通常是 O(1) 时间）的随机访问。</li>
+<li><code>ArrayList</code> 实现了 <code>RandomAccess</code>，而 <code>LinkedList</code> 没有。</li>
+<li><code>Collections</code> 类的某些算法（如 <code>binarySearch</code>，或某些内部循环）会检查列表是否 <code>instanceof RandomAccess</code>，如果是，则使用基于索引的循环；否则，使用迭代器进行遍历，以获得更好的性能。</li>
+</ul>
+<p><strong>选择建议：</strong></p>
+<ul>
+<li><strong>默认情况下，优先考虑 <code>ArrayList</code>。</strong> 因为它的随机访问性能好，并且 CPU 缓存友好性通常也更好（由于数组的连续内存）。大多数场景下，读操作比写操作更频繁。</li>
+<li><strong>只有当你有非常明确的理由</strong>（例如，大量的头尾增删，或者需要 <code>Deque</code> 功能且与 <code>List</code> 功能混合使用），才选择 <code>LinkedList</code>。</li>
+<li><strong>不要过早优化。</strong> 如果不确定，从 <code>ArrayList</code> 开始，如果性能分析显示瓶颈在列表操作上，再考虑是否更换为 <code>LinkedList</code> 或其他数据结构。</li>
+<li>对于<strong>栈或队列</strong>的需求，如果不需要 <code>List</code> 的方法，<strong><code>ArrayDeque</code> 通常是比 <code>LinkedList</code> 更好的选择</strong>，因为它基于循环数组，性能和内存效率往往更高。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6-JCF/" class="category-chain-item">集合框架(JCF)</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>List 接口以及主要实现类</div>
+      <div>http://example.com/2025/03/13/Java/基础/数据结构/集合框架 (JCF)/List 接口以及主要实现类/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/13/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%20(JCF)/JCF%20%E7%9A%84%E5%9F%BA%E7%9F%B3%E6%8E%A5%E5%8F%A3/" title="JCF的基石接口">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">JCF的基石接口</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/13/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%20(JCF)/Map%20%E6%8E%A5%E5%8F%A3%E4%BB%A5%E5%8F%8A%E4%B8%BB%E8%A6%81%E5%AE%9E%E7%8E%B0%E7%B1%BB/" title="Map 接口以及主要实现类">
+                        <span class="hidden-mobile">Map 接口以及主要实现类</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

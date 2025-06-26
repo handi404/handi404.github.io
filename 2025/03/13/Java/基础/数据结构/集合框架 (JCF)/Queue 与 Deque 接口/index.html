@@ -1,0 +1,1035 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这次我们将聚焦于 Queue&lt;E&gt; 与 Deque&lt;E&gt; 接口 以及它们的一些重要实现类。 队列是一种非常重要的数据结构，常用于任务调度、消息传递、缓冲区管理等场景。  Queue&lt;E&gt; 接口：先进先出 (FIFO)   定义与特性：  java.util.Queue&lt;E&gt; 接口继承自 Collection&lt;E&gt; 接口。 它代表一个用于在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Queue 与 Deque 接口">
+<meta property="og:url" content="http://example.com/2025/03/13/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%20(JCF)/Queue%20%E4%B8%8E%20Deque%20%E6%8E%A5%E5%8F%A3/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="这次我们将聚焦于 Queue&lt;E&gt; 与 Deque&lt;E&gt; 接口 以及它们的一些重要实现类。 队列是一种非常重要的数据结构，常用于任务调度、消息传递、缓冲区管理等场景。  Queue&lt;E&gt; 接口：先进先出 (FIFO)   定义与特性：  java.util.Queue&lt;E&gt; 接口继承自 Collection&lt;E&gt; 接口。 它代表一个用于在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/Java.png">
+<meta property="article:published_time" content="2025-03-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T07:34:07.302Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/Java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Queue 与 Deque 接口 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Queue 与 Deque 接口"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-13 00:00" pubdate>
+          2025年3月13日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Queue 与 Deque 接口</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月26日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这次我们将聚焦于 <strong><code>Queue&lt;E&gt;</code> 与 <code>Deque&lt;E&gt;</code> 接口</strong> 以及它们的一些重要实现类。</p>
+<p>队列是一种非常重要的数据结构，常用于任务调度、消息传递、缓冲区管理等场景。</p>
+<hr>
+<h3 id="Queue-E-接口：先进先出-FIFO"><code>Queue&lt;E&gt;</code> 接口：先进先出 (FIFO)</h3>
+<ul>
+<li>
+<p><strong>定义与特性：</strong></p>
+<ul>
+<li><code>java.util.Queue&lt;E&gt;</code> 接口继承自 <code>Collection&lt;E&gt;</code> 接口。</li>
+<li>它代表一个用于在处理之前持有元素的集合，通常（但不一定）以 <strong>FIFO (First-In, First-Out 先进先出)</strong> 的方式对元素进行排序。这意味着元素通常从队列的“尾部”添加，并从队列的“头部”移除。</li>
+<li>优先级队列 (<code>PriorityQueue</code>) 是一个例外，它根据元素的自然顺序或指定的 <code>Comparator</code> 来排序元素，而不是严格的 FIFO。</li>
+<li><code>Queue</code> 接口提供了额外的插入、提取和检查操作。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Queue&lt;E&gt;</code> 接口的核心方法 (每种操作都有两种形式)：</strong></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>操作类型</th>
+<th>抛出异常</th>
+<th>返回特殊值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>插入 (Insert)</strong></td>
+<td><code>add(E e)</code></td>
+<td><code>boolean offer(E e)</code></td>
+<td>将指定元素插入此队列（如果立即可行且不违反容量限制）。<code>offer</code> 在有界队列满时返回 <code>false</code>，而 <code>add</code> 抛 <code>IllegalStateException</code>。</td>
+</tr>
+<tr>
+<td><strong>移除 (Remove)</strong></td>
+<td><code>E remove()</code></td>
+<td><code>E poll()</code></td>
+<td>检索并移除此队列的头部。如果队列为空，<code>poll</code> 返回 <code>null</code>，而 <code>remove</code> 抛 <code>NoSuchElementException</code>。</td>
+</tr>
+<tr>
+<td><strong>检查 (Examine)</strong></td>
+<td><code>E element()</code></td>
+<td><code>E peek()</code></td>
+<td>检索但不移除此队列的头部。如果队列为空，<code>peek</code> 返回 <code>null</code>，而 <code>element</code> 抛 <code>NoSuchElementException</code>。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong>选择哪种形式？</strong></p>
+<ul>
+<li>对于<strong>有界队列 (bounded queue)</strong>，即容量有限的队列，推荐使用 <code>offer()</code>、<code>poll()</code>、<code>peek()</code> 这一组方法。因为它们通过返回特殊值（<code>false</code> 或 <code>null</code>）来优雅地处理队列满或队列空的情况，避免了需要捕获异常的麻烦。</li>
+<li>对于<strong>无界队列 (unbounded queue)</strong>，或者当你明确知道操作不会失败时，可以使用 <code>add()</code>、<code>remove()</code>、<code>element()</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>常见实现类：</strong></p>
+<ul>
+<li><strong><code>LinkedList&lt;E&gt;</code>:</strong> (我们之前讨论过) 它实现了 <code>Deque</code> 接口，而 <code>Deque</code> 继承了 <code>Queue</code>，所以 <code>LinkedList</code> 也可以用作 FIFO 队列。
+<ul>
+<li><code>add(e)</code> / <code>offer(e)</code> -&gt; 实际调用 <code>addLast(e)</code> / <code>offerLast(e)</code></li>
+<li><code>remove()</code> / <code>poll()</code> -&gt; 实际调用 <code>removeFirst()</code> / <code>pollFirst()</code></li>
+<li><code>element()</code> / <code>peek()</code> -&gt; 实际调用 <code>getFirst()</code> / <code>peekFirst()</code></li>
+</ul>
+</li>
+<li><strong><code>ArrayDeque&lt;E&gt;</code>:</strong> (稍后会详细介绍) 一个基于可调整大小的数组实现的双端队列，通常比 <code>LinkedList</code> 作为队列使用时更高效。</li>
+<li><strong><code>PriorityQueue&lt;E&gt;</code>:</strong> (稍后会详细介绍) 一个基于优先级堆的无界优先级队列。元素按其自然顺序或构造时提供的 <code>Comparator</code> 进行排序。</li>
+<li><strong>各种阻塞队列 (Blocking Queues) 实现 (位于 <code>java.util.concurrent</code> 包)：</strong> 如 <code>ArrayBlockingQueue</code>, <code>LinkedBlockingQueue</code>, <code>SynchronousQueue</code> 等。它们是线程安全的，并且提供了在队列为空时获取元素或队列满时插入元素时阻塞调用线程的功能。我们会在并发集合部分详细讨论它们。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="Deque-E-接口：双端队列-Double-Ended-Queue"><code>Deque&lt;E&gt;</code> 接口：双端队列 (Double-Ended Queue)</h3>
+<ul>
+<li>
+<p><strong>定义与特性：</strong></p>
+<ul>
+<li><code>java.util.Deque&lt;E&gt;</code> (发音通常是 “deck”) 接口继承自 <code>Queue&lt;E&gt;</code> 接口。</li>
+<li>它代表一个<strong>双端队列</strong>，支持在队列的<strong>两端</strong>（头部和尾部）进行元素的插入和移除。</li>
+<li>因此，<code>Deque</code> 既可以作为传统的 FIFO 队列使用，也可以作为 <strong>LIFO (Last-In, First-Out 后进先出) 栈 (Stack)</strong> 使用。</li>
+<li>当用作队列时，行为与 <code>Queue</code> 类似 (FIFO)。</li>
+<li>当用作栈时，元素从双端队列的“头部”压入 (push) 和弹出 (pop)。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Deque&lt;E&gt;</code> 接口的核心方法 (每种操作都有针对头部和尾部的两种形式，且每种形式又有抛异常和返回特殊值两种版本)：</strong></p>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>操作类型</th>
+<th>头部操作 (抛异常)</th>
+<th>头部操作 (特殊值)</th>
+<th>尾部操作 (抛异常)</th>
+<th>尾部操作 (特殊值)</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>插入 (Insert)</strong></td>
+<td><code>void addFirst(E e)</code></td>
+<td><code>boolean offerFirst(E e)</code></td>
+<td><code>void addLast(E e)</code></td>
+<td><code>boolean offerLast(E e)</code></td>
+<td>在头部/尾部插入元素。对于有界双端队列，<code>offer*</code> 满时返回 <code>false</code>，<code>add*</code> 抛 <code>IllegalStateException</code>。</td>
+</tr>
+<tr>
+<td><strong>移除 (Remove)</strong></td>
+<td><code>E removeFirst()</code></td>
+<td><code>E pollFirst()</code></td>
+<td><code>E removeLast()</code></td>
+<td><code>E pollLast()</code></td>
+<td>检索并移除头部/尾部元素。空时 <code>poll*</code> 返回 <code>null</code>，<code>remove*</code> 抛 <code>NoSuchElementException</code>。</td>
+</tr>
+<tr>
+<td><strong>检查 (Examine)</strong></td>
+<td><code>E getFirst()</code></td>
+<td><code>E peekFirst()</code></td>
+<td><code>E getLast()</code></td>
+<td><code>E peekLast()</code></td>
+<td>检索但不移除头部/尾部元素。空时 <code>peek*</code> 返回 <code>null</code>，<code>get*</code> 抛 <code>NoSuchElementException</code>。</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p><strong><code>Deque</code> 作为 <code>Queue</code> 使用：</strong></p>
+<ul>
+<li>FIFO 行为可以通过以下映射实现：
+<ul>
+<li><code>Queue.add(e)</code> / <code>offer(e)</code> -&gt; <code>Deque.addLast(e)</code> / <code>offerLast(e)</code></li>
+<li><code>Queue.remove()</code> / <code>poll()</code> -&gt; <code>Deque.removeFirst()</code> / <code>pollFirst()</code></li>
+<li><code>Queue.element()</code> / <code>peek()</code> -&gt; <code>Deque.getFirst()</code> / <code>peekFirst()</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Deque</code> 作为 <code>Stack</code> 使用：</strong></p>
+<ul>
+<li>LIFO 行为可以通过以下映射实现 (推荐使用 <code>Deque</code> 替代过时的 <code>java.util.Stack</code> 类)：
+<ul>
+<li><code>Stack.push(e)</code> -&gt; <code>Deque.addFirst(e)</code> (或 <code>push(e)</code>，<code>Deque</code> 接口直接提供了 <code>push</code> 方法)</li>
+<li><code>Stack.pop()</code> -&gt; <code>Deque.removeFirst()</code> (或 <code>pop()</code>，<code>Deque</code> 接口直接提供了 <code>pop</code> 方法)</li>
+<li><code>Stack.peek()</code> -&gt; <code>Deque.getFirst()</code> (或 <code>peek()</code>，<code>Deque</code> 接口直接提供了 <code>peek</code> 方法)</li>
+</ul>
+</li>
+<li><code>Deque</code> 接口还直接提供了 <code>push(E e)</code>, <code>E pop()</code>, <code>E peek()</code> 这三个方法，它们的语义与传统的栈操作完全对应，并且默认操作的是队列的头部。</li>
+</ul>
+</li>
+<li>
+<p><strong>迭代顺序：</strong></p>
+<ul>
+<li><code>Deque</code> 的迭代器 (<code>iterator()</code>) 通常是从<strong>头部到尾部</strong>遍历元素。</li>
+<li><code>descendingIterator()</code> 方法返回一个从尾部到头部遍历的迭代器。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="ArrayDeque-E-高效的双端队列-栈-队列实现"><code>ArrayDeque&lt;E&gt;</code>: 高效的双端队列/栈/队列实现</h3>
+<ul>
+<li>
+<p><strong>底层数据结构：</strong></p>
+<ul>
+<li><code>java.util.ArrayDeque&lt;E&gt;</code> 使用一个<strong>可调整大小的循环数组 (circular array)</strong> 来实现 <code>Deque</code> 接口。</li>
+<li>它内部维护 <code>head</code> 和 <code>tail</code> 指针（或索引）来标记队列的有效元素范围。当元素添加到头部或尾部时，这些指针会相应地在循环数组中移动。</li>
+<li>当数组满时，会进行扩容（通常是容量加倍）。</li>
+</ul>
+</li>
+<li>
+<p><strong>核心特性与性能：</strong></p>
+<ul>
+<li><strong>高效的头尾操作：</strong> <code>addFirst()</code>, <code>addLast()</code>, <code>pollFirst()</code>, <code>pollLast()</code>, <code>peekFirst()</code>, <code>peekLast()</code> 等操作的<strong>摊销时间复杂度是 O(1)</strong>。因为它们只需要修改指针和在数组中存取元素，只有在扩容时才需要 O(n) 的复制成本。</li>
+<li><strong>无容量限制 (逻辑上)：</strong> <code>ArrayDeque</code> 会根据需要自动扩容，所以它在逻辑上是无界的 (实际受限于可用内存和 <code>Integer.MAX_VALUE</code>)。</li>
+<li><strong>不允许 <code>null</code> 元素：</strong> <code>ArrayDeque</code> 不允许插入 <code>null</code> 元素，尝试这样做会抛出 <code>NullPointerException</code>。这是为了避免 <code>poll()</code> 或 <code>peek()</code> 返回 <code>null</code> 时无法区分是队列为空还是存储了一个 <code>null</code> 元素。</li>
+<li><strong>线程不安全：</strong> <code>ArrayDeque</code> 不是线程安全的。</li>
+<li><strong>通常比 <code>LinkedList</code> 更快：</strong> 对于作为栈或队列使用，<code>ArrayDeque</code> 通常比 <code>LinkedList</code> 性能更好。这是因为数组操作（特别是顺序访问）具有更好的 CPU 缓存局部性 (cache locality)，并且没有 <code>LinkedList</code> 中节点对象的额外开销和间接寻址。</li>
+</ul>
+</li>
+<li>
+<p><strong>构造函数：</strong></p>
+<ul>
+<li><code>ArrayDeque()</code>: 创建一个初始容量为 16 的空双端队列。</li>
+<li><code>ArrayDeque(int numElements)</code>: 创建一个初始容量足以容纳 <code>numElements</code> 个元素的空双端队列 (通常是大于等于 <code>numElements</code> 的最小 2 的幂，但不小于 8)。</li>
+<li><code>ArrayDeque(Collection&lt;? extends E&gt; c)</code>: 创建一个包含指定集合元素的双端队列。</li>
+</ul>
+</li>
+<li>
+<p><strong>推荐用途：</strong></p>
+<ul>
+<li><strong>首选的栈实现：</strong> Java 官方文档推荐使用 <code>ArrayDeque</code> (或其他 <code>Deque</code> 实现) 来代替过时的 <code>java.util.Stack</code> 类。</li>
+<li><strong>首选的非阻塞 FIFO 队列实现 (单线程)：</strong> 如果不需要阻塞功能，并且在单线程环境中使用，<code>ArrayDeque</code> 是比 <code>LinkedList</code> 更高效的队列选择。</li>
+<li>用于广度优先搜索 (BFS) 等算法中。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="PriorityQueue-E-基于优先级的队列"><code>PriorityQueue&lt;E&gt;</code>: 基于优先级的队列</h3>
+<ul>
+<li>
+<p><strong>底层数据结构：</strong></p>
+<ul>
+<li><code>java.util.PriorityQueue&lt;E&gt;</code> 使用<strong>二叉堆 (binary heap)</strong>，具体来说是<strong>最小堆 (min-heap)</strong> 来实现。这意味着队列的头部总是整个队列中“最小”的元素。</li>
+</ul>
+</li>
+<li>
+<p><strong>核心特性与性能：</strong></p>
+<ul>
+<li><strong>优先级排序：</strong> 元素不是按照插入顺序排列，而是根据它们的<strong>优先级</strong>排列。
+<ul>
+<li><strong>优先级确定方式：</strong>
+<ol>
+<li><strong>自然排序：</strong> 如果元素实现了 <code>Comparable</code> 接口，则按其自然顺序。</li>
+<li><strong>自定义排序：</strong> 如果在构造 <code>PriorityQueue</code> 时提供了 <code>Comparator</code>，则按比较器定义的顺序。</li>
+</ol>
+</li>
+<li><code>peek()</code>, <code>poll()</code>, <code>remove()</code> 等方法操作的都是队列中<strong>优先级最高</strong>（即“最小”）的元素。</li>
+</ul>
+</li>
+<li><strong>性能：</strong>
+<ul>
+<li><code>offer(e)</code> (添加元素): <strong>O(log n)</strong> (元素需要上浮到堆的正确位置)。</li>
+<li><code>poll()</code> (移除头部元素): <strong>O(log n)</strong> (移除堆顶后，最后一个元素放到堆顶，然后下沉)。</li>
+<li><code>peek()</code> (查看头部元素): <strong>O(1)</strong> (直接返回堆顶元素)。</li>
+<li><code>remove(Object o)</code> (移除任意元素): <strong>O(n)</strong> (需要线性搜索元素，然后进行堆调整)。</li>
+<li><code>contains(Object o)</code>: <strong>O(n)</strong> (需要线性搜索)。</li>
+</ul>
+</li>
+<li><strong>无界队列：</strong> <code>PriorityQueue</code> 是无界的 (逻辑上)，但可以指定初始容量。它会自动扩容。</li>
+<li><strong>不允许 <code>null</code> 元素 (默认)：</strong> 与 <code>TreeSet</code> 类似，如果使用自然排序或比较器不支持 <code>null</code>，则不能添加 <code>null</code>。</li>
+<li><strong>线程不安全：</strong> <code>PriorityQueue</code> 不是线程安全的。如果需要线程安全的优先级队列，可以使用 <code>java.util.concurrent.PriorityBlockingQueue</code>。</li>
+<li><strong>迭代顺序不保证：</strong> <code>PriorityQueue</code> 的迭代器 (<code>iterator()</code>) <strong>不保证</strong>以任何特定顺序（包括优先级顺序）遍历元素。如果你需要按优先级顺序访问所有元素，应该重复调用 <code>poll()</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>构造函数：</strong></p>
+<ul>
+<li><code>PriorityQueue()</code>: 初始容量 11，按自然顺序。</li>
+<li><code>PriorityQueue(int initialCapacity)</code>: 指定初始容量，按自然顺序。</li>
+<li><code>PriorityQueue(Comparator&lt;? super E&gt; comparator)</code>: 初始容量 11，按指定比较器。</li>
+<li><code>PriorityQueue(int initialCapacity, Comparator&lt;? super E&gt; comparator)</code></li>
+<li><code>PriorityQueue(Collection&lt;? extends E&gt; c)</code>: 从集合创建，如果集合是 <code>SortedSet</code> 或 <code>PriorityQueue</code>，则使用其顺序，否则按自然顺序。</li>
+<li><code>PriorityQueue(PriorityQueue&lt;? extends E&gt; c)</code></li>
+<li><code>PriorityQueue(SortedSet&lt;? extends E&gt; c)</code></li>
+</ul>
+</li>
+<li>
+<p><strong>适用场景：</strong></p>
+<ul>
+<li>任务调度（按任务优先级处理）。</li>
+<li>事件模拟（按事件发生时间处理）。</li>
+<li>图算法（如 Dijkstra 算法、Prim 算法中的优先队列）。</li>
+<li>查找第 K 大/小元素（Top K 问题）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong><code>java.util.Stack&lt;E&gt;</code> (过时，不推荐使用)</strong></p>
+<ul>
+<li><code>Stack</code> 类是 JDK 1.0 时期引入的，它继承自 <code>Vector&lt;E&gt;</code> (一个线程安全但性能较低的 <code>ArrayList</code> 版本)。</li>
+<li><strong>设计缺陷：</strong>
+<ul>
+<li>继承 <code>Vector</code> 意味着 <code>Stack</code> 拥有了 <code>Vector</code> 的所有公共方法（如 <code>get(index)</code>, <code>add(index, element)</code> 等），这破坏了栈的 LIFO 抽象。</li>
+<li><code>Vector</code> 的方法都是 <code>synchronized</code> 的，导致不必要的性能开销，即使在单线程环境中使用 <code>Stack</code>。</li>
+</ul>
+</li>
+<li><strong>替代方案：</strong> 如前所述，<strong>强烈推荐使用任何 <code>Deque</code> 实现 (特别是 <code>ArrayDeque</code>) 来代替 <code>Stack</code></strong>。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 不推荐</span><br><span class="hljs-comment">// Stack&lt;String&gt; oldStack = new Stack&lt;&gt;();</span><br><span class="hljs-comment">// oldStack.push(&quot;A&quot;);</span><br><span class="hljs-comment">// String top = oldStack.pop();</span><br><br><span class="hljs-comment">// 推荐</span><br>Deque&lt;String&gt; newStack = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayDeque</span>&lt;&gt;();<br>newStack.push(<span class="hljs-string">&quot;A&quot;</span>); <span class="hljs-comment">// 等同于 newStack.addFirst(&quot;A&quot;);</span><br><span class="hljs-type">String</span> <span class="hljs-variable">topModern</span> <span class="hljs-operator">=</span> newStack.pop(); <span class="hljs-comment">// 等同于 newStack.removeFirst();</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>总结与重要性：</strong></p>
+<ul>
+<li><code>Queue</code> 定义了 FIFO 集合的基本操作，<code>Deque</code> 在此基础上扩展为双端操作，使其既能作队列也能作栈。</li>
+<li><code>ArrayDeque</code> 是作为栈和非阻塞队列的现代、高效选择，通常优于 <code>LinkedList</code> (用于此目的) 和过时的 <code>Stack</code>。</li>
+<li><code>PriorityQueue</code> 提供了基于元素优先级的出队顺序，对于特定算法和应用场景非常有用。</li>
+<li>理解不同队列实现的底层数据结构和性能特点，有助于在具体场景下做出正确的选择。</li>
+</ul>
+<hr>
+<p>至此，<code>Collection</code> 接口的主要分支 (<code>List</code>, <code>Set</code>, <code>Queue/Deque</code>) 都已覆盖。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6-JCF/" class="category-chain-item">集合框架(JCF)</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Queue 与 Deque 接口</div>
+      <div>http://example.com/2025/03/13/Java/基础/数据结构/集合框架 (JCF)/Queue 与 Deque 接口/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/14/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%B7%B1%E5%85%A5%E6%8E%8C%E6%8F%A1%E4%B8%8E%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/%E4%B8%8D%E5%8F%AF%E5%8F%98%E9%9B%86%E5%90%88/" title="不可变集合">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">不可变集合</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/13/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%20(JCF)/JCF%20%E7%9A%84%E5%9F%BA%E7%9F%B3%E6%8E%A5%E5%8F%A3/" title="JCF的基石接口">
+                        <span class="hidden-mobile">JCF的基石接口</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

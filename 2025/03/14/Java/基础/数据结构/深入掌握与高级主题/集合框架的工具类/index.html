@@ -1,0 +1,1083 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从集合框架的工具类开始，主要是 java.util.Collections 类，同时也会简要回顾一下 java.util.Arrays 中与集合相关的内容。  集合框架的工具类：java.util.Collections java.util.Collections 类包含了一系列静态的实用方法 (utility methods)，用于操作或返回集合。这些方法提供了对集合的常见操作，如排序、搜索、填">
+<meta property="og:type" content="article">
+<meta property="og:title" content="集合框架的工具类">
+<meta property="og:url" content="http://example.com/2025/03/14/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%B7%B1%E5%85%A5%E6%8E%8C%E6%8F%A1%E4%B8%8E%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%E7%9A%84%E5%B7%A5%E5%85%B7%E7%B1%BB/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="从集合框架的工具类开始，主要是 java.util.Collections 类，同时也会简要回顾一下 java.util.Arrays 中与集合相关的内容。  集合框架的工具类：java.util.Collections java.util.Collections 类包含了一系列静态的实用方法 (utility methods)，用于操作或返回集合。这些方法提供了对集合的常见操作，如排序、搜索、填">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/Java.png">
+<meta property="article:published_time" content="2025-03-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T07:35:30.574Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/Java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>集合框架的工具类 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="集合框架的工具类"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-14 00:00" pubdate>
+          2025年3月14日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">集合框架的工具类</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月26日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>从<strong>集合框架的工具类</strong>开始，主要是 <code>java.util.Collections</code> 类，同时也会简要回顾一下 <code>java.util.Arrays</code> 中与集合相关的内容。</p>
+<hr>
+<h3 id="集合框架的工具类：java-util-Collections">集合框架的工具类：<code>java.util.Collections</code></h3>
+<p><code>java.util.Collections</code> 类包含了一系列<strong>静态的实用方法 (utility methods)</strong>，用于操作或返回集合。这些方法提供了对集合的常见操作，如排序、搜索、填充、线程安全包装、不可变包装等。</p>
+<p>这个类中的所有方法都是 <code>static</code> 的，因此你不能创建 <code>Collections</code> 类的实例。</p>
+<h4 id="1-排序-Sorting"><strong>1. 排序 (Sorting)</strong></h4>
+<ul>
+<li>
+<p><strong><code>static &lt;T extends Comparable&lt;? super T&gt;&gt; void sort(List&lt;T&gt; list)</code>:</strong></p>
+<ul>
+<li>使用元素的<strong>自然顺序</strong>对指定的列表进行升序排序。列表中的所有元素必须实现 <code>Comparable</code> 接口。</li>
+<li>底层通常使用高效的排序算法，如归并排序或 TimSort (Java 7+ 对对象排序)。</li>
+<li>此方法会<strong>直接修改</strong>原始 <code>list</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>static &lt;T&gt; void sort(List&lt;T&gt; list, Comparator&lt;? super T&gt; c)</code>:</strong></p>
+<ul>
+<li>使用指定的 <code>Comparator</code> 对列表进行排序。</li>
+<li>如果 <code>c</code> 为 <code>null</code>，则行为与第一个 <code>sort</code> 方法相同（要求元素实现 <code>Comparable</code>）。</li>
+<li>此方法也会<strong>直接修改</strong>原始 <code>list</code>。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;String&gt; names = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(List.of(<span class="hljs-string">&quot;Charlie&quot;</span>, <span class="hljs-string">&quot;Alice&quot;</span>, <span class="hljs-string">&quot;Bob&quot;</span>));<br>Collections.sort(names); <span class="hljs-comment">// 按自然顺序 (字典序)</span><br>System.out.println(names); <span class="hljs-comment">// [Alice, Bob, Charlie]</span><br><br>List&lt;Integer&gt; numbers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(List.of(<span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">3</span>));<br>Collections.sort(numbers, Comparator.reverseOrder()); <span class="hljs-comment">// 按降序</span><br>System.out.println(numbers); <span class="hljs-comment">// [9, 5, 3, 1]</span><br><br><span class="hljs-comment">// 注意：Java 8+ List 接口自身也提供了 sort 方法: list.sort(comparator)</span><br><span class="hljs-comment">// names.sort(Comparator.naturalOrder());</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-搜索-Searching"><strong>2. 搜索 (Searching)</strong></h4>
+<ul>
+<li>
+<p><strong><code>static &lt;T&gt; int binarySearch(List&lt;? extends Comparable&lt;? super T&gt;&gt; list, T key)</code>:</strong></p>
+<ul>
+<li>在指定的<strong>已排序</strong>列表中使用二分搜索算法查找指定的对象。</li>
+<li>列表必须预先按照元素的<strong>自然顺序</strong>排序。如果列表未排序，结果是未定义的。</li>
+<li>返回：
+<ul>
+<li>如果找到 <code>key</code>，返回其索引。</li>
+<li>如果未找到 <code>key</code>，返回 <code>(-(insertion point) - 1)</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>static &lt;T&gt; int binarySearch(List&lt;? extends T&gt; list, T key, Comparator&lt;? super T&gt; c)</code>:</strong></p>
+<ul>
+<li>在指定的<strong>已排序</strong>列表中使用二分搜索算法查找指定的对象。</li>
+<li>列表必须预先按照指定的 <code>Comparator</code> 排序。如果 <code>c</code> 为 <code>null</code>，则按自然顺序。</li>
+<li>返回值同上。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;Integer&gt; sortedNumbers = List.of(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>);<br><span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> Collections.binarySearch(sortedNumbers, <span class="hljs-number">30</span>); <span class="hljs-comment">// 2</span><br><span class="hljs-type">int</span> <span class="hljs-variable">notFound</span> <span class="hljs-operator">=</span> Collections.binarySearch(sortedNumbers, <span class="hljs-number">35</span>); <span class="hljs-comment">// -4</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-修改顺序与内容-Modifying-Order-and-Content"><strong>3. 修改顺序与内容 (Modifying Order and Content)</strong></h4>
+<ul>
+<li>
+<p><strong><code>static void reverse(List&lt;?&gt; list)</code>:</strong></p>
+<ul>
+<li>反转指定列表中元素的顺序。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>static void shuffle(List&lt;?&gt; list)</code>:</strong></p>
+<ul>
+<li>使用默认的随机源随机打乱指定列表中元素的顺序。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>static void shuffle(List&lt;?&gt; list, Random rnd)</code>:</strong></p>
+<ul>
+<li>使用指定的随机源 <code>rnd</code> 随机打乱列表。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>static void fill(List&lt;? super T&gt; list, T obj)</code>:</strong></p>
+<ul>
+<li>用指定的元素 <code>obj</code> 替换指定列表中的所有元素。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>static &lt;T&gt; void copy(List&lt;? super T&gt; dest, List&lt;? extends T&gt; src)</code>:</strong></p>
+<ul>
+<li>将源列表 <code>src</code> 中的所有元素复制到目标列表 <code>dest</code> 中。</li>
+<li><strong>重要：</strong> <code>dest</code> 列表的<strong>大小必须至少与 <code>src</code> 列表的大小相同</strong>。它只会覆盖 <code>dest</code> 中从索引 0 开始的相应位置的元素，不会改变 <code>dest</code> 的大小。如果 <code>dest</code> 比 <code>src</code> 长，<code>dest</code> 中多余的元素不受影响。</li>
+<li>如果 <code>dest</code> 比 <code>src</code> 短，会抛 <code>IndexOutOfBoundsException</code>。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;Integer&gt; nums = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(List.of(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>));<br>Collections.reverse(nums); <span class="hljs-comment">// [5, 4, 3, 2, 1]</span><br>Collections.shuffle(nums); <span class="hljs-comment">// 顺序随机</span><br>System.out.println(nums);<br><br>List&lt;String&gt; letters = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(List.of(<span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-string">&quot;B&quot;</span>, <span class="hljs-string">&quot;C&quot;</span>));<br>Collections.fill(letters, <span class="hljs-string">&quot;X&quot;</span>); <span class="hljs-comment">// [X, X, X]</span><br><br>List&lt;Integer&gt; source = List.of(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>);<br>List&lt;Integer&gt; destination = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(List.of(<span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>)); <span class="hljs-comment">// 必须足够大</span><br>Collections.copy(destination, source);<br>System.out.println(destination); <span class="hljs-comment">// [10, 20, 0, 0]</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>static &lt;T&gt; void rotate(List&lt;T&gt; list, int distance)</code>:</strong></p>
+<ul>
+<li>将列表中的元素循环移动指定的距离。</li>
+<li><code>distance &gt; 0</code>: 元素向右移动 (列表尾部的元素移到头部)。</li>
+<li><code>distance &lt; 0</code>: 元素向左移动。</li>
+<li><code>list.set(i, list.get((i - distance + size) % size))</code></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;Character&gt; chars = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(List.of(<span class="hljs-string">&#x27;a&#x27;</span>, <span class="hljs-string">&#x27;b&#x27;</span>, <span class="hljs-string">&#x27;c&#x27;</span>, <span class="hljs-string">&#x27;d&#x27;</span>, <span class="hljs-string">&#x27;e&#x27;</span>));<br>Collections.rotate(chars, <span class="hljs-number">2</span>);  <span class="hljs-comment">// 向右移动2位</span><br>System.out.println(chars); <span class="hljs-comment">// [d, e, a, b, c]</span><br>Collections.rotate(chars, -<span class="hljs-number">1</span>); <span class="hljs-comment">// 向左移动1位</span><br>System.out.println(chars); <span class="hljs-comment">// [e, a, b, c, d]</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>static &lt;T&gt; boolean replaceAll(List&lt;T&gt; list, T oldVal, T newVal)</code>:</strong></p>
+<ul>
+<li>用 <code>newVal</code> 替换列表中所有出现的 <code>oldVal</code>。如果发生替换则返回 <code>true</code>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="4-查找极值-Finding-Extrema"><strong>4. 查找极值 (Finding Extrema)</strong></h4>
+<ul>
+<li>
+<p><strong><code>static &lt;T extends Object &amp; Comparable&lt;? super T&gt;&gt; T min(Collection&lt;? extends T&gt; coll)</code>:</strong></p>
+<ul>
+<li>返回给定集合中按自然顺序的最小元素。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>static &lt;T&gt; T min(Collection&lt;? extends T&gt; coll, Comparator&lt;? super T&gt; comp)</code>:</strong></p>
+<ul>
+<li>返回给定集合中根据指定比较器确定的最小元素。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>static &lt;T extends Object &amp; Comparable&lt;? super T&gt;&gt; T max(Collection&lt;? extends T&gt; coll)</code>:</strong></p>
+<ul>
+<li>返回给定集合中按自然顺序的最大元素。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>static &lt;T&gt; T max(Collection&lt;? extends T&gt; coll, Comparator&lt;? super T&gt; comp)</code>:</strong></p>
+<ul>
+<li>返回给定集合中根据指定比较器确定的最大元素。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;Integer&gt; data = List.of(<span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>);<br><span class="hljs-type">Integer</span> <span class="hljs-variable">minimum</span> <span class="hljs-operator">=</span> Collections.min(data); <span class="hljs-comment">// 1</span><br><span class="hljs-type">Integer</span> <span class="hljs-variable">maximum</span> <span class="hljs-operator">=</span> Collections.max(data); <span class="hljs-comment">// 9</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="5-频率与不相交-Frequency-and-Disjoint"><strong>5. 频率与不相交 (Frequency and Disjoint)</strong></h4>
+<ul>
+<li>
+<p><strong><code>static int frequency(Collection&lt;?&gt; c, Object o)</code>:</strong></p>
+<ul>
+<li>返回指定集合中指定元素 <code>o</code> 出现的次数。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>static boolean disjoint(Collection&lt;?&gt; c1, Collection&lt;?&gt; c2)</code>:</strong></p>
+<ul>
+<li>如果两个指定集合没有共同元素，则返回 <code>true</code>。</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-同步包装器-Synchronized-Wrappers-用于线程安全"><strong>6. 同步包装器 (Synchronized Wrappers) - 用于线程安全</strong></h4>
+<p>这些方法返回一个由指定集合支持的<strong>线程安全 (同步) 的集合视图</strong>。</p>
+<ul>
+<li>
+<p><code>static &lt;T&gt; Collection&lt;T&gt; synchronizedCollection(Collection&lt;T&gt; c)</code></p>
+</li>
+<li>
+<p><code>static &lt;T&gt; Set&lt;T&gt; synchronizedSet(Set&lt;T&gt; s)</code></p>
+</li>
+<li>
+<p><code>static &lt;T&gt; List&lt;T&gt; synchronizedList(List&lt;T&gt; list)</code></p>
+</li>
+<li>
+<p><code>static &lt;K,V&gt; Map&lt;K,V&gt; synchronizedMap(Map&lt;K,V&gt; m)</code></p>
+</li>
+<li>
+<p><code>static &lt;T&gt; SortedSet&lt;T&gt; synchronizedSortedSet(SortedSet&lt;T&gt; s)</code></p>
+</li>
+<li>
+<p><code>static &lt;K,V&gt; SortedMap&lt;K,V&gt; synchronizedSortedMap(SortedMap&lt;K,V&gt; m)</code></p>
+</li>
+<li>
+<p><code>static &lt;T&gt; NavigableSet&lt;T&gt; synchronizedNavigableSet(NavigableSet&lt;T&gt; s)</code> (Java 6+)</p>
+</li>
+<li>
+<p><code>static &lt;K,V&gt; NavigableMap&lt;K,V&gt; synchronizedNavigableMap(NavigableMap&lt;K,V&gt; m)</code> (Java 6+)</p>
+</li>
+<li>
+<p><strong>工作原理：</strong></p>
+<ul>
+<li>返回的包装集合会将对其所有公共方法的调用委托给底层集合，并在委托调用之前和之后获取包装集合对象自身的<strong>内部锁 (intrinsic lock, 即 <code>synchronized(this)</code>)</strong>。</li>
+<li><strong>迭代时的线程安全问题：</strong> 即使使用了这些同步包装器，当通过迭代器遍历集合时，<strong>迭代过程本身不是原子性的</strong>。如果在迭代过程中，其他线程修改了集合（即使是通过同步包装器），仍可能导致 <code>ConcurrentModificationException</code> 或不确定的行为。</li>
+<li><strong>正确的迭代方式：</strong> 如果需要线程安全地迭代，必须在迭代期间手动在同步包装集合对象上进行同步：<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;String&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br>List&lt;String&gt; syncList = Collections.synchronizedList(list);<br><span class="hljs-comment">// ... 其他线程可能在修改 syncList ...</span><br><br><span class="hljs-comment">// 线程安全迭代</span><br><span class="hljs-keyword">synchronized</span> (syncList) &#123; <span class="hljs-comment">// 必须在 syncList 对象上加锁</span><br>    Iterator&lt;String&gt; i = syncList.iterator(); <span class="hljs-comment">// Must be in synchronized block</span><br>    <span class="hljs-keyword">while</span> (i.hasNext()) &#123;<br>        <span class="hljs-comment">// process(i.next());</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>性能：</strong> 由于每次方法调用都需要获取锁，同步包装器的性能通常低于 <code>java.util.concurrent</code> 包中专门设计的并发集合 (如 <code>ConcurrentHashMap</code>, <code>CopyOnWriteArrayList</code> 等)。</p>
+</li>
+<li>
+<p><strong>现代 Java 的选择：</strong> 在现代 Java 并发编程中，<strong>通常更推荐使用 <code>java.util.concurrent</code> 包下的并发集合</strong>，因为它们通常提供了更高的并发性能和更细粒度的锁控制 (或者无锁实现)。同步包装器更多地用于将已有的非线程安全集合快速适配到多线程环境，或者在一些简单场景下。</p>
+</li>
+</ul>
+<h4 id="7-不可修改包装器-Unmodifiable-Wrappers-创建只读视图"><strong>7. 不可修改包装器 (Unmodifiable Wrappers) - 创建只读视图</strong></h4>
+<p>这些方法返回一个由指定集合支持的<strong>不可修改的视图</strong>。</p>
+<ul>
+<li>
+<p><code>static &lt;T&gt; Collection&lt;T&gt; unmodifiableCollection(Collection&lt;? extends T&gt; c)</code></p>
+</li>
+<li>
+<p><code>static &lt;T&gt; Set&lt;T&gt; unmodifiableSet(Set&lt;? extends T&gt; s)</code></p>
+</li>
+<li>
+<p><code>static &lt;T&gt; List&lt;T&gt; unmodifiableList(List&lt;? extends T&gt; list)</code></p>
+</li>
+<li>
+<p><code>static &lt;K,V&gt; Map&lt;K,V&gt; unmodifiableMap(Map&lt;? extends K, ? extends V&gt; m)</code></p>
+</li>
+<li>
+<p><code>static &lt;T&gt; SortedSet&lt;T&gt; unmodifiableSortedSet(SortedSet&lt;? extends T&gt; s)</code></p>
+</li>
+<li>
+<p><code>static &lt;K,V&gt; SortedMap&lt;K,V&gt; unmodifiableSortedMap(SortedMap&lt;? extends K, ? extends V&gt; m)</code></p>
+</li>
+<li>
+<p><code>static &lt;T&gt; NavigableSet&lt;T&gt; unmodifiableNavigableSet(NavigableSet&lt;? extends T&gt; s)</code> (Java 6+)</p>
+</li>
+<li>
+<p><code>static &lt;K,V&gt; NavigableMap&lt;K,V&gt; unmodifiableNavigableMap(NavigableMap&lt;? extends K, ? extends V&gt; m)</code> (Java 6+)</p>
+</li>
+<li>
+<p><strong>工作原理：</strong></p>
+<ul>
+<li>返回的包装集合会重写所有修改操作的方法 (如 <code>add</code>, <code>remove</code>, <code>set</code>, <code>clear</code>, <code>put</code> 等)，使其抛出 <code>UnsupportedOperationException</code>。</li>
+<li>只读操作 (如 <code>get</code>, <code>size</code>, <code>contains</code>, <code>iterator</code> 等) 会委托给底层集合。</li>
+</ul>
+</li>
+<li>
+<p><strong>视图特性：</strong></p>
+<ul>
+<li>返回的是<strong>视图 (view)</strong>，不是副本。如果底层的原始集合被修改了，这个不可修改的视图也会反映这些变化。</li>
+<li><strong>创建真正的不可变集合：</strong> 如果你想要一个内容完全固定的不可变集合，你需要：
+<ol>
+<li>先创建一个可变集合的副本 (例如，<code>new ArrayList&lt;&gt;(originalList)</code>)。</li>
+<li>然后用 <code>Collections.unmodifiableXxx()</code> 包装这个副本。</li>
+<li>确保不再有任何引用指向这个副本（除了通过不可修改包装器）。</li>
+</ol>
+</li>
+<li><strong>Java 9+ <code>List.of()</code>, <code>Set.of()</code>, <code>Map.of()</code>：</strong> Java 9 引入了更方便、更高效的方式来创建<strong>真正的、紧凑的、不可变的集合实例</strong> (而不是视图)。这些静态工厂方法通常是创建不可变集合的首选。</li>
+</ul>
+</li>
+<li>
+<p><strong>用途：</strong></p>
+<ul>
+<li>防御性编程：当一个方法返回一个集合给调用者，但不希望调用者修改它时。</li>
+<li>创建常量集合。</li>
+<li>多线程环境下，如果一个集合在创建后不再改变，可以发布为其不可修改视图，以保证线程安全 (因为没有写操作)。</li>
+</ul>
+</li>
+</ul>
+<h4 id="8-空集合与单例集合-Empty-and-Singleton-Collections"><strong>8. 空集合与单例集合 (Empty and Singleton Collections)</strong></h4>
+<p>这些方法返回特殊的、通常是不可变的空集合或只包含一个元素的集合。它们有助于避免创建不必要的临时小集合对象，并减少 <code>null</code> 检查。</p>
+<ul>
+<li>
+<p><strong>空集合 (Immutable)：</strong></p>
+<ul>
+<li><code>static &lt;T&gt; List&lt;T&gt; emptyList()</code></li>
+<li><code>static &lt;T&gt; Set&lt;T&gt; emptySet()</code></li>
+<li><code>static &lt;K,V&gt; Map&lt;K,V&gt; emptyMap()</code></li>
+<li><code>static &lt;T&gt; Iterator&lt;T&gt; emptyIterator()</code> (Java 7+)</li>
+<li><code>static &lt;T&gt; ListIterator&lt;T&gt; emptyListIterator()</code> (Java 7+)</li>
+<li><code>static &lt;T&gt; Enumeration&lt;T&gt; emptyEnumeration()</code> (Java 7+)</li>
+<li>返回的空集合是不可变的，并且通常是序列化安全的、类型安全的。</li>
+</ul>
+</li>
+<li>
+<p><strong>单例集合 (Immutable)：</strong></p>
+<ul>
+<li><code>static &lt;T&gt; List&lt;T&gt; singletonList(T o)</code>: 返回一个只包含指定对象的不可变列表。</li>
+<li><code>static &lt;T&gt; Set&lt;T&gt; singleton(T o)</code>: (方法名是 <code>singleton</code> 而不是 <code>singletonSet</code>) 返回一个只包含指定对象的不可变集。</li>
+<li><code>static &lt;K,V&gt; Map&lt;K,V&gt; singletonMap(K key, V value)</code>: 返回一个只包含指定键值对的不可变映射。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;String&gt; noNames = Collections.emptyList();<br><span class="hljs-comment">// noNames.add(&quot;test&quot;); // UnsupportedOperationException</span><br><br>Set&lt;Integer&gt; justOne = Collections.singleton(<span class="hljs-number">42</span>);<br><span class="hljs-comment">// justOne.add(1); // UnsupportedOperationException</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="9-类型安全的动态检查视图-Checked-Collection-Wrappers"><strong>9. 类型安全的动态检查视图 (Checked Collection Wrappers)</strong></h4>
+<p>这些方法用于在运行时动态检查添加到集合中的元素类型，主要用于与遗留的、未使用泛型的代码交互时，提供额外的类型安全保障。</p>
+<ul>
+<li>
+<p><code>static &lt;E&gt; Collection&lt;E&gt; checkedCollection(Collection&lt;E&gt; c, Class&lt;E&gt; type)</code></p>
+</li>
+<li>
+<p><code>static &lt;E&gt; List&lt;E&gt; checkedList(List&lt;E&gt; list, Class&lt;E&gt; type)</code></p>
+</li>
+<li>
+<p>(类似方法 для <code>Set</code>, <code>Map</code>, <code>Queue</code>, <code>SortedSet</code>, <code>SortedMap</code>, <code>NavigableSet</code>, <code>NavigableMap</code>)</p>
+</li>
+<li>
+<p><strong>工作原理：</strong> 返回一个包装集合，该集合会在尝试添加不兼容类型的元素时（即不是 <code>type</code> 的实例）立即抛出 <code>ClassCastException</code>。</p>
+</li>
+<li>
+<p><strong>使用场景：</strong></p>
+<ul>
+<li>当你的泛型集合需要传递给一个接受原始类型 (raw type) 集合的旧 API 时，你可以用 <code>checkedXxx</code> 包装一下，以确保旧 API 不会错误地插入不兼容类型的元素。</li>
+<li>在现代使用泛型的代码中，编译器通常已经提供了足够的类型检查，所以这些方法用得相对较少。</li>
+</ul>
+</li>
+</ul>
+<h4 id="10-其他方法"><strong>10. 其他方法</strong></h4>
+<ul>
+<li><code>static &lt;E&gt; Enumeration&lt;E&gt; enumeration(Collection&lt;E&gt; c)</code>: 返回指定集合的枚举 (Enumeration)。<code>Enumeration</code> 是一个比 <code>Iterator</code> 更老的迭代接口，主要用于兼容旧 API。</li>
+<li><code>static &lt;T&gt; ArrayList&lt;T&gt; list(Enumeration&lt;T&gt; e)</code>: 返回一个 <code>ArrayList</code>，其中包含由指定枚举返回的元素，顺序与枚举返回的顺序相同。</li>
+<li><code>static &lt;E&gt; Comparator&lt;E&gt; reverseOrder()</code>: 返回一个比较器，它施加了实现 <code>Comparable</code> 接口的对象集合的自然顺序的逆序。</li>
+<li><code>static &lt;T&gt; Comparator&lt;T&gt; reverseOrder(Comparator&lt;T&gt; cmp)</code>: 返回一个比较器，它施加了指定比较器的逆序。</li>
+<li><code>static &lt;T&gt; Collection&lt;T&gt; newSetFromMap(Map&lt;T, Boolean&gt; map)</code> (Java 6+): 返回由指定映射支持的 Set。Set 中的元素是映射的键，所有对 Set 的操作都会直接写入底层的 Map。这对于创建自定义 Set 实现很有用 (例如，创建一个并发的 Set，其底层是 <code>ConcurrentHashMap</code>)。</li>
+<li><code>static &lt;E&gt; Queue&lt;E&gt; asLifoQueue(Deque&lt;E&gt; deque)</code> (Java 6+): 将 <code>Deque</code> 视图作为 LIFO (后进先出) <code>Queue</code> 返回。<code>add</code> 映射到 <code>push</code>，<code>remove</code> 映射到 <code>pop</code> 等。</li>
+</ul>
+<hr>
+<h3 id="java-util-Arrays-回顾与集合相关部分"><code>java.util.Arrays</code> (回顾与集合相关部分)</h3>
+<p>我们之前在学习数组时已经详细讨论过 <code>Arrays</code> 类，这里快速回顾一下它与集合框架交互最紧密的方法：</p>
+<ul>
+<li><strong><code>static &lt;T&gt; List&lt;T&gt; asList(T... a)</code>:</strong>
+<ul>
+<li>返回一个由指定数组支持的<strong>固定大小的 <code>List</code></strong>。</li>
+<li><strong>重要：</strong>
+<ul>
+<li>返回的 <code>List</code> <strong>不是</strong> <code>java.util.ArrayList</code>，而是 <code>Arrays</code> 类的内部类。</li>
+<li>对返回 <code>List</code> 的修改 (如 <code>set()</code>) 会反映到原始数组中，反之亦然。</li>
+<li><strong>不支持 <code>add()</code> 和 <code>remove()</code></strong> (会抛 <code>UnsupportedOperationException</code>)。</li>
+<li>如果参数是基本类型数组 (如 <code>int[]</code>)，它会创建一个只包含该数组对象本身作为唯一元素的 <code>List&lt;int[]&gt;</code>，而不是 <code>List&lt;Integer&gt;</code>。需要先将基本类型数组转换为包装类型数组或使用 Stream API。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>总结与重要性：</strong></p>
+<ul>
+<li><code>Collections</code> 类是 Java 集合框架的瑞士军刀，提供了大量方便的静态方法来处理集合。</li>
+<li>熟练掌握这些方法（如排序、同步包装、不可修改包装、空/单例集合）可以极大地简化代码并提高代码质量。</li>
+<li>对于线程安全，现代 Java 更倾向于使用 <code>java.util.concurrent</code> 包下的并发集合，但 <code>Collections.synchronizedXxx()</code> 仍然在某些情况下有用。</li>
+<li>对于不可变集合，Java 9+ 的 <code>List.of()</code>, <code>Set.of()</code>, <code>Map.of()</code> 是更现代和高效的选择，而 <code>Collections.unmodifiableXxx()</code> 返回的是视图。</li>
+<li><code>Arrays.asList()</code> 是一个方便但有坑的方法，务必注意其返回列表的特性。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%B7%B1%E5%85%A5%E6%8E%8C%E6%8F%A1%E4%B8%8E%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/" class="category-chain-item">深入掌握与高级主题</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>集合框架的工具类</div>
+      <div>http://example.com/2025/03/14/Java/基础/数据结构/深入掌握与高级主题/集合框架的工具类/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/14/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%B7%B1%E5%85%A5%E6%8E%8C%E6%8F%A1%E4%B8%8E%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/Java%20Stream%20API%20%E4%B8%8E%E9%9B%86%E5%90%88/" title="Java Stream API 与集合">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Java Stream API 与集合</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/14/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%B7%B1%E5%85%A5%E6%8E%8C%E6%8F%A1%E4%B8%8E%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/%E5%B9%B6%E5%8F%91%E9%9B%86%E5%90%88/" title="并发集合">
+                        <span class="hidden-mobile">并发集合</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

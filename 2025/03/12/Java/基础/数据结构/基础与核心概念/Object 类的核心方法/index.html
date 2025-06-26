@@ -1,0 +1,930 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Object 类的核心方法—— equals(Object obj) 和 hashCode()。 这两个方法对于 Java 中对象的比较、以及 Set 和 Map 等集合的正确运作至关重要。  Object 类的 equals(Object obj) 和 hashCode() java.lang.Object 类是 Java 中所有类的根父类。它定义了一些所有对象都应该具备的基本方法，其中 equ">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Object 类的核心方法">
+<meta property="og:url" content="http://example.com/2025/03/12/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/Object%20%E7%B1%BB%E7%9A%84%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Object 类的核心方法—— equals(Object obj) 和 hashCode()。 这两个方法对于 Java 中对象的比较、以及 Set 和 Map 等集合的正确运作至关重要。  Object 类的 equals(Object obj) 和 hashCode() java.lang.Object 类是 Java 中所有类的根父类。它定义了一些所有对象都应该具备的基本方法，其中 equ">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/Java.png">
+<meta property="article:published_time" content="2025-03-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T07:30:08.998Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/Java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Object 类的核心方法 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Object 类的核心方法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-12 00:00" pubdate>
+          2025年3月12日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          27 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Object 类的核心方法</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月26日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p><strong><code>Object</code> 类的核心方法—— <code>equals(Object obj)</code> 和 <code>hashCode()</code></strong>。</p>
+<p>这两个方法对于 Java 中对象的比较、以及 <code>Set</code> 和 <code>Map</code> 等集合的正确运作至关重要。</p>
+<hr>
+<h3 id="Object-类的-equals-Object-obj-和-hashCode"><code>Object</code> 类的 <code>equals(Object obj)</code> 和 <code>hashCode()</code></h3>
+<p><code>java.lang.Object</code> 类是 Java 中所有类的根父类。它定义了一些所有对象都应该具备的基本方法，其中 <code>equals()</code> 和 <code>hashCode()</code> 对我们理解数据结构尤为重要。</p>
+<h4 id="1-equals-Object-obj-方法"><strong>1. <code>equals(Object obj)</code> 方法</strong></h4>
+<ul>
+<li>
+<p><strong>目的 (What &amp; Why)：</strong></p>
+<ul>
+<li><code>equals()</code> 方法用于比较两个对象是否“相等”。</li>
+<li><strong>默认实现 (在 <code>Object</code> 类中)：</strong> <code>Object</code> 类中的 <code>equals()</code> 方法默认是比较两个对象的<strong>内存地址</strong>是否相同，等价于使用 <code>==</code> 操作符比较两个引用。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Object.java 源码 (简化示意)</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">equals</span><span class="hljs-params">(Object obj)</span> &#123;<br>    <span class="hljs-keyword">return</span> (<span class="hljs-built_in">this</span> == obj);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>为什么需要重写：</strong> 对于大多数类，我们通常关心的是对象的<strong>内容</strong>或<strong>逻辑状态</strong>是否相等，而不是它们是否指向内存中的同一个实例。例如，我们希望两个内容相同的 <code>String</code> 对象是相等的，即使它们是不同的实例。因此，很多类（如 <code>String</code>, <code>Integer</code>, <code>Date</code> 以及集合类）都重写了 <code>equals()</code> 方法来实现基于内容的比较。</li>
+</ul>
+</li>
+<li>
+<p><strong>重写 <code>equals()</code> 的五个基本约定 (JLS - Java Language Specification)：</strong><br>
+当你在自定义类中重写 <code>equals()</code> 方法时，必须遵守以下五个约定，以保证其行为符合预期，特别是与集合框架一起使用时：</p>
+<ol>
+<li><strong>自反性 (Reflexive):</strong> 对于任何非 <code>null</code> 的引用值 <code>x</code>，<code>x.equals(x)</code> 必须返回 <code>true</code>。
+<ul>
+<li>简单来说，对象必须等于它自己。</li>
+</ul>
+</li>
+<li><strong>对称性 (Symmetric):</strong> 对于任何非 <code>null</code> 的引用值 <code>x</code> 和 <code>y</code>，当且仅当 <code>y.equals(x)</code> 返回 <code>true</code> 时，<code>x.equals(y)</code> 必须返回 <code>true</code>。
+<ul>
+<li>如果 <code>x</code> 等于 <code>y</code>，那么 <code>y</code> 也必须等于 <code>x</code>。</li>
+<li><strong>常见陷阱：</strong> 在继承关系中，如果子类 <code>equals()</code> 方法试图与父类对象比较，而父类 <code>equals()</code> 方法不知道子类的特定字段，可能会破坏对称性。例如，如果 <code>Point.equals(Object)</code> 和 <code>ColorPoint.equals(Object)</code> (其中 <code>ColorPoint extends Point</code>) 的实现不当。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 错误的对称性示例</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Point</span> &#123;<br>    <span class="hljs-type">int</span> x, y;<br>    <span class="hljs-comment">// ... constructor, getters ...</span><br>    <span class="hljs-meta">@Override</span> <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">equals</span><span class="hljs-params">(Object o)</span> &#123;<br>        <span class="hljs-keyword">if</span> (!(o <span class="hljs-keyword">instanceof</span> Point)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-type">Point</span> <span class="hljs-variable">p</span> <span class="hljs-operator">=</span> (Point)o;<br>        <span class="hljs-keyword">return</span> p.x == x &amp;&amp; p.y == y;<br>    &#125;<br>&#125;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">ColorPoint</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Point</span> &#123;<br>    Color color;<br>    <span class="hljs-comment">// ... constructor, getters ...</span><br>    <span class="hljs-meta">@Override</span> <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">equals</span><span class="hljs-params">(Object o)</span> &#123;<br>        <span class="hljs-keyword">if</span> (!(o <span class="hljs-keyword">instanceof</span> ColorPoint)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>; <span class="hljs-comment">// 问题点1: 如果 o 是 Point，直接 false</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">super</span>.equals(o) &amp;&amp; ((ColorPoint)o).color == color;<br>    &#125;<br>&#125;<br><span class="hljs-comment">// Point p = new Point(1, 2);</span><br><span class="hljs-comment">// ColorPoint cp = new ColorPoint(1, 2, Color.RED);</span><br><span class="hljs-comment">// p.equals(cp) -&gt; true (ColorPoint is a Point, ColorPoint.equals 会被跳过，执行 Point.equals)</span><br><span class="hljs-comment">// cp.equals(p) -&gt; false (p 不是 ColorPoint 的实例)</span><br><span class="hljs-comment">// 对称性被破坏!</span><br></code></pre></td></tr></table></figure>
+<strong>正确做法：</strong> 通常建议使用 <code>getClass()</code> 进行精确类型匹配，或者在组合优于继承的场景下避免这个问题。对于继承场景下的 <code>equals</code>，推荐使用 Joshua Bloch 在《Effective Java》中提出的方法（通常是 final <code>equals</code> 或委托给一个规范表示）。</li>
+</ul>
+</li>
+<li><strong>传递性 (Transitive):</strong> 对于任何非 <code>null</code> 的引用值 <code>x</code>、<code>y</code> 和 <code>z</code>，如果 <code>x.equals(y)</code> 返回 <code>true</code> 且 <code>y.equals(z)</code> 返回 <code>true</code>，那么 <code>x.equals(z)</code> 必须返回 <code>true</code>。
+<ul>
+<li>如果 <code>x</code> 等于 <code>y</code>，<code>y</code> 等于 <code>z</code>，那么 <code>x</code> 必须等于 <code>z</code>。</li>
+<li><strong>常见陷阱：</strong> 同样在继承关系中，如果不同子类添加了不同的“重要”字段，并试图进行混合比较，容易破坏传递性。</li>
+</ul>
+</li>
+<li><strong>一致性 (Consistent):</strong> 对于任何非 <code>null</code> 的引用值 <code>x</code> 和 <code>y</code>，只要 <code>equals</code> 比较操作中涉及的对象信息没有被修改，多次调用 <code>x.equals(y)</code> 应该始终返回 <code>true</code> 或始终返回 <code>false</code>。
+<ul>
+<li>即，<code>equals()</code> 的结果不应随机变化，除非对象的比较字段发生了改变。</li>
+</ul>
+</li>
+<li><strong>非空性 (Non-nullity):</strong> 对于任何非 <code>null</code> 的引用值 <code>x</code>，<code>x.equals(null)</code> 必须返回 <code>false</code>。
+<ul>
+<li>对象不能等于 <code>null</code>。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>
+<p><strong><code>equals()</code> 实现步骤与最佳实践：</strong></p>
+<ol>
+<li><strong>使用 <code>==</code> 检查参数是否为 <code>this</code> 的引用：</strong> 如果是，直接返回 <code>true</code>。这是一种性能优化。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span> == o) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>使用 <code>instanceof</code> 检查参数类型是否正确 (或者 <code>getClass()</code>):</strong>
+<ul>
+<li><strong><code>instanceof</code> 方式：</strong> <code>if (!(o instanceof MyClass))</code>。允许子类对象与父类对象比较（如果子类没有添加新的影响相等的字段）。</li>
+<li><strong><code>getClass()</code> 方式：</strong> <code>if (o == null || getClass() != o.getClass())</code>。要求比较的两个对象必须是完全相同的类。这通常更容易满足对称性和传递性，尤其是在有继承且子类添加了影响相等性的状态时。</li>
+<li><strong>选择：</strong> 《Effective Java》建议，如果你编写的类是 <code>final</code> 的，或者你确信其 <code>equals</code> 语义不会在子类中改变，可以使用 <code>instanceof</code>。否则，使用 <code>getClass()</code> 通常更安全，以避免破坏对称性。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// instanceof 方式</span><br><span class="hljs-keyword">if</span> (!(o <span class="hljs-keyword">instanceof</span> Point)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br><span class="hljs-type">Point</span> <span class="hljs-variable">other</span> <span class="hljs-operator">=</span> (Point) o;<br>    <br><span class="hljs-comment">// getClass() 方式</span><br><span class="hljs-comment">// if (o == null || getClass() != o.getClass()) return false;</span><br><span class="hljs-comment">// Point other = (Point) o; // 如果前面 getClass 检查通过，这里强转是安全的</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>将参数转换为正确的类型：</strong> 在 <code>instanceof</code> 或 <code>getClass()</code> 检查之后，将 <code>Object</code> 类型的参数强制转换为你的类类型。</li>
+<li><strong>比较关键字段 (Significant Fields)：</strong> 对类中所有影响对象逻辑相等的“关键”字段进行比较。
+<ul>
+<li><strong>基本类型字段：</strong> 使用 <code>==</code> 比较 (如 <code>int</code>, <code>boolean</code>, <code>char</code>)。</li>
+<li><strong>浮点类型字段 (<code>float</code>, <code>double</code>):</strong> 使用 <code>Float.compare(f1, f2)</code> 或 <code>Double.compare(d1, d2)</code>，因为 <code>float</code> 和 <code>double</code> 有 <code>NaN</code> 和正负零等特殊值，直接用 <code>==</code> 比较 <code>NaN</code> 会是 <code>false</code>。</li>
+<li><strong>对象引用字段：</strong> 递归调用这些字段的 <code>equals()</code> 方法。如果字段可能为 <code>null</code>，需要进行 <code>null</code> 检查。Java 7+ 提供了 <code>java.util.Objects.equals(a, b)</code> 辅助方法，它可以优雅地处理 <code>null</code>。</li>
+<li><strong>数组字段：</strong> 不能直接用数组的 <code>equals()</code> 方法 (它继承自 <code>Object</code>，比较引用)。应使用 <code>java.util.Arrays.equals()</code> (针对一维数组) 或 <code>java.util.Arrays.deepEquals()</code> (针对多维数组)。</li>
+<li><strong>顺序无关的字段：</strong> 如果字段的顺序不影响相等性 (例如，一个 <code>Set</code> 类型的字段)，需要更复杂的比较逻辑，确保内容相同即可。</li>
+<li><strong>派生字段：</strong> 通常不需要比较可以通过其他关键字段计算出来的派生字段，除非这个计算非常耗时，而派生字段被缓存了。</li>
+</ul>
+</li>
+<li><strong>编写完成后，问自己：它是否满足对称性、传递性、一致性？</strong></li>
+</ol>
+</li>
+<li>
+<p><strong>示例 (<code>Point</code> 类)：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.util.Objects;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Point</span> &#123; <span class="hljs-comment">// 标记为 final，使用 instanceof 更安全些</span><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> x;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> y;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Point</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> &#123;<br>        <span class="hljs-built_in">this</span>.x = x;<br>        <span class="hljs-built_in">this</span>.y = y;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getX</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> x;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">getY</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> y;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">equals</span><span class="hljs-params">(Object o)</span> &#123;<br>        <span class="hljs-comment">// 1. 自引用检查</span><br>        <span class="hljs-keyword">if</span> (<span class="hljs-built_in">this</span> == o) <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br><br>        <span class="hljs-comment">// 2. null 检查和类型检查 (使用 instanceof，因为 Point 是 final)</span><br>        <span class="hljs-comment">// 如果 Point 不是 final，且子类可能添加影响相等的字段，则 getClass() 更佳</span><br>        <span class="hljs-keyword">if</span> (!(o <span class="hljs-keyword">instanceof</span> Point)) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>        <span class="hljs-comment">// if (o == null || getClass() != o.getClass()) return false; // 或者用 getClass()</span><br><br>        <span class="hljs-comment">// 3. 类型转换</span><br>        <span class="hljs-type">Point</span> <span class="hljs-variable">point</span> <span class="hljs-operator">=</span> (Point) o;<br><br>        <span class="hljs-comment">// 4. 关键字段比较</span><br>        <span class="hljs-keyword">return</span> x == point.x &amp;&amp; y == point.y;<br>        <span class="hljs-comment">// 或者使用 Objects.equals() 处理可能为 null 的对象字段，但这里 x,y 是基本类型</span><br>    &#125;<br><br>    <span class="hljs-comment">// hashCode() 方法稍后讨论，但必须与 equals() 一起重写</span><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hashCode</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> Objects.hash(x, y); <span class="hljs-comment">// Java 7+ 简单方便的方式</span><br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">Point</span> <span class="hljs-variable">p1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);<br>        <span class="hljs-type">Point</span> <span class="hljs-variable">p2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);<br>        <span class="hljs-type">Point</span> <span class="hljs-variable">p3</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>);<br>        <span class="hljs-type">Point</span> <span class="hljs-variable">p4</span> <span class="hljs-operator">=</span> p1;<br><br>        System.out.println(<span class="hljs-string">&quot;p1.equals(p2): &quot;</span> + p1.equals(p2)); <span class="hljs-comment">// true</span><br>        System.out.println(<span class="hljs-string">&quot;p1.equals(p3): &quot;</span> + p1.equals(p3)); <span class="hljs-comment">// false</span><br>        System.out.println(<span class="hljs-string">&quot;p1.equals(p4): &quot;</span> + p1.equals(p4)); <span class="hljs-comment">// true</span><br>        System.out.println(<span class="hljs-string">&quot;p1.equals(null): &quot;</span> + p1.equals(<span class="hljs-literal">null</span>)); <span class="hljs-comment">// false</span><br>        System.out.println(<span class="hljs-string">&quot;p1.equals(\&quot;text\&quot;): &quot;</span> + p1.equals(<span class="hljs-string">&quot;text&quot;</span>)); <span class="hljs-comment">// false</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-hashCode-方法"><strong>2. <code>hashCode()</code> 方法</strong></h4>
+<ul>
+<li>
+<p><strong>目的 (What &amp; Why)：</strong></p>
+<ul>
+<li><code>hashCode()</code> 方法返回该对象的哈希码值 (一个 <code>int</code> 类型的值)。</li>
+<li>这个哈希码主要用于<strong>基于哈希的集合</strong>，如 <code>HashSet</code>, <code>HashMap</code>, <code>LinkedHashSet</code>, <code>LinkedHashMap</code>, <code>ConcurrentHashMap</code> 等。</li>
+<li>这些集合使用哈希码来确定对象在内部数据结构（通常是哈希表）中的存储位置（桶/bucket），从而实现快速的查找、插入和删除 (平均 O(1) 复杂度)。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>hashCode()</code> 与 <code>equals()</code> 的约定 (非常重要！)：</strong><br>
+这是 <code>Object</code> 类规范中最重要的约定之一：</p>
+<ol>
+<li><strong>一致性 (during execution):</strong> 在 Java 应用程序执行期间，如果一个对象用于 <code>equals</code> 比较的信息没有被修改，那么对该对象多次调用 <code>hashCode()</code> 方法必须始终返回相同的整数。这个整数在程序的两次不同执行之间不必保持一致。</li>
+<li><strong><code>equals</code> 相等则 <code>hashCode</code> 必须相等：</strong> 如果两个对象根据 <code>equals(Object)</code> 方法比较是相等的，那么对这两个对象中的每个对象调用 <code>hashCode()</code> 方法都必须产生相同的整数结果。
+<ul>
+<li><strong>这是核心！如果违反这条，基于哈希的集合将无法正常工作。</strong> 例如，如果你把一个对象 <code>obj1</code> 放入 <code>HashSet</code>，然后试图用一个与 <code>obj1</code> <code>equals</code> 但 <code>hashCode</code> 不同的 <code>obj2</code> 去查找或删除，<code>HashSet</code> 可能找不到 <code>obj2</code>，因为它会先根据 <code>obj2</code> 的 <code>hashCode</code> 去错误的桶里查找。</li>
+</ul>
+</li>
+<li><strong><code>equals</code> 不相等则 <code>hashCode</code> 不必不相等 (但推荐不相等)：</strong> 如果两个对象根据 <code>equals(Object)</code> 方法比较是不相等的，那么对这两个对象中的每个对象调用 <code>hashCode()</code> 方法，不要求必须产生不同的整数结果。但是，程序员应该意识到，为不相等的对象产生不同的整数结果，有可能提高哈希表的性能（减少哈希冲突）。</li>
+</ol>
+</li>
+<li>
+<p><strong>默认实现 (在 <code>Object</code> 类中)：</strong></p>
+<ul>
+<li><code>Object</code> 类的 <code>hashCode()</code> 方法通常是根据对象的内存地址（或与之相关的值）计算的。因此，对于不同的对象实例，即使它们的内容可能相同（按自定义 <code>equals()</code>），默认的 <code>hashCode()</code> 也会返回不同的值。</li>
+<li><strong>所以，如果你重写了 <code>equals()</code> 方法来比较对象内容，你几乎总是需要同时重写 <code>hashCode()</code> 方法，以确保满足上述第二条约定。</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>重写 <code>hashCode()</code> 的指导原则与技巧：</strong><br>
+目标是为不相等的对象生成尽可能分散的哈希码，以减少哈希冲突。</p>
+<ol>
+<li>
+<p><strong>选择一个非零的初始值常量：</strong> 例如，<code>17</code> 或 <code>31</code> (这两个是常见的素数)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> <span class="hljs-number">17</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>对于每个影响 <code>equals()</code> 比较的关键字段 <code>f</code>，计算一个哈希码 <code>c</code>：</strong></p>
+<ul>
+<li><strong><code>boolean</code>:</strong> <code>(f ? 1 : 0)</code></li>
+<li><strong><code>byte</code>, <code>char</code>, <code>short</code>, <code>int</code>:</strong> <code>(int) f</code></li>
+<li><strong><code>long</code>:</strong> <code>(int) (f ^ (f &gt;&gt;&gt; 32))</code> (将高32位和低32位异或，让高位也参与运算)</li>
+<li><strong><code>float</code>:</strong> <code>Float.floatToIntBits(f)</code></li>
+<li><strong><code>double</code>:</strong> <code>Double.doubleToLongBits(d)</code>，然后按 <code>long</code> 处理 <code>(int) (l ^ (l &gt;&gt;&gt; 32))</code>。</li>
+<li><strong>对象引用字段:</strong>
+<ul>
+<li>如果字段为 <code>null</code>，则使用 <code>0</code>。</li>
+<li>否则，递归调用该字段的 <code>hashCode()</code> 方法。</li>
+<li><strong>注意：</strong> 如果对象的 <code>hashCode()</code> 计算依赖于一个可变的对象字段，而这个字段在对象放入哈希集合后发生了改变，那么对象的 <code>hashCode()</code> 也会改变，这将导致在集合中找不到该对象。因此，<strong>用于计算 <code>hashCode</code> 的字段应该是不可变的，或者至少在对象位于哈希集合中时不能改变。</strong> 这也是为什么通常推荐使用不可变对象作为 <code>Map</code> 的键或 <code>Set</code> 的元素。</li>
+</ul>
+</li>
+<li><strong>数组字段:</strong>
+<ul>
+<li>对数组中的每个元素计算哈希码，然后组合起来。</li>
+<li>使用 <code>java.util.Arrays.hashCode(array)</code> (针对基本类型数组和对象数组，但对象数组是浅哈希) 或 <code>java.util.Arrays.deepHashCode(Object[])</code> (针对多维数组或元素需要深度哈希的对象数组)。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>将每个字段的哈希码 <code>c</code> 合并到 <code>result</code> 中：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">result = prime * result + c;<br></code></pre></td></tr></table></figure>
+<p>其中 <code>prime</code> 通常是一个奇素数，如 <code>31</code>。使用素数有助于更好地分散哈希值。<code>31</code> 是一个特别好的选择，因为 <code>31 * i</code> 可以被优化为 <code>(i &lt;&lt; 5) - i</code>，位移运算比乘法快。</p>
+</li>
+<li>
+<p><strong>返回 <code>result</code>。</strong></p>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Java 7+ 的 <code>Objects.hash(...)</code> 辅助方法：</strong><br>
+<code>java.util.Objects</code> 类提供了一个静态的 <code>hash(Object... values)</code> 方法，它可以方便地为给定的字段序列计算哈希码。它内部处理了 <code>null</code> 值，并使用了与上述原则类似的计算方式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 在 Point 类中</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hashCode</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-comment">// x 和 y 是 int，可以直接传入</span><br>    <span class="hljs-keyword">return</span> Objects.hash(x, y);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>对于更复杂的字段，你可能仍然需要先计算它们的哈希码再传入 <code>Objects.hash()</code>，或者直接手动实现。</p>
+</li>
+<li>
+<p><strong>示例 (<code>Point</code> 类的 <code>hashCode</code>)：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 之前已展示，使用 Objects.hash()</span><br><span class="hljs-meta">@Override</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">hashCode</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> Objects.hash(x, y);<br>&#125;<br><br><span class="hljs-comment">// 手动实现版本 (类似 Objects.hash 的逻辑)</span><br><span class="hljs-comment">// @Override</span><br><span class="hljs-comment">// public int hashCode() &#123;</span><br><span class="hljs-comment">//     int result = 17; // 或 1</span><br><span class="hljs-comment">//     result = 31 * result + x; // x 是 int</span><br><span class="hljs-comment">//     result = 31 * result + y; // y 是 int</span><br><span class="hljs-comment">//     return result;</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>总结与重要性：</strong></p>
+<ul>
+<li><strong><code>equals()</code> 定义了对象的逻辑相等性。</strong></li>
+<li><strong><code>hashCode()</code> 为基于哈希的集合服务。</strong></li>
+<li><strong>核心规则：<code>equals()</code> 相等，<code>hashCode()</code> 必须相等。</strong></li>
+<li><strong>重写 <code>equals()</code> 时，几乎总是要重写 <code>hashCode()</code>。</strong></li>
+<li>不正确的 <code>equals()</code> 和 <code>hashCode()</code> 实现会导致 <code>HashSet</code>, <code>HashMap</code> 等集合出现难以预料的行为（如元素丢失、重复添加等）。</li>
+<li>IDE (如 IntelliJ IDEA, Eclipse) 通常可以自动生成符合规范的 <code>equals()</code> 和 <code>hashCode()</code> 方法，但理解其原理仍然重要，以便在需要时进行调整或审查。</li>
+<li>对于作为 <code>Map</code> 键或 <code>Set</code> 元素的对象，<strong>强烈推荐使用不可变对象 (Immutable Objects)</strong>，或者至少确保用于 <code>equals</code> 和 <code>hashCode</code> 计算的字段在对象存入集合后不再改变。</li>
+</ul>
+<hr>
+<p>与泛型相同，<code>Object</code> 类的 <code>equals()</code> / <code>hashCode()</code> 也是理解 Java 集合框架运作方式的基石。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" class="category-chain-item">基础与核心概念</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Object 类的核心方法</div>
+      <div>http://example.com/2025/03/12/Java/基础/数据结构/基础与核心概念/Object 类的核心方法/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/12/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/Comparable%20%E4%B8%8E%20Comparator%20%E6%8E%A5%E5%8F%A3/" title="Comparable 与 Comparator 接口">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Comparable 与 Comparator 接口</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/12/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/%E6%95%B0%E7%BB%84%20(Arrays)/" title="数组 (Arrays)">
+                        <span class="hidden-mobile">数组 (Arrays)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

@@ -1,0 +1,863 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="构建一个类似 Google Photos 的小型克隆应用，使用 Spring Boot。此外，在过程中，你将学到很多关于 Spring 的依赖注入和 MVC 框架、验证和文件处理、Spring Data 和数据库的知识。 依赖项：Spring Web， Spring Data JDBC， H2 Database 首次启动项目 localhost:8080 我们收到一条错误消息 404，表示未找到任">
+<meta property="og:type" content="article">
+<meta property="og:title" content="photos-clone">
+<meta property="og:url" content="http://example.com/2025/06/14/Java/Framework/Spring%20Boot/photos-clone/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="构建一个类似 Google Photos 的小型克隆应用，使用 Spring Boot。此外，在过程中，你将学到很多关于 Spring 的依赖注入和 MVC 框架、验证和文件处理、Spring Data 和数据库的知识。 依赖项：Spring Web， Spring Data JDBC， H2 Database 首次启动项目 localhost:8080 我们收到一条错误消息 404，表示未找到任">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/spring.png">
+<meta property="article:published_time" content="2025-06-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T08:03:01.262Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="spring boot">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/spring.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>photos-clone - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="photos-clone"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-14 00:00" pubdate>
+          2025年6月14日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">photos-clone</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月26日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>构建一个类似 Google Photos 的小型克隆应用，使用 Spring Boot。此外，在过程中，你将学到很多关于 Spring 的依赖注入和 MVC 框架、验证和文件处理、Spring Data 和数据库的知识。<br>
+依赖项：<strong>Spring Web</strong>， <strong>Spring Data JDBC</strong>， <strong>H2 Database</strong></p>
+<h3 id="首次启动项目">首次启动项目</h3>
+<p>localhost:8080 我们收到一条错误消息 404，表示未找到任何内容，这实际上是我们所期望的，因为我们的 spring 应用程序无法执行任何操作，没有任何东西可以接受 json 消息或将其发送回前端，所以 404 非常好，因为这意味着我们的应用程序实际上已经启动了，现在我们需要通过构建我们的 rest api 来改变这种情况。</p>
+<h3 id="Hello-World-RestController">Hello World @RestController</h3>
+<p>现在我们不再需要显示错误消息，而是显示成功消息，因此我们需要添加一些 hello world 之类的东西。<br>
+基础包中创建一个新类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.jetbrains.handi.photo.clone;<br><br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">photozController</span> &#123;<br>    <span class="hljs-meta">@GetMapping(&quot;/&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">hello</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello world&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>默认情况下，当运行应用程序时，spring 不会自动重新加载并注册这些新方法，所以我们要做的就是重新运行。</p>
+<h3 id="REST-API-设计">REST API 设计</h3>
+<p>照片克隆本质上我们想要的是我们希望前端能够做的是拍摄一些照片并将它们上传到服务器，这意味着我们最终会得到很多 Java 商业应用程序最终会得到的东西，这意味着我们希望能够创建照片，我们希望能够读取照片。<br>
+比如获取它们并看到你知道特定的照片，我们希望能够更新它们，能够删除它们，这意味着我们正在构建一个 crud rest api。</p>
+<h3 id="GetMapping">@GetMapping</h3>
+<p>得到 photo 的 rest api<br>
+创建一个所谓的照片模型类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.jetbrains.handi.photo.clone;  <br>  <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Photo</span> &#123;  <br>    <span class="hljs-keyword">private</span> String id;  <br>    <span class="hljs-keyword">private</span> String fileName;  <br>      <br>    <span class="hljs-comment">//get and set constructor   </span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><br><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PhotozController</span> &#123;<br>    <span class="hljs-keyword">private</span> List&lt;Photo&gt; db = List.of(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Photo</span>(<span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-string">&quot;hello.jpg&quot;</span>));<br>    <span class="hljs-comment">//...</span><br>    <span class="hljs-meta">@GetMapping(&quot;/photoz&quot;)</span><br>    <span class="hljs-keyword">public</span> List&lt;Photo&gt; <span class="hljs-title function_">get</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> db;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>还想做的是，我希望能够获取一张特定的照片：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><br><span class="hljs-meta">@RestController</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PhotozController</span> &#123;<br>    <span class="hljs-keyword">private</span> Map&lt;String, Photo&gt; db = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;() &#123;&#123;<br>        put(<span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">Photo</span>(<span class="hljs-string">&quot;1&quot;</span>, <span class="hljs-string">&quot;hello.jpg&quot;</span>));<br>    &#125;&#125;;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/photoz&quot;)</span><br>    <span class="hljs-keyword">public</span> Collection&lt;Photo&gt; <span class="hljs-title function_">get</span><span class="hljs-params">()</span>&#123;<br>        <span class="hljs-keyword">return</span> db.values();<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/photoz/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> Photo <span class="hljs-title function_">get</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> String id)</span>&#123;<br>        <span class="hljs-type">Photo</span> <span class="hljs-variable">photo</span> <span class="hljs-operator">=</span> db.get(id);<br>        <span class="hljs-keyword">if</span> (photo == <span class="hljs-literal">null</span>) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseStatusException</span>(HttpStatus.NOT_FOUND);<br>        <span class="hljs-keyword">return</span> photo;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="DeleteMapping">@DeleteMapping</h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@DeleteMapping(&quot;/photoz/&#123;id&#125;&quot;)</span>  <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> String id)</span>&#123;  <br>    <span class="hljs-type">Photo</span> <span class="hljs-variable">photo</span> <span class="hljs-operator">=</span> db.remove(id);  <br>    <span class="hljs-keyword">if</span> (photo == <span class="hljs-literal">null</span>) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseStatusException</span>(HttpStatus.NOT_FOUND);  <br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="Browser-HTTP-Delete">Browser - HTTP Delete</h3>
+<p>测试需要在浏览器 console 输入：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js">(<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">deletePhoto</span>(<span class="hljs-params">id</span>) &#123;<br>          <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;http://localhost:8080/photoz/&quot;</span> + id, &#123;<br>                    <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;DELETE&quot;</span><br>          &#125;)<br>&#125;)(<span class="hljs-string">&quot;5&quot;</span>)<br></code></pre></td></tr></table></figure>
+<h3 id="PostMapping">@PostMapping</h3>
+<p>前端发送一些 json，然后 spring boot应该将该 json 转换为照片对象，然后我们就可以直接处理照片对象了。<br>
+有趣的是前端不应该生成 id 我们应该生成 id</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/photoz&quot;)</span><br>    <span class="hljs-keyword">public</span> Photo <span class="hljs-title function_">create</span><span class="hljs-params">(Photo photo)</span>&#123;<br>        photo.setId(UUID.randomUUID().toString());<br>        db.put(photo.getId(), photo);<br>        <span class="hljs-keyword">return</span> photo;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<h3 id="Browser-HTTP-Post">Browser - HTTP Post</h3>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs js">(<span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createPhoto</span>(<span class="hljs-params"></span>) &#123;<br>          <span class="hljs-keyword">let</span> photo = &#123;<span class="hljs-string">&quot;fileName&quot;</span>: <span class="hljs-string">&quot;hello.jpg&quot;</span>&#125;;<br>          <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&quot;http://localhost:8080/photoz&quot;</span>, &#123;<br>                    <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,<br>                    <span class="hljs-attr">headers</span>: &#123;<br>                              <span class="hljs-string">&quot;Accept&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span>,<br>                              <span class="hljs-string">&quot;Content-Type&quot;</span>: <span class="hljs-string">&quot;application/json&quot;</span><br>                    &#125;,<br>                    <span class="hljs-attr">body</span>: <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(photo)<br>                    &#125;)<br>                    .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> result.<span class="hljs-title function_">text</span>())<br>                    .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">text</span> =&gt;</span> <span class="hljs-title function_">alert</span>(text));<br>&#125;)()<br></code></pre></td></tr></table></figure>
+<h3 id="RequestBody-接收-JSON">@RequestBody - 接收 JSON</h3>
+<p>文件名等于 null 我们需要找出原因，其中一个错误，让很多初学者都经历它。<br>
+需要一个标记注释 <code>@RequestBody</code>，以便来告诉 spring boot 嘿，请获取整个 json 并将其转换为我的 Photo 对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/photos&quot;)</span>  <br><span class="hljs-keyword">public</span> Photo <span class="hljs-title function_">create</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> Photo photo)</span>&#123;  <br>    photo.setId(UUID.randomUUID().toString());  <br>    db.put(photo.getId(), photo);  <br>    <span class="hljs-keyword">return</span> photo;  <br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="验证用户输入（validation）">验证用户输入（validation）</h3>
+<p>实际上可以发送 json 没有文件名，得到了随机 id 但这里的 fileName 为 null，显然不是我们想要的。<br>
+添加 <code>spring-boot-starter-validation</code>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span>  <br>    <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span>  <br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-validation<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span>  <br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>现在已经拥有了全面的验证功能。标记注解表明您的照片是有效的，因此只需在此处放置 <code>@valid</code> 注解。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/photos&quot;)</span>  <br><span class="hljs-keyword">public</span> Photo <span class="hljs-title function_">create</span><span class="hljs-params">(<span class="hljs-meta">@RequestBody</span> <span class="hljs-meta">@Valid</span> Photo photo)</span>&#123;  <br>    photo.setId(UUID.randomUUID().toString());  <br>    db.put(photo.getId(), photo);  <br>    <span class="hljs-keyword">return</span> photo;  <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>valid 是什么意思，让我们来看看 Photo 本身，我们目前不关心 ID，但 fileName 不应该为空：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Photo</span> &#123;<br>    <span class="hljs-comment">//...</span><br>    <span class="hljs-meta">@NotEmpty</span><br>    <span class="hljs-keyword">private</span> String fileName;<br>    <span class="hljs-comment">//...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在 <code> jakarta.validation.constraints</code> 中能看到许多不同注解，@NotEmpty 是其中之一。<strong>所以你基本上可以用不同的注解去注解你的字段，然后 springboot 将能够自动验证</strong>。</p>
+<h3 id="上传照片">上传照片</h3>
+<p>让我们上传一张真实的照片，而不仅仅是发送元数据为此，我们将使用浏览器的文件选择器功能。首先让我们在 <code>resources/static</code> 中创建一个小的 html 静态页面。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">html</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Title<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Photo Upload<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;fileupload&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;file&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;fileupload&quot;</span> /&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;upload-button&quot;</span> <span class="hljs-attr">onclick</span>=<span class="hljs-string">&quot;uploadFile()&quot;</span>&gt;</span> Upload <span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">    <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">uploadFile</span>(<span class="hljs-params"></span>) &#123;</span><br><span class="language-javascript">        <span class="hljs-keyword">let</span> formData = <span class="hljs-keyword">new</span> <span class="hljs-title class_">FormData</span>();</span><br><span class="language-javascript">        formData.<span class="hljs-title function_">append</span>(<span class="hljs-string">&quot;data&quot;</span>, fileupload.<span class="hljs-property">files</span>[<span class="hljs-number">0</span>]);</span><br><span class="language-javascript">        <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;http://localhost:8080/photoz&#x27;</span>, &#123;</span><br><span class="language-javascript">            <span class="hljs-attr">method</span>: <span class="hljs-string">&quot;POST&quot;</span>,</span><br><span class="language-javascript">            <span class="hljs-attr">body</span>: formData</span><br><span class="language-javascript">        &#125;).<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span>    result.<span class="hljs-title function_">text</span>())</span><br><span class="language-javascript">            .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">text</span> =&gt;</span> <span class="hljs-title function_">alert</span>(text));</span><br><span class="language-javascript">    &#125;</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>需要给 Photo 添加新的属性 <code>private byte[] data;</code><br>
+完善 PostMapping 部分：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/photos&quot;)</span><br>    <span class="hljs-keyword">public</span> Photo <span class="hljs-title function_">create</span><span class="hljs-params">(<span class="hljs-meta">@RequestPart(&quot;data&quot;)</span> MultipartFile file)</span> <span class="hljs-keyword">throws</span> IOException &#123;<br>        <span class="hljs-type">Photo</span> <span class="hljs-variable">photo</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Photo</span>();<br>        photo.setId(UUID.randomUUID().toString());<br>        photo.setFileName(file.getOriginalFilename());<br>        photo.setData(file.getBytes());<br>        db.put(photo.getId(), photo);<br>        <span class="hljs-keyword">return</span> photo;<br>    &#125;<br></code></pre></td></tr></table></figure>
+<h3 id="application-properties">application.properties</h3>
+<p>上传图片会遇到限制大小的错误。<br>
+spring boot默认将最大允许上传大小为特定数量的字节，你可以做的是可以更改配置。<br>
+查看 <code>application.properties</code> 文件，在这个应用程序属性配置文件中，你可以将你知道的配置告诉 spring boot。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">spring.servlet.multipart.max-file-size</span>=<span class="hljs-string">100MB  </span><br><span class="hljs-attr">spring.servlet.multipart.max-request-size</span>=<span class="hljs-string">100MB</span><br></code></pre></td></tr></table></figure>
+<p>上传成功，可以看到生成的字节，或者更确切地说是转换为 base64 字符串编码。</p>
+<h3 id="Jackson-JsonIgnore">Jackson &amp; @JsonIgnore</h3>
+<p>想看到真正漂亮的图像，有两件事首先，当我们获得元数据时，我们只希望spring 不包含数据字段并将其发送回前端，我们可以通过返回到<br>
+打开 Photo 类然后为 spring 执行 json 转换操作，需要使用另一个 jackson 特定的标记注释，即 <code>@JsonIgnore</code>，只需将它放在 data 字段上。现在，每当我们将照片发送回前端时，数据不会被转换，我们看不到它，这意味着目前我们可以上传照片，但我们无法取回数据，但我们想在浏览器中看到一张真实的照片，这意味着我们需要对我们的应用程序进行大量重构，因为我想做的是，目前有几种方法可以解决这个问题</p>
+<h3 id="Photo-Download">Photo Download</h3>
+<p>假设我们想要另一个额外的控制器，它被称为 DownloadController，<br>
+创建来自照片的数据。数据库也需要一些标头，我们使用 spring 框架提供的特定类 http标头</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span>  <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DownloadController</span> &#123;  <br>    <span class="hljs-meta">@GetMapping(&quot;/download/&#123;id&#125;&quot;)</span>    <span class="hljs-keyword">public</span> ResponseEntity&lt;<span class="hljs-type">byte</span>[]&gt; download(<span class="hljs-meta">@PathVariable</span> String id) &#123;  <br>        <span class="hljs-type">byte</span>[] data;  <br>        <span class="hljs-type">HttpHeaders</span> <span class="hljs-variable">heaers</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>();  <br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseEntity</span>&lt;&gt;(data, headers, HttpStatus.OK);  <br>    &#125;  <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>想要把它发回给客户，现在的问题是，在我们完成这段旅程之前，我们如何获得照片，这是我们第一次将学习 spring 中的依赖注入，依赖注入是什么意思？</p>
+<h3 id="Dependency-Injection-依赖注入">Dependency Injection(依赖注入)</h3>
+<p>[[Dependency Injection 依赖注入]]</p>
+<h3 id="下载图片">下载图片</h3>
+<p>在 Photo 中添加 contentType 属性：<code>private String contentType</code>，后对 PostMapping 进行完善：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/photos&quot;)</span>  <br><span class="hljs-keyword">public</span> Photo <span class="hljs-title function_">create</span><span class="hljs-params">(<span class="hljs-meta">@RequestPart(&quot;data&quot;)</span> MultipartFile file)</span> <span class="hljs-keyword">throws</span> IOException &#123;  <br>    <span class="hljs-keyword">return</span> photosService.save(file.getOriginalFilename(),file.getContentType(), file.getBytes());  <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>之后完善 download：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GetMapping(&quot;/download/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;<span class="hljs-type">byte</span>[]&gt; download(<span class="hljs-meta">@PathVariable</span> String id) &#123;<br>        <span class="hljs-type">Photo</span> <span class="hljs-variable">photo</span> <span class="hljs-operator">=</span> photosService.get(id);<br>        <span class="hljs-keyword">if</span> (photo == <span class="hljs-literal">null</span>) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseStatusException</span>(HttpStatus.NOT_FOUND);<br>        <span class="hljs-type">byte</span>[] data = photo.getData();<br>        <span class="hljs-type">HttpHeaders</span> <span class="hljs-variable">headers</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>();<br>        headers.setContentType(MediaType.valueOf(photo.getContentType()));<br>        <span class="hljs-type">ContentDisposition</span> <span class="hljs-variable">build</span> <span class="hljs-operator">=</span> ContentDisposition<br>                .builder(<span class="hljs-string">&quot;attachment&quot;</span>)<br>                .filename(photo.getFileName())<br>                .build();<br>        headers.setContentDisposition(build);<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseEntity</span>&lt;&gt;(data, headers, HttpStatus.OK);<br>    &#125;<br></code></pre></td></tr></table></figure>
+<p>之后在 upload 上传图片后得到 id，可通过 id 到 download 下载图片。</p>
+<h3 id="推荐的项目结构">推荐的项目结构</h3>
+<p>目前这些类都位于一个文件夹或一个包中，我希望重构项目。<br>
+引入几个包，例如，有很多不同的，有 web package，service package，model package。<br>
+现在可以做的是，将 Controllers 移动到 web package 中，将实体类移动到 model 中，将 services 移动到 service 中。</p>
+<h3 id="H2-Database-Intro">H2 Database - Intro</h3>
+<p>开始使用真正的数据库前，现在查看 PhotosService 时，可以看到它有一个 map，它将你的照片存储在内存中，在一个普通的哈希映射中，我们想要访问一个数据库一<br>
+我们添加了一个 h2 数据库，有趣的是，h2 数据库只是一个java 库，一旦你编辑了你的项目，spring boot 就会自动启动它，就会有一个内存数据库，你看不到任何文件或其他东西，但实际上可以像使用postgres、mysql、oracle、microsoft sql server 一样使用它。默认情况下它只在内存中可用，但也可以告诉 h2 或 spring 将数据库内容保存到文件中，这样就可以实际看到它，并且知道有些东西正在被保存。<br>
+这样做的方式是在 <code>application.properties</code> 中属性有一个新的属性 <code>datasource.url</code>，你需要告诉springboot在哪里保存你的数据库文件：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">spring.datasource.url</span>=<span class="hljs-string">jdbc:h2:file:~/springboot;AUTO_SERVER=TRUE;</span><br></code></pre></td></tr></table></figure>
+<p>启动项目后就能在根目录找到，然后可以复制到任何服务器，有效地重复使用它。</p>
+<h3 id="创建数据库模式">创建数据库模式</h3>
+<p>让我们想想如何把照片存储在数据库中，这意味着需要有一些表。spring boot有各种各样的方法，例如当你启动 springboot 时，它会检查数据库中是否已经有一些表，若没有会根据选项创建。<br>
+进入资源文件夹，创建一个新文件，schema.sql：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">create table</span> if <span class="hljs-keyword">not</span> <span class="hljs-keyword">exists</span> photos (<br>    id <span class="hljs-type">INT</span> <span class="hljs-keyword">PRIMARY KEY</span> <span class="hljs-keyword">NOT NULL</span> AUTO_INCREMENT,<br>    file_name <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>),<br>    content_type <span class="hljs-type">varchar</span>(<span class="hljs-number">255</span>),<br>    data <span class="hljs-type">binary</span> <span class="hljs-type">large object</span><br>);<br></code></pre></td></tr></table></figure>
+<p>现在再次需要知道最后一个属性，用于我们的项目，它被称为 <code>spring.sql.init.mode</code> 等于 always，即希望总是在我们启动时执行模式 sql。<br>
+重新运行应用程序，然后我们收到一条错误消息，另一条消息是创建表格不存在的 photos，似乎存在预期标识符的问题。收到了两条消息，说 sql dialect is not configured，实际上可以告诉 intellij 我的文件是一个 h2 文件 sql dialect。<br>
+希望能够访问数据库，你可以在 idea 中内置非常好的数据库访问，实际上 h2 数据库带有一个<strong>web 界面</strong>，通过添加新属性 <code>spring.h2.console.enabled=true</code> 来启用它。<br>
+先将 sql 文件名改为 bacschema(<strong>备份模式</strong>，这样 spring 就不会执行此文件)，重新启动进入 <code>/h2-console</code> 页面，就是 h2 数据库的 web 页面：JDBC URL 改为与 spring.datasource.url 一致，没有用户名密码删除即可。</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-attr">spring.servlet.multipart.max-file-size</span>=<span class="hljs-string">100MB</span><br><span class="hljs-attr">spring.servlet.multipart.max-request-size</span>=<span class="hljs-string">100MB</span><br><span class="hljs-attr">spring.datasource.url</span>=<span class="hljs-string">jdbc:h2:file:~/springboot;AUTO_SERVER=TRUE;</span><br><span class="hljs-attr">spring.sql.init.mode</span>=<span class="hljs-string">always</span><br><span class="hljs-attr">spring.h2.console.enabled</span>=<span class="hljs-string">true</span><br></code></pre></td></tr></table></figure>
+<h3 id="Spring-Data-JDBC">Spring Data JDBC</h3>
+<p>关于数据库最简单的入门方式，正如一开始提到的，spring data jdbc是 jdbc 是将数据库语句从 java 发送到数据库的低级 api，而 spring data 可以说是 jdbc api 的一个小型舒适包装器。<br>
+快速入门 springdata 创建 <code>repository存储库</code>。所谓的 repository，我们只需创建一个类，我们将在 repository 包中调用该类。<br>
+在 repository 包中创建 PhotosRepository 接口，它<strong>扩展一个来自 spring data 的已经存在的接口，称为 <code>CrudRepository</code></strong>，CrudRepository 为你提供了大量的方法，比如 find delete save into database 中。显然可以编写自己的sql语句，但现在只想开始使用 CrudRepository 并获得基本的最终按id查找，更新语句的工作。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">PhotosRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">CrudRepository</span>&lt;Integer, Photo&gt; &#123;  <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>快速了解，简而言之，当spring启动时扫描 repository 发现有 CrudRepository，它会为你生成那些sql语句，这样你的数据库调用就可以工作了，这是一部分；第二部分是标记注解，我们需要做的是将我们的 java 类映射到我们的数据库表：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">//h2 默认将每个表转换为大写</span><br><span class="hljs-meta">@Table(&quot;PHOTOS&quot;)</span>  <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Photo</span> &#123;  <br>    <span class="hljs-meta">@Id</span>    <br>    <span class="hljs-keyword">private</span> Integer id;  <br>    <span class="hljs-meta">@NotEmpty</span>  <br>    <span class="hljs-keyword">private</span> String fileName;  <br>  <br>    <span class="hljs-keyword">private</span> String contentType;  <br>  <br>    <span class="hljs-meta">@JsonIgnore</span>  <br>    <span class="hljs-keyword">private</span> <span class="hljs-type">byte</span>[] data;  <br> <span class="hljs-comment">//...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>然后是更改我们的 PhotosService：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span>  <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PhotosService</span> &#123;  <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> PhotosRepository photosRepository;  <br>  <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">PhotosService</span><span class="hljs-params">(PhotosRepository photosRepository)</span> &#123;  <br>        <span class="hljs-built_in">this</span>.photosRepository = photosRepository;  <br>    &#125;  <br>  <br>    <span class="hljs-keyword">public</span> Iterable&lt;Photo&gt; <span class="hljs-title function_">getPhotos</span><span class="hljs-params">()</span> &#123;  <br>        <span class="hljs-keyword">return</span> photosRepository.findAll();  <br>    &#125;  <br>    <span class="hljs-keyword">public</span> Photo <span class="hljs-title function_">get</span><span class="hljs-params">(Integer id)</span> &#123;  <br>        <span class="hljs-keyword">return</span> photosRepository.findById(id).orElse(<span class="hljs-literal">null</span>);  <br>    &#125;  <br>  <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">remove</span><span class="hljs-params">(Integer id)</span> &#123;  <br>        photosRepository.deleteById(id);  <br>    &#125;  <br>  <br>    <span class="hljs-keyword">public</span> Photo <span class="hljs-title function_">save</span><span class="hljs-params">(String fileName,String contentType, <span class="hljs-type">byte</span>[] data)</span> &#123;  <br>        <span class="hljs-type">Photo</span> <span class="hljs-variable">photo</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Photo</span>();  <br>        photo.setFileName(fileName);  <br>        photo.setContentType(contentType);  <br>        photo.setData(data);  <br>        photosRepository.save(photo);  <br>        <span class="hljs-keyword">return</span> photo;  <br>    &#125;  <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>更改 PhotosController：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@RestController</span>  <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PhotosController</span> &#123;  <br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> PhotosService photosService;  <br>  <br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">PhotosController</span><span class="hljs-params">(PhotosService photosService)</span> &#123;  <br>        <span class="hljs-built_in">this</span>.photosService = photosService;  <br>    &#125;  <br>  <br>    <span class="hljs-meta">@GetMapping(&quot;/&quot;)</span>  <br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">hello</span><span class="hljs-params">()</span> &#123;  <br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;hello world&quot;</span>;  <br>    &#125;  <br>  <br>    <span class="hljs-meta">@GetMapping(&quot;/photos&quot;)</span>  <br>    <span class="hljs-keyword">public</span> Iterable&lt;Photo&gt; <span class="hljs-title function_">get</span><span class="hljs-params">()</span>&#123;  <br>        <span class="hljs-keyword">return</span> photosService.getPhotos();  <br>    &#125;  <br>  <br>    <span class="hljs-meta">@GetMapping(&quot;/photos/&#123;id&#125;&quot;)</span>  <br>    <span class="hljs-keyword">public</span> Photo <span class="hljs-title function_">get</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Integer id)</span>&#123;  <br>        <span class="hljs-type">Photo</span> <span class="hljs-variable">photo</span> <span class="hljs-operator">=</span> photosService.get(id);  <br>        <span class="hljs-keyword">if</span> (photo == <span class="hljs-literal">null</span>) <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ResponseStatusException</span>(HttpStatus.NOT_FOUND);  <br>        <span class="hljs-keyword">return</span> photo;  <br>    &#125;  <br>  <br>    <span class="hljs-meta">@DeleteMapping(&quot;/photos/&#123;id&#125;&quot;)</span>  <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">delete</span><span class="hljs-params">(<span class="hljs-meta">@PathVariable</span> Integer id)</span>&#123;  <br>        photosService.remove(id);  <br>    &#125;  <br>  <br>    <span class="hljs-meta">@PostMapping(&quot;/photos&quot;)</span>  <br>    <span class="hljs-keyword">public</span> Photo <span class="hljs-title function_">create</span><span class="hljs-params">(<span class="hljs-meta">@RequestPart(&quot;data&quot;)</span> MultipartFile file)</span> <span class="hljs-keyword">throws</span> IOException &#123;  <br>        <span class="hljs-keyword">return</span> photosService.save(file.getOriginalFilename(),file.getContentType(), file.getBytes());  <br>    &#125;  <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>快速总结一下，在部署应用程序之前，我们忽略了很多东西，我们必须确保我们有验证，必须确保我们清理了我们的数据，必须确保正确地限制我们的数据。</p>
+<h3 id="打包与部署">打包与部署</h3>
+<p>部署是什么意思，现在打开一个终端窗口，事实上，如果使用的是 intellij，也可以使用快捷方式，而不是打开终端窗口，用右侧 maven 工具箱窗口，双击 <code>Lifecycle 中的 package</code>。如果你不使用intellij，只是想看看它在命令行中完成的操作，输入 <code>./mvnw clean package</code>，记住在项目 maven clean package 的最开始，请确保你的 java home 环境变量设置为与你构建项目时使用的 java 版本完全相同。<br>
+构建成功，现在如果进入 target 文件夹，这是一个标准的 maven 构建文件夹，进去后，你会看到你有一个几个字节的 jar 文件。可以简单地把这个 jar 文件放到服务器上，放到任何我想要的地方，然后运行它，这就是部署。<br>
+如何运行这个文件，<code>java -jar jar文件</code> 只需这一句，然后你的应用程序启动，它现在<strong>没有在 ide 中启动，只是在终端窗口中。再次打开浏览器时，可以看到应用程序，看看 photos，它们仍然在数据库中，因为我正在我文件系统上的主目录中访问同一个数据库。</strong></p>
+<h3 id="结束与下一步">结束与下一步</h3>
+<p>我们没有涵盖大量主题，例如测试与测试有关的一切，进一步的数据库访问等等。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/spring-boot/" class="print-no-link">#spring boot</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>photos-clone</div>
+      <div>http://example.com/2025/06/14/Java/Framework/Spring Boot/photos-clone/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月14日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E4%BD%8D%E8%BF%90%E7%AE%97%E5%AE%9E%E7%8E%B0%E6%9D%83%E9%99%90%E7%BB%84%E5%90%88/" title="位运算来实现权限组合">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">位运算来实现权限组合</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/14/Java/Framework/Spring%20Boot/File%20Upload%20and%20Download/%E5%88%86%E6%AE%B5%E4%B8%8B%E8%BD%BD%E5%8A%A0%E9%80%9F%E5%8A%9F%E8%83%BD/" title="分段下载加速功能">
+                        <span class="hidden-mobile">分段下载加速功能</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

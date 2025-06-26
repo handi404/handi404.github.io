@@ -1,0 +1,1122 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 集合框架的另一大核心分支：Map&lt;K, V&gt; 接口以及它的主要实现类：HashMap&lt;K, V&gt;, LinkedHashMap&lt;K, V&gt;, 和 TreeMap&lt;K, V&gt;。 Map 用于存储键值对 (key-value pairs)，其中每个键都是唯一的，并且映射到一个特定的值。它在需要通过键来快速查找、更新或删除值的场景中非常有用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Map 接口以及主要实现类">
+<meta property="og:url" content="http://example.com/2025/03/13/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%20(JCF)/Map%20%E6%8E%A5%E5%8F%A3%E4%BB%A5%E5%8F%8A%E4%B8%BB%E8%A6%81%E5%AE%9E%E7%8E%B0%E7%B1%BB/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 集合框架的另一大核心分支：Map&lt;K, V&gt; 接口以及它的主要实现类：HashMap&lt;K, V&gt;, LinkedHashMap&lt;K, V&gt;, 和 TreeMap&lt;K, V&gt;。 Map 用于存储键值对 (key-value pairs)，其中每个键都是唯一的，并且映射到一个特定的值。它在需要通过键来快速查找、更新或删除值的场景中非常有用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/Java.png">
+<meta property="article:published_time" content="2025-03-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T07:34:27.867Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/Java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Map 接口以及主要实现类 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Map 接口以及主要实现类"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-13 00:00" pubdate>
+          2025年3月13日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Map 接口以及主要实现类</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月26日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Java 集合框架的另一大核心分支：<strong><code>Map&lt;K, V&gt;</code> 接口</strong>以及它的主要实现类：<code>HashMap&lt;K, V&gt;</code>, <code>LinkedHashMap&lt;K, V&gt;</code>, 和 <code>TreeMap&lt;K, V&gt;</code>。</p>
+<p><code>Map</code> 用于存储<strong>键值对 (key-value pairs)</strong>，其中每个键都是唯一的，并且映射到一个特定的值。它在需要通过键来快速查找、更新或删除值的场景中非常有用。</p>
+<hr>
+<h3 id="Map-K-V-接口：键值对存储，键唯一"><code>Map&lt;K, V&gt;</code> 接口：键值对存储，键唯一</h3>
+<ul>
+<li>
+<p><strong>定义与特性：</strong></p>
+<ul>
+<li><code>java.util.Map&lt;K, V&gt;</code> 接口代表一个将键映射到值的对象。</li>
+<li><strong>键唯一 (Unique Keys)：</strong> 一个 <code>Map</code> 不能包含重复的键。每个键最多只能映射到一个值。如果你尝试用一个已存在的键插入新的键值对，新的值会覆盖旧的值，并且 <code>put()</code> 方法通常会返回旧的值。</li>
+<li><strong>值可重复 (Values can be duplicate)：</strong> 不同的键可以映射到相同的值。</li>
+<li><strong><code>null</code> 键和 <code>null</code> 值：</strong>
+<ul>
+<li>某些 <code>Map</code> 实现（如 <code>HashMap</code>, <code>LinkedHashMap</code>）允许一个 <code>null</code> 键和多个 <code>null</code> 值。</li>
+<li>某些 <code>Map</code> 实现（如 <code>TreeMap</code>）默认不允许 <code>null</code> 键（如果使用自然排序），是否允许 <code>null</code> 值取决于具体实现和配置。</li>
+<li><code>ConcurrentHashMap</code> 通常不允许 <code>null</code> 键和 <code>null</code> 值。</li>
+</ul>
+</li>
+<li><strong>顺序性 (Ordering)：</strong>
+<ul>
+<li><code>Map</code> 接口本身不保证映射的顺序。</li>
+<li>一些 <code>Map</code> 实现（如 <code>HashMap</code>）是无序的。</li>
+<li>另一些 <code>Map</code> 实现（如 <code>LinkedHashMap</code>）会保持键的插入顺序或访问顺序。</li>
+<li>还有一些 <code>Map</code> 实现（如 <code>TreeMap</code>）会根据键的自然顺序或指定的 <code>Comparator</code> 对键进行排序。</li>
+</ul>
+</li>
+<li><strong>不是 <code>Collection</code> 的子接口：</strong> <code>Map</code> 接口与 <code>Collection</code> 接口是独立的，它们构成了 Java 集合框架的两大分支。尽管如此，<code>Map</code> 提供了三种“集合视图 (collection views)”方法，允许将 <code>Map</code> 的内容视为 <code>Set</code> 或 <code>Collection</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Map&lt;K, V&gt;</code> 接口的核心方法：</strong></p>
+<ol>
+<li>
+<p><strong>基本操作 (Basic Operations)：</strong></p>
+<ul>
+<li><code>V put(K key, V value)</code>: 将指定的键值对关联到此映射中。如果映射先前包含一个该键的映射关系，则旧值被替换并返回。如果键是新的，返回 <code>null</code>。</li>
+<li><code>V get(Object key)</code>: 返回指定键所映射的值；如果此映射不包含该键的映射关系，则返回 <code>null</code>。注意参数是 <code>Object</code>，因为要能用任何对象去查找。</li>
+<li><code>V remove(Object key)</code>: 如果存在一个键的映射关系，则将其从此映射中移除，并返回与该键关联的旧值；否则返回 <code>null</code>。</li>
+<li><code>boolean containsKey(Object key)</code>: 如果此映射包含指定键的映射关系，则返回 <code>true</code>。</li>
+<li><code>boolean containsValue(Object value)</code>: 如果此映射将一个或多个键映射到指定值，则返回 <code>true</code>。这个操作通常效率较低 (O(n))，因为它可能需要遍历所有值。</li>
+<li><code>int size()</code>: 返回此映射中的键值对数量。</li>
+<li><code>boolean isEmpty()</code>: 如果此映射不包含键值对，则返回 <code>true</code>。</li>
+<li><code>void clear()</code>: 从此映射中移除所有映射关系。</li>
+</ul>
+</li>
+<li>
+<p><strong>批量操作 (Bulk Operations)：</strong></p>
+<ul>
+<li><code>void putAll(Map&lt;? extends K, ? extends V&gt; m)</code>: 将指定映射中的所有映射关系复制到此映射中。</li>
+</ul>
+</li>
+<li>
+<p><strong>集合视图 (Collection Views)：</strong></p>
+<ul>
+<li><code>Set&lt;K&gt; keySet()</code>: 返回此映射中包含的键的 <code>Set</code> 视图。对这个 <code>Set</code> 的修改会反映到原始 <code>Map</code> 中（例如，通过迭代器从 <code>keySet</code> 中移除一个键，会同时移除 <code>Map</code> 中的对应条目），反之亦然 (但 <code>keySet</code> 不支持 <code>add</code> 或 <code>addAll</code> 操作)。</li>
+<li><code>Collection&lt;V&gt; values()</code>: 返回此映射中包含的值的 <code>Collection</code> 视图。对这个 <code>Collection</code> 的修改也会反映到原始 <code>Map</code> 中（例如，通过迭代器移除一个值，会移除 <code>Map</code> 中映射到该值的第一个条目），反之亦然 (但 <code>values</code> 不支持 <code>add</code> 或 <code>addAll</code> 操作)。</li>
+<li><code>Set&lt;Map.Entry&lt;K, V&gt;&gt; entrySet()</code>: 返回此映射中包含的映射关系 (键值对条目) 的 <code>Set</code> 视图。每个元素都是一个 <code>Map.Entry&lt;K, V&gt;</code> 对象。这是<strong>遍历 <code>Map</code> 中所有键值对的最常用和最高效的方式</strong>。对这个 <code>Set</code> 或其元素的 <code>Map.Entry</code> (通过 <code>setValue()</code>) 的修改会反映到原始 <code>Map</code> 中。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>Map.Entry&lt;K, V&gt;</code> 接口 (嵌套接口)：</strong></p>
+<ul>
+<li>代表 <code>Map</code> 中的一个键值对条目。</li>
+<li>核心方法：
+<ul>
+<li><code>K getKey()</code>: 返回此条目的键。</li>
+<li><code>V getValue()</code>: 返回此条目的值。</li>
+<li><code>V setValue(V value)</code>: 用指定的值替换此条目对应的值，并返回旧值。<strong>这个修改会直接反映在底层的 <code>Map</code> 中。</strong></li>
+<li><code>boolean equals(Object o)</code></li>
+<li><code>int hashCode()</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>equals()</code> 和 <code>hashCode()</code> 的约定：</strong></p>
+<ul>
+<li>两个 <code>Map</code> 相等，当且仅当它们包含相同的键值对映射关系（即它们的 <code>entrySet()</code> 返回的 <code>Set</code> 是 <code>equals</code> 的）。键和值的比较都使用它们各自的 <code>equals()</code> 方法。</li>
+<li><code>hashCode()</code> 的计算也必须基于其 <code>entrySet()</code> 的 <code>hashCode()</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>Java 8+ <code>default</code> 方法 (非常重要和实用)：</strong></p>
+<ul>
+<li><code>V getOrDefault(Object key, V defaultValue)</code>: 获取指定键的值，如果键不存在，则返回 <code>defaultValue</code>。</li>
+<li><code>void forEach(BiConsumer&lt;? super K, ? super V&gt; action)</code>: 对映射中的每个条目执行给定的操作。</li>
+<li><code>void replaceAll(BiFunction&lt;? super K, ? super V, ? extends V&gt; function)</code>: 用将函数应用于每个条目的结果替换每个条目的值。</li>
+<li><code>V putIfAbsent(K key, V value)</code>: 如果指定的键尚未与某个值关联（或映射到 <code>null</code>），则将其与给定值关联并返回 <code>null</code>，否则返回当前值。</li>
+<li><code>boolean remove(Object key, Object value)</code>: 仅当指定的键当前映射到指定的值时，才移除该键的条目。</li>
+<li><code>boolean replace(K key, V oldValue, V newValue)</code>: 仅当指定的键当前映射到指定旧值时，才用新值替换该键的条目。</li>
+<li><code>V replace(K key, V value)</code>: 仅当指定的键当前映射到某个值时，才用新值替换该键的条目。</li>
+<li><code>V computeIfAbsent(K key, Function&lt;? super K, ? extends V&gt; mappingFunction)</code>: 如果指定的键尚未与值关联或与 <code>null</code> 关联，则尝试使用给定的映射函数计算其值，并将其输入此映射，除非 <code>null</code>。</li>
+<li><code>V computeIfPresent(K key, BiFunction&lt;? super K, ? super V, ? extends V&gt; remappingFunction)</code>: 如果指定键的值存在且非 <code>null</code>，则尝试在给定键及其当前映射值的情况下计算新映射。</li>
+<li><code>V compute(K key, BiFunction&lt;? super K, ? super V, ? extends V&gt; remappingFunction)</code>: 尝试在给定键及其当前映射值（如果不存在则为 <code>null</code>）的情况下计算映射。</li>
+<li><code>V merge(K key, V value, BiFunction&lt;? super V, ? super V, ? extends V&gt; remappingFunction)</code>: 如果指定的键尚未与值关联或与 <code>null</code> 关联，则将其与给定的非 <code>null</code> 值关联。否则，将关联值替换为给定重映射函数的结果，如果结果为 <code>null</code>，则删除映射。这个方法对于实现原子性的“读取-修改-写入”操作非常有用，例如计数器。</li>
+</ul>
+</li>
+<li>
+<p><strong>Java 9+ 静态工厂方法 <code>Map.of(...)</code> 和 <code>Map.ofEntries(...)</code>:</strong></p>
+<ul>
+<li><code>static &lt;K,V&gt; Map&lt;K,V&gt; of()</code></li>
+<li><code>static &lt;K,V&gt; Map&lt;K,V&gt; of(K k1, V v1, ... K k10, V v10)</code> (多个重载，最多 10 个键值对)</li>
+<li><code>static &lt;K,V&gt; Map&lt;K,V&gt; ofEntries(Map.Entry&lt;? extends K, ? extends V&gt;... entries)</code></li>
+<li>这些方法用于创建<strong>不可变的 (immutable)</strong> <code>Map</code> 实例。</li>
+<li><strong>特性：</strong>
+<ul>
+<li>返回的映射是不可变的。</li>
+<li>不允许 <code>null</code> 键或 <code>null</code> 值 (会抛 <code>NullPointerException</code>)。</li>
+<li>不允许重复的键 (会抛 <code>IllegalArgumentException</code>)。</li>
+<li>通常比创建可变映射然后包装更高效。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+</li>
+</ul>
+<hr>
+<h3 id="HashMap-K-V-基于哈希表，无序，性能高"><code>HashMap&lt;K, V&gt;</code>: 基于哈希表，无序，性能高</h3>
+<ul>
+<li>
+<p><strong>底层数据结构：</strong></p>
+<ul>
+<li><code>HashMap&lt;K, V&gt;</code> 使用<strong>哈希表 (hash table)</strong> 来存储键值对。</li>
+<li>内部结构是一个<strong>节点数组 (array of nodes)</strong>，每个节点 <code>Node&lt;K,V&gt;</code> (或 JDK 8+ 的 <code>TreeNode&lt;K,V&gt;</code>) 存储一个键值对、哈希值以及指向下一个节点的引用 (用于处理哈希冲突的链表)。</li>
+<li><strong>JDK 8+ 优化：</strong> 当哈希桶中的链表长度超过一定阈值 (默认为 <code>TREEIFY_THRESHOLD = 8</code>) 并且哈希表的大小也达到一定阈值 (默认为 <code>MIN_TREEIFY_CAPACITY = 64</code>) 时，该链表会<strong>转换为红黑树 (red-black tree)</strong>，以提高在哈希冲突严重情况下的查找性能 (从 O(n) 降到 O(log n))。当红黑树的节点数减少到一定阈值 (默认为 <code>UNTREEIFY_THRESHOLD = 6</code>) 时，又会转换回链表。</li>
+</ul>
+</li>
+<li>
+<p><strong>核心特性与性能：</strong></p>
+<ul>
+<li><strong>无序 (Unordered)：</strong> <code>HashMap</code> 不保证键值对的迭代顺序，这个顺序可能会随着元素的添加和删除而改变。</li>
+<li><strong>高性能 (通常 O(1))：</strong> 对于 <code>put()</code>, <code>get()</code>, <code>remove()</code> 操作，只要哈希函数设计良好且哈希冲突不严重，平均时间复杂度是 <strong>O(1)</strong>。最坏情况下 (所有键哈希到同一个桶且未树化或树化后)，时间复杂度会退化到 O(n) 或 O(log n)。</li>
+<li><strong>依赖键的 <code>hashCode()</code> 和 <code>equals()</code>：</strong>
+<ul>
+<li>为了正确地存储和检索键值对，键对象<strong>必须正确地实现 <code>hashCode()</code> 和 <code>equals()</code> 方法</strong>，并遵守它们的约定。</li>
+<li><code>HashMap</code> 首先使用键的 <code>hashCode()</code> 计算出它在内部数组中的索引 (桶位置)。然后，如果桶中已有元素（哈希冲突），则通过 <code>equals()</code> 方法比较键，以找到正确的条目或确定键是否已存在。</li>
+<li><strong>键的不可变性：</strong> 与 <code>HashSet</code> 类似，如果键的 <code>hashCode()</code> 在键被添加到 <code>HashMap</code> 后发生了改变，<code>HashMap</code> 可能无法再正确地找到这个键对应的条目。因此，<strong>强烈推荐使用不可变对象作为 <code>HashMap</code> 的键。</strong></li>
+</ul>
+</li>
+<li><strong>允许一个 <code>null</code> 键和多个 <code>null</code> 值。</strong> <code>null</code> 键总是被映射到哈希表的索引 0 处。</li>
+<li><strong>线程不安全：</strong> <code>HashMap</code> 不是线程安全的。如果需要线程安全的 <code>Map</code>，可以使用 <code>Collections.synchronizedMap(new HashMap&lt;&gt;())</code> 或更推荐的 <code>java.util.concurrent.ConcurrentHashMap</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>构造函数、初始容量、加载因子、扩容 (rehash)：</strong></p>
+<ul>
+<li>与 <code>HashSet</code> 非常类似，因为 <code>HashSet</code> 内部就是用的 <code>HashMap</code>。</li>
+<li>可以指定初始容量 (默认 16) 和加载因子 (默认 0.75)。</li>
+<li>当 <code>size &gt;= capacity * loadFactor</code> 时，会进行扩容 (rehash)，容量通常会加倍，并将所有现有条目重新分配到新的桶中。这是一个耗时的操作。</li>
+<li>合理设置初始容量对于避免不必要的 rehash 非常重要。如果能预估键值对的数量 <code>n</code>，可以将初始容量设置为 <code>(int)(n / loadFactor) + 1</code> 或更大的一个 2 的幂。</li>
+</ul>
+</li>
+<li>
+<p><strong>适用场景：</strong></p>
+<ul>
+<li>当你需要一个<strong>不保证顺序</strong>但要求<strong>快速存取键值对</strong>的映射时。</li>
+<li>这是最常用的 <code>Map</code> 实现。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="LinkedHashMap-K-V-基于哈希表和链表，保持插入顺序或访问顺序"><code>LinkedHashMap&lt;K, V&gt;</code>: 基于哈希表和链表，保持插入顺序或访问顺序</h3>
+<ul>
+<li>
+<p><strong>底层数据结构：</strong></p>
+<ul>
+<li><code>LinkedHashMap&lt;K, V&gt;</code> 继承自 <code>HashMap&lt;K, V&gt;</code>。</li>
+<li>它在 <code>HashMap</code> 的基础上，额外维护了一个<strong>贯穿所有条目的双向链表</strong>。</li>
+<li>这个链表定义了迭代顺序，可以是<strong>插入顺序 (insertion-order)</strong> 或<strong>访问顺序 (access-order)</strong>。</li>
+</ul>
+</li>
+<li>
+<p><strong>核心特性与性能：</strong></p>
+<ul>
+<li><strong>顺序性：</strong>
+<ul>
+<li><strong>插入顺序 (默认)：</strong> 迭代时，键值对会按照它们被插入到映射中的顺序出现。</li>
+<li><strong>访问顺序：</strong> 如果在构造 <code>LinkedHashMap</code> 时将 <code>accessOrder</code> 参数设置为 <code>true</code>，那么每次调用 <code>get()</code>、<code>put()</code> (如果键已存在并更新值) 或 <code>compute*()</code> 等访问操作时，被访问的条目会被移动到双向链表的<strong>尾部</strong>。这使得最近访问的条目总是在链表尾部，最久未访问的条目在链表头部。此特性非常适合用来实现 <strong>LRU (Least Recently Used) 缓存</strong>。</li>
+</ul>
+</li>
+<li><strong>性能：</strong>
+<ul>
+<li><code>put()</code>, <code>get()</code>, <code>remove()</code> 操作的平均时间复杂度仍然是 <strong>O(1)</strong>，与 <code>HashMap</code> 类似。</li>
+<li>由于需要维护额外的链表，<code>LinkedHashMap</code> 的性能开销会比 <code>HashMap</code> <strong>略高</strong>一点点，内存占用也会稍大一些。</li>
+</ul>
+</li>
+<li><strong>依赖键的 <code>hashCode()</code> 和 <code>equals()</code>：</strong> 与 <code>HashMap</code> 相同。</li>
+<li><strong>允许一个 <code>null</code> 键和多个 <code>null</code> 值。</strong></li>
+<li><strong>线程不安全。</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>构造函数：</strong></p>
+<ul>
+<li><code>LinkedHashMap()</code>: 默认初始容量、加载因子，插入顺序。</li>
+<li><code>LinkedHashMap(int initialCapacity)</code></li>
+<li><code>LinkedHashMap(int initialCapacity, float loadFactor)</code></li>
+<li><code>LinkedHashMap(int initialCapacity, float loadFactor, boolean accessOrder)</code>: <strong>可以指定 <code>accessOrder</code> 为 <code>true</code> 来启用访问顺序。</strong></li>
+<li><code>LinkedHashMap(Map&lt;? extends K, ? extends V&gt; m)</code></li>
+</ul>
+</li>
+<li>
+<p><strong>实现 LRU 缓存：</strong></p>
+<ul>
+<li>可以通过继承 <code>LinkedHashMap</code> 并重写 <code>removeEldestEntry(Map.Entry&lt;K,V&gt; eldest)</code> 方法来轻松实现一个固定大小的 LRU 缓存。当 <code>put</code> 或 <code>putAll</code> 后，如果此方法返回 <code>true</code>，则最老的条目 (链表头部的条目，在访问顺序模式下即最久未访问的条目) 会被移除。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">class</span> <span class="hljs-title class_">LRUCache</span>&lt;K, V&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title class_">LinkedHashMap</span>&lt;K, V&gt; &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">int</span> capacity;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">LRUCache</span><span class="hljs-params">(<span class="hljs-type">int</span> capacity)</span> &#123;<br>        <span class="hljs-comment">// true for access-order</span><br>        <span class="hljs-built_in">super</span>(capacity, <span class="hljs-number">0.75f</span>, <span class="hljs-literal">true</span>);<br>        <span class="hljs-built_in">this</span>.capacity = capacity;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">protected</span> <span class="hljs-type">boolean</span> <span class="hljs-title function_">removeEldestEntry</span><span class="hljs-params">(Map.Entry&lt;K, V&gt; eldest)</span> &#123;<br>        <span class="hljs-comment">// Remove eldest if size exceeds capacity</span><br>        <span class="hljs-keyword">return</span> size() &gt; capacity;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        LRUCache&lt;Integer, String&gt; cache = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LRUCache</span>&lt;&gt;(<span class="hljs-number">2</span>);<br>        cache.put(<span class="hljs-number">1</span>, <span class="hljs-string">&quot;A&quot;</span>);<br>        cache.put(<span class="hljs-number">2</span>, <span class="hljs-string">&quot;B&quot;</span>);<br>        System.out.println(cache); <span class="hljs-comment">// &#123;1=A, 2=B&#125; (顺序可能取决于初始添加)</span><br>        cache.get(<span class="hljs-number">1</span>); <span class="hljs-comment">// Access 1</span><br>        System.out.println(cache); <span class="hljs-comment">// &#123;2=B, 1=A&#125; (1 变为最近访问)</span><br>        cache.put(<span class="hljs-number">3</span>, <span class="hljs-string">&quot;C&quot;</span>); <span class="hljs-comment">// Add 3, triggers removal of eldest (2)</span><br>        System.out.println(cache); <span class="hljs-comment">// &#123;1=A, 3=C&#125; (2 被移除)</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>适用场景：</strong></p>
+<ul>
+<li>当你需要一个<strong>保持键插入顺序</strong>或<strong>访问顺序</strong>并且能够<strong>快速存取键值对</strong>的映射时。</li>
+<li>实现 LRU 缓存。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="TreeMap-K-V-基于红黑树，键有序-自然顺序或自定义顺序"><code>TreeMap&lt;K, V&gt;</code>: 基于红黑树，键有序 (自然顺序或自定义顺序)</h3>
+<ul>
+<li>
+<p><strong>底层数据结构：</strong></p>
+<ul>
+<li><code>TreeMap&lt;K, V&gt;</code> 使用<strong>红黑树 (Red-Black Tree)</strong> 来存储键值对，并根据键进行排序。</li>
+<li>它实现了 <code>NavigableMap&lt;K, V&gt;</code> 接口 (继承自 <code>SortedMap&lt;K, V&gt;</code>)。</li>
+</ul>
+</li>
+<li>
+<p><strong>核心特性与性能：</strong></p>
+<ul>
+<li><strong>键有序 (Keys are Sorted)：</strong> <code>TreeMap</code> 中的键值对总是根据键的顺序进行排序。
+<ul>
+<li><strong>排序方式：</strong>
+<ol>
+<li><strong>自然排序：</strong> 如果键实现了 <code>java.lang.Comparable&lt;K&gt;</code> 接口，并且在构造 <code>TreeMap</code> 时没有提供 <code>Comparator</code>。</li>
+<li><strong>自定义排序：</strong> 如果在构造 <code>TreeMap</code> 时传入一个 <code>java.util.Comparator&lt;K&gt;</code> 实例。</li>
+</ol>
+</li>
+<li><strong>键“相等性”判断：</strong> <code>TreeMap</code> 使用键的 <code>compareTo()</code> (或 <code>Comparator.compare()</code>) 方法来判断键是否“相等”以保证唯一性。如果 <code>key1.compareTo(key2) == 0</code>，<code>TreeMap</code> 会认为这两个键是相同的，即使它们的 <code>key1.equals(key2)</code> 可能返回 <code>false</code>。</li>
+</ul>
+</li>
+<li><strong>性能：</strong>
+<ul>
+<li><code>put()</code>, <code>get()</code>, <code>remove()</code>, <code>containsKey()</code> 操作的时间复杂度是 <strong>O(log n)</strong>。</li>
+</ul>
+</li>
+<li><strong>不允许 <code>null</code> 键 (默认情况下)：</strong>
+<ul>
+<li>如果使用自然排序，尝试使用 <code>null</code> 键会导致 <code>NullPointerException</code>。</li>
+<li>如果使用自定义 <code>Comparator</code>，是否允许 <code>null</code> 键取决于比较器的实现。</li>
+<li><code>TreeMap</code> <strong>允许 <code>null</code> 值</strong>。</li>
+</ul>
+</li>
+<li><strong>线程不安全。</strong></li>
+</ul>
+</li>
+<li>
+<p><strong><code>NavigableMap&lt;K, V&gt;</code> 接口：</strong></p>
+<ul>
+<li>提供了许多额外的导航和范围查询方法，与 <code>NavigableSet</code> 类似，但操作的是键：
+<ul>
+<li><code>Map.Entry&lt;K,V&gt; lowerEntry(K key)</code>, <code>K lowerKey(K key)</code></li>
+<li><code>Map.Entry&lt;K,V&gt; floorEntry(K key)</code>, <code>K floorKey(K key)</code></li>
+<li><code>Map.Entry&lt;K,V&gt; ceilingEntry(K key)</code>, <code>K ceilingKey(K key)</code></li>
+<li><code>Map.Entry&lt;K,V&gt; higherEntry(K key)</code>, <code>K higherKey(K key)</code></li>
+<li><code>Map.Entry&lt;K,V&gt; firstEntry()</code>, <code>K firstKey()</code></li>
+<li><code>Map.Entry&lt;K,V&gt; lastEntry()</code>, <code>K lastKey()</code></li>
+<li><code>Map.Entry&lt;K,V&gt; pollFirstEntry()</code>, <code>Map.Entry&lt;K,V&gt; pollLastEntry()</code></li>
+<li><code>NavigableMap&lt;K,V&gt; descendingMap()</code>: 返回此 map 的逆序视图。</li>
+<li><code>NavigableSet&lt;K&gt; navigableKeySet()</code>: 返回键的 <code>NavigableSet</code> 视图。</li>
+<li><code>NavigableSet&lt;K&gt; descendingKeySet()</code></li>
+<li><code>NavigableMap&lt;K,V&gt; subMap(K fromKey, boolean fromInclusive, K toKey, boolean toInclusive)</code></li>
+<li><code>NavigableMap&lt;K,V&gt; headMap(K toKey, boolean inclusive)</code></li>
+<li><code>NavigableMap&lt;K,V&gt; tailMap(K fromKey, boolean inclusive)</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>构造函数：</strong></p>
+<ul>
+<li><code>TreeMap()</code>: 按键的自然顺序。</li>
+<li><code>TreeMap(Comparator&lt;? super K&gt; comparator)</code>: 按指定比较器。</li>
+<li><code>TreeMap(Map&lt;? extends K, ? extends V&gt; m)</code>: 从已有 <code>Map</code> 创建，按键自然顺序。</li>
+<li><code>TreeMap(SortedMap&lt;K, ? extends V&gt; m)</code>: 从已有 <code>SortedMap</code> 创建，使用其排序方式。</li>
+</ul>
+</li>
+<li>
+<p><strong>适用场景：</strong></p>
+<ul>
+<li>当你需要一个<strong>根据键自动保持排序</strong>并且能够<strong>快速存取键值对</strong>的映射时。</li>
+<li>当需要频繁进行基于键的范围查询或获取最大/最小键对应的条目时。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="Map-实现类总结对比"><code>Map</code> 实现类总结对比</h3>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th><code>HashMap&lt;K,V&gt;</code></th>
+<th><code>LinkedHashMap&lt;K,V&gt;</code></th>
+<th><code>TreeMap&lt;K,V&gt;</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>底层结构</strong></td>
+<td>哈希表 (数组+链表/红黑树)</td>
+<td>哈希表 + 双向链表</td>
+<td>红黑树</td>
+</tr>
+<tr>
+<td><strong>顺序性 (键)</strong></td>
+<td>无序</td>
+<td>保持插入顺序或访问顺序</td>
+<td>有序 (自然顺序或自定义顺序)</td>
+</tr>
+<tr>
+<td><strong>性能 (put,get,remove)</strong></td>
+<td>平均 O(1)</td>
+<td>平均 O(1) (略慢于 <code>HashMap</code>)</td>
+<td>O(log n)</td>
+</tr>
+<tr>
+<td><strong><code>null</code> 键</strong></td>
+<td>允许一个</td>
+<td>允许一个</td>
+<td>默认不允许 (取决于 <code>Comparator</code>)</td>
+</tr>
+<tr>
+<td><strong><code>null</code> 值</strong></td>
+<td>允许多个</td>
+<td>允许多个</td>
+<td>允许多个</td>
+</tr>
+<tr>
+<td><strong>键唯一性依据</strong></td>
+<td><code>equals()</code> 和 <code>hashCode()</code></td>
+<td><code>equals()</code> 和 <code>hashCode()</code></td>
+<td><code>compareTo()</code> 或 <code>Comparator.compare()</code> (返回 0 则视为重复)</td>
+</tr>
+<tr>
+<td><strong>额外功能</strong></td>
+<td>Java 8+ default methods</td>
+<td>可配置访问顺序 (LRU)</td>
+<td><code>NavigableMap</code> 方法 (范围查询、导航)</td>
+</tr>
+<tr>
+<td><strong>线程安全</strong></td>
+<td>否</td>
+<td>否</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p><strong>选择建议：</strong></p>
+<ul>
+<li><strong>如果只需要快速存取键值对，不关心顺序，且追求最高性能：</strong> 选择 <code>HashMap</code>。这是最通用的选择。</li>
+<li><strong>如果需要保持键的插入顺序或访问顺序 (如实现 LRU 缓存)：</strong> 选择 <code>LinkedHashMap</code>。</li>
+<li><strong>如果需要键始终处于排序状态，或者需要执行基于键的范围查询：</strong> 选择 <code>TreeMap</code>。但要注意其对键类型和唯一性判断方式的要求。</li>
+</ul>
+<p><strong>遍历 <code>Map</code> 的推荐方式：</strong></p>
+<p>使用 <code>entrySet()</code> 结合增强 <code>for</code> 循环或 <code>forEach</code> 方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java">Map&lt;String, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>map.put(<span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-number">1</span>);<br>map.put(<span class="hljs-string">&quot;B&quot;</span>, <span class="hljs-number">2</span>);<br>map.put(<span class="hljs-string">&quot;C&quot;</span>, <span class="hljs-number">3</span>);<br><br><span class="hljs-comment">// 1. 使用 entrySet() 和增强 for 循环 (推荐)</span><br><span class="hljs-keyword">for</span> (Map.Entry&lt;String, Integer&gt; entry : map.entrySet()) &#123;<br>    <span class="hljs-type">String</span> <span class="hljs-variable">key</span> <span class="hljs-operator">=</span> entry.getKey();<br>    <span class="hljs-type">Integer</span> <span class="hljs-variable">value</span> <span class="hljs-operator">=</span> entry.getValue();<br>    System.out.println(<span class="hljs-string">&quot;Key: &quot;</span> + key + <span class="hljs-string">&quot;, Value: &quot;</span> + value);<br>    <span class="hljs-comment">// entry.setValue(value * 10); // 可以修改值</span><br>&#125;<br><br><span class="hljs-comment">// 2. 使用 forEach() 方法 (Java 8+)</span><br>map.forEach((key, value) -&gt; &#123;<br>    System.out.println(<span class="hljs-string">&quot;Key: &quot;</span> + key + <span class="hljs-string">&quot;, Value: &quot;</span> + value);<br>&#125;);<br><br><span class="hljs-comment">// 3. 仅遍历键 (使用 keySet())</span><br><span class="hljs-comment">// for (String key : map.keySet()) &#123;</span><br><span class="hljs-comment">//     Integer value = map.get(key); // 需要再次查找value，效率略低</span><br><span class="hljs-comment">//     System.out.println(&quot;Key: &quot; + key + &quot;, Value: &quot; + value);</span><br><span class="hljs-comment">// &#125;</span><br><br><span class="hljs-comment">// 4. 仅遍历值 (使用 values())</span><br><span class="hljs-comment">// for (Integer value : map.values()) &#123;</span><br><span class="hljs-comment">//     System.out.println(&quot;Value: &quot; + value);</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure>
+<hr>
+<p><code>Map</code> 是编程中用于关联数据和快速查找的核心工具。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6-JCF/" class="category-chain-item">集合框架(JCF)</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Map 接口以及主要实现类</div>
+      <div>http://example.com/2025/03/13/Java/基础/数据结构/集合框架 (JCF)/Map 接口以及主要实现类/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/13/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%20(JCF)/List%20%E6%8E%A5%E5%8F%A3%E4%BB%A5%E5%8F%8A%E4%B8%BB%E8%A6%81%E5%AE%9E%E7%8E%B0%E7%B1%BB/" title="List 接口以及主要实现类">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">List 接口以及主要实现类</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/13/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6%20(JCF)/Set%20%E6%8E%A5%E5%8F%A3%E4%BB%A5%E5%8F%8A%E4%B8%BB%E8%A6%81%E5%AE%9E%E7%8E%B0%E7%B1%BB/" title="Set 接口以及主要实现类">
+                        <span class="hidden-mobile">Set 接口以及主要实现类</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

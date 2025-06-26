@@ -1,0 +1,1083 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="研究 Java 数据结构是非常有价值的，它能让你写出更高效、更健壮、更优雅的代码。 下面是一个循序渐进的 Java 数据结构深度研究规划。我会结合最新的 Java 特性，并强调每个阶段的学习重点和实践方向。 核心理念：  理解接口与实现分离： 这是 Java 集合框架 (JCF) 的核心设计。先懂“契约”（接口），再懂“实现”。 关注时间与空间复杂度： 理解不同数据结构在各种操作下的性能表现。 源">
+<meta property="og:type" content="article">
+<meta property="og:title" content="研究规划">
+<meta property="og:url" content="http://example.com/2025/03/11/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E7%A0%94%E7%A9%B6%E8%A7%84%E5%88%92/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="研究 Java 数据结构是非常有价值的，它能让你写出更高效、更健壮、更优雅的代码。 下面是一个循序渐进的 Java 数据结构深度研究规划。我会结合最新的 Java 特性，并强调每个阶段的学习重点和实践方向。 核心理念：  理解接口与实现分离： 这是 Java 集合框架 (JCF) 的核心设计。先懂“契约”（接口），再懂“实现”。 关注时间与空间复杂度： 理解不同数据结构在各种操作下的性能表现。 源">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/Java.png">
+<meta property="article:published_time" content="2025-03-10T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T07:37:22.167Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/Java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>研究规划 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="研究规划"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-11 00:00" pubdate>
+          2025年3月11日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">研究规划</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月26日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>研究 Java 数据结构是非常有价值的，它能让你写出更高效、更健壮、更优雅的代码。</p>
+<p>下面是一个循序渐进的 Java 数据结构深度研究规划。我会结合最新的 Java 特性，并强调每个阶段的学习重点和实践方向。</p>
+<p><strong>核心理念：</strong></p>
+<ol>
+<li><strong>理解接口与实现分离：</strong> 这是 Java 集合框架 (JCF) 的核心设计。先懂“契约”（接口），再懂“实现”。</li>
+<li><strong>关注时间与空间复杂度：</strong> 理解不同数据结构在各种操作下的性能表现。</li>
+<li><strong>源码面前了无秘密：</strong> 在适当阶段，鼓励阅读 JDK 源码来加深理解。</li>
+<li><strong>实践出真知：</strong> 通过编码练习和实际应用来巩固知识。</li>
+<li><strong>与时俱进：</strong> 关注 Java 新版本对数据结构和相关 API 的影响。</li>
+</ol>
+<hr>
+<p><strong>Java 数据结构深度研究规划</strong></p>
+<p><strong>阶段一：基础与核心概念</strong></p>
+<ul>
+<li><strong>目标：</strong> 夯实学习数据结构所需的基础 Java 知识，理解数据结构的基本概念。</li>
+<li><strong>内容：</strong>
+<ol>
+<li><strong>Java 泛型 (Generics)：</strong>
+<ul>
+<li>为什么需要泛型？类型擦除的理解。</li>
+<li>泛型类、泛型接口、泛型方法。</li>
+<li>通配符：<code>? extends T</code>, <code>? super T</code>, 无界通配符 <code>?</code>。</li>
+<li><strong>重要性：</strong> Java 集合框架完全基于泛型，这是理解和使用集合的前提。</li>
+</ul>
+</li>
+<li><strong><code>Object</code> 类核心方法：</strong>
+<ul>
+<li><code>equals(Object obj)</code>：理解其语义、与 <code>==</code> 的区别、重写原则（自反性、对称性、传递性、一致性、非空性）。</li>
+<li><code>hashCode()</code>：理解其语义、与 <code>equals()</code> 的约定（<code>equals</code> 相等则 <code>hashCode</code> 必须相等）、重写原则。</li>
+<li><strong>重要性：</strong> <code>Set</code> 和 <code>Map</code> 的正确运行严重依赖这两个方法。</li>
+</ul>
+</li>
+<li><strong><code>Comparable&lt;T&gt;</code> 与 <code>Comparator&lt;T&gt;</code> 接口：</strong>
+<ul>
+<li><code>Comparable</code>：自然排序。</li>
+<li><code>Comparator</code>：定制排序，策略模式的应用。</li>
+<li>Java 8+ <code>Comparator</code> 的链式比较、<code>nullsFirst/Last</code> 等辅助方法。</li>
+<li><strong>重要性：</strong> 排序相关的集合（如 <code>TreeSet</code>, <code>TreeMap</code>）和 <code>Collections.sort()</code> / <code>Arrays.sort()</code> 依赖它们。</li>
+</ul>
+</li>
+<li><strong>数组 (Arrays)：</strong>
+<ul>
+<li>基本类型数组 vs 对象数组。</li>
+<li>内存分配（栈上引用，堆上对象/数组本身）。</li>
+<li>固定大小、高效随机访问 (O(1))、低效插入/删除 (O(n))。</li>
+<li><code>java.util.Arrays</code> 工具类的常用方法 (<code>sort</code>, <code>binarySearch</code>, <code>copyOf</code>, <code>asList</code> 等)。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>实践：</strong>
+<ul>
+<li>练习自定义类并正确重写 <code>equals()</code> 和 <code>hashCode()</code>。</li>
+<li>练习使用 <code>Comparable</code> 和 <code>Comparator</code> 对自定义对象列表进行排序。</li>
+<li>熟悉 <code>Arrays</code> 工具类的使用。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>阶段二：Java 集合框架 (JCF) - 接口与核心实现</strong></p>
+<ul>
+<li><strong>目标：</strong> 深入理解 JCF 的核心接口、主要实现类的特性、适用场景和性能。</li>
+<li><strong>内容：</strong>
+<ol>
+<li><strong><code>Iterable&lt;T&gt;</code> 与 <code>Iterator&lt;T&gt;</code> 接口：</strong>
+<ul>
+<li>迭代器模式。</li>
+<li><code>hasNext()</code>, <code>next()</code>, <code>remove()</code> (可选操作)。</li>
+<li>增强 <code>for</code> 循环 (for-each loop) 的原理。</li>
+<li><code>fail-fast</code> 机制 (如 <code>ConcurrentModificationException</code>)。</li>
+</ul>
+</li>
+<li><strong><code>Collection&lt;E&gt;</code> 接口：</strong>
+<ul>
+<li>JCF 的根接口之一，定义了集合的基本行为（添加、删除、查询、大小、迭代等）。</li>
+</ul>
+</li>
+<li><strong><code>List&lt;E&gt;</code> 接口：有序、可重复。</strong>
+<ul>
+<li><strong><code>ArrayList&lt;E&gt;</code>：</strong>
+<ul>
+<li>底层：动态数组 (Object[])。</li>
+<li>特性：查询快 (O(1))，增删慢 (O(n) 平均，尾部添加 O(1) 摊销)。</li>
+<li>扩容机制：重点理解。</li>
+<li>适用场景：读多写少，随机访问频繁。</li>
+</ul>
+</li>
+<li><strong><code>LinkedList&lt;E&gt;</code>：</strong>
+<ul>
+<li>底层：双向链表。</li>
+<li>特性：增删快 (O(1) 如果有引用)，查询慢 (O(n))。</li>
+<li>同时实现 <code>Deque&lt;E&gt;</code> 接口。</li>
+<li>适用场景：写多读少，频繁增删。</li>
+</ul>
+</li>
+<li><code>Vector&lt;E&gt;</code> (过时，了解其线程安全但性能低下的原因，对比 <code>ArrayList</code> + <code>Collections.synchronizedList()</code>)。</li>
+<li><code>Stack&lt;E&gt;</code> (过时，了解其设计缺陷，推荐使用 <code>ArrayDeque</code> 作为栈)。</li>
+</ul>
+</li>
+<li><strong><code>Set&lt;E&gt;</code> 接口：无序 (通常)、不可重复。</strong>
+<ul>
+<li><strong><code>HashSet&lt;E&gt;</code>：</strong>
+<ul>
+<li>底层：<code>HashMap</code> (存储元素作为 key，value 是一个固定的 <code>PRESENT</code> 对象)。</li>
+<li>特性：增删查平均 O(1)，无序。依赖 <code>hashCode()</code> 和 <code>equals()</code>。</li>
+<li>负载因子与初始化容量对性能的影响。</li>
+</ul>
+</li>
+<li><strong><code>LinkedHashSet&lt;E&gt;</code>：</strong>
+<ul>
+<li>底层：<code>LinkedHashMap</code> (继承 <code>HashSet</code>，内部使用链表维护插入顺序)。</li>
+<li>特性：保持元素插入顺序，性能略低于 <code>HashSet</code>。</li>
+</ul>
+</li>
+<li><strong><code>TreeSet&lt;E&gt;</code>：</strong>
+<ul>
+<li>底层：红黑树 (Self-balancing binary search tree，通过 <code>TreeMap</code> 实现)。</li>
+<li>特性：元素有序 (自然排序或自定义排序)，增删查 O(log n)。依赖 <code>Comparable</code> 或 <code>Comparator</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>Queue&lt;E&gt;</code> 与 <code>Deque&lt;E&gt;</code> 接口：</strong>
+<ul>
+<li><code>Queue</code>：先进先出 (FIFO)。
+<ul>
+<li><code>offer()</code> / <code>add()</code>, <code>poll()</code> / <code>remove()</code>, <code>peek()</code> / <code>element()</code>。</li>
+</ul>
+</li>
+<li><code>Deque</code>：双端队列 (可作栈或队列)。
+<ul>
+<li><code>addFirst/Last</code>, <code>offerFirst/Last</code>, <code>removeFirst/Last</code>, <code>pollFirst/Last</code>, <code>peekFirst/Last</code>, <code>getFirst/Last</code>。</li>
+</ul>
+</li>
+<li><strong><code>ArrayDeque&lt;E&gt;</code>：</strong>
+<ul>
+<li>底层：动态数组实现的双端队列。</li>
+<li>特性：高效，推荐用作栈 (替代 <code>Stack</code>) 和队列 (替代 <code>LinkedList</code> 做队列的某些场景)。</li>
+</ul>
+</li>
+<li><strong><code>PriorityQueue&lt;E&gt;</code>：</strong>
+<ul>
+<li>底层：二叉堆 (通常是最小堆)。</li>
+<li>特性：元素按优先级出队 (自然排序或自定义排序)。非 FIFO。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>Map&lt;K, V&gt;</code> 接口：键值对存储，键唯一。</strong>
+<ul>
+<li><strong><code>HashMap&lt;K, V&gt;</code>：</strong>
+<ul>
+<li>底层：哈希表 (数组 + 链表/红黑树 - JDK 8+ 优化)。</li>
+<li>特性：增删查平均 O(1)，无序。键依赖 <code>hashCode()</code> 和 <code>equals()</code>。</li>
+<li>重点理解：哈希冲突解决方法、<code>loadFactor</code>、<code>initialCapacity</code>、JDK 8+ 链表转红黑树的阈值。</li>
+</ul>
+</li>
+<li><strong><code>LinkedHashMap&lt;K, V&gt;</code>：</strong>
+<ul>
+<li>底层：<code>HashMap</code> + 双向链表。</li>
+<li>特性：保持插入顺序或访问顺序 (LRU 缓存实现基础)。</li>
+</ul>
+</li>
+<li><strong><code>TreeMap&lt;K, V&gt;</code>：</strong>
+<ul>
+<li>底层：红黑树。</li>
+<li>特性：键有序，增删查 O(log n)。键依赖 <code>Comparable</code> 或 <code>Comparator</code>。</li>
+</ul>
+</li>
+<li><code>Hashtable&lt;K, V&gt;</code> (过时，了解其线程安全但性能低下的原因，对比 <code>HashMap</code> + <code>Collections.synchronizedMap()</code> 或 <code>ConcurrentHashMap</code>)。</li>
+<li><code>IdentityHashMap&lt;K,V&gt;</code>: 比较key时使用 <code>==</code> 而不是 <code>equals()</code>。</li>
+<li><code>WeakHashMap&lt;K,V&gt;</code>: 弱引用键，当键没有其他强引用时可能被 GC 回收。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>实践：</strong>
+<ul>
+<li>针对不同场景选择合适的集合类型。</li>
+<li>练习各集合的 CRUD 操作。</li>
+<li>模拟 <code>HashMap</code> 冲突、<code>ArrayList</code> 扩容。</li>
+<li>使用 <code>LinkedHashMap</code> 实现一个简单的 LRU 缓存。</li>
+<li>对比不同集合在特定操作下的性能（可写简单 benchmark）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>阶段三：深入理解与高级主题</strong></p>
+<ul>
+<li><strong>目标：</strong> 深入理解集合的内部实现、并发集合、以及 Java 8+ 对集合操作的增强。</li>
+<li><strong>内容：</strong>
+<ol>
+<li><strong>集合框架的工具类：</strong>
+<ul>
+<li><code>Collections</code>：<code>sort</code>, <code>binarySearch</code>, <code>reverse</code>, <code>shuffle</code>, <code>synchronizedXxx</code>, <code>unmodifiableXxx</code>, <code>emptyXxx</code>, <code>singletonXxx</code> 等。</li>
+<li><code>Arrays</code> (再次回顾，结合集合)。</li>
+</ul>
+</li>
+<li><strong>不可变集合 (Immutable Collections)：</strong>
+<ul>
+<li><code>Collections.unmodifiableXxx()</code> 方法的原理和局限性。</li>
+<li>Java 9+ <code>List.of()</code>, <code>Set.of()</code>, <code>Map.of()</code> 工厂方法：创建真正的不可变集合，更安全、更高效。</li>
+<li>不可变集合的优势：线程安全、可作为常量、性能（无须拷贝保护）。</li>
+</ul>
+</li>
+<li><strong>并发集合 (<code>java.util.concurrent</code> 包)：</strong>
+<ul>
+<li><strong><code>ConcurrentHashMap&lt;K, V&gt;</code>：</strong>
+<ul>
+<li>分段锁 (JDK 7 及之前) vs CAS + <code>synchronized</code> (JDK 8+)。高效的线程安全 <code>Map</code>。</li>
+<li>与 <code>Hashtable</code> 和 <code>Collections.synchronizedMap(new HashMap&lt;&gt;())</code> 的对比。</li>
+</ul>
+</li>
+<li><strong><code>CopyOnWriteArrayList&lt;E&gt;</code> 和 <code>CopyOnWriteArraySet&lt;E&gt;</code>：</strong>
+<ul>
+<li>写时复制机制。</li>
+<li>适用场景：读多写少，对数据一致性要求高。</li>
+<li>迭代器是弱一致性的，不会抛 <code>ConcurrentModificationException</code>。</li>
+</ul>
+</li>
+<li><strong><code>BlockingQueue&lt;E&gt;</code> 接口及其实现：</strong>
+<ul>
+<li><code>ArrayBlockingQueue</code>：有界阻塞队列。</li>
+<li><code>LinkedBlockingQueue</code>：可有界可无界阻塞队列。</li>
+<li><code>PriorityBlockingQueue</code>：带优先级的阻塞队列。</li>
+<li><code>SynchronousQueue</code>：不存储元素的阻塞队列。</li>
+<li><code>DelayQueue</code>：延迟阻塞队列。</li>
+<li><strong>重要性：</strong> 生产者-消费者模式的核心组件。</li>
+</ul>
+</li>
+<li><code>ConcurrentLinkedQueue</code>, <code>ConcurrentLinkedDeque</code>, <code>ConcurrentSkipListMap</code>, <code>ConcurrentSkipListSet</code>。</li>
+</ul>
+</li>
+<li><strong>Java Stream API 与集合：</strong>
+<ul>
+<li>如何从集合创建流 (<code>stream()</code>, <code>parallelStream()</code>)。</li>
+<li>中间操作 (filter, map, sorted, distinct, flatMap, peek, limit, skip)。</li>
+<li>终端操作 (forEach, collect, reduce, count, anyMatch, allMatch, findFirst, findAny, min, max)。</li>
+<li><code>Collectors</code> 工具类 (<code>toList</code>, <code>toSet</code>, <code>toMap</code>, <code>groupingBy</code>, <code>joining</code> 等)。</li>
+<li><strong>重要性：</strong> 现代 Java 处理集合数据的主流方式，简洁、高效、易于并行化。</li>
+</ul>
+</li>
+<li><strong><code>Spliterator&lt;T&gt;</code> 接口：</strong>
+<ul>
+<li>可分割迭代器，为并行流设计。</li>
+<li><code>tryAdvance()</code>, <code>forEachRemaining()</code>, <code>trySplit()</code>, <code>estimateSize()</code>, <code>characteristics()</code>。</li>
+<li>了解其与 <code>Iterator</code> 的区别和联系。</li>
+</ul>
+</li>
+<li><strong>集合的性能考量与调优：</strong>
+<ul>
+<li>选择正确的集合类型是首要的。</li>
+<li><code>HashMap</code> / <code>HashSet</code> 的初始化容量和负载因子。</li>
+<li><code>ArrayList</code> 的初始化容量。</li>
+<li>避免不必要的集合转换。</li>
+<li>警惕自动装箱拆箱带来的性能损耗。</li>
+</ul>
+</li>
+<li><strong>源码阅读 (选读，但强烈推荐)：</strong>
+<ul>
+<li><code>ArrayList</code> 的扩容 (<code>grow()</code>)。</li>
+<li><code>HashMap</code> 的 <code>putVal()</code>, <code>getNode()</code>, <code>resize()</code>，以及 JDK 8+ 的树化 (<code>treeifyBin()</code>)。</li>
+<li><code>ConcurrentHashMap</code> 的 <code>putVal()</code>, <code>get()</code> (JDK 8+ 版本)。</li>
+<li><code>LinkedList</code> 的节点操作。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>实践：</strong>
+<ul>
+<li>使用并发集合解决多线程数据共享问题。</li>
+<li>使用 Stream API 重构传统的集合操作代码。</li>
+<li>尝试阅读 JDK 中核心集合类的源码，理解其设计精髓。</li>
+<li>设计并实现自己的简单数据结构（如栈、队列、简单哈希表）。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>阶段四：扩展与应用 (持续学习)</strong></p>
+<ul>
+<li><strong>目标：</strong> 了解 JDK 之外的优秀数据结构库，以及数据结构在实际项目中的应用。</li>
+<li><strong>内容：</strong>
+<ol>
+<li><strong>第三方集合库：</strong>
+<ul>
+<li><strong>Guava Collections：</strong> (虽然 Java 自身集合在发展，但 Guava 仍有其价值)
+<ul>
+<li>不可变集合 (<code>ImmutableList</code>, <code>ImmutableSet</code>, <code>ImmutableMap</code>)：更丰富的 API 和创建方式。</li>
+<li>新的集合类型 (<code>Multiset</code>, <code>Multimap</code>, <code>BiMap</code>, <code>Table</code>, <code>RangeSet</code>, <code>RangeMap</code>)。</li>
+<li>强大的工具类 (<code>Lists</code>, <code>Sets</code>, <code>Maps</code>, <code>Iterables</code>, <code>Iterators</code>)。</li>
+</ul>
+</li>
+<li><strong>Apache Commons Collections：</strong> (部分功能已被 Guava 或 JDK 自身取代，但仍可了解)。</li>
+<li><strong>Eclipse Collections (前 GS Collections)：</strong> 高性能，内存优化，丰富的 API。</li>
+</ul>
+</li>
+<li><strong>数据结构在算法中的应用：</strong>
+<ul>
+<li>结合 LeetCode、HackerRank 等平台的算法题，实践各种数据结构。</li>
+<li>例如：栈用于括号匹配、深度优先搜索；队列用于广度优先搜索；哈希表用于快速查找和去重；堆用于优先队列问题。</li>
+</ul>
+</li>
+<li><strong>数据结构在框架和系统设计中的应用：</strong>
+<ul>
+<li>缓存系统 (LRU - <code>LinkedHashMap</code>, LFU)。</li>
+<li>索引结构 (B-Tree, B+Tree - 数据库)。</li>
+<li>消息队列。</li>
+<li>图的表示与遍历 (邻接表、邻接矩阵)。</li>
+</ul>
+</li>
+<li><strong>Java 新特性对数据结构的影响：</strong>
+<ul>
+<li><strong>Records (Java 14+)：</strong> 作为简单的数据载体，常用于集合元素或 Map 的键/值。</li>
+<li><strong>Sealed Classes (Java 15+)：</strong> 在定义代数数据类型 (ADT) 时可能有用，可以与 <code>switch</code> 模式匹配结合。</li>
+<li><strong>Pattern Matching for <code>instanceof</code> (Java 14+) &amp; <code>switch</code> (Java 17+预览, Java 21 正式)：</strong> 简化对集合元素类型判断和处理的代码。</li>
+<li><strong>Virtual Threads (Project Loom, Java 19+ 预览, Java 21 正式)：</strong> 虽然不直接改变数据结构本身，但会影响并发集合的使用场景和并发编程模型。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><strong>实践：</strong>
+<ul>
+<li>在项目中引入 Guava 等库，体验其便利性。</li>
+<li>参与或分析开源项目中数据结构的使用。</li>
+<li>持续关注 Java 新版本，思考新特性如何与数据结构结合。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<p><strong>学习方法与建议：</strong></p>
+<ol>
+<li><strong>理论与实践结合：</strong> 每学习一个数据结构，都亲手写代码实现其基本操作，并尝试解决相关问题。</li>
+<li><strong>画图理解：</strong> 对于链表、树、哈希表等结构，画图帮助理解其内存布局和操作过程。</li>
+<li><strong>对比学习：</strong> 经常对比相似数据结构（如 <code>ArrayList</code> vs <code>LinkedList</code>, <code>HashMap</code> vs <code>TreeMap</code>）的优缺点和适用场景。</li>
+<li><strong>调试与分析：</strong> 使用 IDE 的调试功能，观察集合内部状态的变化。</li>
+<li><strong>阅读优质博文和书籍：</strong> 《Java 核心技术卷 I》、《Effective Java》、《Java 编程思想》等经典书籍的相关章节。关注一些高质量的技术博客。</li>
+<li><strong>提问与讨论：</strong> 遇到问题积极提问，参与技术社区讨论。</li>
+<li><strong>定期复习：</strong> 数据结构知识点多且细，需要定期回顾巩固。</li>
+</ol>
+<hr>
+<p>这个规划比较全面，你可以根据自己的时间和掌握程度灵活调整每个阶段的时长。记住，<strong>理解“为什么”比单纯记住“是什么”更重要</strong>。</p>
+<p>祝你学习愉快，深入掌握 Java 数据结构的精髓！</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>研究规划</div>
+      <div>http://example.com/2025/03/11/Java/基础/数据结构/研究规划/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月11日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/12/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/%E7%90%86%E8%A7%A3%E4%BD%BF%E7%94%A8%E9%9B%86%E5%90%88%E5%89%8D%E6%8F%90/" title="泛型-理解使用集合前提">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">泛型-理解使用集合前提</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

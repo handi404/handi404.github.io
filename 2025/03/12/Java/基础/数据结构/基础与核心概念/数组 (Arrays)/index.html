@@ -1,0 +1,1014 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="虽然数组在 Java 中是一种基础的数据结构，但对其特性、内存分配以及 java.util.Arrays 工具类的熟练运用，是理解更复杂数据结构（如 ArrayList）和高效编程的基础。  数组 (Arrays) 1. 什么是数组？ (What &amp; Why)  定义： 数组是一种用于存储固定大小的、相同类型元素的连续内存空间的数据结构。  固定大小 (Fixed-size): 一旦数组被">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数组 (Arrays)">
+<meta property="og:url" content="http://example.com/2025/03/12/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/%E6%95%B0%E7%BB%84%20(Arrays)/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="虽然数组在 Java 中是一种基础的数据结构，但对其特性、内存分配以及 java.util.Arrays 工具类的熟练运用，是理解更复杂数据结构（如 ArrayList）和高效编程的基础。  数组 (Arrays) 1. 什么是数组？ (What &amp; Why)  定义： 数组是一种用于存储固定大小的、相同类型元素的连续内存空间的数据结构。  固定大小 (Fixed-size): 一旦数组被">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/Java.png">
+<meta property="article:published_time" content="2025-03-11T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-26T07:31:36.556Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/Java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>数组 (Arrays) - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数组 (Arrays)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-12 00:00" pubdate>
+          2025年3月12日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          28 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数组 (Arrays)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年6月26日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>虽然数组在 Java 中是一种基础的数据结构，但对其特性、内存分配以及 <code>java.util.Arrays</code> 工具类的熟练运用，是理解更复杂数据结构（如 <code>ArrayList</code>）和高效编程的基础。</p>
+<hr>
+<h3 id="数组-Arrays">数组 (Arrays)</h3>
+<h4 id="1-什么是数组？-What-Why"><strong>1. 什么是数组？ (What &amp; Why)</strong></h4>
+<ul>
+<li><strong>定义：</strong> 数组是一种用于存储<strong>固定大小</strong>的、<strong>相同类型</strong>元素的<strong>连续内存空间</strong>的数据结构。
+<ul>
+<li><strong>固定大小 (Fixed-size):</strong> 一旦数组被创建，其长度就不能改变。如果需要动态调整大小，通常会考虑使用 <code>ArrayList</code> 等集合类。</li>
+<li><strong>相同类型 (Homogeneous):</strong> 数组中的所有元素必须是同一种数据类型，可以是基本数据类型（如 <code>int</code>, <code>double</code>, <code>char</code>）或引用数据类型（如 <code>String</code>, 自定义对象）。</li>
+<li><strong>连续内存空间 (Contiguous memory):</strong> 数组元素在内存中是紧密排列的，这使得通过索引访问元素非常高效。</li>
+</ul>
+</li>
+<li><strong>为什么使用数组？</strong>
+<ul>
+<li><strong>高效的随机访问：</strong> 由于元素在内存中是连续存储的，可以通过索引直接计算出元素的内存地址，因此<strong>访问任何元素的时间复杂度都是 O(1)</strong>。</li>
+<li><strong>简单性：</strong> 数组的概念直观，易于理解和使用。</li>
+<li><strong>多维数组：</strong> Java 支持多维数组（实质上是数组的数组），可以用来表示矩阵、表格等结构。</li>
+<li><strong>与底层硬件交互：</strong> 数组的内存布局与计算机硬件的内存管理方式较为接近，有时在性能敏感的底层编程中会用到。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-数组的声明、创建与初始化"><strong>2. 数组的声明、创建与初始化</strong></h4>
+<ul>
+<li>
+<p><strong>声明数组引用：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">dataType[] arrayRefVar;  <span class="hljs-comment">// 推荐方式 (符合 Java 习惯)</span><br><span class="hljs-comment">// 或者</span><br>dataType arrayRefVar[];  <span class="hljs-comment">// C/C++ 风格，在 Java 中也合法但不推荐</span><br></code></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] numbers;<br>String[] names;<br>MyClass[] objects;<br></code></pre></td></tr></table></figure>
+<p><strong>注意：</strong> 此时只是声明了一个数组引用变量，它还没有指向任何实际的数组对象，其值为 <code>null</code>。</p>
+</li>
+<li>
+<p><strong>创建数组对象 (分配内存)：</strong><br>
+使用 <code>new</code> 关键字来创建数组并指定其长度。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">arrayRefVar = <span class="hljs-keyword">new</span> <span class="hljs-title class_">dataType</span>[arraySize];<br></code></pre></td></tr></table></figure>
+<p>例如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">numbers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">10</span>];      <span class="hljs-comment">// 创建一个包含 10 个 int 元素的数组</span><br>names = <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>[<span class="hljs-number">5</span>];    <span class="hljs-comment">// 创建一个包含 5 个 String 引用的数组</span><br>objects = <span class="hljs-keyword">new</span> <span class="hljs-title class_">MyClass</span>[<span class="hljs-number">3</span>]; <span class="hljs-comment">// 创建一个包含 3 个 MyClass 引用的数组</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>内存分配：</strong>
+<ul>
+<li><code>numbers</code> 引用本身存储在栈上（如果是局部变量）或堆上（如果是实例变量）。</li>
+<li><code>new int[10]</code> 在堆内存中分配了一块足够容纳 10 个 <code>int</code> 值的连续空间。</li>
+<li>对于基本类型数组 (如 <code>int[]</code>)，数组元素直接存储值。</li>
+<li>对于引用类型数组 (如 <code>String[]</code>, <code>MyClass[]</code>)，数组元素存储的是对象的引用 (内存地址)，实际的对象本身仍在堆上的其他位置。</li>
+</ul>
+</li>
+<li><strong>默认初始化值：</strong> 当数组被创建时，其元素会被自动初始化为对应类型的默认值：
+<ul>
+<li>数值类型 (byte, short, int, long, float, double): <code>0</code> 或 <code>0.0</code></li>
+<li><code>char</code>: <code>\u0000</code> (空字符)</li>
+<li><code>boolean</code>: <code>false</code></li>
+<li>引用类型 (String, 自定义对象等): <code>null</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>初始化数组元素：</strong></p>
+<ol>
+<li><strong>逐个赋值：</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">numbers[<span class="hljs-number">0</span>] = <span class="hljs-number">10</span>;<br>numbers[<span class="hljs-number">1</span>] = <span class="hljs-number">20</span>;<br><span class="hljs-comment">// ...</span><br>names[<span class="hljs-number">0</span>] = <span class="hljs-string">&quot;Alice&quot;</span>;<br>names[<span class="hljs-number">1</span>] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>(<span class="hljs-string">&quot;Bob&quot;</span>); <span class="hljs-comment">// 或者 &quot;Bob&quot;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>使用数组初始化器 (Array Initializer) - 在声明时或创建时直接赋值：</strong><br>
+这种方式会同时声明、创建并初始化数组。长度由初始化值的数量决定。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] scores = &#123;<span class="hljs-number">90</span>, <span class="hljs-number">85</span>, <span class="hljs-number">92</span>, <span class="hljs-number">78</span>&#125;; <span class="hljs-comment">// 长度为 4</span><br>String[] days = &#123;<span class="hljs-string">&quot;Monday&quot;</span>, <span class="hljs-string">&quot;Tuesday&quot;</span>, <span class="hljs-string">&quot;Wednesday&quot;</span>&#125;; <span class="hljs-comment">// 长度为 3</span><br><br><span class="hljs-comment">// 也可以与 new 关键字结合 (不常用，但合法)</span><br><span class="hljs-comment">// int[] data = new int[]&#123;1, 2, 3, 4, 5&#125;;</span><br></code></pre></td></tr></table></figure>
+<strong>注意：</strong> 如果是分开声明和初始化，则不能直接用 <code>&#123;...&#125;</code> 形式，必须用 <code>new dataType[]&#123;...&#125;</code>。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] moreScores;<br><span class="hljs-comment">// moreScores = &#123;1, 2, 3&#125;; // 编译错误！</span><br>moreScores = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[]&#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;; <span class="hljs-comment">// 正确</span><br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<h4 id="3-数组的基本操作"><strong>3. 数组的基本操作</strong></h4>
+<ul>
+<li>
+<p><strong>访问元素：</strong> 通过索引 (从 <code>0</code> 开始) 访问。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span> <span class="hljs-variable">firstNumber</span> <span class="hljs-operator">=</span> numbers[<span class="hljs-number">0</span>];<br><span class="hljs-type">String</span> <span class="hljs-variable">secondName</span> <span class="hljs-operator">=</span> names[<span class="hljs-number">1</span>];<br></code></pre></td></tr></table></figure>
+<p>如果索引越界 (小于 <code>0</code> 或大于等于 <code>array.length</code>)，会抛出 <code>ArrayIndexOutOfBoundsException</code>。</p>
+</li>
+<li>
+<p><strong>获取数组长度：</strong> 使用数组的 <code>length</code> <strong>属性</strong> (注意，不是方法 <code>length()</code>)。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span> <span class="hljs-variable">size</span> <span class="hljs-operator">=</span> numbers.length; <span class="hljs-comment">// size 为 10</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>遍历数组：</strong></p>
+<ol>
+<li>
+<p><strong>传统 <code>for</code> 循环：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">i</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>; i &lt; numbers.length; i++) &#123;<br>    System.out.println(<span class="hljs-string">&quot;Element at index &quot;</span> + i + <span class="hljs-string">&quot;: &quot;</span> + numbers[i]);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>增强 <code>for</code> 循环 (For-Each Loop) - Java 5+：</strong><br>
+更简洁，用于只读访问或简单修改（对于引用类型，修改的是引用的副本，但可以通过副本修改对象状态）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">for</span> (String name : names) &#123;<br>    System.out.println(<span class="hljs-string">&quot;Name: &quot;</span> + name);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>注意：</strong> 增强 <code>for</code> 循环不能用于在遍历过程中修改基本类型数组的元素值（因为 <code>name</code> 是一个值的拷贝），也不能获取当前元素的索引。</p>
+</li>
+<li>
+<p><strong>Java 8+ Stream API：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">Arrays.stream(numbers).forEach(System.out::println);<br><span class="hljs-comment">// 或者</span><br>IntStream.of(numbers).forEach(num -&gt; System.out.println(<span class="hljs-string">&quot;Number: &quot;</span> + num));<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+<h4 id="4-数组的特性与注意事项"><strong>4. 数组的特性与注意事项</strong></h4>
+<ul>
+<li><strong>数组是对象：</strong> 在 Java 中，数组本身是对象。它们继承自 <code>java.lang.Object</code>，因此可以使用 <code>Object</code> 类的方法，如 <code>toString()</code> (默认输出不友好，类似 <code>[I@hashcode</code> for <code>int[]</code>)、<code>equals()</code> (默认比较引用)、<code>hashCode()</code> (默认基于引用)、<code>clone()</code> (浅拷贝)。</li>
+<li><strong><code>clone()</code> 方法：</strong>
+<ul>
+<li>数组的 <code>clone()</code> 方法执行的是<strong>浅拷贝 (shallow copy)</strong>。</li>
+<li>对于基本类型数组，浅拷贝会复制所有元素的值，得到一个新的数组，两个数组互不影响。</li>
+<li>对于引用类型数组，浅拷贝会复制所有元素的引用，得到一个新的数组，但新旧数组的元素指向的是<strong>同一批对象</strong>。修改新数组元素所指向对象的状态，会影响旧数组。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] originalInts = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;;<br><span class="hljs-type">int</span>[] clonedInts = originalInts.clone();<br>clonedInts[<span class="hljs-number">0</span>] = <span class="hljs-number">100</span>; <span class="hljs-comment">// originalInts[0] 仍然是 1</span><br><br>StringBuilder[] originalBuilders = &#123;<span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(<span class="hljs-string">&quot;A&quot;</span>), <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(<span class="hljs-string">&quot;B&quot;</span>)&#125;;<br>StringBuilder[] clonedBuilders = originalBuilders.clone();<br>clonedBuilders[<span class="hljs-number">0</span>].append(<span class="hljs-string">&quot;X&quot;</span>); <span class="hljs-comment">// originalBuilders[0] 的内容也变成了 &quot;AX&quot;</span><br>clonedBuilders[<span class="hljs-number">1</span>] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">StringBuilder</span>(<span class="hljs-string">&quot;C&quot;</span>); <span class="hljs-comment">// originalBuilders[1] 仍然指向 &quot;B&quot;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>多维数组 (Multidimensional Arrays)：</strong>
+<ul>
+<li>实质上是“数组的数组”。例如，二维数组 <code>int[][] matrix;</code> 是一个 <code>int[]</code> 类型的数组，它的每个元素又是一个 <code>int[]</code>。</li>
+<li>每一维的长度可以不同 (不规则数组或锯齿数组 jagged arrays)。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[][] matrix = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">3</span>][<span class="hljs-number">4</span>]; <span class="hljs-comment">// 3 行 4 列</span><br>matrix[<span class="hljs-number">0</span>][<span class="hljs-number">0</span>] = <span class="hljs-number">1</span>;<br><br><span class="hljs-type">int</span>[][] jaggedArray = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">3</span>][];<br>jaggedArray[<span class="hljs-number">0</span>] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">2</span>]; <span class="hljs-comment">// 第 0 行有 2 个元素</span><br>jaggedArray[<span class="hljs-number">1</span>] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">4</span>]; <span class="hljs-comment">// 第 1 行有 4 个元素</span><br>jaggedArray[<span class="hljs-number">2</span>] = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">3</span>]; <span class="hljs-comment">// 第 2 行有 3 个元素</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>数组与泛型：</strong>
+<ul>
+<li><strong>不能创建泛型类型的数组</strong> (如 <code>new T[10]</code>)，因为类型擦除。</li>
+<li>可以声明泛型数组引用 (如 <code>List&lt;String&gt;[] arrayOfLists;</code>)，但通常不推荐这样做，因为它可能导致类型安全问题和 <code>ArrayStoreException</code>。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// List&lt;String&gt;[] stringLists = new List&lt;String&gt;[1]; // 编译错误：generic array creation</span><br>List&lt;?&gt;[] listArray = <span class="hljs-keyword">new</span> <span class="hljs-title class_">List</span>&lt;?&gt;[<span class="hljs-number">1</span>]; <span class="hljs-comment">// 合法，但使用时要小心</span><br>Object[] objectArray = <span class="hljs-keyword">new</span> <span class="hljs-title class_">String</span>[<span class="hljs-number">1</span>]; <span class="hljs-comment">// 协变，但可能导致 ArrayStoreException</span><br><span class="hljs-comment">// objectArray[0] = Integer.valueOf(1); // 运行时 ArrayStoreException</span><br></code></pre></td></tr></table></figure>
+更安全的做法是使用 <code>List&lt;List&lt;String&gt;&gt;</code> 等集合的集合。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-java-util-Arrays-工具类"><strong>5. <code>java.util.Arrays</code> 工具类</strong></h4>
+<p><code>java.util.Arrays</code> 类提供了大量静态方法，用于方便地操作数组。这些方法经过了优化，通常比手动实现更高效、更可靠。</p>
+<ul>
+<li>
+<p><strong><code>sort(array)</code> / <code>sort(array, fromIndex, toIndex)</code>:</strong></p>
+<ul>
+<li>对数组进行排序（升序）。</li>
+<li>对于基本类型数组，使用优化的快速排序或归并排序变种 (JDK 7+ 对基本类型使用双轴快速排序，对象数组使用 TimSort - 一种混合稳定排序算法)。</li>
+<li>对于对象数组，对象需要实现 <code>Comparable</code> 接口，或者提供一个 <code>Comparator</code>。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] nums = &#123;<span class="hljs-number">5</span>, <span class="hljs-number">1</span>, <span class="hljs-number">9</span>, <span class="hljs-number">3</span>, <span class="hljs-number">7</span>&#125;;<br>Arrays.sort(nums); <span class="hljs-comment">// nums 变为 &#123;1, 3, 5, 7, 9&#125;</span><br><br>String[] words = &#123;<span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;cherry&quot;</span>&#125;;<br>Arrays.sort(words); <span class="hljs-comment">// words 变为 &#123;&quot;apple&quot;, &quot;banana&quot;, &quot;cherry&quot;&#125;</span><br>Arrays.sort(words, Comparator.reverseOrder()); <span class="hljs-comment">// words 变为 &#123;&quot;cherry&quot;, &quot;banana&quot;, &quot;apple&quot;&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>binarySearch(array, key)</code> / <code>binarySearch(array, fromIndex, toIndex, key)</code>:</strong></p>
+<ul>
+<li>在<strong>已排序</strong>的数组中进行二分查找。如果数组未排序，结果是未定义的。</li>
+<li>返回：
+<ul>
+<li>如果找到 <code>key</code>，返回其索引。</li>
+<li>如果未找到 <code>key</code>，返回 <code>(-(insertion point) - 1)</code>。插入点是指 <code>key</code> 如果存在于数组中，应该被插入的位置。这个负值可以用来确定插入位置。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] sortedNums = &#123;<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>&#125;;<br><span class="hljs-type">int</span> <span class="hljs-variable">index</span> <span class="hljs-operator">=</span> Arrays.binarySearch(sortedNums, <span class="hljs-number">30</span>); <span class="hljs-comment">// index = 2</span><br><span class="hljs-type">int</span> <span class="hljs-variable">notFoundIndex</span> <span class="hljs-operator">=</span> Arrays.binarySearch(sortedNums, <span class="hljs-number">35</span>); <span class="hljs-comment">// notFoundIndex = -4 (-(3)-1)</span><br>                                                        <span class="hljs-comment">// 意味着 35 应该插入到索引 3 的位置</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>equals(array1, array2)</code>:</strong></p>
+<ul>
+<li>比较两个数组的内容是否相等 (元素逐个比较)。</li>
+<li>如果数组元素是对象，则调用对象的 <code>equals()</code> 方法。</li>
+<li>对于多维数组，它只比较顶层数组的引用，要比较内容需用 <code>deepEquals()</code>。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] a1 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;;<br><span class="hljs-type">int</span>[] a2 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;;<br><span class="hljs-type">int</span>[] a3 = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">2</span>&#125;;<br>System.out.println(Arrays.equals(a1, a2)); <span class="hljs-comment">// true</span><br>System.out.println(Arrays.equals(a1, a3)); <span class="hljs-comment">// false</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>deepEquals(Object[] a1, Object[] a2)</code>:</strong></p>
+<ul>
+<li>深度比较两个数组的内容是否相等，适用于任意嵌套深度的数组。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">String[][] s1 = &#123;&#123;<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>&#125;, &#123;<span class="hljs-string">&quot;c&quot;</span>&#125;&#125;;<br>String[][] s2 = &#123;&#123;<span class="hljs-string">&quot;a&quot;</span>, <span class="hljs-string">&quot;b&quot;</span>&#125;, &#123;<span class="hljs-string">&quot;c&quot;</span>&#125;&#125;;<br>System.out.println(Arrays.deepEquals(s1, s2)); <span class="hljs-comment">// true</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>fill(array, value)</code> / <code>fill(array, fromIndex, toIndex, value)</code>:</strong></p>
+<ul>
+<li>用指定的值填充数组的所有或部分元素。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] arr = <span class="hljs-keyword">new</span> <span class="hljs-title class_">int</span>[<span class="hljs-number">5</span>];<br>Arrays.fill(arr, <span class="hljs-number">100</span>); <span class="hljs-comment">// arr 变为 &#123;100, 100, 100, 100, 100&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>copyOf(original, newLength)</code>:</strong></p>
+<ul>
+<li>复制指定的数组，截取或用默认值填充以达到指定的长度。返回一个新数组。</li>
+<li><strong>浅拷贝</strong>行为（对于引用类型）。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] source = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>&#125;;<br><span class="hljs-type">int</span>[] dest1 = Arrays.copyOf(source, <span class="hljs-number">3</span>);    <span class="hljs-comment">// dest1 = &#123;1, 2, 3&#125;</span><br><span class="hljs-type">int</span>[] dest2 = Arrays.copyOf(source, <span class="hljs-number">7</span>);    <span class="hljs-comment">// dest2 = &#123;1, 2, 3, 4, 5, 0, 0&#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>copyOfRange(original, from, to)</code>:</strong></p>
+<ul>
+<li>复制指定数组的指定范围到新数组。<code>from</code> 包含，<code>to</code> 不包含。</li>
+<li><strong>浅拷贝</strong>行为。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] rangeCopy = Arrays.copyOfRange(source, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>); <span class="hljs-comment">// rangeCopy = &#123;2, 3, 4&#125; (元素索引 1, 2, 3)</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>toString(array)</code>:</strong></p>
+<ul>
+<li>返回数组内容的字符串表示形式，比数组对象本身的 <code>toString()</code> 方法友好得多。</li>
+<li>例如：<code>[1, 2, 3]</code>。</li>
+<li>对于多维数组，只处理顶层，要深度打印用 <code>deepToString()</code>。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">System.out.println(Arrays.toString(nums)); <span class="hljs-comment">// 输出类似 &quot;[1, 3, 5, 7, 9]&quot;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>deepToString(Object[] a)</code>:</strong></p>
+<ul>
+<li>返回多维数组内容的字符串表示形式。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">String[][] matrixStr = &#123;&#123;<span class="hljs-string">&quot;x&quot;</span>, <span class="hljs-string">&quot;y&quot;</span>&#125;, &#123;<span class="hljs-string">&quot;z&quot;</span>&#125;&#125;;<br>System.out.println(Arrays.deepToString(matrixStr)); <span class="hljs-comment">// 输出类似 &quot;[[x, y], [z]]&quot;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>asList(T... a)</code>:</strong></p>
+<ul>
+<li>返回一个由指定数组支持的<strong>固定大小</strong>的 <code>List</code>。</li>
+<li><strong>重要：</strong> 这个返回的 <code>List</code> <strong>不是</strong> <code>java.util.ArrayList</code>，而是 <code>java.util.Arrays</code> 类中的一个私有静态内部类 <code>ArrayList</code>。</li>
+<li><strong>特性：</strong>
+<ul>
+<li>对返回的 <code>List</code> 的修改会反映到原始数组中，反之亦然。</li>
+<li><strong>不支持 <code>add()</code> 和 <code>remove()</code> 操作</strong> (会抛 <code>UnsupportedOperationException</code>)，因为底层数组大小是固定的。可以 <code>set()</code> 元素。</li>
+<li>如果原始数组是基本类型数组 (如 <code>int[]</code>)，直接调用 <code>Arrays.asList(intArray)</code> 会遇到问题，它会把整个 <code>int[]</code> 数组当作 <code>List</code> 的<strong>一个元素</strong>。需要使用包装类型数组或 Stream API 转换。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java">String[] fruits = &#123;<span class="hljs-string">&quot;apple&quot;</span>, <span class="hljs-string">&quot;banana&quot;</span>, <span class="hljs-string">&quot;cherry&quot;</span>&#125;;<br>List&lt;String&gt; fruitList = Arrays.asList(fruits);<br>System.out.println(fruitList); <span class="hljs-comment">// [apple, banana, cherry]</span><br><br>fruitList.set(<span class="hljs-number">0</span>, <span class="hljs-string">&quot;apricot&quot;</span>);<br>System.out.println(Arrays.toString(fruits)); <span class="hljs-comment">// [apricot, banana, cherry]</span><br><br><span class="hljs-comment">// fruitList.add(&quot;date&quot;); // 会抛 UnsupportedOperationException</span><br><br><span class="hljs-type">int</span>[] primitiveInts = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;;<br><span class="hljs-comment">// List&lt;int[]&gt; listContainingOneArray = Arrays.asList(primitiveInts); // List 的元素是 int[]</span><br><span class="hljs-comment">// System.out.println(listContainingOneArray.size()); // 1</span><br><span class="hljs-comment">// System.out.println(listContainingOneArray.get(0)[0]); // 1</span><br><br><span class="hljs-comment">// 正确转换基本类型数组为 List&lt;Integer&gt;:</span><br>List&lt;Integer&gt; intWrapperList = Arrays.stream(primitiveInts).boxed().collect(Collectors.toList());<br><span class="hljs-comment">// 或者手动创建</span><br><span class="hljs-comment">// List&lt;Integer&gt; intWrapperListManual = new ArrayList&lt;&gt;();</span><br><span class="hljs-comment">// for (int i : primitiveInts) &#123; intWrapperListManual.add(i); &#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>stream(array)</code> / <code>stream(array, startInclusive, endExclusive)</code> (Java 8+):</strong></p>
+<ul>
+<li>返回一个由数组元素组成的顺序流 (<code>Stream</code>, <code>IntStream</code>, <code>LongStream</code>, <code>DoubleStream</code>)。</li>
+<li>这是进行函数式编程操作数组的入口。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] scoresArray = &#123;<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>, <span class="hljs-number">40</span>, <span class="hljs-number">50</span>&#125;;<br><span class="hljs-type">int</span> <span class="hljs-variable">sum</span> <span class="hljs-operator">=</span> Arrays.stream(scoresArray).sum();<br><span class="hljs-type">double</span> <span class="hljs-variable">average</span> <span class="hljs-operator">=</span> Arrays.stream(scoresArray).average().orElse(<span class="hljs-number">0.0</span>);<br>List&lt;Integer&gt; evenScores = Arrays.stream(scoresArray)<br>                                 .filter(s -&gt; s % <span class="hljs-number">20</span> == <span class="hljs-number">0</span>)<br>                                 .boxed() <span class="hljs-comment">// IntStream -&gt; Stream&lt;Integer&gt;</span><br>                                 .collect(Collectors.toList());<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>setAll(array, generator)</code> / <code>parallelSetAll(array, generator)</code> (Java 8+):</strong></p>
+<ul>
+<li>使用一个生成器函数 (接受索引作为参数) 来计算数组的每个元素并赋值。<code>parallelSetAll</code> 会并行执行。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">double</span>[] values = <span class="hljs-keyword">new</span> <span class="hljs-title class_">double</span>[<span class="hljs-number">5</span>];<br>Arrays.setAll(values, i -&gt; i * <span class="hljs-number">1.5</span>); <span class="hljs-comment">// values = &#123;0.0, 1.5, 3.0, 4.5, 6.0&#125;</span><br><br><span class="hljs-type">long</span>[] factorials = <span class="hljs-keyword">new</span> <span class="hljs-title class_">long</span>[<span class="hljs-number">10</span>];<br>Arrays.parallelSetAll(factorials, i -&gt; &#123;<br>    <span class="hljs-keyword">if</span> (i == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-type">long</span> <span class="hljs-variable">fact</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">for</span> (<span class="hljs-type">int</span> <span class="hljs-variable">j</span> <span class="hljs-operator">=</span> <span class="hljs-number">1</span>; j &lt;= i; j++) fact *= j;<br>    <span class="hljs-keyword">return</span> fact;<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>parallelSort(array)</code> (Java 8+):</strong></p>
+<ul>
+<li>并行排序数组，对于大型数组可能比串行 <code>sort</code> 更快。内部使用 fork/join 框架。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>mismatch(array1, array2)</code> (Java 9+):</strong></p>
+<ul>
+<li>查找并返回两个数组之间第一个不匹配元素的索引。如果两个数组内容相同直到其中一个结束，则返回较短数组的长度。如果完全相同且长度一样，返回 -1。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">int</span>[] arrA = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>&#125;;<br><span class="hljs-type">int</span>[] arrB = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">5</span>, <span class="hljs-number">4</span>&#125;;<br><span class="hljs-type">int</span>[] arrC = &#123;<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>&#125;;<br><span class="hljs-type">int</span> <span class="hljs-variable">mismatchIndexAB</span> <span class="hljs-operator">=</span> Arrays.mismatch(arrA, arrB); <span class="hljs-comment">// 2 (3 vs 5)</span><br><span class="hljs-type">int</span> <span class="hljs-variable">mismatchIndexAC</span> <span class="hljs-operator">=</span> Arrays.mismatch(arrA, arrC); <span class="hljs-comment">// 3 (arrC 结束了)</span><br><span class="hljs-type">int</span> <span class="hljs-variable">mismatchIndexAA</span> <span class="hljs-operator">=</span> Arrays.mismatch(arrA, arrA); <span class="hljs-comment">// -1 (完全匹配)</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>总结与重要性：</strong></p>
+<ul>
+<li>数组是 Java 中最基本的数据结构，提供固定大小、同类型元素的存储。</li>
+<li>核心优势是 O(1) 的随机访问速度。</li>
+<li>主要劣势是固定大小，插入和删除操作效率低 (O(n))。</li>
+<li>理解基本类型数组和引用类型数组在内存中的区别，以及 <code>clone()</code> 的浅拷贝行为。</li>
+<li><code>java.util.Arrays</code> 工具类提供了大量实用方法，务必熟练掌握，它们能极大提高开发效率和代码质量。</li>
+<li><code>Arrays.asList()</code> 返回的特殊 <code>List</code> 需要特别注意其固定大小和与原数组联动的特性。</li>
+<li>Java 8+ 的 Stream API 和并行操作为数组处理带来了更现代和高效的方式。</li>
+</ul>
+<hr>
+<p>这些知识（泛型、<code>equals</code> / <code>hashCode</code>、排序接口、数组）是你深入学习 Java 集合框架 (JCF) 的坚实地基。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="category-chain-item">数据结构</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" class="category-chain-item">基础与核心概念</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数组 (Arrays)</div>
+      <div>http://example.com/2025/03/12/Java/基础/数据结构/基础与核心概念/数组 (Arrays)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月12日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/12/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/Object%20%E7%B1%BB%E7%9A%84%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95/" title="Object 类的核心方法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Object 类的核心方法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/12/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%9F%BA%E7%A1%80%E4%B8%8E%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/%E7%90%86%E8%A7%A3%E4%BD%BF%E7%94%A8%E9%9B%86%E5%90%88%E5%89%8D%E6%8F%90/" title="泛型-理解使用集合前提">
+                        <span class="hidden-mobile">泛型-理解使用集合前提</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
