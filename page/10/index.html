@@ -237,105 +237,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E8%8E%B7%E5%BE%97%E8%BF%9E%E6%8E%A5%E7%9A%84%E7%94%A8%E6%88%B7/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E8%8E%B7%E5%BE%97%E8%BF%9E%E6%8E%A5%E7%9A%84%E7%94%A8%E6%88%B7/" target="_self">
-        <div>
-          这是一个非常实际且常用的需求。当你的端点（Endpoint，通常指 Controller 中的一个处理方法）被 Spring Security 保护起来后，意味着在执行你的业务逻辑之前，用户已经成功通过了认证。这时，你自然希望能够获取到当前登录用户的信息。 Spring Security 提供了多种优雅的方式来获取已认证的用户信息。以下是最常用且推荐的方法，我会从最便捷到更底层的方式进行介绍： 1
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E7%9B%AE%E5%BD%95/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E7%9B%AE%E5%BD%95/" target="_self">
-        <div>
-          [[Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API]] [[JWT 注销]] [[Java/Spring/Spring Boot/Security/Refresh token|Refresh token]] [[Roles and Permissions]] [[Change password]] [[Spring Security
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E6%9C%AA%E5%91%BD%E5%90%8D%201/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E6%9C%AA%E5%91%BD%E5%90%8D%201/" target="_self">
-        <div>
-          DaoAuthenticationProvider.setUserDetailsService() 方法确实已被弃用。这里有几种替代方案： 1. 使用构造函数注入（推荐） 最直接的替代方案是使用 DaoAuthenticationProvider 的构造函数： 123456@Beanpublic DaoAuthenticationProvider authenticationProvider()
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Spring%20Security%20%E7%9A%84%20JPA%20Auditing/" target="_self">
           
         </a>
@@ -543,6 +444,105 @@
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Change%20password/" target="_self">
         <div>
           先掌握：[[Roles and Permissions]] 添加 UserController，我们在里面添加更改密码的端点，因此此端点不应处于 auth 之下，因为 AuthenticationController 或此 /api/v1/auth 是公共的。 然后我们需要一个更改密码请求类型的对象（ChangePasswordRequest），因此它将保存更改密码的信息。 使用 UserServ
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Lombok/@Builder/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Lombok/@Builder/" target="_self">
+        <div>
+          Lombok 中的 @Builder 注解（注意：并非 @Build）用于简化对象的构造过程，通过自动生成 Builder 模式代码，使得创建对象变得更直观和可读，尤其适用于构造参数较多或者部分参数为可选的场景。  为什么使用 @Builder？   提高可读性 当类中包含多个参数时，直接使用构造方法可能会让代码难以理解，容易发生参数顺序混乱的问题。使用 Builder 模式，可以通过链式调用明确
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Jackson/%E5%BF%BD%E7%95%A5%E5%AD%97%E6%AE%B5/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Jackson/%E5%BF%BD%E7%95%A5%E5%AD%97%E6%AE%B5/" target="_self">
+        <div>
+          你可以借助 Jackson 的注解，告诉序列化时跳过 password 和 tokens 这两个属性。有两种常用的做法：  1. 在 User 类上统一忽略 1234567891011@Entity@Table(name = &quot;_user&quot;)@JsonIgnoreProperties(&#123;&quot;password&quot;, &quot;tokens&quot;&
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Jackson/%E5%B8%B8%E7%94%A8%E4%B8%94%E6%A0%B8%E5%BF%83%E7%9A%84%E6%B3%A8%E8%A7%A3/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Jackson/%E5%B8%B8%E7%94%A8%E4%B8%94%E6%A0%B8%E5%BF%83%E7%9A%84%E6%B3%A8%E8%A7%A3/" target="_self">
+        <div>
+          继 @JsonProperty 之后，我们来系统地梳理一下 Jackson 中其他常用且核心的注解。这些注解共同构成了 Jackson 强大功能的基石，能帮你精细地控制 Java 对象与 JSON 之间的序列化和反序列化过程。 我会将它们大致分类，并用同样的方式进行讲解。  一、属性级别控制注解 (Property-Level Control) 这类注解通常用于控制单个 Java 属性如何被处理。
         </div>
       </a>
 
