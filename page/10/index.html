@@ -237,6 +237,72 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/4.%E5%9F%BA%E4%BA%8E%E8%A7%92%E8%89%B2%E7%9A%84%E6%8E%88%E6%9D%83/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/4.%E5%9F%BA%E4%BA%8E%E8%A7%92%E8%89%B2%E7%9A%84%E6%8E%88%E6%9D%83/" target="_self">
+        <div>
+          任何用户都可以访问 /hello 这个端点，所以我可以使用 user1 或 admin。 在你的应用程序中会有这样的场景，比如如果你正在构建一个复杂的生产创建应用程序，通常有一个功能，你想根据分配给用户的规则来控制对应用程序不同部分的访问。 例如，你可能只希望允许管理员删除任何数据或更新任何内容，而普通用户只能查看数据。 这通常是借助注解来实现的，以便于管理，而 Spring 使它变得非常简单。
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/3.%E5%86%85%E5%AD%98%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/3.%E5%86%85%E5%AD%98%E8%BA%AB%E4%BB%BD%E9%AA%8C%E8%AF%81/" target="_self">
+        <div>
+          现在一个用户可能不够用，您的安全要求会很复杂，比如将来您可能需要有规则，所以基本上基于分配给用户的不同角色，用户应该能够访问并在系统中执行不同的操作。而且可能有不同的用户需要跟踪。 但我们只有一个应编码的 user, 所以将取消基本身份验证。 我们将讨论一种称为 InMemory Authentication(内存身份验证).  看到我们将用户详细信息存储在数据库中，UserDetailsServ
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
         <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E5%9F%BA%E7%A1%80/2.Basic%20Auth%E5%92%8C%E7%BC%96%E5%86%99SecurityFilterChain/" target="_self">
           
         </a>
@@ -477,72 +543,6 @@
       <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/%E6%9C%AA%E5%91%BD%E5%90%8D%201/" target="_self">
         <div>
           DaoAuthenticationProvider.setUserDetailsService() 方法确实已被弃用。这里有几种替代方案： 1. 使用构造函数注入（推荐） 最直接的替代方案是使用 DaoAuthenticationProvider 的构造函数： 123456@Beanpublic DaoAuthenticationProvider authenticationProvider()
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Spring%20Security%20%E5%8F%98%E5%BE%97%E7%AE%80%E5%8D%95/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Spring%20Security%20%E5%8F%98%E5%BE%97%E7%AE%80%E5%8D%95/" target="_self">
-        <div>
-          什么是 Spring Security？– 目标和功能说明 Spring security 有两个主要目标，authentication(身份验证)和authorization(授权)。 身份验证是关于验证用户是谁。授权就是检查用户可以访问什么。它是一个强大的框架，可直接插入您的 Spring 应用程序并处理身份验证：您的身份、授权：您被允许做什么。 这不仅仅涉及登录页面。它还处理 Passwor
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Lombok/@Builder/" target="_self">
-          
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Lombok/@Builder/" target="_self">
-        <div>
-          Lombok 中的 @Builder 注解（注意：并非 @Build）用于简化对象的构造过程，通过自动生成 Builder 模式代码，使得创建对象变得更直观和可读，尤其适用于构造参数较多或者部分参数为可选的场景。  为什么使用 @Builder？   提高可读性 当类中包含多个参数时，直接使用构造方法可能会让代码难以理解，容易发生参数顺序混乱的问题。使用 Builder 模式，可以通过链式调用明确
         </div>
       </a>
 
