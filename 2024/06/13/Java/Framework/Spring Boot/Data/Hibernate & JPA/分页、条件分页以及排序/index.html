@@ -1,0 +1,1045 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="分页、条件分页以及排序是 Spring Data JPA 中非常常用且核心的功能。它们能帮助我们高效地处理大量数据，并以用户友好的方式展示。 我们来逐一分解，并结合最新的实践进行讲解。 1. 基本分页 (Paging) 当数据量很大时，一次性加载所有数据到内存中是不现实的，既浪费内存也可能导致性能问题。分页就是将数据分成固定大小的“页”进行加载。   核心接口&#x2F;类:  org.springfram">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关分页、条件分页以及排序">
+<meta property="og:url" content="http://example.com/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/%E5%88%86%E9%A1%B5%E3%80%81%E6%9D%A1%E4%BB%B6%E5%88%86%E9%A1%B5%E4%BB%A5%E5%8F%8A%E6%8E%92%E5%BA%8F/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="分页、条件分页以及排序是 Spring Data JPA 中非常常用且核心的功能。它们能帮助我们高效地处理大量数据，并以用户友好的方式展示。 我们来逐一分解，并结合最新的实践进行讲解。 1. 基本分页 (Paging) 当数据量很大时，一次性加载所有数据到内存中是不现实的，既浪费内存也可能导致性能问题。分页就是将数据分成固定大小的“页”进行加载。   核心接口&#x2F;类:  org.springfram">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/jpa.png">
+<meta property="article:published_time" content="2024-06-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-03T09:57:47.638Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="JPA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/jpa.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>关分页、条件分页以及排序 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="关分页、条件分页以及排序"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-13 00:00" pubdate>
+          2024年6月13日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          49 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">关分页、条件分页以及排序</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月3日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>分页、条件分页以及排序是 Spring Data JPA 中非常常用且核心的功能。它们能帮助我们高效地处理大量数据，并以用户友好的方式展示。</p>
+<p>我们来逐一分解，并结合最新的实践进行讲解。</p>
+<h3 id="1-基本分页-Paging"><strong>1. 基本分页 (Paging)</strong></h3>
+<p>当数据量很大时，一次性加载所有数据到内存中是不现实的，既浪费内存也可能导致性能问题。分页就是将数据分成固定大小的“页”进行加载。</p>
+<ul>
+<li>
+<p><strong>核心接口/类:</strong></p>
+<ul>
+<li><code>org.springframework.data.domain.Pageable</code>: 一个接口，代表了分页请求的信息（请求第几页，每页多少条数据，以及可选的排序信息）。</li>
+<li><code>org.springframework.data.domain.PageRequest</code>: <code>Pageable</code> 的常用实现类。通过静态工厂方法 <code>PageRequest.of(...)</code> 创建。</li>
+<li><code>org.springframework.data.domain.Page&lt;T&gt;</code>: 分页查询返回的结果。它不仅包含了当前页的数据列表，还包含了总记录数、总页数等元数据。</li>
+</ul>
+</li>
+<li>
+<p><strong>如何在 Repository 中使用:</strong><br>
+让你的 Repository 方法接受一个 <code>Pageable</code> 类型的参数。Spring Data JPA 会自动根据 <code>Pageable</code> 的信息来构建分页查询。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.data.domain.Page;<br><span class="hljs-keyword">import</span> org.springframework.data.domain.Pageable;<br><span class="hljs-keyword">import</span> org.springframework.data.jpa.repository.JpaRepository;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProductRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;Product, Long&gt; &#123;<br><br>    <span class="hljs-comment">// Spring Data JPA 会自动为 findAll 方法添加分页逻辑</span><br>    <span class="hljs-comment">// 无需额外注解，继承 JpaRepository 后，findAll(Pageable pageable) 方法就已具备</span><br>    <span class="hljs-comment">// Page&lt;Product&gt; findAll(Pageable pageable); // 这个方法已由 JpaRepository 提供</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>如何调用和获取结果:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.data.domain.Page;<br><span class="hljs-keyword">import</span> org.springframework.data.domain.PageRequest;<br><span class="hljs-keyword">import</span> org.springframework.data.domain.Pageable;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ProductService</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> ProductRepository productRepository;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ProductService</span><span class="hljs-params">(ProductRepository productRepository)</span> &#123;<br>        <span class="hljs-built_in">this</span>.productRepository = productRepository;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> Page&lt;Product&gt; <span class="hljs-title function_">findProductsPaginated</span><span class="hljs-params">(<span class="hljs-type">int</span> pageNumber, <span class="hljs-type">int</span> pageSize)</span> &#123;<br>        <span class="hljs-comment">// Pageable 的页码是 0-indexed</span><br>        <span class="hljs-type">Pageable</span> <span class="hljs-variable">pageable</span> <span class="hljs-operator">=</span> PageRequest.of(pageNumber, pageSize);<br>        <span class="hljs-keyword">return</span> productRepository.findAll(pageable);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">demonstratePaging</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 获取第0页（即第一页），每页5条数据</span><br>        Page&lt;Product&gt; productPage = findProductsPaginated(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>);<br><br>        System.out.println(<span class="hljs-string">&quot;当前页数据: &quot;</span> + productPage.getContent());<br>        System.out.println(<span class="hljs-string">&quot;总记录数: &quot;</span> + productPage.getTotalElements());<br>        System.out.println(<span class="hljs-string">&quot;总页数: &quot;</span> + productPage.getTotalPages());<br>        System.out.println(<span class="hljs-string">&quot;当前页码 (0-indexed): &quot;</span> + productPage.getNumber());<br>        System.out.println(<span class="hljs-string">&quot;每页大小: &quot;</span> + productPage.getSize());<br>        System.out.println(<span class="hljs-string">&quot;当前页记录数: &quot;</span> + productPage.getNumberOfElements());<br>        System.out.println(<span class="hljs-string">&quot;是否有下一页: &quot;</span> + productPage.hasNext());<br>        System.out.println(<span class="hljs-string">&quot;是否是第一页: &quot;</span> + productPage.isFirst());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="2-排序-Sorting"><strong>2. 排序 (Sorting)</strong></h3>
+<p>排序允许我们按照一个或多个字段的升序或降序来组织查询结果。</p>
+<ul>
+<li>
+<p><strong>核心接口/类:</strong></p>
+<ul>
+<li><code>org.springframework.data.domain.Sort</code>: 代表排序规则。可以通过 <code>Sort.by(...)</code> 静态方法创建。</li>
+</ul>
+</li>
+<li>
+<p><strong>如何在 Repository 中使用:</strong></p>
+<ul>
+<li><strong>独立排序:</strong> Repository 方法可以接受一个 <code>Sort</code> 类型的参数。</li>
+<li><strong>结合分页:</strong> <code>PageRequest.of(page, size, Sort sort)</code> 可以在创建 <code>Pageable</code> 对象时直接指定排序规则。</li>
+<li><strong>方法名约定排序:</strong> 在方法名中使用 <code>OrderBy</code> 关键字，后跟属性名和可选的 <code>Asc</code> (升序，默认) 或 <code>Desc</code> (降序)。</li>
+</ul>
+</li>
+<li>
+<p><strong>如何调用和获取结果:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.data.domain.Sort;<br><span class="hljs-keyword">import</span> org.springframework.stereotype.Service;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-comment">// (续 ProductService)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ProductService</span> &#123;<br>    <span class="hljs-comment">// ... (constructor)</span><br><br>    <span class="hljs-comment">// 1. 独立排序 (不分页)</span><br>    <span class="hljs-keyword">public</span> List&lt;Product&gt; <span class="hljs-title function_">findProductsSortedByNameDesc</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">Sort</span> <span class="hljs-variable">sort</span> <span class="hljs-operator">=</span> Sort.by(<span class="hljs-string">&quot;name&quot;</span>).descending(); <span class="hljs-comment">// 按 name 字段降序</span><br>        <span class="hljs-comment">// Sort sort = Sort.by(Sort.Direction.DESC, &quot;name&quot;); // 另一种写法</span><br>        <span class="hljs-keyword">return</span> productRepository.findAll(sort);<br>    &#125;<br><br>    <span class="hljs-comment">// 2. 结合分页的排序</span><br>    <span class="hljs-keyword">public</span> Page&lt;Product&gt; <span class="hljs-title function_">findProductsPaginatedAndSorted</span><span class="hljs-params">(<span class="hljs-type">int</span> pageNumber, <span class="hljs-type">int</span> pageSize, String sortByField, <span class="hljs-type">boolean</span> ascending)</span> &#123;<br>        <span class="hljs-type">Sort</span> <span class="hljs-variable">sort</span> <span class="hljs-operator">=</span> ascending ? Sort.by(sortByField).ascending() : Sort.by(sortByField).descending();<br>        <span class="hljs-type">Pageable</span> <span class="hljs-variable">pageable</span> <span class="hljs-operator">=</span> PageRequest.of(pageNumber, pageSize, sort);<br>        <span class="hljs-keyword">return</span> productRepository.findAll(pageable);<br>    &#125;<br><br>    <span class="hljs-comment">// 3. 多字段排序</span><br>    <span class="hljs-keyword">public</span> Page&lt;Product&gt; <span class="hljs-title function_">findProductsPaginatedAndMultiSorted</span><span class="hljs-params">(<span class="hljs-type">int</span> pageNumber, <span class="hljs-type">int</span> pageSize)</span> &#123;<br>        <span class="hljs-type">Sort</span> <span class="hljs-variable">sort</span> <span class="hljs-operator">=</span> Sort.by(<br>            Sort.Order.asc(<span class="hljs-string">&quot;category&quot;</span>), <span class="hljs-comment">// 先按 category 升序</span><br>            Sort.Order.desc(<span class="hljs-string">&quot;price&quot;</span>)    <span class="hljs-comment">// 再按 price 降序</span><br>        );<br>        <span class="hljs-type">Pageable</span> <span class="hljs-variable">pageable</span> <span class="hljs-operator">=</span> PageRequest.of(pageNumber, pageSize, sort);<br>        <span class="hljs-keyword">return</span> productRepository.findAll(pageable);<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">demonstrateSorting</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// 示例1: 获取按价格降序的第0页，每页5条</span><br>        Page&lt;Product&gt; sortedPage = findProductsPaginatedAndSorted(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>, <span class="hljs-string">&quot;price&quot;</span>, <span class="hljs-literal">false</span>);<br>        System.out.println(<span class="hljs-string">&quot;按价格降序分页: &quot;</span> + sortedPage.getContent());<br><br>        <span class="hljs-comment">// 示例2: 多字段排序</span><br>        Page&lt;Product&gt; multiSortedPage = findProductsPaginatedAndMultiSorted(<span class="hljs-number">0</span>, <span class="hljs-number">10</span>);<br>        System.out.println(<span class="hljs-string">&quot;按类别升序、价格降序分页: &quot;</span> + multiSortedPage.getContent());<br><br>        <span class="hljs-comment">// 访问 Page 对象中的 Sort 信息</span><br>        <span class="hljs-type">Sort</span> <span class="hljs-variable">sortInfo</span> <span class="hljs-operator">=</span> sortedPage.getSort();<br>        System.out.println(<span class="hljs-string">&quot;当前分页使用的排序: &quot;</span> + sortInfo);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在 Repository 中，也可以通过方法名约定进行排序：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProductRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;Product, Long&gt; &#123;<br>    <span class="hljs-comment">// 按价格降序查找所有产品 (不分页)</span><br>    List&lt;Product&gt; <span class="hljs-title function_">findAllByOrderByPriceDesc</span><span class="hljs-params">()</span>;<br><br>    <span class="hljs-comment">// 按类别升序，然后按名称降序 (不分页)</span><br>    List&lt;Product&gt; <span class="hljs-title function_">findAllByOrderByCategoryAscNameDesc</span><span class="hljs-params">()</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3-条件分页-Conditional-Paging"><strong>3. 条件分页 (Conditional Paging)</strong></h3>
+<p>这是最常见的场景：根据某些条件筛选数据，并对筛选结果进行分页和排序。</p>
+<p>有多种方式实现条件分页：</p>
+<ul>
+<li>
+<p><strong>A. 方法名派生查询 + 分页/排序:</strong><br>
+在 Repository 接口中定义遵循特定命名约定的方法，并添加 <code>Pageable</code> 或 <code>Sort</code> 参数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProductRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;Product, Long&gt; &#123;<br>    <span class="hljs-comment">// 根据类别查找产品，并进行分页排序</span><br>    Page&lt;Product&gt; <span class="hljs-title function_">findByCategory</span><span class="hljs-params">(String category, Pageable pageable)</span>;<br><br>    <span class="hljs-comment">// 根据价格大于指定值查找产品，并进行分页 (排序信息在 Pageable 中)</span><br>    Page&lt;Product&gt; <span class="hljs-title function_">findByPriceGreaterThan</span><span class="hljs-params">(<span class="hljs-type">double</span> price, Pageable pageable)</span>;<br><br>    <span class="hljs-comment">// 方法名中直接包含排序规则 (仍然可以传入 Pageable 进行分页)</span><br>    <span class="hljs-comment">// Spring Data JPA 会优先使用 Pageable 中的 Sort，如果 Pageable 中没有 Sort，则使用方法名中的</span><br>    Page&lt;Product&gt; <span class="hljs-title function_">findByCategoryOrderByPriceAsc</span><span class="hljs-params">(String category, Pageable pageable)</span>;<br>&#125;<br><br><span class="hljs-comment">// 在 Service 中调用:</span><br><span class="hljs-keyword">public</span> Page&lt;Product&gt; <span class="hljs-title function_">findProductsByCategoryPaginated</span><span class="hljs-params">(String category, <span class="hljs-type">int</span> page, <span class="hljs-type">int</span> size)</span> &#123;<br>    <span class="hljs-type">Pageable</span> <span class="hljs-variable">pageable</span> <span class="hljs-operator">=</span> PageRequest.of(page, size, Sort.by(<span class="hljs-string">&quot;name&quot;</span>).ascending());<br>    <span class="hljs-keyword">return</span> productRepository.findByCategory(category, pageable);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>B. <code>@Query</code> 注解 + 分页/排序:</strong><br>
+对于更复杂的查询，可以使用 <code>@Query</code> 注解编写 JPQL 或原生 SQL。Spring Data JPA 能够智能地将 <code>Pageable</code> 和 <code>Sort</code> 信息应用到你的查询中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProductRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;Product, Long&gt; &#123;<br><br>    <span class="hljs-comment">// JPQL 查询 (推荐)</span><br>    <span class="hljs-meta">@Query(&quot;SELECT p FROM Product p WHERE p.name LIKE %:keyword% AND p.isActive = :isActive&quot;)</span><br>    Page&lt;Product&gt; <span class="hljs-title function_">searchProducts</span><span class="hljs-params">(</span><br><span class="hljs-params">        <span class="hljs-meta">@Param(&quot;keyword&quot;)</span> String keyword,</span><br><span class="hljs-params">        <span class="hljs-meta">@Param(&quot;isActive&quot;)</span> <span class="hljs-type">boolean</span> isActive,</span><br><span class="hljs-params">        Pageable pageable // Spring Data JPA 会自动附加排序和分页逻辑</span><br><span class="hljs-params">    )</span>;<br><br>    <span class="hljs-comment">// 如果你的 JPQL 包含 JOIN FETCH 且需要正确计数，或者计数逻辑与主查询不同，</span><br>    <span class="hljs-comment">// 可以提供一个自定义的 countQuery。</span><br>    <span class="hljs-meta">@Query(value = &quot;SELECT p FROM Product p JOIN FETCH p.details d WHERE p.category = :category&quot;,</span><br><span class="hljs-meta">           countQuery = &quot;SELECT count(p) FROM Product p WHERE p.category = :category&quot;)</span><br>    Page&lt;Product&gt; <span class="hljs-title function_">findByCategoryWithDetails</span><span class="hljs-params">(</span><br><span class="hljs-params">        <span class="hljs-meta">@Param(&quot;category&quot;)</span> String category,</span><br><span class="hljs-params">        Pageable pageable</span><br><span class="hljs-params">    )</span>;<br><br>    <span class="hljs-comment">// 原生 SQL 查询 (分页排序需要数据库方言支持，或自己处理占位符)</span><br>    <span class="hljs-comment">// Spring Data JPA 会尝试将分页和排序参数应用到原生 SQL，但这依赖于底层 Hibernate 如何处理。</span><br>    <span class="hljs-comment">// 对于原生 SQL，`countQuery` 通常是必需的，且需要自己写。</span><br>    <span class="hljs-meta">@Query(value = &quot;SELECT * FROM products p WHERE p.name LIKE %:keyword% AND p.stock_quantity &gt; :minStock&quot;,</span><br><span class="hljs-meta">           countQuery = &quot;SELECT count(*) FROM products p WHERE p.name LIKE %:keyword% AND p.stock_quantity &gt; :minStock&quot;,</span><br><span class="hljs-meta">           nativeQuery = true)</span><br>    Page&lt;Product&gt; <span class="hljs-title function_">searchProductsNative</span><span class="hljs-params">(</span><br><span class="hljs-params">        <span class="hljs-meta">@Param(&quot;keyword&quot;)</span> String keyword,</span><br><span class="hljs-params">        <span class="hljs-meta">@Param(&quot;minStock&quot;)</span> <span class="hljs-type">int</span> minStock,</span><br><span class="hljs-params">        Pageable pageable</span><br><span class="hljs-params">    )</span>;<br>&#125;<br><br><span class="hljs-comment">// 在 Service 中调用:</span><br><span class="hljs-keyword">public</span> Page&lt;Product&gt; <span class="hljs-title function_">searchActiveProducts</span><span class="hljs-params">(String keyword, <span class="hljs-type">int</span> page, <span class="hljs-type">int</span> size)</span> &#123;<br>    <span class="hljs-type">Sort</span> <span class="hljs-variable">sort</span> <span class="hljs-operator">=</span> Sort.by(<span class="hljs-string">&quot;price&quot;</span>).descending();<br>    <span class="hljs-type">Pageable</span> <span class="hljs-variable">pageable</span> <span class="hljs-operator">=</span> PageRequest.of(page, size, sort);<br>    <span class="hljs-keyword">return</span> productRepository.searchProducts(keyword, <span class="hljs-literal">true</span>, pageable);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>关于 <code>countQuery</code> 的重要性:</strong><br>
+当你使用 <code>@Query</code> 进行分页时，Spring Data JPA 需要执行两次查询：一次是获取分页数据本身，另一次是获取总记录数（用于计算 <code>totalPages</code> 等）。</p>
+<ul>
+<li>对于简单的查询，Spring Data JPA 可以尝试自动生成 <code>count</code> 查询。</li>
+<li>但对于复杂的查询（尤其是包含 <code>JOIN FETCH</code>、<code>GROUP BY</code> 或复杂子查询时），自动生成的 <code>count</code> 查询可能不正确或效率低下。此时，<strong>强烈建议</strong>通过 <code>countQuery</code> 属性提供一个显式的、优化的 <code>count</code> 查询。</li>
+<li><code>countProjection</code> 是一个替代方案，它允许你指定一个用于计数的投影（例如 <code>count(p.id)</code>），有时比完整的 <code>countQuery</code> 更简洁。</li>
+</ul>
+</li>
+<li>
+<p><strong>C. Specifications (JPA Criteria API) + 分页/排序:</strong><br>
+对于动态构建查询条件（例如，基于用户在 UI 上选择的多个可选筛选条件），Specifications 是非常强大和灵活的方式。<br>
+首先，Repository 需要继承 <code>JpaSpecificationExecutor&lt;T&gt;</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.data.jpa.domain.Specification;<br><span class="hljs-keyword">import</span> org.springframework.data.jpa.repository.JpaSpecificationExecutor;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProductRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;Product, Long&gt;, JpaSpecificationExecutor&lt;Product&gt; &#123;<br>    <span class="hljs-comment">// JpaSpecificationExecutor 提供了 findAll(Specification&lt;T&gt; spec, Pageable pageable) 等方法</span><br>&#125;<br><br><span class="hljs-comment">// 在 Service 中构建 Specification 并调用:</span><br><span class="hljs-keyword">import</span> org.springframework.data.jpa.domain.Specification;<br><span class="hljs-keyword">import</span> jakarta.persistence.criteria.Predicate; <span class="hljs-comment">// 注意是 jakarta.persistence.criteria</span><br><span class="hljs-keyword">import</span> java.util.ArrayList;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-comment">// (续 ProductService)</span><br><span class="hljs-keyword">public</span> Page&lt;Product&gt; <span class="hljs-title function_">findProductsByCriteria</span><span class="hljs-params">(</span><br><span class="hljs-params">        String nameKeyword, String category, Double minPrice, <span class="hljs-type">int</span> page, <span class="hljs-type">int</span> size)</span> &#123;<br><br>    Specification&lt;Product&gt; spec = (root, query, criteriaBuilder) -&gt; &#123;<br>        List&lt;Predicate&gt; predicates = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br><br>        <span class="hljs-keyword">if</span> (nameKeyword != <span class="hljs-literal">null</span> &amp;&amp; !nameKeyword.isEmpty()) &#123;<br>            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(root.get(<span class="hljs-string">&quot;name&quot;</span>)), <span class="hljs-string">&quot;%&quot;</span> + nameKeyword.toLowerCase() + <span class="hljs-string">&quot;%&quot;</span>));<br>        &#125;<br>        <span class="hljs-keyword">if</span> (category != <span class="hljs-literal">null</span> &amp;&amp; !category.isEmpty()) &#123;<br>            predicates.add(criteriaBuilder.equal(root.get(<span class="hljs-string">&quot;category&quot;</span>), category));<br>        &#125;<br>        <span class="hljs-keyword">if</span> (minPrice != <span class="hljs-literal">null</span>) &#123;<br>            predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(<span class="hljs-string">&quot;price&quot;</span>), minPrice));<br>        &#125;<br>        <span class="hljs-comment">// 重要：确保为 count 查询也正确应用了 WHERE 条件</span><br>        <span class="hljs-comment">// 这通常是自动处理的，但如果遇到 GROUP BY 等复杂情况，需要注意</span><br>        <span class="hljs-comment">// 对于 Specification，Spring Data JPA 通常能正确处理 count 查询</span><br>        <span class="hljs-keyword">return</span> criteriaBuilder.and(predicates.toArray(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Predicate</span>[<span class="hljs-number">0</span>]));<br>    &#125;;<br><br>    <span class="hljs-type">Sort</span> <span class="hljs-variable">sort</span> <span class="hljs-operator">=</span> Sort.by(<span class="hljs-string">&quot;price&quot;</span>).ascending();<br>    <span class="hljs-type">Pageable</span> <span class="hljs-variable">pageable</span> <span class="hljs-operator">=</span> PageRequest.of(page, size, sort);<br><br>    <span class="hljs-keyword">return</span> productRepository.findAll(spec, pageable);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong><code>Page&lt;T&gt;</code> 对象详解:</strong></p>
+<p><code>Page&lt;T&gt;</code> 对象是分页查询的核心返回类型，它包含了丰富的信息：</p>
+<ul>
+<li><code>List&lt;T&gt; getContent()</code>: 获取当前页的实体列表。</li>
+<li><code>long getTotalElements()</code>: 获取满足查询条件的总记录数。</li>
+<li><code>int getTotalPages()</code>: 获取总页数。</li>
+<li><code>int getNumber()</code>: 获取当前页的页码 (0-indexed)。</li>
+<li><code>int getSize()</code>: 获取请求的每页大小。</li>
+<li><code>int getNumberOfElements()</code>: 获取当前页实际返回的记录数 (可能小于 <code>getSize()</code>，尤其是在最后一页)。</li>
+<li><code>boolean hasContent()</code>: 当前页是否有数据。</li>
+<li><code>boolean hasNext()</code>: 是否有下一页。</li>
+<li><code>boolean hasPrevious()</code>: 是否有上一页。</li>
+<li><code>boolean isFirst()</code>: 是否是第一页。</li>
+<li><code>boolean isLast()</code>: 是否是最后一页。</li>
+<li><code>Sort getSort()</code>: 获取用于此分页查询的排序信息。</li>
+<li><code>Pageable nextPageable()</code>: 获取下一页的 <code>Pageable</code> 对象 (如果存在下一页)。</li>
+<li><code>Pageable previousPageable()</code>: 获取上一页的 <code>Pageable</code> 对象 (如果存在上一页)。</li>
+<li><code> &lt;U&gt; Page&lt;U&gt; map(Function&lt;? super T, ? extends U&gt; converter)</code>: 可以将当前 <code>Page&lt;T&gt;</code> 转换为 <code>Page&lt;U&gt;</code>，例如将实体 <code>Page</code> 转换为 DTO <code>Page</code>。</li>
+</ul>
+<p><strong>最佳实践与注意事项:</strong></p>
+<ol>
+<li><strong>页码 0-indexed:</strong> 记住 <code>Pageable</code> 中的页码是从0开始的。如果你的API接收的是1-indexed的页码，需要在调用 <code>PageRequest.of</code> 之前进行转换 (<code>pageNumber - 1</code>)。</li>
+<li><strong><code>countQuery</code> 的优化:</strong> 对于使用 <code>@Query</code> 的复杂查询，务必考虑并测试 <code>countQuery</code>。一个低效的 <code>countQuery</code> 会严重影响分页性能。</li>
+<li><strong>避免深度分页性能问题:</strong> 当分页很深时（例如，请求第10000页，每页10条），数据库使用 <code>OFFSET</code> 进行分页的性能会下降。因为数据库仍然需要扫描 <code>OFFSET + LIMIT</code> 条记录，然后丢弃 <code>OFFSET</code> 部分。对于此类场景，可以考虑：
+<ul>
+<li><strong>Keyset Pagination (Seek Method):</strong> 基于上一页最后一条记录的唯一（且有序）键值来查询下一页，避免使用 <code>OFFSET</code>。例如 <code>WHERE (creation_date, id) &gt; (last_creation_date, last_id) ORDER BY creation_date, id LIMIT N</code>。Spring Data JPA 本身不直接内置支持，但可以通过自定义查询或结合其他库实现。</li>
+<li>限制用户可以访问的最大页数。</li>
+</ul>
+</li>
+<li><strong>排序字段的索引:</strong> 确保经常用于排序的字段在数据库中有索引，以提高排序性能。</li>
+<li><strong>合理选择分页大小:</strong> 根据业务场景和前端展示需求选择合适的分页大小。太小会导致过多的请求，太大则单次加载数据量大。</li>
+<li><strong><code>findAll()</code> 的滥用:</strong> 避免在可能返回大量数据的情况下直接调用无参的 <code>findAll()</code>，这可能导致内存溢出。始终优先考虑分页。</li>
+</ol>
+<p>通过这些机制，Spring Data JPA 为我们提供了非常强大且易用的分页和排序功能，能够优雅地处理各种数据查询场景。</p>
+<p>直接在代码中硬编码属性名（字符串）进行排序确实存在一些弊端：</p>
+<ol>
+<li><strong>易出错 (Typo Susceptible):</strong> 手动输入属性名很容易发生拼写错误，这种错误在编译时无法发现，只有在运行时才会暴露。</li>
+<li><strong>重构不友好 (Refactoring Unfriendly):</strong> 如果实体类的属性名发生变更（例如，<code>userName</code> 改为 <code>username</code>），所有硬编码了该属性名的地方都需要手动修改，容易遗漏，导致运行时错误。</li>
+<li><strong>缺乏类型安全 (Lack of Type Safety):</strong> 编译器无法验证你传入的属性名是否真的存在于实体类中。</li>
+</ol>
+<p>为了解决这些问题，我们可以采用更安全、更健壮的方式来指定排序属性。以下是几种推荐的方法，结合了最新实践和考虑：</p>
+<p><strong>1. 使用静态元模型 (JPA Static Metamodel) - 最推荐，类型安全</strong></p>
+<p>JPA 2.0 引入了静态元模型的概念。它允许你在编译时为你的实体类生成一个对应的元模型类，这个元模型类包含了实体属性的静态引用。这样，你就可以通过这些静态引用来安全地获取属性名，而不是使用字符串。</p>
+<ul>
+<li>
+<p><strong>如何启用和使用:</strong></p>
+<p>a.  <strong>添加依赖 (Maven 为例):</strong><br>
+你需要一个JPA元模型生成器。Hibernate 提供了 <code>hibernate-jpamodelgen</code>。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.hibernate.orm<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>hibernate-jpamodelgen<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>	<span class="hljs-comment">&lt;!-- 使用与你的Hibernate版本兼容的版本 --&gt;</span><br>	<span class="hljs-comment">&lt;!-- 对于Spring Boot 3.x (通常使用Hibernate 6.x), 版本可能是 6.x.x.Final --&gt;</span><br>	<span class="hljs-comment">&lt;!-- &lt;version&gt;6.2.7.Final&lt;/version&gt; --&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>provided<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span> <span class="hljs-comment">&lt;!-- 通常设为 provided 或 optional，因为它只在编译时需要 --&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<pre><code class="hljs">或者，如果你使用 `spring-boot-starter-data-jpa`，它可能已经包含了兼容的Hibernate版本，可以查找对应的 `hibernate-jpamodelgen` 版本。
+**重要:** 确保 `hibernate-jpamodelgen` 的版本与你项目中实际使用的Hibernate版本兼容。
+</code></pre>
+<p>b.  <strong>配置构建工具 (Maven 为例):</strong><br>
+你需要配置你的构建工具（如 Maven 或 Gradle）在编译期间运行注解处理器来生成元模型类。</p>
+<pre><code class="hljs">对于Maven，在 `pom.xml` 的 `build &gt; plugins` 部分添加或配置 `maven-compiler-plugin`:
+</code></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">plugin</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.apache.maven.plugins<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>maven-compiler-plugin<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>3.11.0<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <span class="hljs-comment">&lt;!-- Use a recent version --&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">source</span>&gt;</span>17<span class="hljs-tag">&lt;/<span class="hljs-name">source</span>&gt;</span> <span class="hljs-comment">&lt;!-- Or your Java version --&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">target</span>&gt;</span>17<span class="hljs-tag">&lt;/<span class="hljs-name">target</span>&gt;</span> <span class="hljs-comment">&lt;!-- Or your Java version --&gt;</span><br>		<span class="hljs-tag">&lt;<span class="hljs-name">annotationProcessorPaths</span>&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">path</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.hibernate.orm<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>hibernate-jpamodelgen<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;hibernate.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span> <span class="hljs-comment">&lt;!-- 确保版本正确 --&gt;</span><br>			<span class="hljs-tag">&lt;/<span class="hljs-name">path</span>&gt;</span><br>			<span class="hljs-comment">&lt;!-- 如果使用Lombok，也需要添加Lombok的注解处理器 --&gt;</span><br>			<span class="hljs-tag">&lt;<span class="hljs-name">path</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>				<span class="hljs-tag">&lt;<span class="hljs-name">version</span>&gt;</span>$&#123;lombok.version&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">version</span>&gt;</span><br>			<span class="hljs-tag">&lt;/<span class="hljs-name">path</span>&gt;</span><br>		<span class="hljs-tag">&lt;/<span class="hljs-name">annotationProcessorPaths</span>&gt;</span><br>	<span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">plugin</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<pre><code class="hljs">**注意：**
+*   `$&#123;hibernate.version&#125;` 应替换为与你项目中 `spring-boot-starter-data-jpa` 引入的 Hibernate 版本兼容的 `hibernate-jpamodelgen` 版本。你可以通过 `mvn dependency:tree` 查看。
+*   如果你同时使用 Lombok，确保 Lombok 的注解处理器也在 `annotationProcessorPaths` 中，并且 Lombok 的版本与 `hibernate-jpamodelgen` 兼容（有时需要调整顺序或使用特定的Lombok配置）。
+</code></pre>
+<p>c.  <strong>生成元模型类:</strong><br>
+执行构建命令（如 <code>mvn clean compile</code> 或 <code>mvn clean install</code>）。这会在 <code>target/generated-sources/annotations</code> 目录下为你的每个 <code>@Entity</code> 类生成一个对应的元模型类，通常命名为 <code>实体类名_</code> (例如，<code>Product</code> 实体会生成 <code>Product_</code> 类)。</p>
+<p>d.  <strong>在代码中使用:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.data.domain.Sort;<br><span class="hljs-comment">// 假设你的实体类是 com.example.model.Product</span><br><span class="hljs-comment">// 那么元模型类就是 com.example.model.Product_ (注意下划线)</span><br><span class="hljs-keyword">import</span> com.example.model.Product_; <span class="hljs-comment">// 导入生成的元模型类</span><br><br><span class="hljs-comment">// ... in your service or wherever you build Sort objects</span><br><span class="hljs-keyword">public</span> Sort <span class="hljs-title function_">getProductSortSafe</span><span class="hljs-params">()</span> &#123;<br>	<span class="hljs-comment">// 使用元模型属性，而不是字符串 &quot;name&quot;</span><br>	<span class="hljs-keyword">return</span> Sort.by(Product_.NAME).ascending();<br>	<span class="hljs-comment">// Sort.by(Product_.PRICE).descending();</span><br>	<span class="hljs-comment">// Sort.by(Product_.CATEGORY, Product_.NAME).ascending(); // 多字段排序</span><br>&#125;<br><br><span class="hljs-keyword">public</span> Page&lt;Product&gt; <span class="hljs-title function_">findProductsPaginatedAndSortedSafely</span><span class="hljs-params">(<span class="hljs-type">int</span> pageNumber, <span class="hljs-type">int</span> pageSize)</span> &#123;<br>	<span class="hljs-type">Sort</span> <span class="hljs-variable">sort</span> <span class="hljs-operator">=</span> Sort.by(Sort.Direction.DESC, Product_.price.getName()); <span class="hljs-comment">// 获取属性名字符串</span><br>	<span class="hljs-comment">// 或者直接使用元模型属性 (如果Spring Data JPA底层支持)</span><br>	<span class="hljs-comment">// Sort sort = Sort.by(Sort.Order.desc(Product_.PRICE.getName()));</span><br>	<span class="hljs-comment">// 对于Spring Data JPA Sort.by(String... properties) 它期望的是属性名的字符串</span><br>	<span class="hljs-comment">// 因此，通常是 Product_.&lt;ATTRIBUTE_NAME&gt;.getName() 来获取字符串形式的属性名</span><br>	<span class="hljs-comment">// 或者直接用 Product_.&lt;ATTRIBUTE_NAME&gt; （它是一个 SingularAttribute 或 PluralAttribute）</span><br><br>	<span class="hljs-type">Pageable</span> <span class="hljs-variable">pageable</span> <span class="hljs-operator">=</span> PageRequest.of(pageNumber, pageSize, sort);<br>	<span class="hljs-keyword">return</span> productRepository.findAll(pageable);<br>&#125;<br></code></pre></td></tr></table></figure>
+<pre><code class="hljs">更简洁的写法，`Sort.by()`可以直接接受`SingularAttribute`（通常元模型字段就是这个类型）：
+</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.data.domain.Sort;<br><span class="hljs-keyword">import</span> com.example.model.Product_;<br><br><span class="hljs-keyword">public</span> Sort <span class="hljs-title function_">getProductSortEvenSafer</span><span class="hljs-params">()</span> &#123;<br>	<span class="hljs-comment">// 直接使用元模型属性常量，Spring Data JPA的Sort.Order和Sort.by通常能处理</span><br>	<span class="hljs-comment">// 这依赖于Sort.by的重载方法是否接受更底层的JPA元模型类型，</span><br>	<span class="hljs-comment">// 但更常见和直接的是通过元模型获取属性名字符串。</span><br><br>	<span class="hljs-comment">// 最常见和确保兼容的方式是获取属性名字符串:</span><br>	<span class="hljs-keyword">return</span> Sort.by(Product_.NAME.getName()).ascending(); <span class="hljs-comment">// Product_.NAME 是 SingularAttribute&lt;Product, String&gt;</span><br>													  <span class="hljs-comment">// .getName() 返回 &quot;name&quot;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<pre><code class="hljs">在Specification中使用时，元模型也非常有用：
+</code></pre>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java">Specification&lt;Product&gt; spec = (root, query, cb) -&gt;<br>	cb.like(root.get(Product_.name), <span class="hljs-string">&quot;%&quot;</span> + keyword + <span class="hljs-string">&quot;%&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>优点:</strong></p>
+<ul>
+<li><strong>类型安全:</strong> 编译时检查属性名是否存在。</li>
+<li><strong>重构友好:</strong> 如果实体属性名改变，元模型类会自动更新（重新编译后）。IDE 的重构工具也能很好地处理对元模型属性的引用。</li>
+<li><strong>IDE 自动补全:</strong> IDE 可以为你自动补全元模型属性名。</li>
+</ul>
+</li>
+<li>
+<p><strong>缺点:</strong></p>
+<ul>
+<li>需要额外的构建配置和编译步骤。</li>
+<li>生成的代码会增加项目体积（虽然通常不大）。</li>
+</ul>
+</li>
+</ul>
+<p><strong>2. 使用常量类 (Constants Class) - 手动维护，简单场景</strong></p>
+<p>如果你不想引入元模型生成器，或者项目非常小，可以手动创建一个常量类来存放属性名。</p>
+<ul>
+<li>
+<p><strong>如何实现:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 在你的实体包或一个共享的常量包中</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ProductFields</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-title function_">ProductFields</span><span class="hljs-params">()</span> &#123;&#125; <span class="hljs-comment">// 防止实例化</span><br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">ID</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;id&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">NAME</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;name&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">PRICE</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;price&quot;</span>;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">String</span> <span class="hljs-variable">CATEGORY</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;category&quot;</span>;<br>    <span class="hljs-comment">// ... 其他属性</span><br>&#125;<br><br><span class="hljs-comment">// 在代码中使用:</span><br><span class="hljs-keyword">import</span> org.springframework.data.domain.Sort;<br><br><span class="hljs-keyword">public</span> Sort <span class="hljs-title function_">getProductSortWithConstants</span><span class="hljs-params">()</span> &#123;<br>    <span class="hljs-keyword">return</span> Sort.by(ProductFields.NAME).ascending();<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>优点:</strong></p>
+<ul>
+<li>简单，不需要额外配置。</li>
+<li>比直接硬编码字符串略好，因为至少将字符串集中管理了。</li>
+</ul>
+</li>
+<li>
+<p><strong>缺点:</strong></p>
+<ul>
+<li><strong>手动维护:</strong> 当实体属性名改变时，你需要手动更新这个常量类，否则依然会出错。</li>
+<li><strong>非类型安全:</strong> 编译器无法验证常量值是否真的对应实体属性。</li>
+<li><strong>重构不完全友好:</strong> 如果实体属性名改变，常量类中的字符串不会自动更新。</li>
+</ul>
+</li>
+</ul>
+<p><strong>3. 使用 Lambdas 和方法引用 (结合特定库或手写工具) - 更高级，但类型安全</strong></p>
+<p>这种方法更现代，可以实现编译时类型安全，并且非常具有表现力。不过，Spring Data JPA 的 <code>Sort.by()</code> API 本身不直接支持基于 Lambda 的属性名提取。你需要一些辅助手段。</p>
+<ul>
+<li>
+<p><strong>思路:</strong><br>
+创建一个工具方法，它接受一个函数式接口（如 <code>Function&lt;T, ?&gt;</code>），该函数式接口通过方法引用指向实体的getter方法。然后，通过某种方式（例如JavaBeans的 <code>Introspector</code> 或字节码分析库）从该方法引用解析出属性名。</p>
+</li>
+<li>
+<p><strong>示例 (简化版，实际解析属性名可能更复杂):</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.beans.Introspector;<br><span class="hljs-keyword">import</span> java.beans.PropertyDescriptor;<br><span class="hljs-keyword">import</span> java.io.Serializable;<br><span class="hljs-keyword">import</span> java.util.function.Function;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PropertyNameUtil</span> &#123;<br><br>    <span class="hljs-comment">// SerializableFunction 接口，使其可以序列化，某些库可能需要</span><br>    <span class="hljs-meta">@FunctionalInterface</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">SerializableFunction</span>&lt;T, R&gt; <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Function</span>&lt;T, R&gt;, Serializable &#123;&#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> &lt;T, R&gt; String <span class="hljs-title function_">getPropertyName</span><span class="hljs-params">(SerializableFunction&lt;T, R&gt; getter)</span> &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-comment">// 这是一个简化的示例，实际的实现可能需要更健壮的反射或字节码分析</span><br>            <span class="hljs-comment">// 例如，使用 LambdaMetafactory 或其他库来更可靠地解析</span><br>            <span class="hljs-comment">// 这里我们用一个简化的方式，假设 getter 是一个标准的 JavaBean getter</span><br>            <span class="hljs-comment">// 这种方法不总是100%可靠，特别是对于复杂的lambda表达式</span><br><br>            <span class="hljs-comment">// 一个更可靠（但更复杂）的方法是分析lambda本身，</span><br>            <span class="hljs-comment">// 例如通过序列化lambda并检查其`writeReplace`方法，</span><br>            <span class="hljs-comment">// 或者使用像 jOOR, TypeTools, PropertyUtils (Apache Commons BeanUtils) 这样的库</span><br><br>            <span class="hljs-comment">// 简化示例（非常不推荐用于生产，仅作演示思路）：</span><br>            <span class="hljs-comment">// 假设我们有一个方法来“模拟”方法调用并捕获属性名，但这很难通用。</span><br>            <span class="hljs-comment">// 或者，更常见的是与 Querydsl 或 jOOQ 等库集成，它们有自己的方式处理类型安全的属性。</span><br><br>            <span class="hljs-comment">// 对于纯 Java，更实际的做法是使用 Introspector (但它依赖于严格的 JavaBean 命名约定)</span><br>            <span class="hljs-comment">// 并且它不能直接从 Function&lt;T,R&gt; 中获取，除非这个 Function 是由特定方式构造的。</span><br><br>            <span class="hljs-comment">// 下面是一个基于“约定”的简单思路，假设 getter 是 `getXXX`</span><br>            <span class="hljs-comment">// 这非常脆弱，不推荐！！！</span><br>            <span class="hljs-comment">// String methodName = &quot;somehow_get_method_name_from_lambda&quot;;</span><br>            <span class="hljs-comment">// if (methodName.startsWith(&quot;get&quot;) &amp;&amp; methodName.length() &gt; 3) &#123;</span><br>            <span class="hljs-comment">//     return Introspector.decapitalize(methodName.substring(3));</span><br>            <span class="hljs-comment">// &#125;</span><br>            <span class="hljs-comment">// if (methodName.startsWith(&quot;is&quot;) &amp;&amp; methodName.length() &gt; 2) &#123;</span><br>            <span class="hljs-comment">//     return Introspector.decapitalize(methodName.substring(2));</span><br>            <span class="hljs-comment">// &#125;</span><br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Could not determine property name from getter: &quot;</span> + getter);<br><br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RuntimeException</span>(<span class="hljs-string">&quot;Failed to get property name&quot;</span>, e);<br>        &#125;<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 使用 (假设 PropertyNameUtil.getPropertyName 能正确工作):</span><br><span class="hljs-comment">// Sort.by(PropertyNameUtil.getPropertyName(Product::getName)).ascending();</span><br></code></pre></td></tr></table></figure>
+<p><strong>注意:</strong> 直接从 Lambda 表达式中可靠地提取属性名是一个非平凡的任务，通常需要依赖特定的库或更底层的机制。例如，Querydsl 就通过代码生成和其流畅 API 实现了这一点。</p>
+<p><strong>Spring Data Commons <code>PropertyPath</code>:</strong><br>
+Spring Data Commons 内部有一个 <code>PropertyPath</code> 类，它可以解析点分隔的属性路径字符串。虽然它不是直接用于 Lambda 的，但它展示了 Spring 内部处理属性路径的机制。</p>
+</li>
+<li>
+<p><strong>优点 (如果能完美实现):</strong></p>
+<ul>
+<li><strong>极佳的类型安全和重构支持:</strong> 因为你直接引用了方法。</li>
+<li><strong>代码可读性好。</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>缺点:</strong></p>
+<ul>
+<li>标准 Java 中没有直接的、简单可靠的方法从 Lambda 中获取属性名。</li>
+<li>通常需要依赖第三方库（如 Querydsl）或编写复杂的工具类。</li>
+</ul>
+</li>
+</ul>
+<p><strong>4. 使用 Querydsl (推荐用于复杂动态查询和类型安全)</strong></p>
+<p>Querydsl 是一个强大的类型安全的查询框架，它通过代码生成器为你的实体创建 Q-类型类，这些 Q-类型类允许你以完全类型安全的方式构建查询，包括排序。</p>
+<ul>
+<li>
+<p><strong>如何使用 (简要):</strong></p>
+<p>a.  添加 Querydsl 依赖并配置代码生成。<br>
+b.  在 Repository 中集成 Querydsl (例如，让 Repository 继承 <code>QuerydslPredicateExecutor&lt;T&gt;</code>)。<br>
+c.  使用生成的 Q-类型类来构建查询和排序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 假设生成了 QProduct.java</span><br><span class="hljs-keyword">import</span> com.example.model.QProduct; <span class="hljs-comment">// 导入生成的Q-Type</span><br><span class="hljs-keyword">import</span> org.springframework.data.querydsl.binding.QuerydslBindingsFactory;<br><span class="hljs-comment">// ...</span><br><br><span class="hljs-comment">// 在Service中</span><br><span class="hljs-type">QProduct</span> <span class="hljs-variable">product</span> <span class="hljs-operator">=</span> QProduct.product; <span class="hljs-comment">// 获取Q-Type实例</span><br><br><span class="hljs-comment">// 使用Querydsl的OrderSpecifier进行排序</span><br><span class="hljs-keyword">import</span> com.querydsl.core.types.OrderSpecifier;<br><br>OrderSpecifier&lt;?&gt; orderByNameAsc = product.name.asc();<br>OrderSpecifier&lt;?&gt; orderByPriceDesc = product.price.desc();<br><br><span class="hljs-comment">// 当与Spring Data JPA的Pageable结合时，通常还是会转换为Sort对象</span><br><span class="hljs-comment">// 或者在使用Querydsl的查询API时直接使用OrderSpecifier</span><br><span class="hljs-comment">// 例如，使用 `JPAQueryFactory`:</span><br><span class="hljs-comment">// List&lt;Product&gt; products = queryFactory</span><br><span class="hljs-comment">//     .selectFrom(product)</span><br><span class="hljs-comment">//     .where(product.category.eq(&quot;Electronics&quot;))</span><br><span class="hljs-comment">//     .orderBy(product.price.desc(), product.name.asc())</span><br><span class="hljs-comment">//     .offset(pageable.getOffset())</span><br><span class="hljs-comment">//     .limit(pageable.getPageSize())</span><br><span class="hljs-comment">//     .fetch();</span><br><br><span class="hljs-comment">// 如果想转换为 Spring Data Sort 对象：</span><br><span class="hljs-comment">// Sort sort = Sort.by(Sort.Order.asc(product.name.getMetadata().getName()),</span><br><span class="hljs-comment">//                    Sort.Order.desc(product.price.getMetadata().getName()));</span><br><span class="hljs-comment">// Pageable pageable = PageRequest.of(0, 10, sort);</span><br><span class="hljs-comment">// productRepository.findAll(predicate, pageable); // predicate是Querydsl的Predicate</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>优点:</strong></p>
+<ul>
+<li><strong>极致的类型安全和重构支持。</strong></li>
+<li>非常适合构建复杂的动态查询。</li>
+<li>流畅的 API。</li>
+</ul>
+</li>
+<li>
+<p><strong>缺点:</strong></p>
+<ul>
+<li>学习曲线。</li>
+<li>需要额外的依赖和代码生成步骤。</li>
+</ul>
+</li>
+</ul>
+<p><strong>总结与推荐:</strong></p>
+<ul>
+<li>
+<p><strong>首选：JPA Static Metamodel (<code>Product_.NAME</code>)</strong></p>
+<ul>
+<li>提供了最好的平衡：类型安全、良好的IDE支持、与Spring Data JPA的 <code>Sort</code> API 兼容性好（通过 <code>.getName()</code> 获取字符串或某些 <code>Sort.by</code> 重载可能直接接受元模型属性）。</li>
+<li>是 JPA 标准的一部分，得到了广泛支持。</li>
+</ul>
+</li>
+<li>
+<p><strong>次选 (用于复杂动态查询)：Querydsl</strong></p>
+<ul>
+<li>如果你的应用需要大量复杂和动态的查询，Querydsl 提供了无与伦比的类型安全和表达能力。排序只是其众多功能之一。</li>
+</ul>
+</li>
+<li>
+<p><strong>再次选 (简单项目或不想引入生成器)：常量类 (<code>ProductFields.NAME</code>)</strong></p>
+<ul>
+<li>一种折衷方案，比硬编码字符串好，但需要手动维护。</li>
+</ul>
+</li>
+<li>
+<p><strong>避免：直接硬编码字符串 (<code>&quot;name&quot;</code>)</strong></p>
+<ul>
+<li>除非项目极小且不打算维护，否则应避免。</li>
+</ul>
+</li>
+<li>
+<p><strong>谨慎考虑：Lambda + 反射/工具类</strong></p>
+<ul>
+<li>虽然概念上吸引人，但实现一个健壮通用的解决方案比较复杂，不如使用现成的元模型或 Querydsl。</li>
+</ul>
+</li>
+</ul>
+<p>因此，对于大多数标准的 Spring Data JPA 应用，<strong>强烈推荐使用 JPA Static Metamodel</strong> 来指定排序属性，以获得类型安全和更好的可维护性。只需要一点初始配置，就能带来长期的好处。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/" class="category-chain-item">Data</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/" class="category-chain-item">JPA</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JPA/" class="print-no-link">#JPA</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>关分页、条件分页以及排序</div>
+      <div>http://example.com/2024/06/13/Java/Framework/Spring Boot/Data/Hibernate &amp; JPA/分页、条件分页以及排序/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%E5%92%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2/" title="关系映射和多表查询">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">关系映射和多表查询</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%AE%9E%E4%BD%93%E7%B1%BB%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%88%86%E7%B1%BB%E5%92%8C%E8%A7%A3%E6%9E%90/" title="实体类中常用的注解">
+                        <span class="hidden-mobile">实体类中常用的注解</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

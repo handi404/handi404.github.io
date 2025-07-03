@@ -1,0 +1,878 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="你有没有想过： 在 spring boot 中编写一个类实现一个接口，将此类注册为一个 Bean 并由 Spring IoC 容器管理。那么为什么在其它类注入时，都是注入接口而不是实现类。注入的是接口，那么又是如何找到此实现类，使用此实现类的实现方法？以及若是一个类实现多个接口、多个类实现一个接口的情况又如何？ 其实这涉及到Spring和现代软件设计中最基础且强大的概念之一：依赖注入（DI）和面向">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring 依赖注入的道与术——从接口注入到多实现管理">
+<meta property="og:url" content="http://example.com/2025/06/13/Java/Framework/Spring%20Boot/Spring%20%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E7%9A%84%E9%81%93%E4%B8%8E%E6%9C%AF%E2%80%94%E2%80%94%E4%BB%8E%E6%8E%A5%E5%8F%A3%E6%B3%A8%E5%85%A5%E5%88%B0%E5%A4%9A%E5%AE%9E%E7%8E%B0%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="你有没有想过： 在 spring boot 中编写一个类实现一个接口，将此类注册为一个 Bean 并由 Spring IoC 容器管理。那么为什么在其它类注入时，都是注入接口而不是实现类。注入的是接口，那么又是如何找到此实现类，使用此实现类的实现方法？以及若是一个类实现多个接口、多个类实现一个接口的情况又如何？ 其实这涉及到Spring和现代软件设计中最基础且强大的概念之一：依赖注入（DI）和面向">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/spring.png">
+<meta property="article:published_time" content="2025-06-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-03T10:17:57.666Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="spring boot">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/spring.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Spring 依赖注入的道与术——从接口注入到多实现管理 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Spring 依赖注入的道与术——从接口注入到多实现管理"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-13 00:00" pubdate>
+          2025年6月13日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Spring 依赖注入的道与术——从接口注入到多实现管理</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月3日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>你有没有想过：<br>
+在 spring boot 中编写一个类实现一个接口，将此类注册为一个 Bean 并由 Spring IoC 容器管理。那么为什么在其它类注入时，都是注入接口而不是实现类。注入的是接口，那么又是如何找到此实现类，使用此实现类的实现方法？以及若是一个类实现多个接口、多个类实现一个接口的情况又如何？</p>
+<p>其实这涉及到Spring和现代软件设计中最基础且强大的概念之一：<strong>依赖注入（DI）和面向接口编程</strong>。</p>
+<p>让我们一步步分解这个过程，从“为什么”到“如何”，包括你提到的复杂场景。</p>
+<hr>
+<h3 id="Part-1-The-“Why”-为什么要注入接口，而不是实现类？">Part 1: The “Why” -为什么要注入接口，而不是实现类？</h3>
+<p>这不仅仅是 Spring 的规定，更是面向对象设计中“高内聚，低耦合”思想的黄金实践。</p>
+<p>想象一下这个场景：你的手机（客户端代码）需要充电。</p>
+<ul>
+<li><strong>注入实现类（坏设计）</strong>：你设计了一个手机，它只有一个特定品牌的充电器插口，比如“华为专用快充口”。现在，你的手机只能用华为的充电器。如果想用小米的、苹果的，或者想在车上用车载充电器，怎么办？办不到，手机和充电器“紧密耦合”在了一起。这就是注入实现类。</li>
+<li><strong>注入接口（好设计）</strong>：你设计的手机有一个标准的 <strong>USB-C 接口</strong>。这个接口就是一个<strong>规范（Interface）</strong>。它不关心你插入的是华为充电器、小米充电器，还是一个能充电的笔记本电脑。只要对方符合 USB-C 的规范，就能为手机充电。手机和充电器之间通过一个标准“解耦”了。这就是注入接口。</li>
+</ul>
+<p><strong>总结一下，注入接口有三大核心优势：</strong></p>
+<ol>
+<li><strong>解耦合 (Decoupling)</strong>：这是最重要的原因。你的业务代码（比如 <code>OrderService</code>）依赖于一个<strong>契约（Interface）</strong>，而不是一个具体的<strong>实现（Implementation）</strong>。这意味着你可以随时更换接口的实现类，而完全不需要修改 <code>OrderService</code> 的代码。</li>
+<li><strong>易于测试 (Testability)</strong>：当你在为 <code>OrderService</code> 编写单元测试时，你不需要一个真实的、可能需要连接数据库或发送短信的 <code>SmsServiceImpl</code>。你可以轻松地创建一个“模拟”的实现（Mock Object），这个模拟对象也实现了 <code>NotificationService</code> 接口，但它的 <code>send</code> 方法可能只是简单地打印一句话。这样你的测试就变得非常快速和独立。</li>
+<li><strong>提升灵活性和扩展性 (Flexibility &amp; Scalability)</strong>：今天我们用短信通知，明天可能要改成邮件通知，后天可能要根据用户偏好同时支持短信、邮件和 App 推送。只要这些实现类都遵循 <code>NotificationService</code> 接口，上层调用代码就无需任何改动，系统扩展性极强。</li>
+</ol>
+<hr>
+<h3 id="Part-2-The-“How”-Spring-如何找到正确的实现类？">Part 2: The “How” - Spring 如何找到正确的实现类？</h3>
+<p>这是 Spring IoC (Inversion of Control) 容器的核心工作。过程非常清晰：</p>
+<ol>
+<li>
+<p><strong>启动扫描与注册</strong>：Spring Boot 启动时，会扫描你指定的包（通常是主类所在的包及其子包）。它会寻找所有被 <code>@Component</code>、<code>@Service</code>、<code>@Repository</code> 等注解标记的类。</p>
+</li>
+<li>
+<p><strong>创建 Bean 定义</strong>：当 Spring 找到你的实现类，比如 <code>SmsServiceImpl</code>，它不会立刻创建实例。它会先创建一个叫做 <code>BeanDefinition</code> 的对象。可以把它想象成一个“Bean 的身份证”，上面记录了所有元数据：</p>
+<ul>
+<li>Bean 的名字 (e.g., “smsServiceImpl”)</li>
+<li>Bean 的完整类名 (<code>com.example.SmsServiceImpl</code>)</li>
+<li>Bean 的作用域 (Singleton, Prototype, etc.)</li>
+<li><strong>最关键的：它实现了哪些接口 (<code>com.example.NotificationService</code>)</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>依赖注入</strong>：当另一个类，比如 <code>OrderService</code>，通过构造函数请求一个 <code>NotificationService</code> 类型的 Bean 时：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderService</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> NotificationService notificationService;<br><br>    <span class="hljs-comment">// 推荐使用构造函数注入</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">OrderService</span><span class="hljs-params">(NotificationService notificationService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.notificationService = notificationService;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">placeOrder</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-comment">// ... 处理订单逻辑</span><br>        <span class="hljs-built_in">this</span>.notificationService.send(<span class="hljs-string">&quot;12345&quot;</span>, <span class="hljs-string">&quot;您的订单已下单成功！&quot;</span>);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>在容器中查找匹配项</strong>：Spring IoC 容器接收到这个“注入请求”。它会问自己：“谁能满足 <code>NotificationService</code> 这个接口的要求？”</p>
+<ul>
+<li>容器会遍历所有的 <code>BeanDefinition</code>。</li>
+<li>它发现 <code>SmsServiceImpl</code> 的 <code>BeanDefinition</code> 上记录着“我实现了 <code>NotificationService</code> 接口”。</li>
+<li><strong>如果只有一个实现类</strong>，那么答案是唯一的。Spring 就会实例化 <code>SmsServiceImpl</code>（如果是单例且首次使用），然后将这个实例的引用注入到 <code>OrderService</code> 的构造函数参数中。</li>
+</ul>
+</li>
+</ol>
+<p><strong>整个过程就像一个智能的管理员。你告诉他你需要一个“会通知功能的人”（接口），他就会去员工花名册（IoC 容器）里找，如果只有一个员工（实现类）有这个技能，就把他派给你。</strong></p>
+<hr>
+<h3 id="Part-3-The-Edge-Cases-复杂情况如何处理？">Part 3: The Edge Cases - 复杂情况如何处理？</h3>
+<p>现在我们来处理你提到的更复杂的场景，这也是面试和实际工作中经常遇到的。</p>
+<h4 id="场景一：多个类实现同一个接口">场景一：多个类实现同一个接口</h4>
+<p>这是最常见的情况。比如，我们同时有短信和邮件通知。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 接口</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">NotificationService</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">send</span><span class="hljs-params">(String target, String message)</span>;<br>&#125;<br><br><span class="hljs-comment">// 实现1: 短信</span><br><span class="hljs-meta">@Service(&quot;smsNotification&quot;)</span> <span class="hljs-comment">// 给Bean起一个明确的名字</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SmsServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">NotificationService</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">send</span><span class="hljs-params">(String target, String message)</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;发送短信到 &quot;</span> + target + <span class="hljs-string">&quot;: &quot;</span> + message);<br>    &#125;<br>&#125;<br><br><span class="hljs-comment">// 实现2: 邮件</span><br><span class="hljs-meta">@Service(&quot;emailNotification&quot;)</span> <span class="hljs-comment">// 给Bean起另一个明确的名字</span><br><span class="hljs-meta">@Primary</span> <span class="hljs-comment">// &lt;---- 方案2：标记为首选</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">EmailServiceImpl</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">NotificationService</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">send</span><span class="hljs-params">(String target, String message)</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;发送邮件到 &quot;</span> + target + <span class="hljs-string">&quot;: &quot;</span> + message);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>当你尝试注入时，Spring 发现有两个 <code>NotificationService</code> 的实现，它就“懵了”，不知道该用哪个，于是会抛出 <code>NoUniqueBeanDefinitionException</code> 异常。</p>
+<p><strong>解决方案有三种（常用）：</strong></p>
+<ol>
+<li>
+<p><strong><code>@Qualifier</code>：精确制导</strong><br>
+在注入点使用 <code>@Qualifier</code> 注解，通过名字来指定你想要哪一个实现。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderService</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> NotificationService notificationService;<br><br>    <span class="hljs-comment">// 我明确需要短信服务</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">OrderService</span><span class="hljs-params">(<span class="hljs-meta">@Qualifier(&quot;smsNotification&quot;)</span> NotificationService notificationService)</span> &#123;<br>        <span class="hljs-built_in">this</span>.notificationService = notificationService;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>@Primary</code>：指定默认</strong><br>
+在一个实现类上标注 <code>@Primary</code>。当出现多个候选者时，被 <code>@Primary</code> 标注的那个将成为“首选”或“默认”选项。如上面的 <code>EmailServiceImpl</code> 所示。如果此时 <code>OrderService</code> 不使用 <code>@Qualifier</code>，它将自动注入 <code>EmailServiceImpl</code>。</p>
+</li>
+<li>
+<p><strong>注入所有实现：一网打尽</strong><br>
+有时你需要调用所有的实现（比如一个事件需要通知所有渠道）。你可以直接注入一个 <code>List</code> 或 <code>Map</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">BroadcastService</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;NotificationService&gt; allServices;<br>    <span class="hljs-comment">// Spring会自动将所有NotificationService的实现注入这个List</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BroadcastService</span><span class="hljs-params">(List&lt;NotificationService&gt; allServices)</span> &#123;<br>        <span class="hljs-built_in">this</span>.allServices = allServices;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">broadcast</span><span class="hljs-params">(String message)</span> &#123;<br>        <span class="hljs-keyword">for</span> (NotificationService service : allServices) &#123;<br>            service.send(<span class="hljs-string">&quot;all_users&quot;</span>, message); <span class="hljs-comment">// 调用每一个实现</span><br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="场景二：一个类实现多个接口">场景二：一个类实现多个接口</h4>
+<p>这种情况对 Spring 来说毫无压力，反而更能体现接口隔离的好处。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 接口1: 数据读取</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">DataReader</span> &#123;<br>    String <span class="hljs-title function_">read</span><span class="hljs-params">()</span>;<br>&#125;<br><br><span class="hljs-comment">// 接口2: 数据写入</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">DataWriter</span> &#123;<br>    <span class="hljs-keyword">void</span> <span class="hljs-title function_">write</span><span class="hljs-params">(String data)</span>;<br>&#125;<br><br><span class="hljs-comment">// 一个类同时实现两个接口</span><br><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">FileDataHandler</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">DataReader</span>, DataWriter &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">read</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;从文件中读取数据&quot;</span>;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">write</span><span class="hljs-params">(String data)</span> &#123;<br>        System.out.println(<span class="hljs-string">&quot;向文件写入数据: &quot;</span> + data);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>现在，<code>FileDataHandler</code> 这一个 Bean 实例可以满足三种不同的注入需求：</p>
+<ol>
+<li>
+<p><strong>需要读取功能</strong>的类，可以只注入 <code>DataReader</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ReportGenerator</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DataReader reader; <span class="hljs-comment">// 只关心读</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">ReportGenerator</span><span class="hljs-params">(DataReader reader)</span> &#123; <span class="hljs-built_in">this</span>.reader = reader; &#125;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>需要写入功能</strong>的类，可以只注入 <code>DataWriter</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataBackupTask</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> DataWriter writer; <span class="hljs-comment">// 只关心写</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">DataBackupTask</span><span class="hljs-params">(DataWriter writer)</span> &#123; <span class="hljs-built_in">this</span>.writer = writer; &#125;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>需要完整功能</strong>的类，可以注入具体的实现类 <code>FileDataHandler</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Component</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DataMigrationService</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> FileDataHandler handler; <span class="hljs-comment">// 需要全部功能</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">DataMigrationService</span><span class="hljs-params">(FileDataHandler handler)</span> &#123; <span class="hljs-built_in">this</span>.handler = handler; &#125;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>在上述所有情况中，Spring 容器中都<strong>只有一个 <code>FileDataHandler</code> 的单例 Bean</strong>。当 <code>ReportGenerator</code> 请求 <code>DataReader</code> 时，Spring 发现 <code>FileDataHandler</code> 实现了这个接口，就把这个 Bean 实例注入进去。当 <code>DataBackupTask</code> 请求 <code>DataWriter</code> 时，也一样。这极大地提高了代码的复用性和职责清晰度。</p>
+<h3 id="总结">总结</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">场景</th>
+<th style="text-align:left">提问</th>
+<th style="text-align:left">核心答案</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Why</strong></td>
+<td style="text-align:left">为什么注入接口？</td>
+<td style="text-align:left"><strong>为了解耦</strong>。让代码依赖于稳定的“标准”（接口），而不是易变的“实现”，从而提高代码的灵活性、可测试性和可扩展性。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>How</strong></td>
+<td style="text-align:left">Spring 如何找到实现？</td>
+<td style="text-align:left">Spring IoC 容器在启动时扫描并<strong>注册所有 Bean 的“元数据”</strong>，包括它们实现的接口。注入时，<strong>按类型（接口）查找</strong>，如果只有一个匹配项，就自动注入。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>What if</strong></td>
+<td style="text-align:left">多个类实现一个接口？</td>
+<td style="text-align:left">会产生歧义。使用 <strong><code>@Qualifier(&quot;beanName&quot;)</code></strong> 精确指定，或用 <strong><code>@Primary</code></strong> 标记一个默认实现，或者直接<strong>注入一个 <code>List&lt;Interface&gt;</code></strong> 来获取所有实现。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>What if</strong></td>
+<td style="text-align:left">一个类实现多个接口？</td>
+<td style="text-align:left">完全没问题。这一个 Bean 实例可以被注入到任何需要它所实现的接口的地方。这是接口隔离原则的体现。</td>
+</tr>
+</tbody>
+</table>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/spring-boot/" class="print-no-link">#spring boot</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Spring 依赖注入的道与术——从接口注入到多实现管理</div>
+      <div>http://example.com/2025/06/13/Java/Framework/Spring Boot/Spring 依赖注入的道与术——从接口注入到多实现管理/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/14/Java/Framework/Spring%20Boot/Security/Keycloak%20OAuth%202/Spring%20Boot%203%20Keycloak%20OAuth%202/" title="Spring Boot 3 Keycloak OAuth 2">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Spring Boot 3 Keycloak OAuth 2</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/24/Java/Java%20%E7%BC%96%E8%AF%91%E4%B8%8E%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83/JVM%20%E5%8E%9F%E7%90%86/" title="JVM 原理">
+                        <span class="hidden-mobile">JVM 原理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

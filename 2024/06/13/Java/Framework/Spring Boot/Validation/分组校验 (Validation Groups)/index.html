@@ -1,0 +1,895 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Spring Boot 中的分组校验 (Validation Groups)。 当同一个 JavaBean (或 DTO) 在不同的业务场景下需要应用不同的校验规则时，分组校验就派上用场了。例如：  创建用户 (Create User): 用户名、密码、邮箱都必须提供且符合格式。 更新用户信息 (Update User Info): 用户名可能不允许修改，邮箱可以修改但必须符合格式，密码字段可能完">
+<meta property="og:type" content="article">
+<meta property="og:title" content="分组校验 (Validation Groups)">
+<meta property="og:url" content="http://example.com/2024/06/13/Java/Framework/Spring%20Boot/Validation/%E5%88%86%E7%BB%84%E6%A0%A1%E9%AA%8C%20(Validation%20Groups)/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Spring Boot 中的分组校验 (Validation Groups)。 当同一个 JavaBean (或 DTO) 在不同的业务场景下需要应用不同的校验规则时，分组校验就派上用场了。例如：  创建用户 (Create User): 用户名、密码、邮箱都必须提供且符合格式。 更新用户信息 (Update User Info): 用户名可能不允许修改，邮箱可以修改但必须符合格式，密码字段可能完">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/spring.png">
+<meta property="article:published_time" content="2024-06-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-03T10:20:35.673Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="Validation">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/spring.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>分组校验 (Validation Groups) - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="分组校验 (Validation Groups)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-13 00:00" pubdate>
+          2024年6月13日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          24 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">分组校验 (Validation Groups)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月3日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Spring Boot 中的<strong>分组校验 (Validation Groups)</strong>。</p>
+<p>当同一个 JavaBean (或 DTO) 在不同的业务场景下需要应用不同的校验规则时，分组校验就派上用场了。例如：</p>
+<ul>
+<li><strong>创建用户 (Create User)</strong>: 用户名、密码、邮箱都必须提供且符合格式。</li>
+<li><strong>更新用户信息 (Update User Info)</strong>: 用户名可能不允许修改，邮箱可以修改但必须符合格式，密码字段可能完全不出现 (表示不修改密码)。</li>
+<li><strong>用户登录 (User Login)</strong>: 只需要用户名和密码。</li>
+</ul>
+<p>如果不对校验规则进行分组，你可能需要为每个场景创建不同的 DTO 类，或者在代码中用 <code>if-else</code> 判断来手动选择校验哪些字段，这会使代码变得复杂和难以维护。分组校验提供了一种更优雅、更声明式的方式来解决这个问题。</p>
+<hr>
+<h3 id="如何实现分组校验">如何实现分组校验</h3>
+<p>实现分组校验主要涉及以下步骤：</p>
+<ol>
+<li>
+<p><strong>定义分组接口 (Marker Interfaces)</strong>：<br>
+创建一些空的接口，用作校验分组的标记。这些接口本身没有任何方法或字段，它们仅仅作为一种类型标识。</p>
+</li>
+<li>
+<p><strong>在校验注解中指定分组 (Apply Groups to Constraints)</strong>：<br>
+在你的 JavaBean 的校验注解 (如 <code>@NotNull</code>, <code>@Size</code>, <code>@Email</code>，以及自定义注解) 上，使用 <code>groups</code> 属性来指定该校验规则属于哪个或哪些分组。</p>
+</li>
+<li>
+<p><strong>在触发校验时指定要激活的分组 (Specify Active Groups During Validation)</strong>：<br>
+当执行校验操作时 (例如在 Controller 中或服务层方法中)，通过 Spring 的 <code>@Validated</code> 注解来指定当前场景下应该激活哪些校验分组。</p>
+</li>
+</ol>
+<hr>
+<h3 id="1-定义分组接口">1. 定义分组接口</h3>
+<p>这些接口通常定义在一个集中的地方，例如 <code>com.example.validation.groups</code> 包下。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.validation.groups;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 标记接口，用于创建操作的分组校验</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">OnCreate</span> &#123;&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 标记接口，用于更新操作的分组校验</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">OnUpdate</span> &#123;&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 标记接口，用于登录操作的分组校验</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">OnLogin</span> &#123;&#125;<br><br><span class="hljs-comment">// 你还可以定义一个默认分组，虽然 Default 分组是隐式的</span><br><span class="hljs-comment">// import jakarta.validation.groups.Default; // Spring Boot 3.x</span><br><span class="hljs-comment">// import javax.validation.groups.Default; // Spring Boot 2.x</span><br><span class="hljs-comment">// public interface Default extends jakarta.validation.groups.Default &#123;&#125;</span><br><span class="hljs-comment">// (通常不需要显式声明 Default 接口，除非你想在继承或组合时更明确)</span><br></code></pre></td></tr></table></figure>
+<p><strong><code>jakarta.validation.groups.Default</code> (或 <code>javax.validation.groups.Default</code>)</strong>：<br>
+这是一个特殊的内置分组。如果校验注解没有显式指定 <code>groups</code> 属性，那么它默认属于 <code>Default</code> 分组。</p>
+<hr>
+<h3 id="2-在校验注解中指定分组">2. 在校验注解中指定分组</h3>
+<p>在你的 JavaBean (DTO 或 Entity) 的字段上应用校验注解时，通过 <code>groups</code> 属性指定它们适用的分组。</p>
+<p><strong>示例：<code>UserDto.java</code></strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.dto;<br><br><span class="hljs-keyword">import</span> com.example.validation.groups.OnCreate;<br><span class="hljs-keyword">import</span> com.example.validation.groups.OnLogin;<br><span class="hljs-keyword">import</span> com.example.validation.groups.OnUpdate;<br><span class="hljs-keyword">import</span> jakarta.validation.constraints.Email; <span class="hljs-comment">// Spring Boot 3.x</span><br><span class="hljs-keyword">import</span> jakarta.validation.constraints.NotEmpty;<br><span class="hljs-keyword">import</span> jakarta.validation.constraints.Null;<br><span class="hljs-keyword">import</span> jakarta.validation.constraints.Size;<br><span class="hljs-comment">// import javax.validation.constraints.*; // Spring Boot 2.x</span><br><span class="hljs-comment">// import javax.validation.groups.Default; // Spring Boot 2.x</span><br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserDto</span> &#123;<br><br>    <span class="hljs-meta">@Null(groups = OnCreate.class, message = &quot;ID must be null during creation&quot;)</span><br>    <span class="hljs-meta">@NotEmpty(groups = OnUpdate.class, message = &quot;ID cannot be empty during update&quot;)</span><br>    <span class="hljs-keyword">private</span> String id; <span class="hljs-comment">// 例如，UUID 字符串</span><br><br>    <span class="hljs-meta">@NotEmpty(groups = &#123;OnCreate.class, OnLogin.class&#125;, message = &quot;Username cannot be empty&quot;)</span><br>    <span class="hljs-meta">@Size(min = 3, max = 20, groups = &#123;OnCreate.class, OnLogin.class&#125;, message = &quot;Username must be between 3 and 20 characters&quot;)</span><br>    <span class="hljs-keyword">private</span> String username;<br><br>    <span class="hljs-meta">@NotEmpty(groups = &#123;OnCreate.class, OnLogin.class&#125;, message = &quot;Password cannot be empty&quot;)</span><br>    <span class="hljs-meta">@Size(min = 8, groups = OnCreate.class, message = &quot;Password must be at least 8 characters for new user&quot;)</span><br>    <span class="hljs-comment">// 更新时，密码可以为空 (表示不修改)，如果提供了，则需要校验长度</span><br>    <span class="hljs-meta">@Size(min = 8, groups = OnUpdate.class, message = &quot;New password must be at least 8 characters&quot;)</span><br>    <span class="hljs-keyword">private</span> String password;<br><br>    <span class="hljs-meta">@NotEmpty(groups = OnCreate.class, message = &quot;Email cannot be empty for new user&quot;)</span><br>    <span class="hljs-meta">@Email(groups = &#123;OnCreate.class, OnUpdate.class&#125;, message = &quot;Email should be valid&quot;)</span><br>    <span class="hljs-comment">// 更新时，邮箱可以不提供 (表示不修改)，如果提供了，则需要是有效邮箱</span><br>    <span class="hljs-keyword">private</span> String email;<br><br>    <span class="hljs-meta">@NotEmpty(message = &quot;Nickname cannot be empty&quot;)</span> <span class="hljs-comment">// 没有指定 groups，属于 Default 分组</span><br>    <span class="hljs-keyword">private</span> String nickname;<br><br><br>    <span class="hljs-comment">// Getters and Setters</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getId</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> id; &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setId</span><span class="hljs-params">(String id)</span> &#123; <span class="hljs-built_in">this</span>.id = id; &#125;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getUsername</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> username; &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setUsername</span><span class="hljs-params">(String username)</span> &#123; <span class="hljs-built_in">this</span>.username = username; &#125;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getPassword</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> password; &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setPassword</span><span class="hljs-params">(String password)</span> &#123; <span class="hljs-built_in">this</span>.password = password; &#125;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getEmail</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> email; &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setEmail</span><span class="hljs-params">(String email)</span> &#123; <span class="hljs-built_in">this</span>.email = email; &#125;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getNickname</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> nickname; &#125;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">setNickname</span><span class="hljs-params">(String nickname)</span> &#123; <span class="hljs-built_in">this</span>.nickname = nickname; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>解释</strong>：</p>
+<ul>
+<li><code>id</code>:
+<ul>
+<li>在 <code>OnCreate</code> 组下，必须为 <code>null</code> (因为 ID 通常由后端生成)。</li>
+<li>在 <code>OnUpdate</code> 组下，必须非空 (用于标识要更新的实体)。</li>
+</ul>
+</li>
+<li><code>username</code>:
+<ul>
+<li>在 <code>OnCreate</code> 和 <code>OnLogin</code> 组下，都不能为空且长度在 3-20 之间。</li>
+<li>在 <code>OnUpdate</code> 组下，没有校验规则 (假设用户名不允许更新，或者由其他逻辑处理)。</li>
+</ul>
+</li>
+<li><code>password</code>:
+<ul>
+<li>在 <code>OnCreate</code> 和 <code>OnLogin</code> 组下，都不能为空。</li>
+<li>在 <code>OnCreate</code> 组下，长度至少为 8。</li>
+<li>在 <code>OnUpdate</code> 组下，如果提供了新密码，长度至少为 8 (如果为空，则不校验，表示不修改密码)。</li>
+</ul>
+</li>
+<li><code>email</code>:
+<ul>
+<li>在 <code>OnCreate</code> 组下，不能为空且必须是有效邮箱。</li>
+<li>在 <code>OnUpdate</code> 组下，如果提供了，必须是有效邮箱 (可以为空，表示不修改)。</li>
+</ul>
+</li>
+<li><code>nickname</code>:
+<ul>
+<li>没有指定 <code>groups</code> 属性，所以它属于 <code>Default</code> 分组。这意味着，如果校验时没有指定任何分组，或者指定了 <code>Default.class</code> 作为分组，这个字段的 <code>@NotEmpty</code> 规则就会生效。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="3-在触发校验时指定要激活的分组">3. 在触发校验时指定要激活的分组</h3>
+<p>这通常在 Controller 的方法参数上，或者在服务层的方法上完成。你需要使用 Spring 框架提供的 <code>@Validated</code> 注解 (来自 <code>org.springframework.validation.annotation</code> 包)，而不是 JSR/Jakarta 标准的 <code>@Valid</code> 注解，因为 <code>@Valid</code> 不支持分组。</p>
+<p><strong>示例：<code>UserController.java</code></strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.controller;<br><br><span class="hljs-keyword">import</span> com.example.dto.UserDto;<br><span class="hljs-keyword">import</span> com.example.validation.groups.OnCreate;<br><span class="hljs-keyword">import</span> com.example.validation.groups.OnLogin;<br><span class="hljs-keyword">import</span> com.example.validation.groups.OnUpdate;<br><span class="hljs-keyword">import</span> jakarta.validation.groups.Default; <span class="hljs-comment">// Spring Boot 3.x, 用于演示</span><br><span class="hljs-keyword">import</span> org.springframework.http.ResponseEntity;<br><span class="hljs-keyword">import</span> org.springframework.validation.BindingResult;<br><span class="hljs-keyword">import</span> org.springframework.validation.FieldError;<br><span class="hljs-keyword">import</span> org.springframework.validation.annotation.Validated; <span class="hljs-comment">// Spring&#x27;s annotation</span><br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.*;<br><br><span class="hljs-keyword">import</span> java.util.HashMap;<br><span class="hljs-keyword">import</span> java.util.Map;<br><span class="hljs-keyword">import</span> java.util.UUID;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-meta">@RequestMapping(&quot;/api/users&quot;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserController</span> &#123;<br><br>    <span class="hljs-comment">// 创建用户</span><br>    <span class="hljs-meta">@PostMapping</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;?&gt; createUser(<span class="hljs-meta">@Validated(OnCreate.class)</span> <span class="hljs-meta">@RequestBody</span> UserDto userDto,<br>                                        BindingResult bindingResult) &#123;<br>        <span class="hljs-keyword">if</span> (bindingResult.hasErrors()) &#123;<br>            <span class="hljs-keyword">return</span> buildErrorResponse(bindingResult);<br>        &#125;<br>        <span class="hljs-comment">// 只有 OnCreate 组的校验规则会生效</span><br>        <span class="hljs-comment">// userDto.setId(UUID.randomUUID().toString()); // 模拟ID生成</span><br>        <span class="hljs-comment">// userService.create(userDto);</span><br>        <span class="hljs-keyword">return</span> ResponseEntity.ok(<span class="hljs-string">&quot;User created successfully with ID: &quot;</span> + userDto.getId());<br>    &#125;<br><br>    <span class="hljs-comment">// 更新用户信息</span><br>    <span class="hljs-meta">@PutMapping(&quot;/&#123;id&#125;&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;?&gt; updateUser(<span class="hljs-meta">@PathVariable</span> String id,<br>                                        <span class="hljs-meta">@Validated(OnUpdate.class)</span> <span class="hljs-meta">@RequestBody</span> UserDto userDto,<br>                                        BindingResult bindingResult) &#123;<br>        <span class="hljs-keyword">if</span> (bindingResult.hasErrors()) &#123;<br>            <span class="hljs-keyword">return</span> buildErrorResponse(bindingResult);<br>        &#125;<br>        <span class="hljs-comment">// 只有 OnUpdate 组的校验规则会生效</span><br>        userDto.setId(id); <span class="hljs-comment">// 通常从路径参数设置ID</span><br>        <span class="hljs-comment">// userService.update(userDto);</span><br>        <span class="hljs-keyword">return</span> ResponseEntity.ok(<span class="hljs-string">&quot;User updated successfully: &quot;</span> + userDto.getUsername());<br>    &#125;<br><br>    <span class="hljs-comment">// 用户登录</span><br>    <span class="hljs-meta">@PostMapping(&quot;/login&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;?&gt; loginUser(<span class="hljs-meta">@Validated(OnLogin.class)</span> <span class="hljs-meta">@RequestBody</span> UserDto userDto,<br>                                       BindingResult bindingResult) &#123;<br>        <span class="hljs-keyword">if</span> (bindingResult.hasErrors()) &#123;<br>            <span class="hljs-keyword">return</span> buildErrorResponse(bindingResult);<br>        &#125;<br>        <span class="hljs-comment">// 只有 OnLogin 组的校验规则会生效</span><br>        <span class="hljs-comment">// authService.login(userDto.getUsername(), userDto.getPassword());</span><br>        <span class="hljs-keyword">return</span> ResponseEntity.ok(<span class="hljs-string">&quot;User logged in: &quot;</span> + userDto.getUsername());<br>    &#125;<br><br>    <span class="hljs-comment">// 演示 Default 分组</span><br>    <span class="hljs-comment">// 如果不指定分组，或者显式指定 Default.class，则只有属于 Default 组的校验生效</span><br>    <span class="hljs-meta">@PostMapping(&quot;/profile&quot;)</span><br>    <span class="hljs-keyword">public</span> ResponseEntity&lt;?&gt; updateUserProfile(<span class="hljs-meta">@Validated</span> <span class="hljs-meta">@RequestBody</span> UserDto userDto, <span class="hljs-comment">// 等同于 @Validated(Default.class)</span><br>                                               BindingResult bindingResult) &#123;<br>        <span class="hljs-keyword">if</span> (bindingResult.hasErrors()) &#123;<br>            <span class="hljs-keyword">return</span> buildErrorResponse(bindingResult);<br>        &#125;<br>        <span class="hljs-comment">// 此时只有 nickname 字段的 @NotEmpty 会生效，因为它是唯一属于 Default 组的</span><br>        <span class="hljs-comment">// userService.updateProfile(userDto);</span><br>        <span class="hljs-keyword">return</span> ResponseEntity.ok(<span class="hljs-string">&quot;User profile updated for nickname: &quot;</span> + userDto.getNickname());<br>    &#125;<br><br>    <span class="hljs-comment">// 辅助方法，构建错误响应</span><br>    <span class="hljs-keyword">private</span> ResponseEntity&lt;?&gt; buildErrorResponse(BindingResult bindingResult) &#123;<br>        Map&lt;String, String&gt; errors = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;();<br>        <span class="hljs-keyword">for</span> (FieldError error : bindingResult.getFieldErrors()) &#123;<br>            errors.put(error.getField(), error.getDefaultMessage());<br>        &#125;<br>        <span class="hljs-keyword">return</span> ResponseEntity.badRequest().body(errors);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>行为解释</strong>：</p>
+<ul>
+<li><strong><code>createUser</code></strong>: 使用 <code>@Validated(OnCreate.class)</code>，所以只有 <code>UserDto</code> 中 <code>groups</code> 包含 <code>OnCreate.class</code> 的校验注解会生效。例如，<code>id</code> 必须为 <code>null</code>，<code>username</code>, <code>password</code>, <code>email</code> 不能为空并满足各自的 <code>OnCreate</code> 规则。<code>nickname</code> (属于 <code>Default</code> 组) 的校验不会执行。</li>
+<li><strong><code>updateUser</code></strong>: 使用 <code>@Validated(OnUpdate.class)</code>，只有 <code>groups</code> 包含 <code>OnUpdate.class</code> 的校验注解会生效。例如，<code>id</code> 不能为空，<code>email</code> 如果提供则必须有效，<code>password</code> 如果提供则长度至少为 8。</li>
+<li><strong><code>loginUser</code></strong>: 使用 <code>@Validated(OnLogin.class)</code>，只有 <code>groups</code> 包含 <code>OnLogin.class</code> 的校验注解会生效。主要是 <code>username</code> 和 <code>password</code> 的非空校验。</li>
+<li><strong><code>updateUserProfile</code></strong>: 使用 <code>@Validated</code> (没有指定分组，等同于 <code>@Validated(Default.class)</code> 或 <code>@Validated(&#123;Default.class&#125;)</code>)，只有 <code>nickname</code> 字段的 <code>@NotEmpty</code> 校验会生效，因为其他字段的校验都指定了特定的分组，不属于 <code>Default</code> 组。</li>
+</ul>
+<hr>
+<h3 id="校验顺序和分组序列-Validation-Order-and-Group-Sequences">校验顺序和分组序列 (Validation Order and Group Sequences)</h3>
+<h4 id="校验顺序">校验顺序</h4>
+<p>默认情况下，<strong>不同分组之间的校验是无序的</strong>。如果一个属性同时属于多个被激活的分组，那么它的所有相关约束都会被评估。</p>
+<h4 id="分组序列-GroupSequence">分组序列 (<code>@GroupSequence</code>)</h4>
+<p>有时你希望按特定顺序执行校验分组，并且如果前一个分组校验失败，则后续分组的校验不再执行。这时可以使用 <code>@GroupSequence</code>。</p>
+<p><code>@GroupSequence</code> 允许你定义一个有序的分组列表。校验会按照列表中的顺序进行，一旦某个分组出现校验错误，后续分组的校验就会被跳过。</p>
+<ol>
+<li>
+<p><strong>定义一个分组序列接口</strong>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.validation.groups;<br><br><span class="hljs-keyword">import</span> jakarta.validation.GroupSequence; <span class="hljs-comment">// Spring Boot 3.x</span><br><span class="hljs-keyword">import</span> jakarta.validation.groups.Default;<br><span class="hljs-comment">// import javax.validation.GroupSequence; // Spring Boot 2.x</span><br><span class="hljs-comment">// import javax.validation.groups.Default;</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 定义一个有序的校验分组序列</span><br><span class="hljs-comment"> * 首先校验 Default 组，如果通过，再校验 OnCreate 组</span><br><span class="hljs-comment"> */</span><br><span class="hljs-meta">@GroupSequence(&#123;Default.class, OnCreate.class&#125;)</span> <span class="hljs-comment">// 顺序很重要</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">CreateUserSequence</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+<p>在这个例子中，<code>CreateUserSequence</code> 首先会触发所有属于 <code>Default</code> 分组的校验。如果 <code>Default</code> 组的所有校验都通过了，才会继续触发属于 <code>OnCreate</code> 分组的校验。</p>
+</li>
+<li>
+<p><strong>在 <code>@Validated</code> 中使用分组序列</strong>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@PostMapping(&quot;/create-ordered&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;?&gt; createUserWithOrderedValidation(<br>        <span class="hljs-meta">@Validated(CreateUserSequence.class)</span> <span class="hljs-meta">@RequestBody</span> UserDto userDto,<br>        BindingResult bindingResult) &#123;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>现在，<code>userDto</code> 的校验会先执行 <code>Default</code> 组的规则 (例如 <code>nickname</code> 的 <code>@NotEmpty</code>)。如果 <code>nickname</code> 为空，校验失败，<code>OnCreate</code> 组的规则 (如 <code>username</code>, <code>password</code>, <code>email</code> 的校验) 就不会被执行。</p>
+</li>
+</ol>
+<p><strong><code>@GroupSequence</code> 用在 Bean 类上</strong>:<br>
+你也可以在 Bean 类本身上使用 <code>@GroupSequence</code> 来重新定义该 Bean 的默认校验顺序。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@GroupSequence(&#123;BasicInfo.class, AdvancedInfo.class, UserDto.class&#125;)</span> <span class="hljs-comment">// UserDto.class 代表 Default 分组</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserDto</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br><span class="hljs-comment">// public interface BasicInfo &#123;&#125;</span><br><span class="hljs-comment">// public interface AdvancedInfo &#123;&#125;</span><br></code></pre></td></tr></table></figure>
+<p>当对这个 <code>UserDto</code> 进行默认校验 (即 <code>@Validated</code> 或 <code>@Valid</code> 不带参数) 时，会先校验 <code>BasicInfo</code> 组，然后是 <code>AdvancedInfo</code> 组，最后是 <code>Default</code> 组 (通过 <code>UserDto.class</code> 代表)。</p>
+<hr>
+<h3 id="级联校验与分组-Cascaded-Validation-and-Groups">级联校验与分组 (Cascaded Validation and Groups)</h3>
+<p>如果你的 DTO 包含其他需要校验的对象 (嵌套对象)，并且你在嵌套对象的字段上使用了 <code>@Valid</code> 或 <code>@Validated</code>，分组校验会如何传递呢？</p>
+<ul>
+<li>当你在父对象上使用 <code>@Validated(SomeGroup.class)</code> 时，这个 <code>SomeGroup</code> 会传递给通过 <code>@Valid</code> (或 <code>@Validated</code>) 标记的嵌套对象进行校验。</li>
+<li>这意味着嵌套对象中，只有那些也属于 <code>SomeGroup</code> (或者属于 <code>Default</code> 组，如果 <code>SomeGroup</code> 继承了 <code>Default</code>) 的校验规则才会生效。</li>
+</ul>
+<p><strong>示例</strong>:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">OrderDto</span> &#123;<br>    <span class="hljs-meta">@NotEmpty(groups = OnCreate.class)</span><br>    <span class="hljs-keyword">private</span> String orderNumber;<br><br>    <span class="hljs-meta">@Valid</span> <span class="hljs-comment">// 没有指定分组，会传递父级的分组</span><br>    <span class="hljs-meta">@NotNull(groups = OnCreate.class)</span><br>    <span class="hljs-keyword">private</span> AddressDto shippingAddress;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AddressDto</span> &#123;<br>    <span class="hljs-meta">@NotEmpty(groups = OnCreate.class, message = &quot;Street cannot be empty for new orders&quot;)</span><br>    <span class="hljs-meta">@NotEmpty(groups = OnUpdate.class, message = &quot;Street cannot be empty for address updates&quot;)</span><br>    <span class="hljs-keyword">private</span> String street;<br><br>    <span class="hljs-meta">@NotEmpty(message = &quot;City cannot be empty&quot;)</span> <span class="hljs-comment">// Default group</span><br>    <span class="hljs-keyword">private</span> String city;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br><br><span class="hljs-comment">// Controller</span><br><span class="hljs-meta">@PostMapping(&quot;/orders&quot;)</span><br><span class="hljs-keyword">public</span> ResponseEntity&lt;?&gt; createOrder(<span class="hljs-meta">@Validated(OnCreate.class)</span> <span class="hljs-meta">@RequestBody</span> OrderDto orderDto, BindingResult br) &#123;<br>    <span class="hljs-comment">// ...</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>在 <code>createOrder</code> 方法中，由于使用了 <code>@Validated(OnCreate.class)</code>：</p>
+<ol>
+<li><code>OrderDto</code> 的 <code>orderNumber</code> 会根据 <code>OnCreate</code> 组进行校验。</li>
+<li><code>shippingAddress</code> 字段的 <code>@NotNull(groups = OnCreate.class)</code> 会生效。</li>
+<li>由于 <code>shippingAddress</code> 上有 <code>@Valid</code>，校验会级联到 <code>AddressDto</code> 对象。</li>
+<li><code>OnCreate.class</code> 分组会传递给 <code>AddressDto</code> 的校验过程。</li>
+<li>因此，<code>AddressDto</code> 中的 <code>street</code> 字段的 <code>@NotEmpty(groups = OnCreate.class)</code> 规则会生效。</li>
+<li><code>AddressDto</code> 中的 <code>city</code> 字段的 <code>@NotEmpty</code> (属于 <code>Default</code> 组) <strong>不会</strong> 生效，因为当前激活的分组是 <code>OnCreate</code>，而不是 <code>Default</code>。</li>
+</ol>
+<p>如果你希望在级联校验时，嵌套对象使用其自身的 <code>Default</code> 分组，而父对象使用特定分组，这会比较复杂，可能需要自定义 <code>Validator</code> 行为或重新设计 DTO 结构。通常，分组会向下传播。</p>
+<hr>
+<h3 id="总结">总结</h3>
+<ul>
+<li><strong>分组校验</strong> 使用标记接口定义分组，通过注解的 <code>groups</code> 属性将校验规则分配给分组。</li>
+<li>使用 Spring 的 <code>@Validated</code> 注解在 Controller 或 Service 层指定当前操作要激活的校验分组。</li>
+<li><code>Default</code> 分组是隐式的，适用于未指定 <code>groups</code> 的校验注解。</li>
+<li><code>@GroupSequence</code> 允许你定义有序的校验分组，实现短路校验。</li>
+<li>分组会影响级联校验 (<code>@Valid</code>) 的行为，激活的分组会传递给嵌套对象。</li>
+</ul>
+<p>分组校验是处理复杂业务场景下不同校验需求的强大工具，它使得校验逻辑更加清晰、声明化，并易于维护。记住，只有 <code>@Validated</code> 支持分组，标准的 <code>@Valid</code> 不支持。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Validation/" class="category-chain-item">Validation</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Validation/" class="print-no-link">#Validation</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>分组校验 (Validation Groups)</div>
+      <div>http://example.com/2024/06/13/Java/Framework/Spring Boot/Validation/分组校验 (Validation Groups)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/4.%E8%BF%9B%E9%98%B6/Querydsl/" title="Querydsl 集成">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Querydsl 集成</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/%E5%A4%A7%E7%BA%B2/" title="大纲">
+                        <span class="hidden-mobile">大纲</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

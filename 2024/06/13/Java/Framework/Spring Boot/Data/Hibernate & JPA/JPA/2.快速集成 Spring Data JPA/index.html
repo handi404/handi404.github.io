@@ -1,0 +1,945 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="详细讲解如何在 Spring Boot 项目中快速集成和使用 Spring Data JPA。Spring Boot 提供了 spring-boot-starter-data-jpa，极大地简化了 JPA 的配置和使用过程。  2. Spring Boot 集成 Spring Data JPA (怎么快速开始) 2.1 依赖引入 (spring-boot-starter-data-jpa) 要在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快速集成 Spring Data JPA">
+<meta property="og:url" content="http://example.com/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/JPA/2.%E5%BF%AB%E9%80%9F%E9%9B%86%E6%88%90%20Spring%20Data%20JPA/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="详细讲解如何在 Spring Boot 项目中快速集成和使用 Spring Data JPA。Spring Boot 提供了 spring-boot-starter-data-jpa，极大地简化了 JPA 的配置和使用过程。  2. Spring Boot 集成 Spring Data JPA (怎么快速开始) 2.1 依赖引入 (spring-boot-starter-data-jpa) 要在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/jpa.png">
+<meta property="article:published_time" content="2024-06-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-03T10:02:41.465Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="JPA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/jpa.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>快速集成 Spring Data JPA - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="快速集成 Spring Data JPA"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-13 00:00" pubdate>
+          2024年6月13日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">快速集成 Spring Data JPA</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月3日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>详细讲解如何在 Spring Boot 项目中快速集成和使用 Spring Data JPA。Spring Boot 提供了 <code>spring-boot-starter-data-jpa</code>，极大地简化了 JPA 的配置和使用过程。</p>
+<hr>
+<h3 id="2-Spring-Boot-集成-Spring-Data-JPA-怎么快速开始">2. Spring Boot 集成 Spring Data JPA (怎么快速开始)</h3>
+<h4 id="2-1-依赖引入-spring-boot-starter-data-jpa">2.1 依赖引入 (<code>spring-boot-starter-data-jpa</code>)</h4>
+<p>要在 Spring Boot 项目中使用 Spring Data JPA，首先需要在你的 <code>pom.xml</code> (Maven) 或 <code>build.gradle</code> (Gradle) 文件中添加核心依赖。</p>
+<p><strong>对于 Maven 项目 (<code>pom.xml</code>)：</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependencies</span>&gt;</span><br>    <span class="hljs-comment">&lt;!-- Spring Boot Data JPA Starter --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-data-jpa<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- 数据库驱动 (以 MySQL 为例) --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>com.mysql<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>mysql-connector-j<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>runtime<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- Lombok (可选, 但推荐用于简化实体类代码) --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.projectlombok<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>lombok<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">optional</span>&gt;</span>true<span class="hljs-tag">&lt;/<span class="hljs-name">optional</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- Spring Boot Web Starter (如果需要构建 Web 应用) --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-web<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><br>    <span class="hljs-comment">&lt;!-- Spring Boot Test Starter (用于测试) --&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-test<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">scope</span>&gt;</span>test<span class="hljs-tag">&lt;/<span class="hljs-name">scope</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependencies</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p><strong>关键点：</strong></p>
+<ul>
+<li><code>spring-boot-starter-data-jpa</code>: 这是核心依赖。它会自动引入：
+<ul>
+<li><strong>Spring Data JPA</strong>: 提供了 Repository 抽象和 JPA 的支持。</li>
+<li><strong>Hibernate</strong>: 作为默认的 JPA 提供者 (Persistence Provider)。</li>
+<li><strong>Spring ORM</strong>: 提供了与 JPA 等 ORM 框架集成的支持。</li>
+<li><strong>Spring JDBC</strong>: 提供了 JDBC 支持 (JPA 底层依赖 JDBC)。</li>
+<li><strong>Transaction Management</strong>: 自动配置了 Spring 的事务管理。</li>
+</ul>
+</li>
+<li><strong>数据库驱动</strong>: 你需要根据你使用的数据库类型添加相应的 JDBC 驱动。例如：
+<ul>
+<li>MySQL: <code>mysql-connector-j</code></li>
+<li>PostgreSQL: <code>postgresql</code></li>
+<li>H2 (内存数据库，常用于测试): <code>com.h2database:h2</code> (通常 Spring Boot Starter 会默认带一个，但显式声明更好)</li>
+</ul>
+</li>
+<li><strong>Lombok</strong>: 强烈推荐使用 Lombok，它可以极大简化实体类中 getter, setter,构造函数, <code>toString()</code>, <code>equals()</code>, <code>hashCode()</code> 等样板代码的编写。</li>
+</ul>
+<p><strong>对于 Gradle 项目 (<code>build.gradle</code>)：</strong></p>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs gradle"><span class="hljs-keyword">dependencies</span> &#123;<br>    implementation <span class="hljs-string">&#x27;org.springframework.boot:spring-boot-starter-data-jpa&#x27;</span><br>    runtimeOnly <span class="hljs-string">&#x27;com.mysql:mysql-connector-j&#x27;</span> <span class="hljs-comment">// 以 MySQL 为例</span><br>    compileOnly <span class="hljs-string">&#x27;org.projectlombok:lombok&#x27;</span><br>    annotationProcessor <span class="hljs-string">&#x27;org.projectlombok:lombok&#x27;</span><br>    implementation <span class="hljs-string">&#x27;org.springframework.boot:spring-boot-starter-web&#x27;</span><br>    testImplementation <span class="hljs-string">&#x27;org.springframework.boot:spring-boot-starter-test&#x27;</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="2-2-核心配置-application-yml-或-application-properties">2.2 核心配置 (<code>application.yml</code> 或 <code>application.properties</code>)</h4>
+<p>引入依赖后，接下来是在 Spring Boot 的配置文件中配置数据源和 JPA (主要是 Hibernate) 的相关属性。</p>
+<p><strong><code>src/main/resources/application.yml</code>:</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-comment"># --- 数据源配置 (DataSource Configuration) ---</span><br>  <span class="hljs-attr">datasource:</span><br>    <span class="hljs-attr">url:</span> <span class="hljs-string">jdbc:mysql://localhost:3306/your_jpa_database?useUnicode=true&amp;characterEncoding=utf-8&amp;serverTimezone=Asia/Shanghai&amp;createDatabaseIfNotExist=true</span><br>    <span class="hljs-attr">username:</span> <span class="hljs-string">your_username</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">your_password</span><br>    <span class="hljs-attr">driver-class-name:</span> <span class="hljs-string">com.mysql.cj.jdbc.Driver</span> <span class="hljs-comment"># MySQL 8+ 驱动</span><br>    <span class="hljs-comment"># (可选) HikariCP 连接池配置 (Spring Boot 默认使用 HikariCP)</span><br>    <span class="hljs-comment"># hikari:</span><br>    <span class="hljs-comment">#   connection-timeout: 30000</span><br>    <span class="hljs-comment">#   idle-timeout: 600000</span><br>    <span class="hljs-comment">#   maximum-pool-size: 10</span><br>    <span class="hljs-comment">#   minimum-idle: 5</span><br><br>  <span class="hljs-comment"># --- JPA (Hibernate) 配置 ---</span><br>  <span class="hljs-attr">jpa:</span><br>    <span class="hljs-comment"># (可选) 是否在日志中显示 Hibernate 执行的 SQL 语句</span><br>    <span class="hljs-attr">show-sql:</span> <span class="hljs-literal">true</span> <span class="hljs-comment"># 开发时通常设为 true，方便调试</span><br><br>    <span class="hljs-comment"># (可选) Hibernate DDL (Data Definition Language) 自动生成策略</span><br>    <span class="hljs-comment"># 非常重要，需要谨慎设置，尤其是在生产环境</span><br>    <span class="hljs-attr">hibernate:</span><br>      <span class="hljs-attr">ddl-auto:</span> <span class="hljs-string">update</span> <span class="hljs-comment"># 可选值: none, validate, update, create, create-drop</span><br>        <span class="hljs-comment"># none: 不做任何操作，依赖数据库已有的表结构。生产环境推荐。</span><br>        <span class="hljs-comment"># validate: 验证实体与表结构的映射是否一致，不一致则报错。</span><br>        <span class="hljs-comment"># update: 如果表不存在则创建，如果表存在但结构不一致，则尝试更新表结构 (可能会丢失数据，慎用)。</span><br>        <span class="hljs-comment"># create: 每次启动都删除已存在的表，然后重新创建。适合测试。</span><br>        <span class="hljs-comment"># create-drop: 每次启动创建表，应用关闭时删除表。适合测试。</span><br><br>    <span class="hljs-comment"># (可选) JPA / Hibernate 的其他属性配置</span><br>    <span class="hljs-attr">properties:</span><br>      <span class="hljs-attr">hibernate:</span><br>        <span class="hljs-comment"># (可选) SQL 方言 (Dialect)，Hibernate 通常能根据驱动自动检测，但显式配置更保险</span><br>        <span class="hljs-comment"># 对于 MySQL 8+，使用 MySQL8Dialect 或更新的方言</span><br>        <span class="hljs-attr">dialect:</span> <span class="hljs-string">org.hibernate.dialect.MySQLDialect</span> <span class="hljs-comment"># 老版本 MySQL 或 MariaDB</span><br>        <span class="hljs-comment"># dialect: org.hibernate.dialect.MySQL8Dialect # MySQL 8+</span><br>        <span class="hljs-comment"># dialect: org.hibernate.dialect.PostgreSQLDialect # PostgreSQL</span><br>        <span class="hljs-comment"># dialect: org.hibernate.dialect.H2Dialect # H2</span><br><br>        <span class="hljs-comment"># (可选) 格式化输出的 SQL (如果 show-sql 为 true)</span><br>        <span class="hljs-attr">format_sql:</span> <span class="hljs-literal">true</span><br><br>        <span class="hljs-comment"># (可选) 使用新的 Hibernate ID 生成器映射 (推荐)</span><br>        <span class="hljs-comment"># use_new_id_generator_mappings: true # Hibernate 5+ 默认为 true</span><br><br>        <span class="hljs-comment"># (可选) 命名策略 (Hibernate 5+ 推荐使用 PhysicalNamingStrategy)</span><br>        <span class="hljs-comment"># Spring Boot 默认配置了一个 PhysicalNamingStrategy，将驼峰转下划线</span><br>        <span class="hljs-comment"># physical_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy</span><br>        <span class="hljs-comment"># 如果需要自定义隐式命名策略 (ImplicitNamingStrategy)</span><br>        <span class="hljs-comment"># implicit_naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy</span><br><br>        <span class="hljs-comment"># (可选) 开启 Hibernate 统计信息 (用于性能分析，如通过 JMX)</span><br>        <span class="hljs-comment"># generate_statistics: false</span><br><br>        <span class="hljs-comment"># (可选) 二级缓存配置 (如果需要使用)</span><br>        <span class="hljs-comment"># cache:</span><br>        <span class="hljs-comment">#   use_second_level_cache: false</span><br>        <span class="hljs-comment">#   use_query_cache: false</span><br>        <span class="hljs-comment">#   region.factory_class: org.hibernate.cache.jcache.JCacheRegionFactory # (示例: JCache)</span><br>        <span class="hljs-comment">#   provider_class: org.ehcache.jsr107.EhcacheCachingProvider # (示例: Ehcache JSR-107)</span><br><br>    <span class="hljs-comment"># (可选) 指定扫描实体类的包路径 (如果实体类不在主应用类所在包及其子包下)</span><br>    <span class="hljs-comment"># entity-packages-to-scan: com.example.yourproject.domain</span><br><br>    <span class="hljs-comment"># (可选) 是否开启 Open Session in View 模式 (默认 true)</span><br>    <span class="hljs-comment"># 允许在 View 层访问懒加载的关联对象，但可能导致长事务或性能问题，需谨慎评估</span><br>    <span class="hljs-attr">open-in-view:</span> <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+<p><strong>关键配置项解释：</strong></p>
+<ul>
+<li><strong><code>spring.datasource.*</code></strong>:
+<ul>
+<li>与之前配置 MyBatis 或 JDBC 数据源的方式完全相同。</li>
+<li><code>createDatabaseIfNotExist=true</code> (MySQL 特定): 方便开发时自动创建数据库。</li>
+</ul>
+</li>
+<li><strong><code>spring.jpa.show-sql</code></strong>:
+<ul>
+<li>设置为 <code>true</code> 可以在控制台看到 Hibernate 生成和执行的 SQL 语句，非常有助于调试和理解 JPA 的行为。</li>
+</ul>
+</li>
+<li><strong><code>spring.jpa.hibernate.ddl-auto</code></strong>:
+<ul>
+<li><strong>极其重要且危险的配置</strong>，它控制 Hibernate 如何根据你的实体类自动操作数据库表结构。</li>
+<li><strong><code>none</code></strong>: <strong>生产环境推荐</strong>。不进行任何 DDL 操作，你需要手动管理数据库 schema (例如通过 Flyway 或 Liquibase 这样的数据库迁移工具)。</li>
+<li><strong><code>validate</code></strong>: 启动时检查实体定义与数据库表是否匹配，不匹配则抛异常。适合用于确保映射正确性。</li>
+<li><strong><code>update</code></strong>: 启动时检查，如果表不存在则创建，如果表存在但列缺失或类型不匹配，Hibernate 会尝试<strong>修改表结构</strong>。<strong>这个操作可能导致数据丢失，尤其是在删除列或修改列类型时，生产环境严禁使用，开发环境也需谨慎。</strong></li>
+<li><strong><code>create</code></strong>: 每次应用启动时，先删除所有已存在的相关表，然后根据实体重新创建表。数据会全部丢失。<strong>仅适用于开发初期或测试。</strong></li>
+<li><strong><code>create-drop</code></strong>: 应用启动时创建表，应用正常关闭时删除表。<strong>仅适用于测试。</strong></li>
+</ul>
+</li>
+<li><strong><code>spring.jpa.properties.hibernate.dialect</code></strong>:
+<ul>
+<li>指定 Hibernate 使用的 SQL 方言。Hibernate 需要知道目标数据库的类型，以便生成正确的 SQL 语法。</li>
+<li>虽然 Hibernate 通常能根据 JDBC Driver 自动检测方言，但显式配置可以避免一些潜在的兼容性问题，特别是当使用不常见的数据库或驱动版本时。</li>
+</ul>
+</li>
+<li><strong><code>spring.jpa.properties.hibernate.format_sql</code></strong>:
+<ul>
+<li>如果 <code>show-sql</code> 为 <code>true</code>，此配置设为 <code>true</code> 会将打印的 SQL 进行格式化，使其更易读。</li>
+</ul>
+</li>
+<li><strong><code>spring.jpa.properties.hibernate.physical_naming_strategy</code></strong>:
+<ul>
+<li>定义了从 Java 实体/属性名到数据库表/列名的物理转换策略。</li>
+<li>Spring Boot 默认使用 <code>SpringPhysicalNamingStrategy</code>，它会将驼峰命名 (camelCase) 的 Java 属性转换为下划线命名 (snake_case) 的数据库列名 (例如 <code>userName</code> -&gt; <code>user_name</code>)。这通常是推荐的做法。</li>
+</ul>
+</li>
+<li><strong><code>spring.jpa.open-in-view</code></strong>:
+<ul>
+<li>默认为 <code>true</code>。它会在整个 Web 请求期间保持 JPA <code>EntityManager</code> (和事务) 开放，直到视图渲染完毕。</li>
+<li><strong>优点</strong>: 允许在视图层 (如 Thymeleaf 模板) 中访问懒加载 (LAZY fetched) 的关联对象，避免了 <code>LazyInitializationException</code>。</li>
+<li><strong>缺点</strong>: 可能导致数据库连接被长时间占用，增加数据库负载，潜在的长事务问题。如果视图层执行了意外的数据库操作，也可能引发问题。</li>
+<li><strong>建议</strong>: 对于性能敏感或需要更严格事务控制的应用，可以考虑将其设为 <code>false</code>，并在 Service 层通过 <code>FETCH JOIN</code>, DTO 投影, 或 <code>@Transactional</code> 的边界来显式处理懒加载数据的获取。</li>
+</ul>
+</li>
+</ul>
+<p><strong>Spring Boot 自动配置做了什么？</strong></p>
+<p>当你引入 <code>spring-boot-starter-data-jpa</code> 并进行上述配置后，Spring Boot 会：</p>
+<ol>
+<li>自动配置 <code>DataSource</code>。</li>
+<li>自动配置 <code>EntityManagerFactory</code>，并使用 Hibernate 作为 JPA 提供者。</li>
+<li>自动配置 <code>PlatformTransactionManager</code> (通常是 <code>JpaTransactionManager</code>)，启用声明式事务管理 (<code>@Transactional</code>)。</li>
+<li>自动扫描 <code>@Entity</code> 注解的类。</li>
+<li>自动扫描继承自 Spring Data JPA Repository 接口 (如 <code>JpaRepository</code>) 的接口，并为它们创建代理实现 Bean。</li>
+</ol>
+<h4 id="2-3-实体类定义-Entity-Id-GeneratedValue-Column-Table-等">2.3 实体类定义 (<code>@Entity</code>, <code>@Id</code>, <code>@GeneratedValue</code>, <code>@Column</code>, <code>@Table</code> 等)</h4>
+<p>实体类是 JPA 的核心，它们是与数据库表映射的 Java 对象。</p>
+<p><strong>创建一个简单的实体类示例 (<code>User.java</code>)：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">package</span> com.example.yourproject.entity; <span class="hljs-comment">// 包路径自定义</span><br><br><span class="hljs-keyword">import</span> jakarta.persistence.*; <span class="hljs-comment">// 使用 jakarta.persistence.* (JPA 3.0+) 或 javax.persistence.* (JPA 2.x)</span><br><span class="hljs-keyword">import</span> lombok.Data; <span class="hljs-comment">// Lombok 注解，简化代码</span><br><span class="hljs-keyword">import</span> lombok.NoArgsConstructor;<br><span class="hljs-keyword">import</span> lombok.AllArgsConstructor;<br><span class="hljs-keyword">import</span> java.io.Serializable;<br><span class="hljs-keyword">import</span> java.time.LocalDateTime;<br><br><span class="hljs-meta">@Data</span> <span class="hljs-comment">// Lombok: 自动生成 getter, setter, toString, equals, hashCode</span><br><span class="hljs-meta">@NoArgsConstructor</span> <span class="hljs-comment">// Lombok: 自动生成无参构造函数 (JPA 要求实体类有无参构造)</span><br><span class="hljs-meta">@AllArgsConstructor</span> <span class="hljs-comment">// Lombok: 自动生成全参构造函数 (可选)</span><br><span class="hljs-meta">@Entity</span> <span class="hljs-comment">// ① 标记这是一个 JPA 实体类</span><br><span class="hljs-meta">@Table(name = &quot;user_account&quot;, schema = &quot;public&quot;, // ② (可选) 指定表名和 schema</span><br><span class="hljs-meta">       indexes = &#123; // ③ (可选) 定义数据库索引</span><br><span class="hljs-meta">           @Index(name = &quot;idx_user_email&quot;, columnList = &quot;email_address&quot;, unique = true),</span><br><span class="hljs-meta">           @Index(name = &quot;idx_user_status_created&quot;, columnList = &quot;status, date_created&quot;)</span><br><span class="hljs-meta">       &#125;,</span><br><span class="hljs-meta">       uniqueConstraints = &#123; // ④ (可选) 定义唯一约束</span><br><span class="hljs-meta">           @UniqueConstraint(name = &quot;uk_username&quot;, columnNames = &#123;&quot;username&quot;&#125;)</span><br><span class="hljs-meta">       &#125;)</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span> &#123; <span class="hljs-comment">// ⑤ 建议实现 Serializable 接口</span><br><br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> <span class="hljs-type">long</span> <span class="hljs-variable">serialVersionUID</span> <span class="hljs-operator">=</span> <span class="hljs-number">1L</span>; <span class="hljs-comment">// ⑥ (可选但推荐) 序列化版本UID</span><br><br>    <span class="hljs-meta">@Id</span> <span class="hljs-comment">// ⑦ 标记这是主键字段</span><br>    <span class="hljs-meta">@GeneratedValue(strategy = GenerationType.IDENTITY)</span> <span class="hljs-comment">// ⑧ (可选) 主键生成策略</span><br>    <span class="hljs-comment">// GenerationType.IDENTITY: 数据库自增 (如 MySQL AUTO_INCREMENT)。依赖数据库。</span><br>    <span class="hljs-comment">// GenerationType.SEQUENCE: 使用数据库序列 (如 Oracle SEQUENCE)。需要 @SequenceGenerator 配置。</span><br>    <span class="hljs-comment">// GenerationType.TABLE: 使用一张特定的数据库表来模拟序列。性能较差，不常用。</span><br>    <span class="hljs-comment">// GenerationType.AUTO: (默认) JPA 提供者自动选择合适的策略 (通常是 IDENTITY 或 SEQUENCE)。</span><br>    <span class="hljs-comment">// GenerationType.UUID: (Hibernate 扩展, JPA 3.1+ 标准化了一部分) 生成 UUID。</span><br>    <span class="hljs-meta">@Column(name = &quot;user_id&quot;, nullable = false, updatable = false)</span> <span class="hljs-comment">// ⑨ (可选) 定义列属性</span><br>    <span class="hljs-keyword">private</span> Long id;<br><br>    <span class="hljs-meta">@Column(name = &quot;username&quot;, length = 50, nullable = false, unique = true)</span><br>    <span class="hljs-keyword">private</span> String username;<br><br>    <span class="hljs-meta">@Column(name = &quot;password_hash&quot;, length = 100, nullable = false)</span><br>    <span class="hljs-keyword">private</span> String password; <span class="hljs-comment">// 存储密码的哈希值</span><br><br>    <span class="hljs-meta">@Column(name = &quot;email_address&quot;, length = 100)</span><br>    <span class="hljs-keyword">private</span> String email;<br><br>    <span class="hljs-meta">@Column(length = 20)</span><br>    <span class="hljs-keyword">private</span> String status; <span class="hljs-comment">// 例如: ACTIVE, INACTIVE, PENDING</span><br><br>    <span class="hljs-comment">// 如果属性名与列名按命名策略转换后一致，可以省略 @Column 的 name 属性</span><br>    <span class="hljs-comment">// private int age; // 假设数据库列名为 age 或 AGE</span><br><br>    <span class="hljs-meta">@Column(name = &quot;date_created&quot;, nullable = false, updatable = false)</span><br>    <span class="hljs-keyword">private</span> LocalDateTime dateCreated; <span class="hljs-comment">// Java 8+ 日期时间类型，JPA 2.2+ 自动映射</span><br><br>    <span class="hljs-meta">@Column(name = &quot;last_updated&quot;)</span><br>    <span class="hljs-keyword">private</span> LocalDateTime lastUpdated;<br><br>    <span class="hljs-comment">// (可选) 版本号字段，用于乐观锁</span><br>    <span class="hljs-comment">// @Version</span><br>    <span class="hljs-comment">// private Integer version;</span><br><br>    <span class="hljs-comment">// (可选) 瞬态字段，不映射到数据库表</span><br>    <span class="hljs-comment">// @Transient</span><br>    <span class="hljs-comment">// private String temporaryData;</span><br><br>    <span class="hljs-comment">// JPA 要求实体类有一个无参构造函数 (可以是 public 或 protected)</span><br>    <span class="hljs-comment">// 如果使用了 Lombok @NoArgsConstructor，则已满足</span><br>    <span class="hljs-comment">// public User() &#123;&#125;</span><br><br>    <span class="hljs-comment">// (可选) 构造函数、getter/setter 等 (如果未使用 Lombok)</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>核心 JPA 注解解释：</strong></p>
+<ol>
+<li><strong><code>@Entity</code></strong>:
+<ul>
+<li><strong>必需</strong>。标记一个类为 JPA 实体，表示它将映射到数据库的一张表。</li>
+<li>实体类名默认作为 JPQL 中引用的名称。可以通过 <code>name</code> 属性指定 (如 <code>@Entity(name = &quot;UserProfile&quot;)</code>)。</li>
+</ul>
+</li>
+<li><strong><code>@Table</code></strong>:
+<ul>
+<li><strong>可选</strong>。用于更详细地指定实体映射的数据库表信息。</li>
+<li><code>name</code>: 表名。如果省略，默认使用实体类名 (根据命名策略转换，如 <code>User</code> -&gt; <code>user</code>)。</li>
+<li><code>schema</code>: 数据库 schema (模式)。</li>
+<li><code>catalog</code>: 数据库 catalog。</li>
+<li><code>indexes</code>: 定义数据库级别的索引。</li>
+<li><code>uniqueConstraints</code>: 定义数据库级别的唯一约束。</li>
+</ul>
+</li>
+<li><strong><code>@Id</code></strong>:
+<ul>
+<li><strong>必需</strong>。标记实体类中的一个属性为主键。</li>
+</ul>
+</li>
+<li><strong><code>@GeneratedValue</code></strong>:
+<ul>
+<li><strong>可选</strong>。与 <code>@Id</code> 一起使用，指定主键的生成策略。</li>
+<li><code>strategy</code>: <code>GenerationType</code> 枚举，定义了不同的策略 (如上所述)。</li>
+<li><code>generator</code>: (与 <code>SEQUENCE</code> 或 <code>TABLE</code> 策略配合) 指定一个在 <code>@SequenceGenerator</code> 或 <code>@TableGenerator</code> 中定义的生成器的名称。</li>
+</ul>
+</li>
+<li><strong><code>@Column</code></strong>:
+<ul>
+<li><strong>可选</strong>。用于详细定义属性如何映射到数据库表的列。</li>
+<li><code>name</code>: 列名。如果省略，默认使用属性名 (根据命名策略转换)。</li>
+<li><code>length</code>: 列的长度 (主要用于字符串类型)。</li>
+<li><code>nullable</code>: 是否允许为 <code>null</code> (默认为 <code>true</code>)。会影响 DDL 生成。</li>
+<li><code>unique</code>: 是否唯一 (默认为 <code>false</code>)。会影响 DDL 生成。</li>
+<li><code>insertable</code>: 在 <code>INSERT</code> 语句中是否包含此列 (默认为 <code>true</code>)。</li>
+<li><code>updatable</code>: 在 <code>UPDATE</code> 语句中是否包含此列 (默认为 <code>true</code>)。</li>
+<li><code>columnDefinition</code>: (高级) 允许直接指定数据库DDL中的列定义字符串 (如 <code>VARCHAR(255) DEFAULT 'PENDING'</code>)。<strong>这会降低数据库无关性。</strong></li>
+<li><code>precision</code>, <code>scale</code>: 用于 <code>DECIMAL</code> 或 <code>NUMERIC</code> 类型的精度和小数位数。</li>
+</ul>
+</li>
+<li><strong><code>@Transient</code></strong>:
+<ul>
+<li><strong>可选</strong>。标记一个属性不被持久化，即它不是数据库表的一部分。</li>
+</ul>
+</li>
+<li><strong><code>@Version</code></strong>: (稍后在乐观锁部分详述)
+<ul>
+<li>标记一个属性为版本号字段，用于乐观锁控制。</li>
+</ul>
+</li>
+<li><strong><code>@Basic</code></strong>: (通常是隐式的)
+<ul>
+<li>用于标记基本类型或可序列化类型的持久化属性。大多数情况下可以省略，JPA 会自动将简单属性视为 <code>@Basic</code>。</li>
+<li>可以用来指定 <code>fetch</code> 策略 (EAGER/LAZY) 和 <code>optional</code> (是否允许为null，但通常用 <code>@Column(nullable=...)</code>)。对于基本类型属性，LAZY 加载通常无效或不推荐。</li>
+</ul>
+</li>
+<li><strong>日期时间类型</strong>:
+<ul>
+<li>JPA 2.2 (Hibernate 5.2) 及更高版本原生支持 Java 8 <code>java.time</code> 包中的日期时间类型 (如 <code>LocalDate</code>, <code>LocalDateTime</code>, <code>ZonedDateTime</code>, <code>Instant</code>)，会自动映射到数据库对应的日期时间类型 (如 <code>DATE</code>, <code>TIMESTAMP</code>, <code>TIMESTAMP WITH TIME ZONE</code>)。无需额外转换器。</li>
+</ul>
+</li>
+</ol>
+<p><strong>建议：</strong></p>
+<ul>
+<li><strong>使用 Lombok</strong>: 大幅减少实体类的样板代码。</li>
+<li><strong>实现 <code>Serializable</code></strong>: 虽然不是 JPA 规范严格要求的，但在某些场景下（如分布式缓存、Session 复制）是必要的。</li>
+<li><strong>提供无参构造函数</strong>: JPA 提供者需要通过反射实例化实体，因此必须有一个 <code>public</code> 或 <code>protected</code> 的无参构造函数。</li>
+<li><strong>主键类型</strong>: 推荐使用 <code>Long</code> 或 <code>UUID</code> (String) 作为主键类型，避免使用基本类型 (如 <code>long</code>)，因为基本类型无法表示 <code>null</code> (对于新创建的、尚未持久化的实体，主键可能为 <code>null</code>)。</li>
+<li><strong>命名策略</strong>: 遵循一致的命名策略 (如 Java 驼峰，数据库下划线)，并利用 Spring Boot 的 <code>SpringPhysicalNamingStrategy</code>。</li>
+</ul>
+<p>至此，你就完成了 Spring Boot 与 Spring Data JPA 的基本集成和实体类的定义！你的应用现在已经具备了通过 JPA 与数据库进行交互的基础。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/" class="category-chain-item">Data</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/" class="category-chain-item">JPA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/" class="category-chain-item">大纲学习</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JPA/" class="print-no-link">#JPA</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>快速集成 Spring Data JPA</div>
+      <div>http://example.com/2024/06/13/Java/Framework/Spring Boot/Data/Hibernate &amp; JPA/JPA/2.快速集成 Spring Data JPA/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E9%80%BB%E8%BE%91%E5%88%A0%E9%99%A4%EF%BC%88Soft%20Delete%EF%BC%89/" title="逻辑删除（Soft Delete）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">逻辑删除（Soft Delete）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.1Repository%20%E6%8E%A5%E5%8F%A3/" title="Repository 接口">
+                        <span class="hidden-mobile">Repository 接口</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

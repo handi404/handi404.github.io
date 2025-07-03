@@ -1,0 +1,864 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="4.2 乐观锁与悲观锁 在并发环境下，多个事务可能同时尝试修改同一份数据，导致数据不一致。锁机制是解决并发控制的主要手段。 4.2.1 乐观锁 (Optimistic Locking)  理念: 假设并发冲突是小概率事件。在读取数据时不加锁，允许其他事务读取和修改。在提交更新时，检查数据在此期间是否已被其他事务修改过。如果被修改，则本次更新失败 (通常抛出异常)，由应用层决定如何处理 (如重试、提">
+<meta property="og:type" content="article">
+<meta property="og:title" content="乐观锁与悲观锁">
+<meta property="og:url" content="http://example.com/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&%20JPA/JPA/4.%E8%BF%9B%E9%98%B6/4.2%E4%B9%90%E8%A7%82%E9%94%81%E4%B8%8E%E6%82%B2%E8%A7%82%E9%94%81/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="4.2 乐观锁与悲观锁 在并发环境下，多个事务可能同时尝试修改同一份数据，导致数据不一致。锁机制是解决并发控制的主要手段。 4.2.1 乐观锁 (Optimistic Locking)  理念: 假设并发冲突是小概率事件。在读取数据时不加锁，允许其他事务读取和修改。在提交更新时，检查数据在此期间是否已被其他事务修改过。如果被修改，则本次更新失败 (通常抛出异常)，由应用层决定如何处理 (如重试、提">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/jpa.png">
+<meta property="article:published_time" content="2024-06-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-03T10:12:33.978Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="JPA">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/jpa.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>乐观锁与悲观锁 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="乐观锁与悲观锁"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-06-13 00:00" pubdate>
+          2024年6月13日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">乐观锁与悲观锁</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月3日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h4 id="4-2-乐观锁与悲观锁">4.2 乐观锁与悲观锁</h4>
+<p>在并发环境下，多个事务可能同时尝试修改同一份数据，导致数据不一致。锁机制是解决并发控制的主要手段。</p>
+<h5 id="4-2-1-乐观锁-Optimistic-Locking">4.2.1 乐观锁 (Optimistic Locking)</h5>
+<ul>
+<li><strong>理念</strong>: 假设并发冲突是小概率事件。在读取数据时不加锁，允许其他事务读取和修改。在提交更新时，检查数据在此期间是否已被其他事务修改过。如果被修改，则本次更新失败 (通常抛出异常)，由应用层决定如何处理 (如重试、提示用户)。</li>
+<li><strong>实现方式</strong>: 通常通过在实体中添加一个<strong>版本号字段 (version column)</strong>。
+<ul>
+<li>每次读取数据时，连同版本号一起读出。</li>
+<li>每次更新数据时，将版本号加 1，并且在 <code>UPDATE</code> 语句的 <code>WHERE</code> 条件中检查版本号是否与读取时的一致 (<code>WHERE id = ? AND version = ?</code>)。</li>
+<li>如果版本号不匹配，说明数据已被修改，更新操作不会影响任何行。</li>
+</ul>
+</li>
+<li><strong>JPA 中的实现 (<code>@Version</code> 注解)</strong>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Entity</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Product</span> &#123;<br>    <span class="hljs-meta">@Id</span><br>    <span class="hljs-keyword">private</span> Long id;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-keyword">private</span> <span class="hljs-type">int</span> stock;<br><br>    <span class="hljs-meta">@Version</span> <span class="hljs-comment">// ① 标记为版本号字段</span><br>    <span class="hljs-keyword">private</span> Integer version; <span class="hljs-comment">// 类型可以是 Integer, Long, Timestamp, java.util.Date</span><br>                           <span class="hljs-comment">// 通常用数值类型，每次更新时 JPA 提供者会自动加 1</span><br>    <span class="hljs-comment">// getters, setters</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<strong>使用</strong>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">updateProductStock</span><span class="hljs-params">(Long productId, <span class="hljs-type">int</span> newStock)</span> &#123;<br>    <span class="hljs-type">Product</span> <span class="hljs-variable">product</span> <span class="hljs-operator">=</span> productRepository.findById(productId)<br>                        .orElseThrow(() -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">EntityNotFoundException</span>(<span class="hljs-string">&quot;Product not found&quot;</span>));<br><br>    <span class="hljs-comment">// 假设这里有一些业务逻辑，可能需要一些时间</span><br>    <span class="hljs-comment">// Thread.sleep(100); // 模拟并发</span><br><br>    product.setStock(newStock);<br>    <span class="hljs-comment">// product.setVersion(product.getVersion()); // 不需要手动设置 version，JPA 会自动处理</span><br><br>    <span class="hljs-keyword">try</span> &#123;<br>        productRepository.save(product); <span class="hljs-comment">// save() 方法会触发 UPDATE</span><br>                                         <span class="hljs-comment">// Hibernate 会生成类似:</span><br>                                         <span class="hljs-comment">// UPDATE product SET name=?, stock=?, version=? WHERE id=? AND version=?</span><br>                                         <span class="hljs-comment">// 新的 version 是 old_version + 1</span><br>    &#125; <span class="hljs-keyword">catch</span> (OptimisticLockException | StaleObjectStateException e) &#123; <span class="hljs-comment">// ② 捕获并发冲突异常</span><br>        <span class="hljs-comment">// Hibernate 通常抛出 StaleObjectStateException 或其子类</span><br>        <span class="hljs-comment">// JPA 规范定义了 OptimisticLockException</span><br>        log.error(<span class="hljs-string">&quot;Optimistic lock conflict for product &quot;</span> + productId, e);<br>        <span class="hljs-comment">// 处理冲突：重试、给用户错误提示、合并更改等</span><br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ConcurrentModificationException</span>(<span class="hljs-string">&quot;Data was modified by another transaction. Please retry.&quot;</span>, e);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>① <code>@Version</code> 注解</strong>: 告诉 JPA 这个字段是版本号。JPA 提供者 (如 Hibernate) 会在更新时自动管理它 (读取、检查、递增)。</li>
+<li><strong>② 异常处理</strong>: 当发生乐观锁冲突时 (即 <code>UPDATE</code> 语句的 <code>WHERE version = ?</code> 条件不满足，更新了0行)，JPA 提供者通常会抛出特定的异常 (如 Hibernate 的 <code>StaleObjectStateException</code>，或标准的 <code>OptimisticLockException</code>)。应用需要捕获并处理这种异常。</li>
+</ul>
+</li>
+<li><strong>优点</strong>: 并发性能好 (读操作不加锁)，吞吐量高。</li>
+<li><strong>缺点</strong>: 更新冲突时需要应用层处理，可能增加逻辑复杂度。如果冲突频繁，性能反而可能下降 (因为大量重试)。</li>
+<li><strong>适用场景</strong>: 读多写少，并发冲突概率低的场景。</li>
+</ul>
+<h5 id="4-2-2-悲观锁-Pessimistic-Locking">4.2.2 悲观锁 (Pessimistic Locking)</h5>
+<ul>
+<li>
+<p><strong>理念</strong>: 假设并发冲突是大概率事件。在读取数据时就对其加锁 (通常是数据库层面的行级锁或表级锁)，阻止其他事务修改 (甚至读取，取决于锁类型) 这份数据，直到当前事务释放锁 (通常在事务提交或回滚时)。</p>
+</li>
+<li>
+<p><strong>实现方式</strong>: 依赖数据库提供的锁机制。</p>
+</li>
+<li>
+<p><strong>JPA 中的实现 (<code>LockModeType</code> 枚举)</strong>:<br>
+可以通过 <code>EntityManager.find()</code>, <code>EntityManager.lock()</code>, <code>Query.setLockMode()</code>, 或 Spring Data JPA Repository 方法的 <code>@Lock</code> 注解来指定锁模式。<br>
+<strong><code>jakarta.persistence.LockModeType</code> (或 <code>javax.persistence.LockModeType</code>) 枚举值</strong>:</p>
+<ul>
+<li><code>NONE</code>: 无锁 (默认)。</li>
+<li><strong>悲观读锁 (Pessimistic Read / Shared Lock)</strong>:
+<ul>
+<li><code>PESSIMISTIC_READ</code> (JPA 2.0+): 其他事务可以读取该数据，但不能修改。当前事务可以读取。对应 SQL 通常是 <code>SELECT ... FOR SHARE</code> (PostgreSQL, MySQL 8+) 或 <code>SELECT ... WITH (HOLDLOCK, ROWLOCK)</code> (SQL Server)。</li>
+</ul>
+</li>
+<li><strong>悲观写锁 (Pessimistic Write / Exclusive Lock)</strong>:
+<ul>
+<li><code>PESSIMISTIC_WRITE</code> (JPA 2.0+): 其他事务既不能读取也不能修改该数据 (取决于数据库和隔离级别，有些数据库在写锁下仍允许非锁定读)。当前事务可以读取和修改。对应 SQL 通常是 <code>SELECT ... FOR UPDATE</code>。</li>
+</ul>
+</li>
+<li><code>OPTIMISTIC</code> (JPA 2.0+): 使用乐观锁 (通过 <code>@Version</code> 字段)。<code>find</code> 或 <code>lock</code> 时会检查版本。</li>
+<li><code>OPTIMISTIC_FORCE_INCREMENT</code> (JPA 2.0+): 即使实体没有被修改，也强制增加版本号。用于确保即使只是读取了实体，如果希望其他事务知道它被“碰过”，也可以增加版本。</li>
+<li><code>PESSIMISTIC_FORCE_INCREMENT</code>: 组合了 <code>PESSIMISTIC_WRITE</code> 和 <code>OPTIMISTIC_FORCE_INCREMENT</code>。</li>
+<li><code>READ</code> (JPA 1.0, 类似于 <code>PESSIMISTIC_READ</code>，但语义上可能略有不同，建议用 <code>PESSIMISTIC_READ</code>)。</li>
+<li><code>WRITE</code> (JPA 1.0, 类似于 <code>PESSIMISTIC_WRITE</code>，建议用 <code>PESSIMISTIC_WRITE</code>)。</li>
+</ul>
+<p><strong>使用示例：</strong></p>
+<ol>
+<li><strong>通过 <code>EntityManager.find()</code></strong>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional</span><br><span class="hljs-keyword">public</span> Product <span class="hljs-title function_">getProductForUpdate</span><span class="hljs-params">(Long productId)</span> &#123;<br>    <span class="hljs-comment">// 获取一个悲观写锁，其他事务无法修改此 product 直到本事务结束</span><br>    <span class="hljs-type">Product</span> <span class="hljs-variable">product</span> <span class="hljs-operator">=</span> entityManager.find(Product.class, productId, LockModeType.PESSIMISTIC_WRITE);<br>    <span class="hljs-keyword">if</span> (product == <span class="hljs-literal">null</span>) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">EntityNotFoundException</span>(<span class="hljs-string">&quot;Product not found&quot;</span>);<br>    &#125;<br>    <span class="hljs-comment">// ... 进行修改 ...</span><br>    <span class="hljs-comment">// product.setStock(product.getStock() - 1); // 修改后，事务提交时会自动保存</span><br>    <span class="hljs-keyword">return</span> product;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>通过 <code>EntityManager.lock()</code></strong>: (对已加载的 Managed 实体尝试加锁)<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">lockProductExplicitly</span><span class="hljs-params">(Product product)</span> &#123; <span class="hljs-comment">// product 必须是 Managed 状态</span><br>    <span class="hljs-keyword">try</span> &#123;<br>        entityManager.lock(product, LockModeType.PESSIMISTIC_WRITE);<br>        <span class="hljs-comment">// 现在 product 被悲观写锁锁定</span><br>    &#125; <span class="hljs-keyword">catch</span> (PessimisticLockException | LockTimeoutException e) &#123;<br>        <span class="hljs-comment">// 处理锁获取失败或超时</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>通过 <code>Query.setLockMode()</code></strong>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Transactional</span><br><span class="hljs-keyword">public</span> List&lt;Product&gt; <span class="hljs-title function_">findProductsByCategoryAndLock</span><span class="hljs-params">(String category)</span> &#123;<br>    TypedQuery&lt;Product&gt; query = entityManager.createQuery(<br>        <span class="hljs-string">&quot;SELECT p FROM Product p WHERE p.category = :category&quot;</span>, Product.class);<br>    query.setParameter(<span class="hljs-string">&quot;category&quot;</span>, category);<br>    query.setLockMode(LockModeType.PESSIMISTIC_WRITE); <span class="hljs-comment">// 对查询结果集中的所有行加写锁</span><br>    <span class="hljs-keyword">return</span> query.getResultList();<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>通过 Spring Data JPA Repository 方法的 <code>@Lock</code> 注解 (推荐方式)</strong>:<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// ProductRepository.java</span><br><span class="hljs-keyword">import</span> org.springframework.data.jpa.repository.Lock;<br><span class="hljs-comment">// ...</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ProductRepository</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">JpaRepository</span>&lt;Product, Long&gt; &#123;<br>    <span class="hljs-meta">@Lock(LockModeType.PESSIMISTIC_WRITE)</span><br>    <span class="hljs-meta">@Query(&quot;SELECT p FROM Product p WHERE p.id = :id&quot;)</span> <span class="hljs-comment">// 也可以用于派生查询方法</span><br>    Optional&lt;Product&gt; <span class="hljs-title function_">findAndLockById</span><span class="hljs-params">(<span class="hljs-meta">@Param(&quot;id&quot;)</span> Long id)</span>;<br><br>    <span class="hljs-meta">@Lock(LockModeType.PESSIMISTIC_READ)</span><br>    Optional&lt;Product&gt; <span class="hljs-title function_">findByName</span><span class="hljs-params">(String name)</span>; <span class="hljs-comment">// 派生查询也可以加锁</span><br>&#125;<br><br><span class="hljs-comment">// UserService.java</span><br><span class="hljs-comment">// @Transactional</span><br><span class="hljs-comment">// public void processProduct(Long id) &#123;</span><br><span class="hljs-comment">//     Optional&lt;Product&gt; productOpt = productRepository.findAndLockById(id);</span><br><span class="hljs-comment">//     // ...</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>优点</strong>: 能有效防止数据更新丢失，数据一致性强。</p>
+</li>
+<li>
+<p><strong>缺点</strong>:</p>
+<ul>
+<li><strong>性能开销大</strong>: 锁会阻塞其他事务，降低系统并发性和吞吐量。</li>
+<li><strong>死锁风险</strong>: 如果多个事务以不同顺序请求锁，可能导致死锁。需要仔细设计锁的获取顺序和事务范围。</li>
+<li><strong>依赖数据库</strong>: 锁的实现和行为依赖于底层数据库。</li>
+</ul>
+</li>
+<li>
+<p><strong>适用场景</strong>: 写操作频繁，并发冲突概率高，且数据一致性要求非常严格的场景 (如金融交易、库存扣减的关键步骤)。</p>
+</li>
+</ul>
+<p><strong>选择乐观锁还是悲观锁？</strong></p>
+<ul>
+<li><strong>乐观锁</strong>: 适合读多写少、冲突不频繁、对吞吐量要求高的场景。是 Web 应用中的常用选择。</li>
+<li><strong>悲观锁</strong>: 适合写多冲突多、数据一致性要求极高、且能接受一定性能损失的场景。通常只在核心的、短小的事务操作中使用。</li>
+<li>可以根据具体业务场景混合使用。</li>
+</ul>
+<hr>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/" class="category-chain-item">Data</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/" class="category-chain-item">JPA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/" class="category-chain-item">大纲学习</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/%E8%BF%9B%E9%98%B6/" class="category-chain-item">进阶</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JPA/" class="print-no-link">#JPA</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>乐观锁与悲观锁</div>
+      <div>http://example.com/2024/06/13/Java/Framework/Spring Boot/Data/Hibernate &amp; JPA/JPA/4.进阶/4.2乐观锁与悲观锁/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年6月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/%E5%A4%A7%E7%BA%B2/" title="大纲">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">大纲</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

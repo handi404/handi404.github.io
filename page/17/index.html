@@ -237,15 +237,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%E5%92%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2/" target="_self">
+        <a href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Structured%20Output/%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA%E8%BD%AC%E6%8D%A2%E5%99%A8%20__%20Spring%20AI%20%E5%8F%82%E8%80%83/" target="_self">
           
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%E5%92%8C%E5%A4%9A%E8%A1%A8%E6%9F%A5%E8%AF%A2/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Structured%20Output/%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA%E8%BD%AC%E6%8D%A2%E5%99%A8%20__%20Spring%20AI%20%E5%8F%82%E8%80%83/" target="_self">
         <div>
-          Hibernate &amp; JPA 的关系映射和多表查询是 Spring Boot 应用数据持久化的核心。我们来深入浅出地探讨一下。 前提：JPA 与 Hibernate  JPA (Jakarta Persistence API)：它是一个 Java 规范/标准，定义了一套用于对象关系映射 (ORM) 和管理持久化数据的 API。你可以把它想象成 JDBC 规范，但更高级，是针对对象的。 H
+          [[2025-05-26]]     自 2024 年 5 月 2 日起，旧的 OutputParser 、 BeanOutputParser 、 ListOutputParser 和 MapOutputParser 类已弃用，取而代之的是新的 StructuredOutputConverter 、 BeanOutputConverter 、 ListOutputConverter 和 MapOu
         </div>
       </a>
 
@@ -270,15 +270,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/Hibernate%20&amp;%20JPA/" target="_self">
+        <a href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/%E6%9C%AA%E5%91%BD%E5%90%8D/" target="_self">
           
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/Hibernate%20&amp;%20JPA/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/%E6%9C%AA%E5%91%BD%E5%90%8D/" target="_self">
         <div>
-          从获取正确的项目依赖项开始，使用 JPA 注解标注我们的类，并设置 SessionFactory。这使我们能够执行基本的 CRUD 操作、HQL 和 Criteria 查询。之后，我们可以简单地 JPA 化我们的代码，替换几个类，你就会理解 Hibernate / JPA 与 Spring Boot 是如何协同工作的。到那时，你将对其使用有一个良好的（初步）了解，以及你的未来 Hibernate
+          Prompt 和 PromptTemplate 深入讲解 一、Prompt 核心概念 1.1 Prompt 的本质 Prompt 是 Spring AI 中代表完整AI请求的核心数据结构。它不仅包含用户的输入文本，还包含了控制AI行为的各种参数和上下文信息。 12345678910public class Prompt &#123;    private final List&lt;Message
         </div>
       </a>
 
@@ -303,55 +303,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/Auditing/" target="_self">
-          审计::Spring Data JPA --- Auditing :: Spring Data JPA
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/Auditing/" target="_self">
-        <div>
-          Basics 基础知识 Spring Data 提供了完善的支持，可以透明地跟踪实体的创建者或更改者以及更改发生的时间。要使用此功能，您必须为实体类配备审计元数据，这些元数据可以使用注解或实现接口来定义。此外，还必须通过注解配置或 XML 配置来启用审计功能，以注册所需的基础架构组件。请参阅特定于商店的部分以获取配置示例。     仅跟踪创建和修改日期的应用程序不需要让其实体实现 AuditorA
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/clippings/">#clippings</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Actuator/%E6%A6%82%E8%BF%B0/" target="_self">
+        <a href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Prompt%E3%80%81Role%20%E5%92%8C%20Message/" target="_self">
           
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Actuator/%E6%A6%82%E8%BF%B0/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Prompt%E3%80%81Role%20%E5%92%8C%20Message/" target="_self">
         <div>
-          Spring Boot Actuator 是 Spring Boot 提供的一个非常强大的子项目，它能帮助你监控和管理你的应用程序。可以把它想象成你应用的“仪表盘”和“控制台”，让你在应用运行时能够洞察其内部状态，并在必要时进行一些操作。 核心价值：为生产环境的应用提供即用型的监控和管理端点。 最新特性与趋势 (Spring Boot 3.x):  Micrometer 深度集成: Actuato
+          Spring AI 中的 Prompt、Role 和 Message 体系详解 核心概念关系图 123456789Prompt (提示词容器)├── Messages (消息列表)│   ├── SystemMessage (系统角色消息)│   ├── UserMessage (用户角色消息) │   ├── AssistantMessage (助手角色消息)│   └── ToolRespon
         </div>
       </a>
 
@@ -376,15 +336,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/Actuator/%E4%BD%BF%E7%94%A8%20Grafana%20Stack%20%E5%AE%9E%E7%8E%B0%E5%8F%AF%E8%A7%82%E5%AF%9F%E6%80%A7/" target="_self">
+        <a href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Prompt%20%E4%B8%8E%20PromptTemplate/" target="_self">
           
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/Actuator/%E4%BD%BF%E7%94%A8%20Grafana%20Stack%20%E5%AE%9E%E7%8E%B0%E5%8F%AF%E8%A7%82%E5%AF%9F%E6%80%A7/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Prompt%20%E4%B8%8E%20PromptTemplate/" target="_self">
         <div>
-          在这篇博文《 Spring Boot 3 与 Grafana Stack 的可观察性 》中，我们将学习如何使用 由 Grafana、Loki 和 Tempo 组成的 Grafana Stack 在我们的 Spring Boot 应用程序中实现可观察性。  什么是 Observability(可观察性)？ 简而言之，可观察性是借助 Log(日志)、Metrics(指标)和 Tracing(追踪) 信
+          一、Prompt (提示)   是什么？  Prompt 在 Spring AI 中是一个对象，它封装了发送给 AI 模型的完整输入。 你可以把它想象成你向 AI 提出的一个具体问题、指令或者一段需要处理的文本。 最简单的 Prompt 就是一个包含你想要发送给模型的字符串。    为什么需要一个对象，而不仅仅是字符串？  结构化：虽然最基本的是文本指令，但一个 Prompt 对象可以携带更多结构
         </div>
       </a>
 
@@ -409,15 +369,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/%E8%AE%A8%E8%AE%BA%E4%BC%A0%E7%BB%9F%E7%9A%84%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84%E4%B8%AD%E8%BE%83%E4%B8%BA%E9%87%8D%E8%A6%81%E7%9A%84%E5%B1%82/" target="_self">
+        <a href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/ChatClient%20%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E7%9A%84%E6%AF%8F%E4%B8%AA%E6%96%B9%E6%B3%95/" target="_self">
           
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/%E8%AE%A8%E8%AE%BA%E4%BC%A0%E7%BB%9F%E7%9A%84%E5%88%86%E5%B1%82%E6%9E%B6%E6%9E%84%E4%B8%AD%E8%BE%83%E4%B8%BA%E9%87%8D%E8%A6%81%E7%9A%84%E5%B1%82/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/ChatClient%20%E9%93%BE%E5%BC%8F%E8%B0%83%E7%94%A8%E7%9A%84%E6%AF%8F%E4%B8%AA%E6%96%B9%E6%B3%95/" target="_self">
         <div>
-          spring boot 最重要的是哪一层？ Spring Boot 是一个用于创建独立的、生产级的 Spring 基础应用的框架，它简化了基于 Spring 的应用开发。Spring Boot 并不是一个单一的层次，而是提供了一套完整的基础设施支持来帮助开发者快速构建应用。 在传统的分层架构中，通常会有以下几层：   表现层（Presentation Layer）：也称为用户界面层或前端层，负责与
+          ChatClient 的流式 API 所采用的链式调用中每个方法的详解： 1234ChatClient.prompt()     → PromptSpec (配置提示)    → CallSpec (执行调用)    → ResponseSpec (处理响应)
         </div>
       </a>
 
@@ -442,90 +402,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%20(Auto-Configuration)/" target="_self">
-          自动配置 (Auto-Configuration)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/%E8%87%AA%E5%8A%A8%E9%85%8D%E7%BD%AE%20(Auto-Configuration)/" target="_self">
-        <div>
-          Spring Boot 的自动配置 (Auto-Configuration) 是其最核心、最具魔力的特性之一，也是它能够实现“约定优于配置”理念的关键。它极大地简化了 Spring 应用的搭建和开发过程。 我们来深入浅出地剖析一下它的工作原理。  1. 自动配置是什么？为什么需要它？ 是什么： 简单来说，Spring Boot 的自动配置会尝试根据你添加到项目中的依赖 (JARs) 来自动配置你的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-24 21:34" pubdate>
-              2025-06-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Java/" class="category-chain-item">Java</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/sprin/">#sprin</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA%E8%BD%AC%E6%8D%A2%E5%99%A8/" target="_self">
+        <a href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Chat%20Model%20API/" target="_self">
           
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA%E8%BD%AC%E6%8D%A2%E5%99%A8/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Chat%20Model%20API/" target="_self">
         <div>
-          “结构化输出转换器”（Structured Output Converter）。 这个词听起来可能有点官方，但其实它描述的是我们日常开发中非常常见的一类工具或机制。 是什么 (What) 简单来说，结构化输出转换器 指的是一种将程序内部的数据（通常是 Java 对象）转换成特定结构化格式文本或字节流的工具或过程。反之，它通常也能将这种结构化格式的数据转换回程序内部的数据（即 Java 对象）。 这
+          Spring AI 中的 ChatModel API。这是与大语言模型（LLM）进行对话式交互的核心接口。 ChatModel API 设计的目标是提供一个统一、简洁的方式来与各种底层聊天模型（如 OpenAI 的 GPT 系列、Azure OpenAI、Google Vertex AI Gemini、Ollama 本地模型、Anthropic Claude 等）进行交互，而无需关心它们各自 SD
         </div>
       </a>
 
@@ -550,15 +435,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/%E6%9C%AA%E5%91%BD%E5%90%8D/" target="_self">
+        <a href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Chat%20Client%20API/" target="_self">
           
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/%E6%9C%AA%E5%91%BD%E5%90%8D/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E5%85%B3%E9%94%AE%E6%8A%BD%E8%B1%A1%E4%B8%8E%E7%BB%84%E4%BB%B6/Chat%20Client%20API/" target="_self">
         <div>
-          00:00 - 什么是 Observability(可观察性)？ 02:25 - 应用程序概述 03:15 - 起始代码和完整代码链接 03:51 – 应用程序代码演练 10:36 - 使用 Loki 实现 Logging(日志记录) 15:49 - 使用 Micrometer 和 Prometheus 1 实现 Metrics(指标) 20:33 - 使用 OpenZipkin Brave Br
+          Spring AI 中的核心组件之一：ChatClient。 ChatClient 是 Spring AI 中用于与聊天模型 (Chat Models) 进行交互的核心接口。你可以把它想象成一个通用的“对话机器人控制器”，无论你背后使用的是 OpenAI 的 GPT 系列、Google 的 Gemini、Anthropic 的 Claude，还是本地运行的 Ollama 模型，你都通过这个统一的
         </div>
       </a>
 
@@ -583,15 +468,81 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/24/Java/Framework/Spring%20Boot/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84/" target="_self">
+        <a href="/2025/06/24/Java/Framework/Spring%20AI/LangChain4j/%E4%BD%BF%E7%94%A8%20LangChain4J%E3%80%81Spring%20Boot%20%E5%92%8C%20Astra%20DB%20%E6%9E%84%E5%BB%BA%20AI%20PDF%20%E8%81%8A%E5%A4%A9%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/" target="_self">
           
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20Boot/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/LangChain4j/%E4%BD%BF%E7%94%A8%20LangChain4J%E3%80%81Spring%20Boot%20%E5%92%8C%20Astra%20DB%20%E6%9E%84%E5%BB%BA%20AI%20PDF%20%E8%81%8A%E5%A4%A9%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/" target="_self">
         <div>
-          已经有了JavaWeb的基础，学习Spring Boot将会是一个自然的延伸。Spring Boot简化了基于Spring的应用程序的开发过程，提供了许多开箱即用的功能和自动配置，使开发者可以更快地构建应用。以下是建议的学习路径： 1. 理解Spring Boot的核心概念  起步依赖（Starters）：了解Spring Boot提供的各种starter POM，它们简化了项目的依赖管理。 自动
+          
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20AI/%E6%9C%AA%E5%91%BD%E5%90%8D%201/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E6%9C%AA%E5%91%BD%E5%90%8D%201/" target="_self">
+        <div>
+          prompt role: system role user role assistant role function role Message: SystemMessage UserMessage AssistantMessage ToolResponseMessage AbstractMessage 以及 prompt role Message 三者之间的关系
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-24 21:34" pubdate>
+              2025-06-24
+            </time>
+          </div>
+        
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/24/Java/Framework/Spring%20AI/%E6%8F%90%E4%BE%9B%E5%95%86/" target="_self">
+          
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/24/Java/Framework/Spring%20AI/%E6%8F%90%E4%BE%9B%E5%95%86/" target="_self">
+        <div>
+          Google OpenAI Deepseek
         </div>
       </a>
 
@@ -614,7 +565,7 @@
 
   <nav aria-label="navigation">
     <span class="pagination" id="pagination">
-      <a class="extend prev" rel="prev" href="/page/16/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/#board">15</a><a class="page-number" href="/page/16/#board">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/#board">18</a><a class="page-number" href="/page/19/#board">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/22/#board">22</a><a class="extend next" rel="next" href="/page/18/#board"><i class="iconfont icon-arrowright"></i></a>
+      <a class="extend prev" rel="prev" href="/page/16/#board"><i class="iconfont icon-arrowleft"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/15/#board">15</a><a class="page-number" href="/page/16/#board">16</a><span class="page-number current">17</span><a class="page-number" href="/page/18/#board">18</a><a class="page-number" href="/page/19/#board">19</a><span class="space">&hellip;</span><a class="page-number" href="/page/23/#board">23</a><a class="extend next" rel="next" href="/page/18/#board"><i class="iconfont icon-arrowright"></i></a>
     </span>
   </nav>
 
