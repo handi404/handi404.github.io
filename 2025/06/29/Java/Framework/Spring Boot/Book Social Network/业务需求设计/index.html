@@ -26,10 +26,12 @@
 <meta property="og:site_name" content="繁星的蓝">
 <meta property="og:description" content="需求 图书管理：  用户可以创建、更新和删除书籍。 每本书应包含 title 标题, author 作者, genre 类型, description 描述等属性。 在后端和前端均实现书籍的CRUD (Create, Read, Update, Delete) 操作。 用户可以将不再希望分享但仍需保留记录的书籍归档。  图书共享：  用户可以将一本书标记为“可共享”。 其他用户可以查看可共享书籍的">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/2025/06/29/Java/Framework/Spring%20Boot/Book%20Social%20Network/%E4%B8%9A%E5%8A%A1%E9%9C%80%E6%B1%82%E8%AE%BE%E8%AE%A1/Class-diagram.png">
 <meta property="article:published_time" content="2025-06-29T12:15:56.654Z">
-<meta property="article:modified_time" content="2025-06-29T12:38:23.835Z">
+<meta property="article:modified_time" content="2025-07-04T11:12:46.895Z">
 <meta property="article:author" content="Han Di">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/2025/06/29/Java/Framework/Spring%20Boot/Book%20Social%20Network/%E4%B8%9A%E5%8A%A1%E9%9C%80%E6%B1%82%E8%AE%BE%E8%AE%A1/Class-diagram.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -230,7 +232,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          558 字
+          556 字
         
       </span>
     
@@ -292,7 +294,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年6月29日 晚上
+                    本文最后更新于 2025年7月4日 晚上
                   
                 
               </p>
@@ -331,7 +333,7 @@
 <li>使用安全的电子邮件验证码激活帐户。</li>
 </ul>
 <h2 id="设计类图">设计类图</h2>
-<p>![](Class diagram.png)</p>
+<p><img src="Class-diagram.png" srcset="/img/loading.gif" lazyload alt="Class"></p>
 <p>这不是确切的类图，它甚至不是数据库图。<br>
 看到一个用户可以拥有很多角色，并且角色可以分配给多个用户，为什么一个用户可以拥有多个角色因为例如想象一下 admin 或 manager 的情况。当我们拥有这些多对多关系时，我们会考虑关联实体或关联表，所以我们在这里称之为用户角 User_Role，这个将是稍后由 Hibernate 自动管理。</p>
 <p>为什么我没有链接书和用户之间的关系，只是不要让呃这个图表太拥挤，有很多线条</p>

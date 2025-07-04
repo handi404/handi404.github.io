@@ -28,7 +28,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://example.com/img/java/spring.png">
 <meta property="article:published_time" content="2025-07-02T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-07-03T10:58:51.821Z">
+<meta property="article:modified_time" content="2025-07-04T11:07:32.399Z">
 <meta property="article:author" content="Han Di">
 <meta property="article:tag" content="fullstack">
 <meta name="twitter:card" content="summary_large_image">
@@ -295,7 +295,7 @@
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年7月3日 晚上
+                    本文最后更新于 2025年7月4日 晚上
                   
                 
               </p>
@@ -305,7 +305,7 @@
                 
                 <h2 id="Spring-Security-概述">Spring Security 概述</h2>
 <p>从头开始创建应用程序时，你需要考虑的第一件事就是设置安全。为什么我们需要首先建立安全？因为例如你需要获取连接的用户信息，并执行例如审计或了解谁在做什么角色权限等等。</p>
-<p><img src="security.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p><img src="security.png" srcset="/img/loading.gif" lazyload alt="security"></p>
 <p>首先让我们了解安全性是如何工作的：</p>
 <p>用户将发送请求操作，第一个拦截请求操作的东西是 FilterChain(过滤器链的集合：在 Spring 应用程序中，有一组默认过滤器链)。在这些过滤器中，我们将有自己的过滤器：<strong>JwtAuthenticationFilter</strong>，它属于每个请求一次过滤器类型。</p>
 <p>JwtAuthenticationFilter 会执行一些步骤：<br>
@@ -357,7 +357,7 @@ SecurityContextHolder 需要或者身份验证需要 Prinpicle，我们也可以
 <p>AuthenticationProvider 是一接口，源码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 表示该类可以处理特定的身份验证实现。</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">AuthenticationProvider</span> &#123;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 使用与 AuthenticationManager.authenticate(Authentication) 相同的协议进行身份验证。</span><br><span class="hljs-comment">	 参数：authentication – 身份验证请求对象。</span><br><span class="hljs-comment">	 返回值：一个包含凭据的完全验证通过的对象。如果身份验证提供程序无法支持传递的身份验证对象的身份验证，则可能返回 null。在这种情况下，将尝试使用支持所提供身份验证类的下一个身份验证提供程序。</span><br><span class="hljs-comment">	 抛出异常：AuthenticationException – 如果身份验证失败。</span><br><span class="hljs-comment">	 */</span><br>	Authentication <span class="hljs-title function_">authenticate</span><span class="hljs-params">(Authentication authentication)</span> <span class="hljs-keyword">throws</span> AuthenticationException;<br><br>	<span class="hljs-comment">/**</span><br><span class="hljs-comment">	 如果此身份验证提供程序支持指定的身份验证对象，则返回 true。</span><br><span class="hljs-comment">     返回 true 并不保证身份验证提供程序能够验证所提供的身份验证对象。它仅表示该提供程序能够对该对象进行更详细的评估。身份验证提供程序仍可从 authenticate(Authentication) 方法返回 null，以指示应尝试其他身份验证提供程序。</span><br><span class="hljs-comment">     能够执行身份验证的 AuthenticationProvider 的选择在运行时由 ProviderManager 进行。</span><br><span class="hljs-comment">     参数：authentication</span><br><span class="hljs-comment">     返回值：如果实现能够对提供的 Authentication 类进行更详细的评估，则返回 true。</span><br><span class="hljs-comment">	 */</span><br>	<span class="hljs-type">boolean</span> <span class="hljs-title function_">supports</span><span class="hljs-params">(Class&lt;?&gt; authentication)</span>;<br><br>&#125;<br></code></pre></td></tr></table></figure>
 <p>看看实现 AuthenticationProvider 接口的有哪些<br>
-<img src="2025-07-01_15-58-04.png" srcset="/img/loading.gif" lazyload alt=""><br>
+<img src="2025-07-01_15-58-04.png" srcset="/img/loading.gif" lazyload alt="image"><br>
 在这些之中，我们看到我们有这个 DaoAuthenticationProvider</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">DaoAuthenticationProvider</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">AbstractUserDetailsAuthenticationProvider</span> &#123;<br>	<span class="hljs-comment">//...</span><br>	<span class="hljs-keyword">private</span> Supplier&lt;PasswordEncoder&gt; passwordEncoder = SingletonSupplier  <br>    .of(PasswordEncoderFactories::createDelegatingPasswordEncoder);<br>    <span class="hljs-comment">//...</span><br>    <span class="hljs-keyword">private</span> UserDetailsService userDetailsService;<br>    <span class="hljs-comment">//...</span><br>&#125;<br></code></pre></td></tr></table></figure>
 <p>继承了 AbstractUserDetailsAuthenticationProvider 此抽象类，它需要或者它有一个 PasswordEncoder 类型的属性，然后是 UserDetailsService 类型的私有对象。</p>
