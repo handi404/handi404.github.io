@@ -21,21 +21,24 @@
   
     <meta name="description" content="Lombok 中的 @Builder 注解（注意：并非 @Build）用于简化对象的构造过程，通过自动生成 Builder 模式代码，使得创建对象变得更直观和可读，尤其适用于构造参数较多或者部分参数为可选的场景。  为什么使用 @Builder？   提高可读性 当类中包含多个参数时，直接使用构造方法可能会让代码难以理解，容易发生参数顺序混乱的问题。使用 Builder 模式，可以通过链式调用明确">
 <meta property="og:type" content="article">
-<meta property="og:title" content="繁星的蓝">
-<meta property="og:url" content="http://example.com/2025/06/24/Java/Framework/Spring%20Boot/Lombok/@Builder/index.html">
+<meta property="og:title" content="@Builder">
+<meta property="og:url" content="http://example.com/2024/07/03/Java/Framework/Spring%20Boot/Lombok/@Builder/index.html">
 <meta property="og:site_name" content="繁星的蓝">
 <meta property="og:description" content="Lombok 中的 @Builder 注解（注意：并非 @Build）用于简化对象的构造过程，通过自动生成 Builder 模式代码，使得创建对象变得更直观和可读，尤其适用于构造参数较多或者部分参数为可选的场景。  为什么使用 @Builder？   提高可读性 当类中包含多个参数时，直接使用构造方法可能会让代码难以理解，容易发生参数顺序混乱的问题。使用 Builder 模式，可以通过链式调用明确">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-06-24T13:34:27.203Z">
-<meta property="article:modified_time" content="2025-03-08T03:06:36.146Z">
+<meta property="og:image" content="http://example.com/img/java/lombok.png">
+<meta property="article:published_time" content="2024-07-02T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-05T12:19:59.479Z">
 <meta property="article:author" content="Han Di">
+<meta property="article:tag" content="lombok">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/lombok.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>繁星的蓝</title>
+  <title>@Builder - 繁星的蓝</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -207,7 +210,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="@Builder"></span>
           
         </div>
 
@@ -218,8 +221,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-06-24 21:34" pubdate>
-          2025年6月24日 晚上
+        <time datetime="2024-07-03 00:00" pubdate>
+          2024年7月3日 凌晨
         </time>
       </span>
     
@@ -287,12 +290,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header"></h1>
+            <h1 id="seo-header">@Builder</h1>
             
               <p id="updated-time" class="note note-info" style="">
                 
                   
-                    本文最后更新于 2025年3月8日 上午
+                    本文最后更新于 2025年7月5日 晚上
                   
                 
               </p>
@@ -446,6 +449,55 @@ Lombok 的 @Builder 自动生成 Builder 类，利用链式调用创建对象，
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Lombok/" class="category-chain-item">Lombok</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/lombok/" class="print-no-link">#lombok</a>
+      
+    </div>
   
 </div>
 
@@ -455,8 +507,8 @@ Lombok 的 @Builder 自动生成 Builder 类，利用链式调用创建对象，
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
-      <div>http://example.com/2025/06/24/Java/Framework/Spring Boot/Lombok/@Builder/</div>
+      <div>@Builder</div>
+      <div>http://example.com/2024/07/03/Java/Framework/Spring Boot/Lombok/@Builder/</div>
     </div>
     <div class="license-meta">
       
@@ -468,7 +520,7 @@ Lombok 的 @Builder 自动生成 Builder 类，利用链式调用创建对象，
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年6月24日</div>
+          <div>2024年7月3日</div>
         </div>
       
       
@@ -500,9 +552,9 @@ Lombok 的 @Builder 自动生成 Builder 类，利用链式调用创建对象，
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Security/Spring%20Security%20%E5%8F%98%E5%BE%97%E7%AE%80%E5%8D%95/" title="">
+                      <a href="/2024/07/03/Java/Framework/Spring%20Boot/Lombok/Lombok/" title="注解全家桶">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile"></span>
+                        <span class="hidden-mobile">注解全家桶</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -510,8 +562,8 @@ Lombok 的 @Builder 自动生成 Builder 类，利用链式调用创建对象，
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2025/06/24/Java/Framework/Spring%20Boot/Jackson/%E5%BF%BD%E7%95%A5%E5%AD%97%E6%AE%B5/" title="">
-                        <span class="hidden-mobile"></span>
+                      <a href="/2024/06/13/Java/Framework/Spring%20Boot/ParameterizedTypeReference/" title="ParameterizedTypeReference">
+                        <span class="hidden-mobile">ParameterizedTypeReference</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
