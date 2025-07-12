@@ -235,6 +235,523 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.3%E5%AE%9E%E4%BD%93%E7%AE%A1%E7%90%86%E5%99%A8%20(EntityManager)/" target="_self">
+          <img src="/img/java/jpa.png" srcset="/img/loading.gif" lazyload alt="实体管理器 (EntityManager)">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.3%E5%AE%9E%E4%BD%93%E7%AE%A1%E7%90%86%E5%99%A8%20(EntityManager)/" target="_self">
+          实体管理器 (EntityManager)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.3%E5%AE%9E%E4%BD%93%E7%AE%A1%E7%90%86%E5%99%A8%20(EntityManager)/" target="_self">
+        <div>
+          探讨 JPA 的核心接口——实体管理器 (EntityManager)，以及与之密切相关的实体生命周期状态和一级缓存（持久化上下文）。理解这部分内容对于掌握 JPA 的工作机制和编写高效的持久化代码至关重要。  3.3 实体管理器 (EntityManager) EntityManager 是应用程序与 JPA 持久化层交互的主要接口。它负责管理实体的生命周期、执行数据库操作、以及与持久化上下文（
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-13 00:00" pubdate>
+              2024-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/" class="category-chain-item">Data</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/" class="category-chain-item">JPA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/" class="category-chain-item">大纲学习</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/" class="category-chain-item">核心功能</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JPA/">#JPA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.5Criteria%20API/" target="_self">
+          <img src="/img/java/jpa.png" srcset="/img/loading.gif" lazyload alt="Criteria API">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.5Criteria%20API/" target="_self">
+          Criteria API
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.5Criteria%20API/" target="_self">
+        <div>
+          探讨 JPA 的 Criteria API。这是一种用于构建动态查询的、类型安全的方式，作为 JPQL 字符串拼接的替代方案。  3.5 Criteria API 为什么需要 Criteria API？ 虽然 JPQL 是一种强大的查询语言，但在需要根据运行时条件动态构建查询（例如，用户在界面上选择了不同的过滤条件）的场景下，直接拼接 JPQL 字符串可能会变得复杂、易错，并且存在潜在的 JPQL
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-13 00:00" pubdate>
+              2024-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/" class="category-chain-item">Data</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/" class="category-chain-item">JPA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/" class="category-chain-item">大纲学习</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/" class="category-chain-item">核心功能</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JPA/">#JPA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.2%E5%AE%9E%E4%BD%93%E6%98%A0%E5%B0%84%20(Mappings)/" target="_self">
+          <img src="/img/java/jpa.png" srcset="/img/loading.gif" lazyload alt="实体映射 (Mappings)">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.2%E5%AE%9E%E4%BD%93%E6%98%A0%E5%B0%84%20(Mappings)/" target="_self">
+          实体映射 (Mappings)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.2%E5%AE%9E%E4%BD%93%E6%98%A0%E5%B0%84%20(Mappings)/" target="_self">
+        <div>
+          探讨 JPA 中的实体映射 (Mappings)。这部分内容是 ORM 的核心，它定义了 Java 实体类及其属性如何与数据库表及其列进行对应。正确和高效地配置映射对于 JPA 应用的性能和行为至关重要。  3.2 实体映射 (Mappings) JPA 通过一系列注解来定义实体和数据库之间的映射关系。 3.2.1 基本类型映射 JPA 自动支持 Java 的基本数据类型及其包装类，以及 Stri
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-13 00:00" pubdate>
+              2024-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/" class="category-chain-item">Data</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/" class="category-chain-item">JPA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/" class="category-chain-item">大纲学习</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/" class="category-chain-item">核心功能</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JPA/">#JPA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.4JPQL/" target="_self">
+          <img src="/img/java/jpa.png" srcset="/img/loading.gif" lazyload alt="JPQL">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.4JPQL/" target="_self">
+          JPQL
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.4JPQL/" target="_self">
+        <div>
+          探讨 JPQL (Java Persistence Query Language / Jakarta Persistence Query Language)。JPQL 是 JPA 规范中定义的一种强大的、面向对象的查询语言，它允许开发者以独立于特定数据库 SQL 方言的方式来查询持久化实体。  3.4 JPQL (Java Persistence Query Language) 核心特点：  面向
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-13 00:00" pubdate>
+              2024-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/" class="category-chain-item">Data</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/" class="category-chain-item">JPA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/" class="category-chain-item">大纲学习</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/" class="category-chain-item">核心功能</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JPA/">#JPA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/@Configuration%20and%20@Bean/" target="_self">
+          <img src="/img/java/spring.png" srcset="/img/loading.gif" lazyload alt="@Configuration and @Bean">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/@Configuration%20and%20@Bean/" target="_self">
+          @Configuration and @Bean
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/06/13/Java/Framework/Spring%20Boot/@Configuration%20and%20@Bean/" target="_self">
+        <div>
+          Spring Boot 中非常核心的两个注解：@Configuration 和 @Bean。它们是 Spring IoC (Inversion of Control，控制反转) 容器进行 Java 配置 (Java-based Configuration) 的基石。 简单来说：  @Configuration：告诉 Spring 这是一个配置类，就像一个“蓝图工厂”的声明。 @Bean：在配置类中
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-13 00:00" pubdate>
+              2024-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/spring-boot/">#spring boot</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2024/06/13/Java/Framework/Spring%20MVC/%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94%E7%9A%84%E6%A0%B8%E5%BF%83%E6%B3%A8%E8%A7%A3/" target="_self">
           <img src="/img/java/spring.png" srcset="/img/loading.gif" lazyload alt="处理请求与响应的核心注解">
         </a>
