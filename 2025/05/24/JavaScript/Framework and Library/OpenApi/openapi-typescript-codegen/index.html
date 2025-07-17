@@ -1,0 +1,867 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="“前端如何使用后端生成的 openapi specification 生成 HTTP 服务” 直击现代前端工程化的核心痛点：如何高效、安全地与后端 API 协作。 手写 API 请求代码的时代基本已经过去了。现在追求的是自动化、类型安全和易于维护。使用后端生成的 OpenAPI Specification (以前叫 Swagger Spec) 来生成 HTTP 服务，正是实现这一目标的核心手段。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="openapi-typescript-codegen">
+<meta property="og:url" content="http://example.com/2025/05/24/JavaScript/Framework%20and%20Library/OpenApi/openapi-typescript-codegen/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="“前端如何使用后端生成的 openapi specification 生成 HTTP 服务” 直击现代前端工程化的核心痛点：如何高效、安全地与后端 API 协作。 手写 API 请求代码的时代基本已经过去了。现在追求的是自动化、类型安全和易于维护。使用后端生成的 OpenAPI Specification (以前叫 Swagger Spec) 来生成 HTTP 服务，正是实现这一目标的核心手段。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/openapi.png">
+<meta property="article:published_time" content="2025-05-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-17T10:53:35.062Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/openapi.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>openapi-typescript-codegen - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="openapi-typescript-codegen"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-24 00:00" pubdate>
+          2025年5月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">openapi-typescript-codegen</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月17日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>“前端如何使用后端生成的 openapi specification 生成 HTTP 服务”<br>
+直击现代前端工程化的核心痛点：<strong>如何高效、安全地与后端 API 协作</strong>。</p>
+<p>手写 API 请求代码的时代基本已经过去了。现在追求的是<strong>自动化、类型安全和易于维护</strong>。使用后端生成的 OpenAPI Specification (以前叫 Swagger Spec) 来生成 HTTP 服务，正是实现这一目标的核心手段。</p>
+<hr>
+<h3 id="1-直击核心-What-Why">1. 直击核心 (What &amp; Why)</h3>
+<h4 id="是什么？">是什么？</h4>
+<p>简单来说，OpenAPI 规范文件（通常是 <code>openapi.json</code> 或 <code>openapi.yaml</code>）就是一份 <strong>“API 的机器可读说明书”</strong>。</p>
+<ul>
+<li><strong>对人来说</strong>，它像 Swagger UI 那样，能清晰地展示所有 API 接口、参数、返回数据结构。</li>
+<li><strong>对机器来说</strong>，它定义了严格的规则，程序可以读取这份说明书，自动生成调用这些 API 的代码。</li>
+</ul>
+<p>我们要做的，就是利用工具读取这份“说明书”，一键生成前端项目里所有与后端通信的“服务层 (Service Layer)”代码。</p>
+<h4 id="为什么必须这么做？">为什么必须这么做？</h4>
+<ol>
+<li><strong>效率天花板</strong>：后端有 100 个接口，你不用手写 100 个请求函数。一条命令，几秒钟内全部生成，带完整的参数和返回类型。</li>
+<li><strong>“零”沟通成本与“零”错误率</strong>：
+<ul>
+<li><strong>告别手误</strong>：URL 写错？请求方法用错（GET/POST）？参数名拼错？这些低级错误将彻底消失。代码是生成的，绝对忠于后端定义。</li>
+<li><strong>类型安全</strong>：这是最关键的优势。生成的代码会自带 TypeScript 类型。这意味着，当你调用一个 API 时，IDE 会立刻告诉你需要传哪些参数、参数是什么类型；拿到返回数据时，它的结构和字段也都是有类型的，你可以放心地 <code>data.user.name</code>，而不用去 <code>console.log</code> 猜测数据结构，也杜绝了因为后端字段变更导致的线上运行时错误。</li>
+</ul>
+</li>
+<li><strong>同步与维护的救星</strong>：后端修改了接口（比如加了个参数、改了字段名）？没问题。他们更新 <code>openapi.json</code> 文件，你重新执行一次生成命令，所有相关的代码和类型就自动更新了。你只需要在代码里根据 TypeScript 的报错提示，修正你的业务逻辑即可。整个过程清晰、可控。</li>
+</ol>
+<hr>
+<h3 id="2-现代实践-How">2. 现代实践 (How)</h3>
+<p>现在我们来看具体怎么做。虽然市面上工具有一些，但目前社区最主流、最好用的工具是 <strong><code>openapi-typescript-codegen</code></strong>。它专注于生成 TypeScript 代码，非常轻量且定制性强。</p>
+<p><strong>通用工作流（适用于任何框架）：</strong></p>
+<p>这个流程与你使用 React、Vue 还是 Svelte 无关，它是项目工程化的一部分。</p>
+<p><strong>第零步：拿到 OpenAPI 规范文件</strong></p>
+<p>首先，你需要从后端同学那里拿到 <code>openapi.json</code> 或 <code>openapi.yaml</code> 文件，或者一个能访问到该文件的 URL（比如 <code>http://your-api.com/docs/openapi.json</code>）。把它放到你的项目里，例如 <code>src/api/spec/openapi.json</code>。</p>
+<p><strong>第一步：安装代码生成工具</strong></p>
+<p>在你的前端项目中，将其安装为开发依赖：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install openapi-typescript-codegen -D<br><span class="hljs-comment"># 或者 yarn add openapi-typescript-codegen -D</span><br><span class="hljs-comment"># 或者 pnpm add openapi-typescript-codegen -D</span><br></code></pre></td></tr></table></figure>
+<p><strong>第二步：配置生成脚本</strong></p>
+<p>在 <code>package.json</code> 的 <code>scripts</code> 中添加一条命令：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-comment">// package.json</span><br><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;gen:api&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;openapi --input ./src/api/spec/openapi.json --output ./src/api/generated --client axios --useOptions&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<ul>
+<li><code>--input</code>: 指定你的 OpenAPI 规范文件路径。</li>
+<li><code>--output</code>: 指定生成代码的输出目录。</li>
+<li><code>--client</code>: 指定底层使用哪个 HTTP 客户端。强烈推荐 <code>axios</code> 或 <code>fetch</code>。<code>axios</code> 方便配置拦截器等高级功能。</li>
+<li><code>--useOptions</code>: (推荐) 这个参数让生成的函数最后一个参数变为一个可选的 <code>options</code> 对象，方便我们传递额外的请求配置，非常灵活。</li>
+</ul>
+<p><strong>第三步：生成代码</strong></p>
+<p>在终端运行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm run gen:api<br></code></pre></td></tr></table></figure>
+<p>执行完毕后，你的 <code>src/api/generated</code> 目录下就会出现一堆 <code>.ts</code> 文件，通常包含：</p>
+<ul>
+<li><code>models.ts</code>: 所有后端定义的 DTO (Data Transfer Object) 的 TypeScript 接口 (interface) 或类型 (type)。</li>
+<li><code>services.ts</code>: 包含所有 API 请求的函数，按后端 Controller/Tag 分组。</li>
+<li><code>index.ts</code>: 导出所有内容。</li>
+</ul>
+<p><strong>生成的代码大概长这样（示例）：</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/api/generated/services/UserService.ts</span><br><br><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> &#123; <span class="hljs-title class_">User</span>, <span class="hljs-title class_">CancelablePromise</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../core/CancelablePromise&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">OpenAPI</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../core/OpenAPI&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; request <span class="hljs-keyword">as</span> __request &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;../core/request&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">UserService</span> &#123;<br>    <span class="hljs-comment">/**</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@param</span> id The user ID</span><br><span class="hljs-comment">     * <span class="hljs-doctag">@returns</span> User The user object</span><br><span class="hljs-comment">     */</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-title function_">getUserById</span>(<span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>): <span class="hljs-title class_">CancelablePromise</span>&lt;<span class="hljs-title class_">User</span>&gt; &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-title function_">__request</span>(<span class="hljs-title class_">OpenAPI</span>, &#123;<br>            <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;GET&#x27;</span>,<br>            <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;/users/&#123;id&#125;&#x27;</span>,<br>            <span class="hljs-attr">path</span>: &#123;<br>                <span class="hljs-attr">id</span>: id,<br>            &#125;,<br>        &#125;);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-框架集成与应用">3. 框架集成与应用</h3>
+<p>生成的代码是纯粹的、框架无关的 TypeScript。所以，在任何框架中使用它都非常简单。关键在于<strong>结合现代数据请求库</strong>来发挥其最大威力。</p>
+<h4 id="在-React-中使用-结合-TanStack-Query">在 React 中使用 (结合 TanStack Query)</h4>
+<p>在 React 生态，<strong>TanStack Query (原 React Query)</strong> 是数据请求的王者。它负责处理缓存、重新请求、加载状态等，我们生成的 API Service 负责发起实际的请求。这是天作之合。</p>
+<figure class="highlight tsx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs tsx"><span class="hljs-comment">// src/components/UserProfile.tsx</span><br><span class="hljs-keyword">import</span> &#123; useQuery &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@tanstack/react-query&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">UserService</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/api/generated&#x27;</span>; <span class="hljs-comment">// 引入生成的服务</span><br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">UserProfile</span>(<span class="hljs-params">&#123; userId &#125;: &#123; userId: <span class="hljs-built_in">number</span> &#125;</span>) &#123;<br>  <span class="hljs-keyword">const</span> &#123; data, isLoading, isError &#125; = <span class="hljs-title function_">useQuery</span>(&#123;<br>    <span class="hljs-comment">// queryKey 是缓存的唯一标识</span><br>    <span class="hljs-attr">queryKey</span>: [<span class="hljs-string">&#x27;user&#x27;</span>, userId], <br>    <span class="hljs-comment">// queryFn 就是实际的请求函数，直接调用我们生成的 service</span><br>    <span class="hljs-attr">queryFn</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-title class_">UserService</span>.<span class="hljs-title function_">getUserById</span>(userId), <br>  &#125;);<br><br>  <span class="hljs-keyword">if</span> (isLoading) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Loading...<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;<br>  <span class="hljs-keyword">if</span> (isError) <span class="hljs-keyword">return</span> <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span>Error fetching user!<span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span>;<br><br>  <span class="hljs-comment">// data 的类型是 `User`，已经被自动推断出来了！</span><br>  <span class="hljs-comment">// 你可以安全地访问 data.name, data.email 等属性，IDE 会有智能提示。</span><br>  <span class="hljs-keyword">return</span> (<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>&#123;data.name&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>&#123;data.email&#125;<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>  );<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="在-Vue-中使用-结合-TanStack-Query">在 Vue 中使用 (结合 TanStack Query)</h4>
+<p>同样的，Vue 生态也可以完美使用 TanStack Query 的 Vue 版本 <code>@tanstack/vue-query</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;!-- src/components/UserProfile.vue --&gt;<br>&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; useQuery &#125; from &#x27;@tanstack/vue-query&#x27;;<br>import &#123; UserService &#125; from &#x27;@/api/generated&#x27;;<br><br>const props = defineProps&lt;&#123; userId: number &#125;&gt;();<br><br>const &#123; data, isLoading, isError &#125; = useQuery(&#123;<br>  queryKey: [&#x27;user&#x27;, props.userId],<br>  queryFn: () =&gt; UserService.getUserById(props.userId),<br>&#125;);<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;div v-if=&quot;isLoading&quot;&gt;Loading...&lt;/div&gt;<br>  &lt;div v-else-if=&quot;isError&quot;&gt;Error fetching user!&lt;/div&gt;<br>  &lt;!-- data 的类型同样被完美推断 --&gt;<br>  &lt;div v-else&gt;<br>    &lt;h1&gt;&#123;&#123; data.name &#125;&#125;&lt;/h1&gt;<br>    &lt;p&gt;&#123;&#123; data.email &#125;&#125;&lt;/p&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<h4 id="其他框架-Svelte-Angular…">其他框架 (Svelte, Angular…)</h4>
+<p>原理完全一致。生成的 API Service 就是一个普通的 TS/JS 模块。在 Svelte 中你可以结合 Svelte Query，在 Angular 中，你可以将生成的服务注入到组件中使用。Angular 甚至有工具可以生成带 <code>@Injectable()</code> 装饰器的服务，与 Angular 的 DI 系统深度集成（可以使用 <code>openapi-generator-cli</code> 并指定 <code>typescript-angular</code> 生成器）。</p>
+<hr>
+<h3 id="4-扩展与未来">4. 扩展与未来</h3>
+<h4 id="扩展应用：">扩展应用：</h4>
+<ol>
+<li>
+<p><strong>统一 API 配置（如添加 Token）</strong>:<br>
+生成的代码通常会有一个全局配置。例如，<code>openapi-typescript-codegen</code> 会生成一个 <code>OpenAPI</code> 对象，你可以在应用初始化时配置它，为所有请求添加 <code>Authorization</code> 头。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 在你的应用入口文件，如 main.ts</span><br><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">OpenAPI</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/api/generated&#x27;</span>;<br><br><span class="hljs-title class_">OpenAPI</span>.<span class="hljs-property">BASE</span> = <span class="hljs-string">&#x27;https://api.yourdomain.com&#x27;</span>; <span class="hljs-comment">// 配置基础路径</span><br><span class="hljs-title class_">OpenAPI</span>.<span class="hljs-property">TOKEN</span> = <span class="hljs-title function_">async</span> () =&gt; &#123;<br>  <span class="hljs-comment">// 从 localStorage, Pinia, Redux 等地方获取 token</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-string">`Bearer <span class="hljs-subst">$&#123;<span class="hljs-variable language_">localStorage</span>.getItem(<span class="hljs-string">&#x27;token&#x27;</span>)&#125;</span>`</span>; <br>&#125;;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>集成到 CI/CD</strong>:<br>
+将 <code>npm run gen:api</code> 命令加入到你的 CI/CD 流程中。比如，在构建前自动执行一次，确保前端代码永远和最新的后端 API 规范保持同步。如果后端改动导致编译失败，CI/CD 会阻断发布，从而提前发现问题。</p>
+</li>
+</ol>
+<h4 id="未来趋势：">未来趋势：</h4>
+<p>虽然 OpenAPI + 代码生成已经非常高效，但前端领域总是在探索更极致的开发体验。</p>
+<ul>
+<li>
+<p><strong>tRPC (TypeScript Remote Procedure Call)</strong>: 这是目前最火的“下一代”方案。如果你的前后端都使用 TypeScript，tRPC 可以让你<strong>完全跳过代码生成这一步</strong>。你在后端定义路由和函数，前端可以直接像调用本地函数一样调用后端 API，并且享受端到端的类型安全。它的优点是极致的开发体验和类型安全，缺点是前后端技术栈强绑定（通常是 Node.js + TS）。</p>
+</li>
+<li>
+<p><strong>GraphQL + 代码生成</strong>: GraphQL 是 API 的另一种查询语言。与 REST+OpenAPI 不同，它允许前端按需请求数据。但同样，我们可以使用工具（如 <code>graphql-code-generator</code>）根据 GraphQL Schema 来生成类型安全的前端 Hooks 和 SDK，思路与 OpenAPI 类似。</p>
+</li>
+</ul>
+<h3 id="总结">总结</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">方案</th>
+<th style="text-align:left">优点</th>
+<th style="text-align:left">缺点</th>
+<th style="text-align:left">适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>OpenAPI + Codegen</strong></td>
+<td style="text-align:left"><strong>技术栈解耦</strong>、生态成熟、自动化、类型安全</td>
+<td style="text-align:left">需要维护规范文件，有代码生成步骤</td>
+<td style="text-align:left"><strong>最通用、最主流的场景</strong>，尤其适合前后端分离、团队协作、多语言后端的项目。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>tRPC</strong></td>
+<td style="text-align:left"><strong>端到端类型安全</strong>、无需代码生成、极佳的开发体验</td>
+<td style="text-align:left"><strong>前后端强耦合 (TS)</strong></td>
+<td style="text-align:left">全栈 TypeScript 项目，追求极致开发效率的小到中型团队。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>GraphQL + Codegen</strong></td>
+<td style="text-align:left"><strong>前端按需取数</strong>、解决数据冗余/缺失、类型安全</td>
+<td style="text-align:left">后端实现较复杂，需要额外学习成本</td>
+<td style="text-align:left">数据结构复杂、多端（Web, App）共用 API、对网络性能要求高的场景。</td>
+</tr>
+</tbody>
+</table>
+<p>对于绝大多数项目而言，<strong>掌握 OpenAPI + 代码生成的工作流，是你作为一名资深前端工程师必备的核心技能</strong>。它能极大地提升你的开发效率、代码质量和项目的可维护性。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/OpenApi/" class="category-chain-item">OpenApi</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>openapi-typescript-codegen</div>
+      <div>http://example.com/2025/05/24/JavaScript/Framework and Library/OpenApi/openapi-typescript-codegen/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/24/JavaScript/Framework%20and%20Library/Axios/Axios/" title="Fetch -&gt; Axios">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Fetch -&gt; Axios</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/23/Java/Java%20%E7%9A%84%2030%20%E5%91%A8%E5%B9%B4%E7%BA%AA%E5%BF%B5%E6%97%A5%EF%BC%81/" title="30 周年纪念日">
+                        <span class="hidden-mobile">30 周年纪念日</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
