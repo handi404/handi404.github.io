@@ -1,0 +1,845 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Vue 3 中的动态插槽名 (Dynamic Slot Names)。这是一种非常灵活的特性，允许你在父组件中动态地决定要将内容传递给子组件的哪个具名插槽。 核心概念： 简单来说，动态插槽名就是使用一个变量来指定你要填充的子组件插槽的名字，而不是硬编码一个固定的名字。 为什么需要动态插槽名？ 想象一些场景：  可配置的布局组件： 你可能有一个通用的布局组件 (&lt;BaseLayout&gt;)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="动态插槽名 (Dynamic Slot Names)">
+<meta property="og:url" content="http://example.com/2025/05/24/JavaScript/Framework%20and%20Library/Vue/Vue%203/%E5%8A%A8%E6%80%81%E6%8F%92%E6%A7%BD%E5%90%8D/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Vue 3 中的动态插槽名 (Dynamic Slot Names)。这是一种非常灵活的特性，允许你在父组件中动态地决定要将内容传递给子组件的哪个具名插槽。 核心概念： 简单来说，动态插槽名就是使用一个变量来指定你要填充的子组件插槽的名字，而不是硬编码一个固定的名字。 为什么需要动态插槽名？ 想象一些场景：  可配置的布局组件： 你可能有一个通用的布局组件 (&lt;BaseLayout&gt;)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/vue.png">
+<meta property="article:published_time" content="2025-05-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-19T03:17:59.930Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/vue.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>动态插槽名 (Dynamic Slot Names) - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="动态插槽名 (Dynamic Slot Names)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-24 00:00" pubdate>
+          2025年5月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          19 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">动态插槽名 (Dynamic Slot Names)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月19日 上午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Vue 3 中的<strong>动态插槽名 (Dynamic Slot Names)</strong>。这是一种非常灵活的特性，允许你在父组件中动态地决定要将内容传递给子组件的哪个具名插槽。</p>
+<p><strong>核心概念：</strong></p>
+<p>简单来说，动态插槽名就是<strong>使用一个变量来指定你要填充的子组件插槽的名字</strong>，而不是硬编码一个固定的名字。</p>
+<p><strong>为什么需要动态插槽名？</strong></p>
+<p>想象一些场景：</p>
+<ol>
+<li><strong>可配置的布局组件：</strong> 你可能有一个通用的布局组件 (<code>&lt;BaseLayout&gt;</code>)，它有 <code>header</code>, <code>main</code>, <code>footer</code> 等多个插槽。你希望根据不同的页面或状态，动态地决定将某个特定的内容块放入 <code>header</code> 还是 <code>main</code>。</li>
+<li><strong>动态表单/列表项渲染：</strong> 你可能根据数据动态渲染不同的展示区域，并希望将特定的操作按钮（如“编辑”、“删除”）放入对应区域的特定插槽中。</li>
+<li><strong>高度可复用的包装组件：</strong> 创建一个包装器组件，它内部有多个插槽，外部使用者可以动态指定内容应该去哪个插槽。</li>
+</ol>
+<p>在这些情况下，如果插槽名是固定的，实现起来会比较笨拙，可能需要很多 <code>v-if</code> / <code>v-else-if</code>。动态插槽名则提供了一种更优雅、更简洁的解决方案。</p>
+<p><strong>如何使用 (Vue 3 语法):</strong></p>
+<p>在 Vue 3 中，我们使用 <code>v-slot</code> 指令来传递插槽内容。动态插槽名的关键在于<strong>将 <code>v-slot</code> 指令的参数 (argument) 变成动态的</strong>。我们使用方括号 <code>[]</code> 来包裹一个 JavaScript 表达式（通常是一个变量），该表达式的值将作为插槽名。</p>
+<p><strong>语法：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;!-- 父组件 --&gt;<br>&lt;template&gt;<br>  &lt;ChildComponent&gt;<br>    &lt;!-- 使用方括号包裹变量 dynamicSlotName --&gt;<br>    &lt;template v-slot:[dynamicSlotName]&gt;<br>      &lt;!-- 这里是要插入的内容 --&gt;<br>      这是要动态插入的内容<br>    &lt;/template&gt;<br><br>    &lt;!-- 或者使用 # 简写 --&gt;<br>    &lt;template #[anotherDynamicSlotName]&gt;<br>      更多动态内容<br>    &lt;/template&gt;<br>  &lt;/ChildComponent&gt;<br><br>  &lt;button @click=&quot;changeSlot&quot;&gt;切换插槽&lt;/button&gt;<br>&lt;/template&gt;<br><br>&lt;script setup&gt;<br>import &#123; ref &#125; from &#x27;vue&#x27;;<br>import ChildComponent from &#x27;./ChildComponent.vue&#x27;;<br><br>const dynamicSlotName = ref(&#x27;header&#x27;); // 初始目标是 header 插槽<br><br>function changeSlot() &#123;<br>  // 动态改变目标插槽的名字<br>  dynamicSlotName.value = dynamicSlotName.value === &#x27;header&#x27; ? &#x27;content&#x27; : &#x27;header&#x27;;<br>&#125;<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;!-- 子组件 (ChildComponent.vue) --&gt;<br>&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;header&gt;<br>      &lt;slot name=&quot;header&quot;&gt;这是 Header 默认内容&lt;/slot&gt;<br>    &lt;/header&gt;<br>    &lt;main&gt;<br>      &lt;slot name=&quot;content&quot;&gt;这是 Content 默认内容&lt;/slot&gt;<br>    &lt;/main&gt;<br>    &lt;footer&gt;<br>      &lt;slot name=&quot;footer&quot;&gt;这是 Footer 默认内容&lt;/slot&gt;<br>    &lt;/footer&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>代码解释：</strong></p>
+<ol>
+<li><strong>子组件 (<code>ChildComponent.vue</code>)</strong>: 定义了三个具名插槽：<code>header</code>, <code>content</code>, <code>footer</code>。</li>
+<li><strong>父组件</strong>:
+<ul>
+<li>引入并使用了 <code>ChildComponent</code>。</li>
+<li>定义了一个响应式引用 <code>dynamicSlotName</code>，初始值为 <code>'header'</code>。</li>
+<li>在 <code>&lt;template&gt;</code> 上使用了 <code>v-slot:[dynamicSlotName]</code>。这意味着：
+<ul>
+<li>当 <code>dynamicSlotName</code> 的值是 <code>'header'</code> 时，<code>&lt;template&gt;</code> 里的内容会被插入到 <code>ChildComponent</code> 的 <code>header</code> 插槽中。</li>
+<li>当 <code>dynamicSlotName</code> 的值是 <code>'content'</code> 时，内容会被插入到 <code>content</code> 插槽中。</li>
+</ul>
+</li>
+<li>提供了一个按钮，点击时会切换 <code>dynamicSlotName</code> 的值，从而动态改变内容所插入的插槽位置。</li>
+<li>同样展示了 <code>#</code> 简写形式 <code>#[anotherDynamicSlotName]</code>，其效果与 <code>v-slot:[anotherDynamicSlotName]</code> 完全相同。</li>
+</ul>
+</li>
+</ol>
+<p><strong>关键点总结：</strong></p>
+<ul>
+<li><strong>语法核心：</strong> 使用方括号 <code>[]</code> 包裹一个 JavaScript 表达式（通常是变量）作为 <code>v-slot:</code> 或 <code>#</code> 后面的插槽名。</li>
+<li><strong>动态性：</strong> 该表达式的值在运行时解析，决定了内容最终会填充到哪个插槽。</li>
+<li><strong>灵活性：</strong> 使得组件的插槽使用更加灵活和可配置，减少了条件渲染的复杂性。</li>
+<li><strong>适用性：</strong> 主要用于<strong>具名插槽</strong>。对于默认插槽，通常不需要动态指定名称（虽然理论上你可以动态指定为 <code>'default'</code>）。</li>
+<li><strong>Vue 3 特有：</strong> 这是 Vue 3 <code>v-slot</code> 指令带来的便利，相比 Vue 2 的 <code>slot</code> 属性，动态能力更强。</li>
+</ul>
+<p><strong>一句话概括：</strong></p>
+<p>Vue 3 的动态插槽名允许你用一个变量来决定 <code>&lt;template&gt;</code> 标签通过 <code>v-slot</code> (或 <code>#</code>) 指令要将内容送到子组件的哪个具名插槽里，极大地增强了组件封装的灵活性。</p>
+<hr>
+<h1>ChatGPT</h1>
+<h2 id="什么是动态插槽？">什么是动态插槽？</h2>
+<p>在 Vue 3 中，插槽（Slot）用于将父组件的内容「投影」到子组件中，命名插槽（Named Slots）让你可以在子组件中定义多个不同的占位符，并由父组件分别提供内容。所谓「动态插槽」，就是在运行时根据变量来决定插槽的名称，从而实现更灵活的组件内容分发。动态插槽可以让你在构建像多标签页（Tabs）、多步骤表单或可配置表格等组件时，不必在编译阶段就写死每一个插槽名，而是根据数据动态生成和渲染插槽内容 (<a target="_blank" rel="noopener" href="https://vuejs.org/guide/components/slots.html?utm_source=chatgpt.com">Slots - Vue.js</a>, <a target="_blank" rel="noopener" href="https://mokkapps.de/vue-tips/dynamic-slot-names?utm_source=chatgpt.com">Vue Tip: Dynamic Slot Names - Michael Hoffmann</a>)。</p>
+<hr>
+<h2 id="在子组件中声明动态插槽">在子组件中声明动态插槽</h2>
+<p>要在子组件中使用动态插槽，你只需将 <code>&lt;slot&gt;</code> 的 <code>name</code> 属性绑定到一个响应式变量上。例如，假设子组件接收一个 <code>slots</code> 数组：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;!-- Child.vue --&gt;<br>&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; defineProps &#125; from &#x27;vue&#x27;;<br>defineProps&lt;&#123; slots: string[]; items: Record&lt;string, any&gt;[] &#125;&gt;();<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;div v-for=&quot;(slotName, idx) in slots&quot; :key=&quot;slotName&quot;&gt;<br>    &lt;!-- 将 name 绑定为动态变量 --&gt;<br>    &lt;slot :name=&quot;slotName&quot; :item=&quot;items[idx]&quot; /&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p>这里，<code>slots</code> 是一组字符串，<code>items</code> 是一组与之对应的数据；组件会遍历它们，并为每个名字动态渲染一个具名插槽出口。父组件可针对每个 <code>slotName</code> 提供不同的内容 (<a target="_blank" rel="noopener" href="https://mokkapps.de/vue-tips/dynamic-slot-names?utm_source=chatgpt.com">Vue Tip: Dynamic Slot Names - Michael Hoffmann</a>)。</p>
+<hr>
+<h2 id="在父组件中使用动态插槽">在父组件中使用动态插槽</h2>
+<p>在父组件里，你可以使用带中括号的动态指令参数语法，将内容注入对应名字的插槽：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;!-- Parent.vue --&gt;<br>&lt;template&gt;<br>  &lt;Child :slots=&quot;[&#x27;header&#x27;,&#x27;footer&#x27;]&quot; :items=&quot;[headerData, footerData]&quot;&gt;<br>    &lt;!-- 动态插槽名绑定在 v-slot 指令上 --&gt;<br>    &lt;template v-slot:[currentSlotName]=&quot;&#123; item &#125;&quot;&gt;<br>      &lt;div&gt;&#123;&#123; currentSlotName.toUpperCase() &#125;&#125;：&#123;&#123; item.text &#125;&#125;&lt;/div&gt;<br>    &lt;/template&gt;<br>  &lt;/Child&gt;<br>&lt;/template&gt;<br><br>&lt;script setup lang=&quot;ts&quot;&gt;<br>import Child from &#x27;./Child.vue&#x27;;<br>import &#123; ref &#125; from &#x27;vue&#x27;;<br><br>const headerData = &#123; text: &#x27;这是头部内容&#x27; &#125;;<br>const footerData = &#123; text: &#x27;这是底部内容&#x27; &#125;;<br>// 假设我们在运行时让 currentSlotName 在 &#x27;header&#x27; 和 &#x27;footer&#x27; 之间切换<br>const currentSlotName = ref&lt;&#x27;header&#x27;|&#x27;footer&#x27;&gt;(&#x27;header&#x27;);<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<p>这里的 <code>&lt;template v-slot:[currentSlotName]&gt;</code> 会根据 <code>currentSlotName</code> 的值渲染不同的插槽内容。Vue 3 对动态插槽名的支持即来源于动态指令参数的能力 (<a target="_blank" rel="noopener" href="https://vuejs.org/guide/components/slots.html?utm_source=chatgpt.com">Slots - Vue.js</a>)。</p>
+<hr>
+<h2 id="结合-v-for-批量生成动态插槽">结合 v-for 批量生成动态插槽</h2>
+<p>当你需要根据数组自动生成多组插槽时，可以把 <code>v-for</code> 和动态插槽名结合起来：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;Child :slots=&quot;tabs&quot; :items=&quot;tabsData&quot;&gt;<br>  &lt;template<br>    v-for=&quot;(name, idx) in tabs&quot;<br>    :key=&quot;name&quot;<br>    v-slot:[name]=&quot;&#123; item &#125;&quot;<br>  &gt;<br>    &lt;!-- 根据不同 tab 名称渲染对应组件 --&gt;<br>    &lt;component :is=&quot;resolveTabComponent(name)&quot; :data=&quot;item&quot; /&gt;<br>  &lt;/template&gt;<br>&lt;/Child&gt;<br></code></pre></td></tr></table></figure>
+<ul>
+<li>
+<p><code>tabs</code> 是一个包含多个插槽名的数组；</p>
+</li>
+<li>
+<p><code>tabsData</code> 是对应的数据列表；</p>
+</li>
+<li>
+<p><code>resolveTabComponent</code> 则根据名称返回要渲染的组件。<br>
+这种写法让你在父组件中无需手动写多个 <code>&lt;template&gt;</code>，而是根据业务数据自动渲染出任意数量的插槽内容 (<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/57156543/how-to-declare-a-list-of-slots-with-dynamic-names-and-dynamic-components-in-a-vu?utm_source=chatgpt.com">vue.js - How to declare a list of slots with dynamic names and …</a>, <a target="_blank" rel="noopener" href="https://dev.to/ajscommunications/the-awesome-dynamic-slot-name-in-vue-3-574k?utm_source=chatgpt.com">Building a Table Component with Dynamic Slot Names in Vue 3</a>)。</p>
+</li>
+</ul>
+<hr>
+<h2 id="典型用例：多标签页-多步骤表单">典型用例：多标签页/多步骤表单</h2>
+<p><strong>多标签页</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;!-- Tabs.vue (子组件) --&gt;<br>&lt;template&gt;<br>  &lt;div class=&quot;tabs&quot;&gt;<br>    &lt;nav&gt;<br>      &lt;button<br>        v-for=&quot;tab in tabs&quot;<br>        :key=&quot;tab&quot;<br>        @click=&quot;active = tab&quot;<br>      &gt;&#123;&#123; tab &#125;&#125;&lt;/button&gt;<br>    &lt;/nav&gt;<br>    &lt;div class=&quot;panel&quot;&gt;<br>      &lt;!-- 渲染名为 active 的插槽 --&gt;<br>      &lt;slot :name=&quot;active&quot; /&gt;<br>    &lt;/div&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br><br>&lt;script setup&gt;<br>import &#123; ref, defineProps &#125; from &#x27;vue&#x27;;<br>const props = defineProps&lt;&#123; tabs: string[] &#125;&gt;();<br>const active = ref(props.tabs[0]);<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;!-- Parent.vue --&gt;<br>&lt;Tabs :tabs=&quot;[&#x27;Home&#x27;,&#x27;Profile&#x27;,&#x27;Settings&#x27;]&quot;&gt;<br>  &lt;template #Home&gt;首页内容&lt;/template&gt;<br>  &lt;template #Profile&gt;用户信息&lt;/template&gt;<br>  &lt;template #Settings&gt;系统设置&lt;/template&gt;<br>&lt;/Tabs&gt;<br></code></pre></td></tr></table></figure>
+<p>通过动态 <code>active</code> 变量，<code>&lt;slot :name=&quot;active&quot; /&gt;</code> 会根据当前激活的 tab 渲染对应内容，让组件逻辑与视图解耦，易于维护与扩展。</p>
+<p><strong>多步骤表单</strong> 的实现类似，只需在子组件循环渲染每一步的 <code>&lt;slot :name=&quot;stepName&quot; /&gt;</code>，父组件根据数组提供不同的表单项即可。</p>
+<hr>
+<p>通过以上方式，你可以利用 Vue 3 的动态指令参数和插槽机制，轻松实现高灵活度、低耦合度的组件内容分发。任何需要按数据动态生成或切换内容的场景，都可以借助<strong>动态插槽</strong>来优雅解决。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/" class="category-chain-item">Vue</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/Vue-3/" class="category-chain-item">Vue 3</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vue/" class="print-no-link">#vue</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>动态插槽名 (Dynamic Slot Names)</div>
+      <div>http://example.com/2025/05/24/JavaScript/Framework and Library/Vue/Vue 3/动态插槽名/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/24/JavaScript/Framework%20and%20Library/Vue/Vue%203/props%20-Typescript/" title="props - Typescript">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">props - Typescript</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/24/JavaScript/Framework%20and%20Library/Vue/Vue%20Router/Vue%20Router%204%20(for%20Vue%203)/" title="Vue Router 4 (for Vue 3)">
+                        <span class="hidden-mobile">Vue Router 4 (for Vue 3)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
