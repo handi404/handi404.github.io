@@ -1,0 +1,925 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="探讨 CORS (Cross-Origin Resource Sharing, 跨域资源共享) 在 Spring Boot 中的配置。这是一个在前后端分离架构中几乎必然会遇到的问题。  1. 【是什么】秒懂 CORS 想象一下，你的前端应用（比如用 Vue&#x2F;React 写的）运行在 http:&#x2F;&#x2F;localhost:8080，它就像你家。你的 Spring Boot 后端 API 运行在 http">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CORS 配置">
+<meta property="og:url" content="http://example.com/2024/10/13/Java/Framework/Spring%20Boot/CORS%20%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="探讨 CORS (Cross-Origin Resource Sharing, 跨域资源共享) 在 Spring Boot 中的配置。这是一个在前后端分离架构中几乎必然会遇到的问题。  1. 【是什么】秒懂 CORS 想象一下，你的前端应用（比如用 Vue&#x2F;React 写的）运行在 http:&#x2F;&#x2F;localhost:8080，它就像你家。你的 Spring Boot 后端 API 运行在 http">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/spring.png">
+<meta property="article:published_time" content="2024-10-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-21T10:12:25.310Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="spring boot">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/spring.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CORS 配置 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CORS 配置"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-10-13 00:00" pubdate>
+          2024年10月13日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">CORS 配置</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月21日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>探讨 <strong>CORS (Cross-Origin Resource Sharing, 跨域资源共享)</strong> 在 Spring Boot 中的配置。这是一个在前后端分离架构中几乎必然会遇到的问题。</p>
+<hr>
+<h3 id="1-【是什么】秒懂-CORS">1. 【是什么】秒懂 CORS</h3>
+<p>想象一下，你的前端应用（比如用 Vue/React 写的）运行在 <code>http://localhost:8080</code>，它就像你家。你的 Spring Boot 后端 API 运行在 <code>http://localhost:9090</code>，它就像一家披萨店。</p>
+<p>出于安全考虑，浏览器有一个内置的“小区保安”——<strong>同源策略 (Same-Origin Policy)</strong>。这个策略规定，你家（<code>localhost:8080</code>）的脚本，默认只能访问自己小区（同源）的资源，不能直接去访问隔壁小区披萨店（<code>localhost:9090</code>，不同源）的服务。这里的“源”由 <strong>协议、域名、端口</strong> 三者共同决定，任何一个不同，就是“跨域”。</p>
+<p>当你的前端应用想调用后端 API 时，“小区保安”（浏览器）会拦住它，说：“等等，你要访问的不是你们小区的，有风险！除非那家披萨店（后端）明确告诉我，它允许你来访问，否则我不能放行。”</p>
+<p><strong>CORS 就是披萨店（后端）给浏览器的一套“通行许可”规则</strong>。后端通过在 HTTP 响应头中添加一些特定的字段（如 <code>Access-Control-Allow-Origin</code>），来告诉浏览器：“嘿，保安，<code>http://localhost:8080</code> 这个地址是我的朋友，请允许他访问我的资源。” 浏览器看到这个许可后，就会放行，前端就能成功拿到数据。</p>
+<blockquote>
+<p><strong>核心一句话：</strong> CORS 是一个 W 3 C 标准，它允许服务器端声明哪些源站有权限访问其资源，从而克服浏览器的同源策略限制。</p>
+</blockquote>
+<hr>
+<h3 id="2-【怎么配】Spring-Boot-中的-CORS-配置方案">2. 【怎么配】Spring Boot 中的 CORS 配置方案</h3>
+<p>Spring Boot 提供了非常优雅的 CORS 配置方式。主要有三种，我会重点推荐第一种。</p>
+<h4 id="方案一：全局配置-推荐-👍👍👍">方案一：全局配置 (推荐 👍👍👍)</h4>
+<p>这是最常用、最推荐的方式，因为它将 CORS 配置集中管理，清晰且易于维护。你只需要实现 <code>WebMvcConfigurer</code> 接口即可。</p>
+<p><strong>适用场景：</strong> 应用中大部分或所有接口都需要支持跨域。</p>
+<p><strong>步骤：</strong><br>
+创建一个配置类，例如 <code>GlobalCorsConfig.java</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><span class="hljs-keyword">import</span> org.springframework.web.servlet.config.annotation.CorsRegistry;<br><span class="hljs-keyword">import</span> org.springframework.web.servlet.config.annotation.WebMvcConfigurer;<br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">GlobalCorsConfig</span> &#123;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> WebMvcConfigurer <span class="hljs-title function_">corsConfigurer</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">WebMvcConfigurer</span>() &#123;<br>            <span class="hljs-meta">@Override</span><br>            <span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">addCorsMappings</span><span class="hljs-params">(CorsRegistry registry)</span> &#123;<br>                <span class="hljs-comment">// 1. 添加映射路径</span><br>                registry.addMapping(<span class="hljs-string">&quot;/**&quot;</span>) <span class="hljs-comment">// 对所有请求路径都进行CORS配置</span><br>                        <span class="hljs-comment">// 2. 放行哪些原始域</span><br>                        .allowedOriginPatterns(<span class="hljs-string">&quot;*&quot;</span>) <span class="hljs-comment">// 支持所有域的访问，更安全的选择是明确指定域</span><br>                        <span class="hljs-comment">// 3. 放行哪些请求方法</span><br>                        .allowedMethods(<span class="hljs-string">&quot;GET&quot;</span>, <span class="hljs-string">&quot;POST&quot;</span>, <span class="hljs-string">&quot;PUT&quot;</span>, <span class="hljs-string">&quot;DELETE&quot;</span>, <span class="hljs-string">&quot;OPTIONS&quot;</span>)<br>                        <span class="hljs-comment">// 4. 是否允许携带 Cookie</span><br>                        .allowCredentials(<span class="hljs-literal">true</span>)<br>                        <span class="hljs-comment">// 5. 放行哪些请求头</span><br>                        .allowedHeaders(<span class="hljs-string">&quot;*&quot;</span>)<br>                        <span class="hljs-comment">// 6. 暴露哪些头部信息（因为跨域访问时，JS只能访问到几个简单的头，所以需要服务端明确暴露出其他头）</span><br>                        .exposedHeaders(<span class="hljs-string">&quot;Authorization&quot;</span>, <span class="hljs-string">&quot;Content-Type&quot;</span>)<br>                        <span class="hljs-comment">// 7. 预检请求的有效期，单位为秒。在有效时间内，浏览器无需为同一请求再次发送预检请求。</span><br>                        .maxAge(<span class="hljs-number">3600</span>);<br>            &#125;<br>        &#125;;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>优点：</strong></p>
+<ul>
+<li><strong>集中管理</strong>：所有 CORS 规则都在一个地方。</li>
+<li><strong>全局生效</strong>：一次配置，整个应用受益。</li>
+<li><strong>代码清晰</strong>：与业务逻辑完全解耦。</li>
+</ul>
+<hr>
+<h4 id="方案二：基于注解-CrossOrigin-灵活，但易分散">方案二：基于注解 <code>@CrossOrigin</code> (灵活，但易分散)</h4>
+<p>如果你只需要对个别 Controller 或方法开启跨域，可以使用 <code>@CrossOrigin</code> 注解。</p>
+<p><strong>适用场景：</strong> 只有少数接口需要跨域，或者不同接口需要不同的 CORS 策略。</p>
+<p><strong>示例：</strong><br>
+可以作用于类级别（该 Controller 下所有方法生效）或方法级别（仅该方法生效）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.CrossOrigin;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.GetMapping;<br><span class="hljs-keyword">import</span> org.springframework.web.bind.annotation.RestController;<br><br><span class="hljs-meta">@RestController</span><br><span class="hljs-comment">// 对整个 Controller 的所有接口生效</span><br><span class="hljs-meta">@CrossOrigin(origins = &quot;http://localhost:8080&quot;, maxAge = 3600)</span> <br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyController</span> &#123;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/api/data&quot;)</span><br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getData</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Some data&quot;</span>;<br>    &#125;<br><br>    <span class="hljs-meta">@GetMapping(&quot;/api/special-data&quot;)</span><br>    <span class="hljs-comment">// 方法级别的注解会覆盖类级别的配置</span><br>    <span class="hljs-meta">@CrossOrigin(origins = &quot;http://example.com&quot;)</span> <br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getSpecialData</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Some special data&quot;</span>;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>缺点：</strong></p>
+<ul>
+<li><strong>配置分散</strong>：CORS 规则散落在各个 Controller 中，难以统一管理和排查问题。</li>
+<li><strong>代码侵入</strong>：与业务代码耦合。</li>
+</ul>
+<hr>
+<h4 id="方案三：结合-Spring-Security-高级">方案三：结合 Spring Security (高级)</h4>
+<p>如果你的项目使用了 Spring Security，<strong>那么必须使用 Spring Security 的方式来配置 CORS</strong>，因为它内置的 <code>CorsFilter</code> 会在 Spring Security 的其他过滤器之前执行。如果同时使用了方案一和 Spring Security，可能会导致配置不生效。</p>
+<p><strong>适用场景：</strong> 使用了 Spring Security 的项目。</p>
+<p><strong>步骤 (以最新的 Spring Security 6.x Lambda DSL 为例):</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> org.springframework.context.annotation.Bean;<br><span class="hljs-keyword">import</span> org.springframework.context.annotation.Configuration;<br><span class="hljs-keyword">import</span> org.springframework.security.config.annotation.web.builders.HttpSecurity;<br><span class="hljs-keyword">import</span> org.springframework.security.web.SecurityFilterChain;<br><span class="hljs-keyword">import</span> org.springframework.web.cors.CorsConfiguration;<br><span class="hljs-keyword">import</span> org.springframework.web.cors.CorsConfigurationSource;<br><span class="hljs-keyword">import</span> org.springframework.web.cors.UrlBasedCorsConfigurationSource;<br><br><span class="hljs-keyword">import</span> java.util.Arrays;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-meta">@Configuration</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SecurityConfig</span> &#123;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> SecurityFilterChain <span class="hljs-title function_">securityFilterChain</span><span class="hljs-params">(HttpSecurity http)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br>        http<br>            <span class="hljs-comment">// 禁用 CSRF，因为我们通常在无状态的 REST API 中使用 Token</span><br>            .csrf(csrf -&gt; csrf.disable())<br>            <span class="hljs-comment">// 重点：将我们定义的 CorsConfigurationSource 应用到 Spring Security 的- filter chain 中</span><br>            .cors(cors -&gt; cors.configurationSource(corsConfigurationSource()));<br><br>        <span class="hljs-comment">// ... 其他安全配置，比如授权规则</span><br>        http.authorizeHttpRequests(auth -&gt; auth<br>            .requestMatchers(<span class="hljs-string">&quot;/public/**&quot;</span>).permitAll()<br>            .anyRequest().authenticated()<br>        );<br><br>        <span class="hljs-keyword">return</span> http.build();<br>    &#125;<br><br>    <span class="hljs-meta">@Bean</span><br>    <span class="hljs-keyword">public</span> CorsConfigurationSource <span class="hljs-title function_">corsConfigurationSource</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">CorsConfiguration</span> <span class="hljs-variable">configuration</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">CorsConfiguration</span>();<br>        <span class="hljs-comment">// 允许的源，这里使用 List.of() 更简洁</span><br>        configuration.setAllowedOrigins(List.of(<span class="hljs-string">&quot;http://localhost:8080&quot;</span>, <span class="hljs-string">&quot;https://app.yourdomain.com&quot;</span>));<br>        <span class="hljs-comment">// 允许的方法</span><br>        configuration.setAllowedMethods(Arrays.asList(<span class="hljs-string">&quot;GET&quot;</span>, <span class="hljs-string">&quot;POST&quot;</span>, <span class="hljs-string">&quot;PUT&quot;</span>, <span class="hljs-string">&quot;DELETE&quot;</span>, <span class="hljs-string">&quot;OPTIONS&quot;</span>));<br>        <span class="hljs-comment">// 允许的头</span><br>        configuration.setAllowedHeaders(List.of(<span class="hljs-string">&quot;*&quot;</span>));<br>        <span class="hljs-comment">// 是否允许凭证</span><br>        configuration.setAllowCredentials(<span class="hljs-literal">true</span>);<br>        <br>        <span class="hljs-type">UrlBasedCorsConfigurationSource</span> <span class="hljs-variable">source</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">UrlBasedCorsConfigurationSource</span>();<br>        <span class="hljs-comment">// 对所有 URL 应用这个配置</span><br>        source.registerCorsConfiguration(<span class="hljs-string">&quot;/**&quot;</span>, configuration);<br>        <span class="hljs-keyword">return</span> source;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-【参数详解】">3. 【参数详解】</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">参数</th>
+<th style="text-align:left"><code>WebMvcConfigurer</code> 方法</th>
+<th style="text-align:left"><code>@CrossOrigin</code> 属性</th>
+<th style="text-align:left">解释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>允许的源</strong></td>
+<td style="text-align:left"><code>.allowedOrigins(...)</code> / <code>.allowedOriginPatterns(...)</code></td>
+<td style="text-align:left"><code>origins</code> / <code>originPatterns</code></td>
+<td style="text-align:left">允许访问的客户端源。<code>*</code> 表示所有。<code>allowedOriginPatterns</code> 支持通配符，更灵活安全。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>允许的方法</strong></td>
+<td style="text-align:left"><code>.allowedMethods(...)</code></td>
+<td style="text-align:left"><code>methods</code></td>
+<td style="text-align:left">允许的 HTTP 方法，如 GET, POST, PUT 等。<code>*</code> 表示所有。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>允许的头部</strong></td>
+<td style="text-align:left"><code>.allowedHeaders(...)</code></td>
+<td style="text-align:left"><code>allowedHeaders</code></td>
+<td style="text-align:left">允许的请求头。前端若发送了自定义 Header（如 <code>Authorization</code>），这里必须包含。<code>*</code> 表示所有。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>暴露的头部</strong></td>
+<td style="text-align:left"><code>.exposedHeaders(...)</code></td>
+<td style="text-align:left"><code>exposedHeaders</code></td>
+<td style="text-align:left">允许前端 JS 访问的响应头。默认情况下，JS 只能访问少数几个，如 <code>Cache-Control</code>。若后端在响应头中返回自定义 Header（如 <code>X-Total-Count</code>），需在此处暴露。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>允许凭证</strong></td>
+<td style="text-align:left"><code>.allowCredentials(true)</code></td>
+<td style="text-align:left"><code>allowCredentials=&quot;true&quot;</code></td>
+<td style="text-align:left">是否允许浏览器发送 Cookie 等凭证信息。<strong>注意：<code>allowCredentials(true)</code> 不能与 <code>allowedOrigins(&quot;*&quot;)</code> 同时使用</strong>，这是安全策略。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>预检有效期</strong></td>
+<td style="text-align:left"><code>.maxAge(...)</code></td>
+<td style="text-align:left"><code>maxAge</code></td>
+<td style="text-align:left">浏览器对预检请求（<code>OPTIONS</code> 请求）的缓存时间（秒）。在此时间内，对同一资源的跨域请求不再发送预检。</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="4-【扩展与应用】最佳实践与常见“坑”">4. 【扩展与应用】最佳实践与常见“坑”</h3>
+<ol>
+<li>
+<p><strong>【坑】 <code>allowedOrigins(&quot;*&quot;)</code> 与 <code>allowCredentials(true)</code> 的冲突</strong></p>
+<ul>
+<li><strong>现象</strong>：当 <code>allowCredentials</code> 设置为 <code>true</code> 时，<code>allowedOrigins</code> 不能使用通配符 <code>*</code>。浏览器会报错。</li>
+<li><strong>原因</strong>：这是出于安全考虑。如果允许任何域都携带凭证访问，会存在巨大的安全风险。</li>
+<li><strong>解决方案</strong>：
+<ul>
+<li><strong>方案 A (推荐)</strong>：使用 <code>.allowedOriginPatterns(&quot;*&quot;)</code> 代替 <code>.allowedOrigins(&quot;*&quot;)</code>。<code>allowedOriginPatterns</code> 是 Spring 5.3 引入的，它在服务器端进行模式匹配，可以安全地与 <code>allowCredentials(true)</code> 一起使用。</li>
+<li><strong>方案 B</strong>：明确列出所有允许的源，例如 <code>.allowedOrigins(&quot;http://localhost:8080&quot;, &quot;https://app.yourdomain.com&quot;)</code>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>【最佳实践】生产环境不要用 <code>*</code></strong></p>
+<ul>
+<li>在开发环境中，使用 <code>*</code> 或 <code>allowedOriginPatterns(&quot;*&quot;)</code> 很方便。</li>
+<li>但在<strong>生产环境</strong>中，为了安全，应该<strong>明确指定允许的前端应用的域名</strong>。</li>
+<li><strong>优雅实现</strong>：将允许的域名配置在 <code>application.yml</code> 中，通过 <code>@Value</code> 注解注入，实现环境隔离。</li>
+</ul>
+<p><strong><code>application.yml</code>:</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">cors:</span><br>  <span class="hljs-attr">allowed-origins:</span> <span class="hljs-string">http://prod-app.com,https://admin.prod-app.com</span><br></code></pre></td></tr></table></figure>
+<p><strong>配置类:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Value(&quot;$&#123;cors.allowed-origins&#125;&quot;)</span><br><span class="hljs-keyword">private</span> String[] allowedOrigins;<br><br><span class="hljs-comment">// ... in addCorsMappings</span><br>registry.addMapping(<span class="hljs-string">&quot;/**&quot;</span>)<br>        .allowedOrigins(allowedOrigins)<br>        <span class="hljs-comment">// ... other settings</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>【坑】自定义请求头 <code>Authorization</code></strong></p>
+<ul>
+<li>如果你的前端请求中包含了自定义的 Header，比如用于 JWT 认证的 <code>Authorization</code>，你必须在后端的 CORS 配置中通过 <code>.allowedHeaders(&quot;Authorization&quot;)</code> 或 <code>.allowedHeaders(&quot;*&quot;)</code> 来允许它。否则，预检请求就会失败。</li>
+</ul>
+</li>
+<li>
+<p><strong>【排查技巧】如何调试 CORS 问题？</strong></p>
+<ul>
+<li>打开浏览器开发者工具 (F 12)，切换到 <strong>Network (网络)</strong> 面板。</li>
+<li>找到失败的请求，通常它会显示为红色，状态为 <code>(failed)</code>，类型为 <code>cors</code>。</li>
+<li>切换到 <strong>Console (控制台)</strong> 面板，这里通常会有非常明确的 CORS 错误信息，例如：“Access to XMLHttpRequest at ‘…’ from origin ‘…’ has been blocked by CORS policy: Response to preflight request doesn’t pass access control check: No ‘Access-Control-Allow-Origin’ header is present on the requested resource.”</li>
+<li>根据控制台的错误提示，检查你的后端 CORS 配置是否正确（源、方法、头部是否都已允许）。</li>
+</ul>
+</li>
+</ol>
+<h3 id="总结">总结</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">场景</th>
+<th style="text-align:left">推荐方案</th>
+<th style="text-align:left">关键点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>通用项目</strong></td>
+<td style="text-align:left">全局配置 <code>WebMvcConfigurer</code></td>
+<td style="text-align:left">集中管理，代码解耦。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>使用了 Spring Security</strong></td>
+<td style="text-align:left">Spring Security 的 CORS 配置</td>
+<td style="text-align:left">必须在 Security 过滤器链中配置，否则不生效。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>个别接口特殊处理</strong></td>
+<td style="text-align:left"><code>@CrossOrigin</code> 注解</td>
+<td style="text-align:left">仅用于特例，避免滥用。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>生产环境</strong></td>
+<td style="text-align:left"><code>application.yml</code> + <code>@Value</code></td>
+<td style="text-align:left">外部化配置，安全、灵活。</td>
+</tr>
+</tbody>
+</table>
+<p>以上就是关于 Spring Boot CORS 配置的讲解。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/spring-boot/" class="print-no-link">#spring boot</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CORS 配置</div>
+      <div>http://example.com/2024/10/13/Java/Framework/Spring Boot/CORS 配置/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年10月13日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/12/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%208%20(LTS)/Stream%20API/%E9%AB%98%E7%BA%A7%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%88Collectors%EF%BC%89/" title="高级收集器（Collectors）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">高级收集器（Collectors）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/07/03/Java/Framework/Spring%20Boot/Lombok/Lombok/" title="注解全家桶">
+                        <span class="hidden-mobile">注解全家桶</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
