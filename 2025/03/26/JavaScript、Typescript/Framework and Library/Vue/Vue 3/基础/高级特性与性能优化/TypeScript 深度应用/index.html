@@ -1,0 +1,851 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="探讨如何在 Vue 项目中淋漓尽致地发挥 TypeScript 的威力。这不仅仅是“给变量加上类型”，而是利用 TypeScript 的高级特性来构建更健壮、更易于维护、拥有顶级开发体验的大型应用。  TypeScript 深度应用：构建类型严谨的 Vue 应用 1. 为 props 和 emits 提供高级类型 基础的 defineProps&lt;&#123;...&#125;&gt; 已经很">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TypeScript 深度应用">
+<meta property="og:url" content="http://example.com/2025/03/26/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%9F%BA%E7%A1%80/%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/TypeScript%20%E6%B7%B1%E5%BA%A6%E5%BA%94%E7%94%A8/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="探讨如何在 Vue 项目中淋漓尽致地发挥 TypeScript 的威力。这不仅仅是“给变量加上类型”，而是利用 TypeScript 的高级特性来构建更健壮、更易于维护、拥有顶级开发体验的大型应用。  TypeScript 深度应用：构建类型严谨的 Vue 应用 1. 为 props 和 emits 提供高级类型 基础的 defineProps&lt;&#123;...&#125;&gt; 已经很">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/vue.png">
+<meta property="article:published_time" content="2025-03-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-22T05:01:41.196Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/vue.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>TypeScript 深度应用 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="TypeScript 深度应用"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-26 00:00" pubdate>
+          2025年3月26日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">TypeScript 深度应用</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月22日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>探讨如何在 Vue 项目中淋漓尽致地发挥 TypeScript 的威力。这不仅仅是“给变量加上类型”，而是利用 TypeScript 的高级特性来构建更健壮、更易于维护、拥有顶级开发体验的大型应用。</p>
+<hr>
+<h3 id="TypeScript-深度应用：构建类型严谨的-Vue-应用">TypeScript 深度应用：构建类型严谨的 Vue 应用</h3>
+<h4 id="1-为-props-和-emits-提供高级类型">1. 为 <code>props</code> 和 <code>emits</code> 提供高级类型</h4>
+<p>基础的 <code>defineProps&lt;&#123;...&#125;&gt;</code> 已经很强大，但我们可以利用 TypeScript 的高级类型让它更上一层楼。</p>
+<p><strong>场景：定义一个复杂的数据表格列配置</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// types/table.ts - 将复杂类型定义抽离出来</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">SortOrder</span> = <span class="hljs-string">&#x27;asc&#x27;</span> | <span class="hljs-string">&#x27;desc&#x27;</span> | <span class="hljs-literal">null</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Column</span>&lt;T&gt; &#123;<br>  <span class="hljs-attr">key</span>: keyof T; <span class="hljs-comment">// key 必须是数据对象 T 的一个键</span><br>  <span class="hljs-attr">label</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">sortable</span>?: <span class="hljs-built_in">boolean</span>;<br>  <span class="hljs-attr">width</span>?: <span class="hljs-built_in">string</span> | <span class="hljs-built_in">number</span>;<br>&#125;<br><br><span class="hljs-comment">// 定义 emit 的类型，包含复杂的 payload</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">TableEmits</span> = &#123;<br>  <span class="hljs-string">&#x27;update:sortBy&#x27;</span>: [<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>]; <span class="hljs-comment">// keyof T 无法直接用于 emit 类型</span><br>  <span class="hljs-string">&#x27;update:sortOrder&#x27;</span>: [<span class="hljs-attr">order</span>: <span class="hljs-title class_">SortOrder</span>];<br>  <span class="hljs-string">&#x27;row-click&#x27;</span>: [<span class="hljs-attr">item</span>: <span class="hljs-built_in">any</span>, <span class="hljs-attr">event</span>: <span class="hljs-title class_">MouseEvent</span>];<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p><strong><code>DataTable.vue</code></strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot; generic=&quot;T extends object&quot;&gt;<br>// 1. 使用 `generic=&quot;T&quot;` 创建泛型组件 (见下一节)<br>import type &#123; Column, SortOrder, TableEmits &#125; from &#x27;./types/table&#x27;;<br><br>interface Props &#123;<br>  data: T[];<br>  columns: Column&lt;T&gt;[];<br>  sortBy: keyof T;<br>  sortOrder: SortOrder;<br>&#125;<br><br>const props = defineProps&lt;Props&gt;();<br>const emit = defineEmits&lt;TableEmits&gt;();<br><br>function handleHeaderClick(column: Column&lt;T&gt;) &#123;<br>  if (column.sortable) &#123;<br>    // TypeScript 会确保 column.key 是 T 的一个合法键<br>    emit(&#x27;update:sortBy&#x27;, column.key as string);<br>    // ... 其他排序逻辑<br>  &#125;<br>&#125;<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>优势</strong>：</p>
+<ul>
+<li><strong><code>keyof T</code></strong> 保证了列配置的 <code>key</code> 必须存在于传入的 <code>data</code> 对象中，杜绝了拼写错误。</li>
+<li><strong><code>SortOrder</code></strong> 使用联合类型限制了排序顺序只能是 <code>asc</code>, <code>desc</code>, <code>null</code>。</li>
+<li><strong>集中的类型定义</strong> (<code>TableEmits</code>) 让 <code>emits</code> 的意图一目了然。</li>
+</ul>
+<hr>
+<h4 id="2-provide-inject-的终极类型安全：InjectionKey">2. <code>provide</code> / <code>inject</code> 的终极类型安全：<code>InjectionKey</code></h4>
+<p>我们之前已经接触过它，现在再深入理解其价值。</p>
+<p><strong>为什么不用字符串？</strong></p>
+<ul>
+<li><code>provide('my-key', value)</code></li>
+<li><code>inject('my-key')</code><br>
+这种方式有两大问题：</li>
+</ul>
+<ol>
+<li><strong>类型丢失</strong>：<code>inject</code> 返回的类型是 <code>any</code>，完全没有类型安全。</li>
+<li><strong>命名冲突</strong>：如果你的应用足够大，或者使用了第三方库，字符串 <code>key</code> 很容易发生冲突。</li>
+</ol>
+<p><strong><code>InjectionKey</code> 的解决方案</strong><br>
+<code>InjectionKey</code> 是一个带有泛型类型参数的 <code>Symbol</code>。</p>
+<ul>
+<li><strong><code>Symbol</code></strong> 保证了全局唯一性，彻底解决了命名冲突问题。</li>
+<li><strong>泛型参数</strong> 携带了值的类型信息，<code>provide</code> 和 <code>inject</code> 都会基于这个类型进行检查。</li>
+</ul>
+<p><strong><code>keys.ts</code></strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; <span class="hljs-keyword">type</span> <span class="hljs-title class_">InjectionKey</span>, <span class="hljs-keyword">type</span> <span class="hljs-title class_">Ref</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">FormContext</span> &#123;<br>  <span class="hljs-attr">model</span>: <span class="hljs-title class_">Ref</span>&lt;<span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;&gt;;<br>  <span class="hljs-attr">registerField</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>, <span class="hljs-attr">validateFn</span>: () =&gt; <span class="hljs-built_in">boolean</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;<br>  <span class="hljs-attr">unregisterField</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">void</span>;<br>&#125;<br><br><span class="hljs-comment">// 创建一个 InjectionKey，它的类型是 FormContext</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> formKey = <span class="hljs-title class_">Symbol</span>(<span class="hljs-string">&#x27;form-context&#x27;</span>) <span class="hljs-keyword">as</span> <span class="hljs-title class_">InjectionKey</span>&lt;<span class="hljs-title class_">FormContext</span>&gt;;<br></code></pre></td></tr></table></figure>
+<p><strong><code>MyForm.vue</code> (Provider)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; provide, ref &#125; from &#x27;vue&#x27;;<br>import &#123; formKey, type FormContext &#125; from &#x27;./keys&#x27;;<br><br>const model = ref(&#123;&#125;);<br>const registerField = (name, validateFn) =&gt; &#123; /* ... */ &#125;;<br>const unregisterField = (name) =&gt; &#123; /* ... */ &#125;;<br><br>// provide 的值必须符合 FormContext 接口的定义，否则 TS 会报错<br>provide(formKey, &#123;<br>  model,<br>  registerField,<br>  unregisterField,<br>&#125;);<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<p><strong><code>MyFormField.vue</code> (Injector)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; inject, onMounted &#125; from &#x27;vue&#x27;;<br>import &#123; formKey &#125; from &#x27;./keys&#x27;;<br><br>// `formContext` 的类型被完美推断为 FormContext | undefined<br>const formContext = inject(formKey);<br><br>onMounted(() =&gt; &#123;<br>  formContext?.registerField(&#x27;username&#x27;, () =&gt; true);<br>&#125;);<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>优势</strong>：<code>provide</code> 和 <code>inject</code> 之间的“契约”由 <code>InjectionKey</code> 强制保证，使得这种跨层级通信也变得如 <code>props</code> 一样类型严谨。</p>
+<hr>
+<h4 id="3-创建泛型组件-generic">3. 创建泛型组件 (<code>generic</code>)</h4>
+<p>这是 Vue 3.3+ 引入的杀手级特性，允许我们创建能够处理多种数据类型的可复用组件，同时保持完整的类型安全。</p>
+<p><strong>场景：创建一个通用的选择器组件 <code>&lt;Select&gt;</code></strong></p>
+<p><strong><code>GenericSelect.vue</code></strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot; generic=&quot;TValue, TItem extends &#123; value: TValue; label: string &#125;&quot;&gt;<br>// 1. generic 属性定义了两个泛型参数:<br>//    - TValue: 选中项的值的类型 (string | number 等)<br>//    - TItem: 选项数组中每个对象的类型，并约束它必须包含 value 和 label 属性<br><br>const props = defineProps&lt;&#123;<br>  options: TItem[];<br>  modelValue: TValue | null; // v-model 的值<br>&#125;&gt;();<br><br>const emit = defineEmits&lt;&#123;<br>  &#x27;update:modelValue&#x27;: [value: TValue | null];<br>&#125;&gt;();<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;select<br>    :value=&quot;props.modelValue&quot;<br>    @change=&quot;emit(&#x27;update:modelValue&#x27;, ($event.target as HTMLSelectElement).value as TValue)&quot;<br>  &gt;<br>    &lt;option v-for=&quot;option in props.options&quot; :key=&quot;String(option.value)&quot; :value=&quot;option.value&quot;&gt;<br>      &#123;&#123; option.label &#125;&#125;<br>    &lt;/option&gt;<br>  &lt;/select&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>在父组件中使用</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; ref &#125; from &#x27;vue&#x27;;<br>import GenericSelect from &#x27;./GenericSelect.vue&#x27;;<br><br>// 场景1：值为字符串<br>const stringOptions = [<br>  &#123; value: &#x27;a&#x27;, label: &#x27;Option A&#x27; &#125;,<br>  &#123; value: &#x27;b&#x27;, label: &#x27;Option B&#x27; &#125;,<br>];<br>const selectedString = ref&lt;string | null&gt;(&#x27;a&#x27;);<br><br>// 场景2：值为数字<br>const numberOptions = [<br>  &#123; value: 1, label: &#x27;Item 1&#x27;, extraData: &#x27;...&#x27; &#125;,<br>  &#123; value: 2, label: &#x27;Item 2&#x27;, extraData: &#x27;...&#x27; &#125;,<br>];<br>const selectedNumber = ref&lt;number | null&gt;(2);<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;!-- <br>    Vue 和 TypeScript 会自动推断泛型。<br>    在这里，TValue 是 string，TItem 是 &#123; value: string; label: string; &#125;<br>  --&gt;<br>  &lt;GenericSelect v-model=&quot;selectedString&quot; :options=&quot;stringOptions&quot; /&gt;<br><br>  &lt;!-- <br>    在这里，TValue 是 number，TItem 是 &#123; value: number; label: string; extraData: string; &#125;<br>  --&gt;<br>  &lt;GenericSelect v-model=&quot;selectedNumber&quot; :options=&quot;numberOptions&quot; /&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>优势</strong>：我们只用一个 <code>GenericSelect.vue</code> 文件，就创建了一个可以处理不同 <code>value</code> 类型、不同 <code>option</code> 对象结构的、完全类型安全的选择器。这在组件库开发中是无价的。</p>
+<hr>
+<h4 id="4-为-Pinia-编写精确类型">4. 为 Pinia 编写精确类型</h4>
+<p>Pinia 的设计本身就对 TypeScript 非常友好，但我们还可以通过定义接口和类型来让它更上一层楼。</p>
+<p><strong><code>src/stores/user.ts</code></strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; defineStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; ref, computed &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><br><span class="hljs-comment">// 1. 为 state 定义接口</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserProfile</span> &#123;<br>  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">roles</span>: <span class="hljs-built_in">string</span>[];<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useUserStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-comment">// 2. 使用 UserProfile | null 作为 state 的类型</span><br>  <span class="hljs-keyword">const</span> profile = ref&lt;<span class="hljs-title class_">UserProfile</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>);<br>  <span class="hljs-keyword">const</span> isLoading = <span class="hljs-title function_">ref</span>(<span class="hljs-literal">false</span>);<br><br>  <span class="hljs-comment">// 3. Getter 的返回类型会被自动推断 (boolean)</span><br>  <span class="hljs-keyword">const</span> isLoggedIn = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> !!profile.<span class="hljs-property">value</span>);<br>  <span class="hljs-keyword">const</span> isAdmin = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> profile.<span class="hljs-property">value</span>?.<span class="hljs-property">roles</span>.<span class="hljs-title function_">includes</span>(<span class="hljs-string">&#x27;admin&#x27;</span>) ?? <span class="hljs-literal">false</span>);<br><br>  <span class="hljs-comment">// 4. Action 的参数和返回类型都应该明确标注</span><br>  <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchUser</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span></span>): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; &#123;<br>    isLoading.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span>;<br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">`/api/users/<span class="hljs-subst">$&#123;id&#125;</span>`</span>);<br>      <span class="hljs-comment">// as UserProfile 提供了类型断言</span><br>      profile.<span class="hljs-property">value</span> = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>() <span class="hljs-keyword">as</span> <span class="hljs-title class_">UserProfile</span>;<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>      isLoading.<span class="hljs-property">value</span> = <span class="hljs-literal">false</span>;<br>    &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">logout</span>(<span class="hljs-params"></span>): <span class="hljs-built_in">void</span> &#123;<br>    profile.<span class="hljs-property">value</span> = <span class="hljs-literal">null</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> &#123; profile, isLoading, isLoggedIn, isAdmin, fetchUser, logout &#125;;<br>&#125;);<br></code></pre></td></tr></table></figure>
+<p><strong>优势</strong>：</p>
+<ul>
+<li><strong>清晰的契约</strong>：<code>UserProfile</code> 接口清晰地定义了用户数据的结构。</li>
+<li><strong>可预测的 Actions</strong>：为 <code>fetchUser</code> 的参数 <code>id</code> 和返回值 <code>Promise&lt;void&gt;</code> 添加类型，使得调用者清楚地知道如何使用它。</li>
+<li><strong>健壮的 Getters</strong>：<code>isAdmin</code> getter 中的 <code>?.</code> (可选链) 和 <code>??</code> (空值合并) 操作符是在处理可能为 <code>null</code> 的 <code>profile</code> 时的 TypeScript 最佳实践。</li>
+</ul>
+<hr>
+<h3 id="要点-注意事项：构建大型应用的思维模式">要点/注意事项：构建大型应用的思维模式</h3>
+<ol>
+<li>
+<p><strong>类型优先 (Type-First Development)</strong>：在开始写逻辑之前，先思考和定义你的数据结构和接口 (<code>interface</code>, <code>type</code>)。一个好的类型定义本身就是最好的文档。</p>
+</li>
+<li>
+<p><strong>善用 <code>types</code> 目录</strong>：将全域或多处复用的类型定义（如 API 返回值、Store 状态接口）放在一个专门的 <code>src/types</code> 目录中，方便管理和导入。</p>
+</li>
+<li>
+<p><strong>拥抱 <code>utility-types</code></strong>：TypeScript 提供了许多强大的工具类型，如 <code>Partial&lt;T&gt;</code>, <code>Required&lt;T&gt;</code>, <code>Pick&lt;T, K&gt;</code>, <code>Omit&lt;T, K&gt;</code> 等。学会使用它们可以让你在不重复写代码的情况下，派生出新的、灵活的类型。</p>
+</li>
+<li>
+<p><strong><code>as const</code></strong>：当你有一个不希望被修改的常量对象或数组时，使用 <code>as const</code>。这会将其所有属性变为 <code>readonly</code>，并将其值推断为最窄的字面量类型，非常适合用于配置对象。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-variable constant_">STATUS_CODES</span> = &#123;<br>  <span class="hljs-attr">OK</span>: <span class="hljs-number">200</span>,<br>  <span class="hljs-attr">NOT_FOUND</span>: <span class="hljs-number">404</span>,<br>&#125; <span class="hljs-keyword">as</span> <span class="hljs-keyword">const</span>;<br><br><span class="hljs-comment">// type StatusCodeValues = 200 | 404</span><br><span class="hljs-keyword">type</span> <span class="hljs-title class_">StatusCodeValues</span> = <span class="hljs-keyword">typeof</span> <span class="hljs-variable constant_">STATUS_CODES</span>[keyof <span class="hljs-keyword">typeof</span> <span class="hljs-variable constant_">STATUS_CODES</span>];<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>配置 <code>tsconfig.json</code></strong>：开启所有最严格的检查项，如 <code>&quot;strict&quot;: true</code>, <code>&quot;noImplicitAny&quot;: true</code>, <code>&quot;strictNullChecks&quot;: true</code>。这会在早期就帮你发现大量潜在的 bug。</p>
+</li>
+</ol>
+<p>通过将这些 TypeScript 的高级技巧融入到日常的 Vue 开发中，你将能够构建出不仅功能强大，而且在类型层面坚如磐石、极易协作和长期维护的大型应用程序。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/" class="category-chain-item">Vue</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/Vue-3/" class="category-chain-item">Vue 3</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/Vue-3/%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/" class="category-chain-item">高级特性与性能优化</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vue/" class="print-no-link">#vue</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>TypeScript 深度应用</div>
+      <div>http://example.com/2025/03/26/JavaScript、Typescript/Framework and Library/Vue/Vue 3/基础/高级特性与性能优化/TypeScript 深度应用/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/23/Java/Framework/Spring%20Boot/Security/Spring%20Boot%203%20+%20Spring%20Security%206%20-%20%E4%BD%BF%E7%94%A8%20JWT%20Token%20%E4%BF%9D%E6%8A%A4%20API/" title="Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Spring Boot 3 + Spring Security 6 - 使用 JWT Token 保护 API</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/26/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%9F%BA%E7%A1%80/%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7%E4%B8%8E%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%B8%B2%E6%9F%93%20(SSR)%20%E5%92%8C%E9%9D%99%E6%80%81%E7%AB%99%E7%82%B9%E7%94%9F%E6%88%90%20(SSG)/" title="服务端渲染 (SSR) 和静态站点生成 (SSG)">
+                        <span class="hidden-mobile">服务端渲染 (SSR) 和静态站点生成 (SSG)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

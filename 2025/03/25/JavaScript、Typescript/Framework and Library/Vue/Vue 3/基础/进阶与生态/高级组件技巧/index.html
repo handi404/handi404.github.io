@@ -1,0 +1,828 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="探讨这些能极大提升组件灵活性和复用性的高级技巧。  1. 插槽 (Slots)：组件的“内容占位符” 核心思想：让父组件可以决定子组件中某一部分的内容。插槽就像在组件的模板上开了一个“口子”，父组件可以将任何模板片段“塞”进这个口子里。这使得组件在保持自身结构和逻辑的同时，内容部分可以高度自定义。 知识点 A. 默认插槽 (Default Slot) 最简单的插槽，一个组件只有一个。 BaseCa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级组件技巧">
+<meta property="og:url" content="http://example.com/2025/03/25/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%9F%BA%E7%A1%80/%E8%BF%9B%E9%98%B6%E4%B8%8E%E7%94%9F%E6%80%81/%E9%AB%98%E7%BA%A7%E7%BB%84%E4%BB%B6%E6%8A%80%E5%B7%A7/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="探讨这些能极大提升组件灵活性和复用性的高级技巧。  1. 插槽 (Slots)：组件的“内容占位符” 核心思想：让父组件可以决定子组件中某一部分的内容。插槽就像在组件的模板上开了一个“口子”，父组件可以将任何模板片段“塞”进这个口子里。这使得组件在保持自身结构和逻辑的同时，内容部分可以高度自定义。 知识点 A. 默认插槽 (Default Slot) 最简单的插槽，一个组件只有一个。 BaseCa">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/vue.png">
+<meta property="article:published_time" content="2025-03-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-22T04:59:28.924Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/vue.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>高级组件技巧 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="高级组件技巧"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-25 00:00" pubdate>
+          2025年3月25日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">高级组件技巧</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月22日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>探讨这些能极大提升组件灵活性和复用性的高级技巧。</p>
+<hr>
+<h3 id="1-插槽-Slots-：组件的“内容占位符”">1. 插槽 (<code>Slots</code>)：组件的“内容占位符”</h3>
+<p><strong>核心思想</strong>：让父组件可以决定子组件中<strong>某一部分的内容</strong>。插槽就像在组件的模板上开了一个“口子”，父组件可以将任何模板片段“塞”进这个口子里。这使得组件在保持自身结构和逻辑的同时，内容部分可以高度自定义。</p>
+<h4 id="知识点">知识点</h4>
+<p><strong>A. 默认插槽 (Default Slot)</strong></p>
+<p>最简单的插槽，一个组件只有一个。</p>
+<p><strong><code>BaseCard.vue</code> (子组件)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;div class=&quot;card&quot;&gt;<br>    &lt;header class=&quot;card-header&quot;&gt;<br>      &lt;h3&gt;Card Title&lt;/h3&gt;<br>    &lt;/header&gt;<br>    &lt;main class=&quot;card-content&quot;&gt;<br>      &lt;!-- 这里就是“口子” --&gt;<br>      &lt;slot&gt;&lt;/slot&gt;<br>    &lt;/main&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br><br>&lt;style scoped&gt;<br>.card &#123; border: 1px solid #ccc; border-radius: 8px; padding: 16px; &#125;<br>/* ... other styles */<br>&lt;/style&gt;<br></code></pre></td></tr></table></figure>
+<p><strong><code>Parent.vue</code> (父组件)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;BaseCard&gt;<br>    &lt;!-- 放在 BaseCard 标签内的所有内容，都会被渲染到 &lt;slot&gt; 的位置 --&gt;<br>    &lt;p&gt;This is the content for the card.&lt;/p&gt;<br>    &lt;img src=&quot;/path/to/image.png&quot; alt=&quot;An image&quot;&gt;<br>  &lt;/BaseCard&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>B. 具名插槽 (Named Slots)</strong></p>
+<p>当一个组件需要多个可定制的内容区域时，使用具名插槽。</p>
+<p><strong><code>PageLayout.vue</code> (子组件)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;div class=&quot;container&quot;&gt;<br>    &lt;header&gt;<br>      &lt;!-- name=&quot;header&quot; 的插槽 --&gt;<br>      &lt;slot name=&quot;header&quot;&gt;<br>        &lt;!-- 插槽的后备内容 (Fallback Content) --&gt;<br>        &lt;!-- 如果父组件没有提供这个插槽，则显示后备内容 --&gt;<br>        &lt;h1&gt;Default Page Header&lt;/h1&gt;<br>      &lt;/slot&gt;<br>    &lt;/header&gt;<br>    &lt;main&gt;<br>      &lt;!-- 默认插槽，可以和具名插槽共存 --&gt;<br>      &lt;slot&gt;&lt;/slot&gt;<br>    &lt;/main&gt;<br>    &lt;footer&gt;<br>      &lt;!-- name=&quot;footer&quot; 的插槽 --&gt;<br>      &lt;slot name=&quot;footer&quot;&gt;&lt;/slot&gt;<br>    &lt;/footer&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p><strong><code>Parent.vue</code> (父组件)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;PageLayout&gt;<br>    &lt;!-- 使用 &lt;template v-slot:header&gt; 或其简写 #header 来指定插槽 --&gt;<br>    &lt;template #header&gt;<br>      &lt;h2&gt;My Custom Page Header&lt;/h2&gt;<br>    &lt;/template&gt;<br><br>    &lt;!-- 不带 v-slot 的内容会进入默认插槽 --&gt;<br>    &lt;p&gt;This is the main content of the page.&lt;/p&gt;<br><br>    &lt;!-- #footer 是 v-slot:footer 的简写 --&gt;<br>    &lt;template #footer&gt;<br>      &lt;p&gt;&amp;copy; 2024 My Company&lt;/p&gt;<br>    &lt;/template&gt;<br>  &lt;/PageLayout&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>C. 作用域插槽 (Scoped Slots)</strong></p>
+<p><strong>这是插槽最强大的功能</strong>。它允许子组件在渲染插槽时，将<strong>子组件内部的数据</strong>传递给父组件，让父组件可以根据这些数据来决定插槽的内容。</p>
+<p><strong><code>TodoList.vue</code> (子组件)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; ref &#125; from &#x27;vue&#x27;;<br>interface Todo &#123; id: number; text: string; completed: boolean; &#125;<br>const todos = ref&lt;Todo[]&gt;([<br>  &#123; id: 1, text: &#x27;Learn Vue&#x27;, completed: true &#125;,<br>  &#123; id: 2, text: &#x27;Master Slots&#x27;, completed: false &#125;,<br>]);<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;ul&gt;<br>    &lt;li v-for=&quot;todo in todos&quot; :key=&quot;todo.id&quot;&gt;<br>      &lt;!-- <br>        通过 v-bind 将子组件的数据 (todo) 暴露给父组件。<br>        父组件可以通过 v-slot=&quot;slotProps&quot; 来接收这些数据。<br>      --&gt;<br>      &lt;slot :item=&quot;todo&quot; :index=&quot;todo.id&quot;&gt;&lt;/slot&gt;<br>    &lt;/li&gt;<br>  &lt;/ul&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p><strong><code>Parent.vue</code> (父组件)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;TodoList&gt;<br>    &lt;!-- <br>      使用 v-slot=&quot;slotProps&quot; 接收子组件传递的所有数据。<br>      slotProps 是一个对象，包含了 &#123; item: &#123;...&#125;, index: ... &#125;<br>      你也可以直接解构它，如 v-slot=&quot;&#123; item, index &#125;&quot;<br>    --&gt;<br>    &lt;template #default=&quot;&#123; item, index &#125;&quot;&gt;<br>      &lt;span :style=&quot;&#123; textDecoration: item.completed ? &#x27;line-through&#x27; : &#x27;none&#x27; &#125;&quot;&gt;<br>        &#123;&#123; index &#125;&#125;. &#123;&#123; item.text &#125;&#125;<br>      &lt;/span&gt;<br>      &lt;input type=&quot;checkbox&quot; :checked=&quot;item.completed&quot;&gt;<br>    &lt;/template&gt;<br>  &lt;/TodoList&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>核心价值</strong>：<code>TodoList</code> 组件只负责<strong>数据的迭代和提供</strong>，而每一项<strong>如何展示</strong>的逻辑则完全由父组件通过作用域插槽来控制。这实现了逻辑和视图的完美分离，大大增强了组件的复用性。</p>
+<hr>
+<h3 id="2-依赖注入-Provide-Inject-：跨层级的“隐形通道”">2. 依赖注入 (<code>Provide</code> / <code>Inject</code>)：跨层级的“隐形通道”</h3>
+<p><strong>核心思想</strong>：解决“属性透传”问题。允许一个祖先组件向其所有后代组件（无论层级多深）提供数据或方法，而后代组件可以按需“注入”并使用这些数据。</p>
+<p><strong><code>provide</code></strong> 在祖先组件中提供值。<br>
+<strong><code>inject</code></strong> 在后代组件中注入值。</p>
+<h4 id="知识点与最佳实践">知识点与最佳实践</h4>
+<p><strong><code>keys.ts</code> (定义类型安全的注入键)</strong><br>
+使用 <code>Symbol</code> 作为 <code>InjectionKey</code> 可以避免命名冲突，并提供强大的类型支持。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> &#123; <span class="hljs-title class_">InjectionKey</span>, <span class="hljs-title class_">Ref</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserInfo</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>;<br>&#125;<br><br><span class="hljs-comment">// 定义一个类型化的 InjectionKey</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> userInfoKey = <span class="hljs-title class_">Symbol</span>() <span class="hljs-keyword">as</span> <span class="hljs-title class_">InjectionKey</span>&lt;<span class="hljs-title class_">Ref</span>&lt;<span class="hljs-title class_">UserInfo</span>&gt;&gt;;<br></code></pre></td></tr></table></figure>
+<p><strong><code>Ancestor.vue</code> (提供方)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; provide, ref &#125; from &#x27;vue&#x27;;<br>import &#123; userInfoKey, type UserInfo &#125; from &#x27;./keys&#x27;;<br>import DeepChild from &#x27;./DeepChild.vue&#x27;;<br><br>const user = ref&lt;UserInfo&gt;(&#123; name: &#x27;Alice&#x27;, email: &#x27;alice@vue.dev&#x27; &#125;);<br><br>// 使用类型化的 key 来 provide 数据<br>// 提供一个 ref，这样当 user 变化时，所有注入它的组件都会更新<br>provide(userInfoKey, user);<br><br>// 模拟数据更新<br>setTimeout(() =&gt; &#123;<br>  user.value.name = &#x27;Alice Smith&#x27;;<br>&#125;, 3000);<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;DeepChild /&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p><strong><code>DeepChild.vue</code> (注入方)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; inject &#125; from &#x27;vue&#x27;;<br>import &#123; userInfoKey &#125; from &#x27;./keys&#x27;;<br><br>// 使用相同的 key 来 inject 数据<br>// 如果可能找不到提供者，可以提供一个默认值<br>const injectedUser = inject(userInfoKey);<br><br>if (!injectedUser) &#123;<br>  // 处理未找到 provider 的情况<br>  throw new Error(&#x27;Could not find user info provider!&#x27;);<br>&#125;<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;div v-if=&quot;injectedUser&quot;&gt;<br>    &lt;h3&gt;Deeply Nested Component&lt;/h3&gt;<br>    &lt;p&gt;Injected User Name: &#123;&#123; injectedUser.name &#125;&#125;&lt;/p&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>要点/注意事项</strong>：</p>
+<ul>
+<li><strong>非响应式提供</strong>：如果你 <code>provide</code> 一个普通对象而不是一个 <code>ref</code>，那么当祖先组件的数据变化时，后代组件<strong>不会</strong>自动更新。因此，<strong>强烈推荐 <code>provide</code> 响应式数据 (<code>ref</code> 或 <code>reactive</code>)</strong>。</li>
+<li><strong>滥用风险</strong>：<code>provide/inject</code> 使得组件间的依赖关系变得不那么明确。过度使用会使应用状态难以追踪。它最适合用于提供那些<strong>全局性或半全局性</strong>、不常变化的数据，如：主题信息、当前用户信息、i 18 n 函数等。对于大多数场景，Props 仍然是首选。</li>
+</ul>
+<hr>
+<h3 id="3-动态组件-异步组件">3. 动态组件 &amp; 异步组件</h3>
+<h4 id="动态组件-component-is">动态组件 <code>&lt;component :is=&quot;...&quot;&gt;</code></h4>
+<p><strong>核心思想</strong>：在一个挂载点动态地切换渲染不同的组件。</p>
+<p><strong><code>App.vue</code></strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; ref, shallowRef &#125; from &#x27;vue&#x27;;<br>import ComponentA from &#x27;./ComponentA.vue&#x27;;<br>import ComponentB from &#x27;./ComponentB.vue&#x27;;<br>import ComponentC from &#x27;./ComponentC.vue&#x27;;<br><br>const tabs = &#123; ComponentA, ComponentB, ComponentC &#125;;<br>// 使用 shallowRef 来存储组件定义，可以避免不必要的深度响应式开销<br>const currentTab = shallowRef(ComponentA);<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;button v-for=&quot;(_, tabName) in tabs&quot; @click=&quot;currentTab = tabs[tabName]&quot;&gt;<br>      &#123;&#123; tabName &#125;&#125;<br>    &lt;/button&gt;<br>    <br>    &lt;!-- :is 属性可以接收一个组件定义对象 --&gt;<br>    &lt;!-- Vue 会在这里渲染 currentTab 变量所指向的组件 --&gt;<br>    &lt;keep-alive&gt;<br>      &lt;component :is=&quot;currentTab&quot;&gt;&lt;/component&gt;<br>    &lt;/keep-alive&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p><strong><code>keep-alive</code></strong>：与动态组件是天作之合。被 <code>&lt;keep-alive&gt;</code> 包裹的动态组件在切换出去时，其状态会被缓存，而不是被销毁。这在实现 Tab 切换等功能时非常有用。</p>
+<h4 id="异步组件-defineAsyncComponent">异步组件 <code>defineAsyncComponent</code></h4>
+<p><strong>核心思想</strong>：将组件的加载推迟到它实际需要被渲染时。这对于优化应用的<strong>首屏加载时间 (TTV/TTA)</strong> 至关重要，是代码分割 (Code Splitting) 的一种体现。</p>
+<p>Vue Router 的懒加载 <code>() =&gt; import(...)</code> 本质上就是异步组件的一种应用。我们也可以手动创建异步组件。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> &#123; defineAsyncComponent &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><br><span class="hljs-comment">// 1. 最简单的形式</span><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">AsyncComponent</span> = <span class="hljs-title function_">defineAsyncComponent</span>(<span class="hljs-function">() =&gt;</span><br>  <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;./MyHeavyComponent.vue&#x27;</span>)<br>);<br><br><span class="hljs-comment">// 2. 带有加载和错误状态的高级形式</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">LoadingComponent</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Loading.vue&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">ErrorComponent</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./Error.vue&#x27;</span>;<br><br><span class="hljs-keyword">const</span> <span class="hljs-title class_">AsyncAdvancedComponent</span> = <span class="hljs-title function_">defineAsyncComponent</span>(&#123;<br>  <span class="hljs-comment">// 加载函数</span><br>  <span class="hljs-attr">loader</span>: <span class="hljs-function">() =&gt;</span> <span class="hljs-keyword">import</span>(<span class="hljs-string">&#x27;./MyHeavyComponent.vue&#x27;</span>),<br>  <br>  <span class="hljs-comment">// 加载异步组件时显示的组件</span><br>  <span class="hljs-attr">loadingComponent</span>: <span class="hljs-title class_">LoadingComponent</span>,<br>  <br>  <span class="hljs-comment">// 如果加载失败，显示的组件</span><br>  <span class="hljs-attr">errorComponent</span>: <span class="hljs-title class_">ErrorComponent</span>,<br>  <br>  <span class="hljs-comment">// 在显示 loadingComponent 之前的延迟，单位 ms</span><br>  <span class="hljs-attr">delay</span>: <span class="hljs-number">200</span>,<br>  <br>  <span class="hljs-comment">// 如果加载器函数在指定时间内未解析，则显示错误组件</span><br>  <span class="hljs-attr">timeout</span>: <span class="hljs-number">3000</span>,<br>&#125;);<br></code></pre></td></tr></table></figure>
+<p><strong>使用场景</strong>：</p>
+<ul>
+<li>路由视图（Vue Router 自动处理）。</li>
+<li>由 <code>v-if</code> 控制的、不一定在初始时就显示的组件（如弹窗 Modals）。</li>
+<li>任何体积较大且不是首屏核心内容的组件。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/" class="category-chain-item">Vue</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/Vue-3/" class="category-chain-item">Vue 3</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/Vue-3/%E8%BF%9B%E9%98%B6%E4%B8%8E%E7%94%9F%E6%80%81/" class="category-chain-item">进阶与生态</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vue/" class="print-no-link">#vue</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>高级组件技巧</div>
+      <div>http://example.com/2025/03/25/JavaScript、Typescript/Framework and Library/Vue/Vue 3/基础/进阶与生态/高级组件技巧/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/25/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%9F%BA%E7%A1%80/%E8%BF%9B%E9%98%B6%E4%B8%8E%E7%94%9F%E6%80%81/%E9%80%BB%E8%BE%91%E5%A4%8D%E7%94%A8%EF%BC%9AComposables%20(%E7%BB%84%E5%90%88%E5%BC%8F%E5%87%BD%E6%95%B0)/" title="逻辑复用：Composables (组合式函数)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">逻辑复用：Composables (组合式函数)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%9F%BA%E7%A1%80/%E5%9F%BA%E7%A1%80/%E5%BA%94%E7%94%A8%E5%AE%9E%E4%BE%8B%E4%B8%8E%E7%BB%84%E4%BB%B6%E5%9F%BA%E7%A1%80/" title="应用实例与组件基础">
+                        <span class="hidden-mobile">应用实例与组件基础</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

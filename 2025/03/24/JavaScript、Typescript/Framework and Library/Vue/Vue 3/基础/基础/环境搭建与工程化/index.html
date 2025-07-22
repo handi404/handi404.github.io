@@ -1,0 +1,875 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="第一阶段：核心基础 (The Foundation) 第一部分：准备必要的工具 在编写 Vue 代码之前，我们需要两个基础工具。 1. Node.js：JavaScript 的运行环境   是什么：通常，JavaScript 只能在浏览器里运行。Node.js 是一个让 JavaScript 可以在你的电脑上（比如在命令行里）直接运行的环境。所有现代前端开发工具（包括 Vue 的工具链）都依赖于它">
+<meta property="og:type" content="article">
+<meta property="og:title" content="环境搭建与工程化">
+<meta property="og:url" content="http://example.com/2025/03/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%9F%BA%E7%A1%80/%E5%9F%BA%E7%A1%80/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA%E4%B8%8E%E5%B7%A5%E7%A8%8B%E5%8C%96/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="第一阶段：核心基础 (The Foundation) 第一部分：准备必要的工具 在编写 Vue 代码之前，我们需要两个基础工具。 1. Node.js：JavaScript 的运行环境   是什么：通常，JavaScript 只能在浏览器里运行。Node.js 是一个让 JavaScript 可以在你的电脑上（比如在命令行里）直接运行的环境。所有现代前端开发工具（包括 Vue 的工具链）都依赖于它">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/vue.png">
+<meta property="article:published_time" content="2025-03-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-22T04:55:43.652Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/vue.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>环境搭建与工程化 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="环境搭建与工程化"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-24 00:00" pubdate>
+          2025年3月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">环境搭建与工程化</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月22日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="第一阶段：核心基础-The-Foundation"><strong>第一阶段：核心基础 (The Foundation)</strong></h3>
+<h4 id="第一部分：准备必要的工具"><strong>第一部分：准备必要的工具</strong></h4>
+<p>在编写 Vue 代码之前，我们需要两个基础工具。</p>
+<h5 id="1-Node-js：JavaScript-的运行环境"><strong>1. Node.js：JavaScript 的运行环境</strong></h5>
+<ul>
+<li>
+<p><strong>是什么</strong>：通常，JavaScript 只能在浏览器里运行。Node.js 是一个让 JavaScript 可以在你的电脑上（比如在命令行里）直接运行的环境。所有现代前端开发工具（包括 Vue 的工具链）都依赖于它。</p>
+</li>
+<li>
+<p><strong>怎么做</strong>：</p>
+<ol>
+<li>访问 <a target="_blank" rel="noopener" href="https://nodejs.org/">Node.js 官网</a>。</li>
+<li>下载并安装 <strong>LTS (Long-Term Support)</strong> 版本。LTS 代表长期支持版，它最稳定，是生产环境和开发的首选。</li>
+</ol>
+</li>
+<li>
+<p><strong>如何验证</strong>：安装完成后，打开你的终端（在 Windows 上是 <code>cmd</code> 或 <code>PowerShell</code>，在 macOS 上是 <code>Terminal</code>），输入以下命令并回车：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash">node -v<br>npm -v<br></code></pre></td></tr></table></figure>
+<p>如果你能看到类似 <code>v18.18.0</code> 和 <code>9.8.1</code> 这样的版本号，就说明安装成功了。<code>npm</code> 是 Node.js 自带的包管理器，我们马上会讲到它。</p>
+</li>
+</ul>
+<h5 id="2-包管理器：npm-pnpm-推荐"><strong>2. 包管理器：<code>npm</code> / <code>pnpm</code> (推荐)</strong></h5>
+<ul>
+<li>
+<p><strong>是什么</strong>：可以把它想象成你项目的“应用商店”。你需要 Vue、Vue Router 等工具库时，就通过包管理器来下载和管理它们。<code>npm</code> 是 Node.js 自带的。</p>
+</li>
+<li>
+<p><strong>扩展与最佳实践</strong>：</p>
+<ul>
+<li>虽然 <code>npm</code> 完全可用，但我更推荐使用 <code>pnpm</code>。</li>
+<li><strong>为什么推荐 <code>pnpm</code>?</strong> 它速度更快，并且通过一种巧妙的方式共享依赖，极大地节省你的磁盘空间。</li>
+<li><strong>如何安装 <code>pnpm</code></strong>：在终端里运行以下命令即可全局安装 <code>pnpm</code>。</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install -g pnpm<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong>注意</strong>：在接下来的教程中，我会同时提供 <code>npm</code> 和 <code>pnpm</code> 的命令。你可以选择一个并坚持使用。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="第二部分：创建你的第一个-Vue-3-项目"><strong>第二部分：创建你的第一个 Vue 3 项目</strong></h4>
+<p>现在，激动人心的时刻到了。我们将使用 Vue 官方的脚手架工具 <code>create-vue</code> 来创建项目。这个工具是基于 Vite 的，能为你配置好一切。</p>
+<ol>
+<li>
+<p><strong>打开你的终端</strong>，<code>cd</code> 到一个你想要存放项目的文件夹里（比如 <code>cd Documents/projects</code>）。</p>
+</li>
+<li>
+<p><strong>运行创建命令</strong>：</p>
+<ul>
+<li><strong>使用 <code>pnpm</code> (推荐):</strong><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">pnpm create vue@latest<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>使用 <code>npm</code>:</strong><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm create vue@latest<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p><strong>注意</strong>：<code>@latest</code> 确保你使用的是最新版的脚手架。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>回答交互式问题</strong>：<br>
+终端会向你提问，以定制你的项目。对于初学者，我推荐以下选择，我会解释原因：</p>
+<ul>
+<li><code>✔ Project name:</code> … <code>vue3-mastery-course</code> (输入你的项目名)</li>
+<li><code>✔ Add TypeScript?</code> … <strong>Yes</strong> (这是我们的核心要求，提供类型安全)</li>
+<li><code>✔ Add JSX Support?</code> … <strong>No</strong> (Vue 的模板语法更直观且功能强大，我们专注于此)</li>
+<li><code>✔ Add Vue Router for Single Page Application development?</code> … <strong>Yes</strong> (几乎所有应用都需要页面导航，我们先加上)</li>
+<li><code>✔ Add Pinia for state management?</code> … <strong>Yes</strong> (这是官方推荐的状态管理库，先加上，后面会学)</li>
+<li><code>✔ Add Vitest for Unit Testing?</code> … <strong>No</strong> (测试是进阶内容，我们稍后在学习路线中再加入)</li>
+<li><code>✔ Add an End-to-End Testing Solution?</code> › <strong>No</strong> (同上，保持初期项目纯粹)</li>
+<li><code>✔ Add ESLint for code quality?</code> … <strong>Yes</strong> (必选项！它能检查代码错误和风格问题，是代码质量的保障)</li>
+<li><code>✔ Add Prettier for code formatting?</code> … <strong>Yes</strong> (必选项！它能自动格式化你的代码，保持团队风格统一)</li>
+</ul>
+<p>选择完成后，脚手架会为你生成项目文件。</p>
+</li>
+</ol>
+<hr>
+<h4 id="第三部分：运行项目并了解结构"><strong>第三部分：运行项目并了解结构</strong></h4>
+<ol>
+<li>
+<p><strong>进入项目并安装依赖</strong>：<br>
+根据终端的提示，进入项目目录，并安装所有需要的依赖包。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 1. 进入项目目录</span><br><span class="hljs-built_in">cd</span> vue3-mastery-course<br><br><span class="hljs-comment"># 2. 安装依赖</span><br><span class="hljs-comment"># 使用 pnpm (推荐)</span><br>pnpm install<br><span class="hljs-comment"># 或者使用 npm</span><br>npm install<br></code></pre></td></tr></table></figure>
+<p>你会看到一个 <code>node_modules</code> 文件夹被创建，里面存放着所有下载的库。</p>
+</li>
+<li>
+<p><strong>启动开发服务器</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 使用 pnpm (推荐)</span><br>pnpm run dev<br><span class="hljs-comment"># 或者使用 npm</span><br>npm run dev<br></code></pre></td></tr></table></figure>
+<p>你会看到终端输出类似下面的信息：</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus">VITE v5<span class="hljs-selector-class">.x</span><span class="hljs-selector-class">.x</span>  ready <span class="hljs-keyword">in</span> xxx ms<br><br>➜  Local:   http:<span class="hljs-comment">//localhost:5173/</span><br>➜  Network: <span class="hljs-selector-tag">use</span> <span class="hljs-attr">--host</span> to expose<br>➜  press h + enter to show help<br></code></pre></td></tr></table></figure>
+<p>这说明 Vite 开发服务器已经启动了！</p>
+</li>
+<li>
+<p><strong>在浏览器中查看</strong>：<br>
+打开你的浏览器（推荐 Chrome 或 Firefox），访问终端里显示的 <code>Local</code> 地址（通常是 <code>http://localhost:5173</code>）。</p>
+<p><strong>你应该能看到一个 Vue 的欢迎页面！</strong></p>
+</li>
+</ol>
+<hr>
+<h4 id="第四部分：项目文件结构速览"><strong>第四部分：项目文件结构速览</strong></h4>
+<p>花一分钟时间，我们快速看一下生成的文件都是做什么的，让你不感到陌生。</p>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs nix">vue3-mastery-course<span class="hljs-symbol">/</span><br>├── .vscode<span class="hljs-symbol">/</span>         <span class="hljs-comment"># VS Code 编辑器推荐配置</span><br>├── node_modules<span class="hljs-symbol">/</span>    <span class="hljs-comment"># 所有依赖包存放的地方（你基本不用管它）</span><br>├── public<span class="hljs-symbol">/</span>          <span class="hljs-comment"># 存放公共资源，如 favicon.ico</span><br>├── src<span class="hljs-symbol">/</span>             <span class="hljs-comment"># 源码目录，这是我们 99% 的工作区域！</span><br>│   ├── assets<span class="hljs-symbol">/</span>      <span class="hljs-comment"># 存放 CSS、图片等静态资源</span><br>│   ├── components<span class="hljs-symbol">/</span>  <span class="hljs-comment"># 存放可复用的 Vue 组件</span><br>│   ├── router<span class="hljs-symbol">/</span>      <span class="hljs-comment"># 路由配置文件 (因为我们选了 Yes)</span><br>│   ├── stores<span class="hljs-symbol">/</span>      <span class="hljs-comment"># Pinia 状态管理文件 (因为我们选了 Yes)</span><br>│   ├── views<span class="hljs-symbol">/</span>       <span class="hljs-comment"># 存放页面级组件</span><br>│   ├── App.vue      <span class="hljs-comment"># 根组件，所有页面的容器</span><br>│   └── main.ts      <span class="hljs-comment"># 项目的入口文件，&quot;点火开关&quot;</span><br>├── .eslintrc.cjs    <span class="hljs-comment"># ESLint 配置文件</span><br>├── .gitignore       <span class="hljs-comment"># Git 忽略文件配置</span><br>├── index.html       <span class="hljs-comment"># 唯一的 HTML 页面，是应用的壳</span><br>├── package.json     <span class="hljs-comment"># 项目的 &quot;身份证&quot;，包含项目信息、依赖列表、可执行脚本</span><br>├── pnpm-lock.yaml   <span class="hljs-comment"># (或 package-lock.json) 锁定依赖版本，保证团队一致性</span><br>├── prettier.config.js <span class="hljs-comment"># Prettier 配置文件</span><br>└── tsconfig.json    <span class="hljs-comment"># TypeScript 配置文件</span><br></code></pre></td></tr></table></figure>
+<p><strong>关键文件解读</strong>：</p>
+<ul>
+<li><code>index.html</code>: 你会发现 <code>&lt;body&gt;</code> 里只有一个 <code>&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;</code>。你的整个 Vue 应用最终都会被挂载到这个 div 里。</li>
+<li><code>src/main.ts</code>: 这是程序的起点。你会看到 <code>createApp(App).mount('#app')</code> 这行代码，它的作用就是：创建 Vue 应用实例，并将根组件 <code>App.vue</code> 挂载到 <code>index.html</code> 那个 <code>id=&quot;app&quot;</code> 的 div 上。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/" class="category-chain-item">Vue</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/Vue-3/" class="category-chain-item">Vue 3</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/Vue-3/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vue/" class="print-no-link">#vue</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>环境搭建与工程化</div>
+      <div>http://example.com/2025/03/24/JavaScript、Typescript/Framework and Library/Vue/Vue 3/基础/基础/环境搭建与工程化/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%9F%BA%E7%A1%80/%E5%9F%BA%E7%A1%80/%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%92%A9%E5%AD%90/" title="生命周期钩子">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">生命周期钩子</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%9F%BA%E7%A1%80/%E5%9F%BA%E7%A1%80/%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1/" title="组件通信">
+                        <span class="hidden-mobile">组件通信</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

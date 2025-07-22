@@ -1,0 +1,922 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="探讨 Vue 中处理衍生状态和副作用的两大支柱：computed 和 watch &#x2F; watchEffect。 理解它们的区别和适用场景，是写出优雅、高效、可维护的 Vue 应用的关键。  computed：智能的衍生状态计算器 核心思想：当你需要一个值，它依赖于一个或多个其他的响应式状态时，你应该使用 computed。它不是用来做“事情”的，而是用来“计算”新数据的。 可以把它想象成电子表格里">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算属性与侦听器">
+<meta property="og:url" content="http://example.com/2025/03/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%9F%BA%E7%A1%80/%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7%E4%B8%8E%E4%BE%A6%E5%90%AC%E5%99%A8/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="探讨 Vue 中处理衍生状态和副作用的两大支柱：computed 和 watch &#x2F; watchEffect。 理解它们的区别和适用场景，是写出优雅、高效、可维护的 Vue 应用的关键。  computed：智能的衍生状态计算器 核心思想：当你需要一个值，它依赖于一个或多个其他的响应式状态时，你应该使用 computed。它不是用来做“事情”的，而是用来“计算”新数据的。 可以把它想象成电子表格里">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/vue.png">
+<meta property="article:published_time" content="2025-03-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-22T04:55:31.514Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/vue.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>计算属性与侦听器 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="计算属性与侦听器"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-24 00:00" pubdate>
+          2025年3月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">计算属性与侦听器</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月22日 下午
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>探讨 Vue 中处理衍生状态和副作用的两大支柱：<code>computed</code> 和 <code>watch</code> / <code>watchEffect</code>。</p>
+<p>理解它们的区别和适用场景，是写出优雅、高效、可维护的 Vue 应用的关键。</p>
+<hr>
+<h3 id="computed：智能的衍生状态计算器"><code>computed</code>：智能的衍生状态计算器</h3>
+<p><strong>核心思想</strong>：当你需要一个值，它<strong>依赖于</strong>一个或多个其他的响应式状态时，你应该使用 <code>computed</code>。它不是用来做“事情”的，而是用来“计算”新数据的。</p>
+<p>可以把它想象成电子表格里的一个单元格，它的值是通过公式（例如 <code>=A1+B1</code>）计算出来的。只有当 <code>A1</code> 或 <code>B1</code> 变化时，这个单元格的值才会重新计算。</p>
+<h4 id="知识点：">知识点：</h4>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; ref, computed &#125; from &#x27;vue&#x27;;<br><br>const firstName = ref(&#x27;John&#x27;);<br>const lastName = ref(&#x27;Doe&#x27;);<br><br>// 这是一个计算属性 ref。它的 .value 是只读的。<br>// Vue 会自动追踪其回调函数中使用的响应式依赖 (firstName 和 lastName)。<br>const fullName = computed&lt;string&gt;(() =&gt; &#123;<br>  // 这个函数只在 firstName 或 lastName 变化时才会重新执行<br>  console.log(&#x27;Computing fullName...&#x27;); <br>  return `$&#123;firstName.value&#125; $&#123;lastName.value&#125;`;<br>&#125;);<br><br>// 一个不相关的状态<br>const counter = ref(0);<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;p&gt;First Name: &lt;input v-model=&quot;firstName&quot; /&gt;&lt;/p&gt;<br>    &lt;p&gt;Last Name: &lt;input v-model=&quot;lastName&quot; /&gt;&lt;/p&gt;<br>    <br>    &lt;!-- 在模板中直接使用，无需 .value --&gt;<br>    &lt;h2&gt;Hello, &#123;&#123; fullName &#125;&#125;&lt;/h2&gt;<br><br>    &lt;hr /&gt;<br>    &lt;button @click=&quot;counter++&quot;&gt;Click me: &#123;&#123; counter &#125;&#125;&lt;/button&gt;<br>    &lt;p&gt;<br>      (打开控制台，你会发现，只有当你修改姓或名时，&quot;Computing fullName...&quot; 才会被打印。<br>      点击 counter 按钮不会触发 fullName 的重新计算。)<br>    &lt;/p&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<h4 id="要点-注意事项：computed-vs-methods-的区别">要点/注意事项：<code>computed</code> vs. <code>methods</code> 的区别</h4>
+<p>这是 Vue 面试中的经典问题，也是一个核心概念。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">特性</th>
+<th style="text-align:left"><code>computed</code> (计算属性)</th>
+<th style="text-align:left"><code>methods</code> (方法)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>核心差异</strong></td>
+<td style="text-align:left"><strong>基于依赖缓存</strong></td>
+<td style="text-align:left"><strong>无缓存，每次调用都执行</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>调用方式</strong></td>
+<td style="text-align:left">在模板中像属性一样访问：<code>&#123;&#123; fullName &#125;&#125;</code></td>
+<td style="text-align:left">必须像函数一样调用：<code>&#123;&#123; getFullName() &#125;&#125;</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>本质</strong></td>
+<td style="text-align:left">一个响应式的、<strong>只读的 <code>ref</code></strong></td>
+<td style="text-align:left">一个普通的<strong>函数</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>语义</strong></td>
+<td style="text-align:left">“是什么” (声明式) - 它描述了一个值</td>
+<td style="text-align:left">“做什么” (命令式) - 它执行一个动作</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>适用场景</strong></td>
+<td style="text-align:left">依赖其他数据计算出的<strong>新数据</strong>，且计算开销较大或需要缓存时。</td>
+<td style="text-align:left">响应事件（如 <code>@click</code>），或者每次都需要重新执行的逻辑。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>简单总结</strong>：如果你需要根据现有数据“算出”一个新数据并展示它，用 <code>computed</code>。如果你需要在用户点击按钮时“做”一件事，用 <code>methods</code> (在 <code>&lt;script setup&gt;</code> 中就是普通函数)。</p>
+<hr>
+<h3 id="侦听器-watch-watchEffect-：副作用的执行者">侦听器 (<code>watch</code> &amp; <code>watchEffect</code>)：副作用的执行者</h3>
+<p><strong>核心思想</strong>：当一个响应式状态变化时，如果你需要<strong>执行一个操作</strong>（即“副作用”），而不是计算一个新值，那么就应该使用侦听器。</p>
+<p><strong>什么是“副作用”？</strong> 任何改变外部世界或不直接返回值的操作，例如：</p>
+<ul>
+<li>发起网络请求 (API call)</li>
+<li>手动操作 DOM</li>
+<li>将数据存储到 <code>localStorage</code></li>
+<li>设置一个定时器 (<code>setTimeout</code>)</li>
+<li>与第三方库集成</li>
+</ul>
+<p>Vue 提供了两种侦听器：<code>watch</code> 和 <code>watchEffect</code>。</p>
+<h3 id="watch：精确而强大的侦听器"><code>watch</code>：精确而强大的侦听器</h3>
+<p><code>watch</code> 是一个更<strong>明确</strong>、更可控的侦听器。你需要显式地告诉它：<strong>“请侦听『这个源』，当它变化时，执行『这个回调』。”</strong></p>
+<h4 id="知识点与应用场景：">知识点与应用场景：</h4>
+<p><strong>场景 1：当数据变化时，执行异步或开销大的操作（最常见）</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; ref, watch &#125; from &#x27;vue&#x27;;<br><br>const questionId = ref&lt;number&gt;(1);<br>const questionData = ref(null);<br><br>// 侦听 questionId 的变化<br>watch(questionId, async (newId, oldId) =&gt; &#123;<br>  // 1. 可以访问新值和旧值<br>  console.log(`ID changed from $&#123;oldId&#125; to $&#123;newId&#125;`);<br><br>  // 2. 执行副作用：获取数据<br>  const response = await fetch(`https://api.example.com/questions/$&#123;newId&#125;`);<br>  questionData.value = await response.json();<br>&#125;, &#123; <br>  // 3. 选项对象<br>  immediate: true, // 立即执行一次回调，用于组件初始化时加载数据<br>  // deep: true,  // 如果侦听的是对象，需要深度侦听其内部属性变化时使用<br>&#125;);<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>场景 2：侦听一个 <code>reactive</code> 对象中的属性</strong><br>
+你需要使用一个 getter 函数作为源来确保只在特定属性变化时才触发。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">import</span> &#123; reactive, watch &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><br><span class="hljs-keyword">const</span> state = <span class="hljs-title function_">reactive</span>(&#123; <span class="hljs-attr">count</span>: <span class="hljs-number">0</span>, <span class="hljs-attr">user</span>: &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;admin&#x27;</span> &#125; &#125;);<br><br><span class="hljs-comment">// 侦听 state.count</span><br><span class="hljs-title function_">watch</span>(<br>  <span class="hljs-function">() =&gt;</span> state.<span class="hljs-property">count</span>, <br>  <span class="hljs-function">(<span class="hljs-params">newCount</span>) =&gt;</span> &#123; <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Count changed:&#x27;</span>, newCount); &#125;<br>);<br></code></pre></td></tr></table></figure>
+<p><strong>场景 3：侦听多个源</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">import</span> &#123; ref, watch &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><br><span class="hljs-keyword">const</span> sourceA = <span class="hljs-title function_">ref</span>(<span class="hljs-number">0</span>);<br><span class="hljs-keyword">const</span> sourceB = <span class="hljs-title function_">ref</span>(<span class="hljs-string">&#x27;hello&#x27;</span>);<br><br><span class="hljs-title function_">watch</span>([sourceA, sourceB], <span class="hljs-function">(<span class="hljs-params">[newA, newB], [oldA, oldB]</span>) =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`A or B changed! New values: <span class="hljs-subst">$&#123;newA&#125;</span>, <span class="hljs-subst">$&#123;newB&#125;</span>`</span>);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<h3 id="watchEffect：简洁而自动的侦听器"><code>watchEffect</code>：简洁而自动的侦听器</h3>
+<p><code>watchEffect</code> 更“魔幻”一些。你不需要指定侦听哪个源，它会<strong>自动追踪</strong>在其回调函数中用到的所有响应式依赖。</p>
+<p><strong>核心思想</strong>：“立即执行这个函数，然后，只要它内部用到的任何响应式数据发生变化，就重新执行它。”</p>
+<h4 id="知识点与应用场景：-2">知识点与应用场景：</h4>
+<p><strong>场景 1：副作用和依赖高度耦合，逻辑简单</strong></p>
+<p>最经典的例子就是将数据同步到 <code>localStorage</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; ref, watchEffect &#125; from &#x27;vue&#x27;;<br><br>const cart = ref([<br>  &#123; id: 1, name: &#x27;Product A&#x27;, quantity: 2 &#125;,<br>]);<br><br>// 1. 无需指定源，它会自动发现 cart.value 是依赖<br>// 2. 默认立即执行一次<br>watchEffect(() =&gt; &#123;<br>  console.log(&#x27;Cart updated, syncing to localStorage...&#x27;);<br>  localStorage.setItem(&#x27;shoppingCart&#x27;, JSON.stringify(cart.value));<br>&#125;);<br><br>function addProduct() &#123;<br>  // 当 cart.value 变化时，上面的 watchEffect 会自动重新运行<br>  cart.value.push(&#123; id: 2, name: &#x27;Product B&#x27;, quantity: 1 &#125;);<br>&#125;<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<h3 id="要点-注意事项：watch-vs-watchEffect-的应用场景对决">要点/注意事项：<code>watch</code> vs. <code>watchEffect</code> 的应用场景对决</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">特性</th>
+<th style="text-align:left"><code>watch</code></th>
+<th style="text-align:left"><code>watchEffect</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>依赖追踪</strong></td>
+<td style="text-align:left"><strong>手动</strong>、<strong>显式</strong>指定。更精确。</td>
+<td style="text-align:left"><strong>自动</strong>追踪。更简洁。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>执行时机</strong></td>
+<td style="text-align:left">默认是<strong>懒执行</strong>的（依赖变化后才执行）。可通过 <code>immediate: true</code> 改变。</td>
+<td style="text-align:left"><strong>立即执行</strong>一次，然后依赖变化时再执行。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>访问旧值</strong></td>
+<td style="text-align:left">✅ 可以访问到变化前后的值 (<code>newValue</code>, <code>oldValue</code>)。</td>
+<td style="text-align:left">❌ <strong>不可以</strong>。回调函数不接收任何参数。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>性能</strong></td>
+<td style="text-align:left">更精确，只有指定的源变化才触发。可能更高效。</td>
+<td style="text-align:left">任何一个内部依赖变化都会触发。可能导致不必要的重复执行。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>代码意图</strong></td>
+<td style="text-align:left"><strong>更清晰</strong>。一眼就能看出“什么触发了什么”。</td>
+<td style="text-align:left">意图可能不那么明显，需要阅读整个回调函数才能知道依赖项。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="最佳实践与抉择：">最佳实践与抉择：</h4>
+<ul>
+<li>
+<p><strong>优先使用 <code>watch</code></strong>：在大多数情况下，<code>watch</code> 是更优的选择。它的<strong>明确性</strong>使得代码在几个月后或由其他同事接手时，更容易理解和维护。你能清晰地看到因果关系。</p>
+</li>
+<li>
+<p><strong>什么时候使用 <code>watchEffect</code>？</strong></p>
+<ol>
+<li>当你的副作用逻辑非常简单，并且依赖项和副作用代码紧密地写在一起时，<code>watchEffect</code> 可以让代码更简洁。</li>
+<li>当你不在乎旧值，并且希望副作用立即执行时。</li>
+<li>当你有多个依赖项，而使用 <code>watch</code> 的数组语法 <code>watch([a, b, c], ...)</code> 显得很繁琐时。</li>
+</ol>
+</li>
+</ul>
+<p><strong>一个简单的决策流程：</strong></p>
+<ol>
+<li>我需要旧值吗？
+<ul>
+<li>是 -&gt; 用 <code>watch</code>。</li>
+</ul>
+</li>
+<li>我需要精确控制侦听的源，避免不必要的触发吗？
+<ul>
+<li>是 -&gt; 用 <code>watch</code>。</li>
+</ul>
+</li>
+<li>我需要在组件初始化时不执行，只在后续变化时执行吗？
+<ul>
+<li>是 -&gt; 用 <code>watch</code> (不加 <code>immediate: true</code>)。</li>
+</ul>
+</li>
+<li>如果以上都不是，并且我的逻辑很简单（比如只有一个依赖），<code>watchEffect</code> 可以让代码更少。</li>
+</ol>
+<hr>
+<h3 id="总结">总结</h3>
+<ul>
+<li><strong><code>computed</code></strong>: 用于<strong>计算衍生数据</strong>。它有缓存，是声明式的。回答“这个值<strong>是什么</strong>”。</li>
+<li><strong><code>watch</code></strong>: 用于<strong>执行副作用</strong>。它精确、可控，能访问新旧值。回答“当 A 变化时，<strong>做什么</strong>”。</li>
+<li><strong><code>watchEffect</code></strong>: 用于<strong>执行副作用</strong>。它自动、简洁，但控制力较弱。回答“只要这些东西变了，就<strong>重新做这件事</strong>”。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/" class="category-chain-item">Vue</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/Vue-3/" class="category-chain-item">Vue 3</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript/Framework-and-Library/Vue/Vue-3/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vue/" class="print-no-link">#vue</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>计算属性与侦听器</div>
+      <div>http://example.com/2025/03/24/JavaScript、Typescript/Framework and Library/Vue/Vue 3/基础/基础/计算属性与侦听器/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%9F%BA%E7%A1%80/%E5%9F%BA%E7%A1%80/%E7%BB%84%E4%BB%B6%E9%80%9A%E4%BF%A1/" title="组件通信">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">组件通信</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/14/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%B7%B1%E5%85%A5%E6%8E%8C%E6%8F%A1%E4%B8%8E%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/Java%20Stream%20API%20%E4%B8%8E%E9%9B%86%E5%90%88/" title="Java Stream API 与集合">
+                        <span class="hidden-mobile">Java Stream API 与集合</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
