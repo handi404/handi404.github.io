@@ -1,0 +1,814 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="在大型项目中，如果 API 请求散落在各个组件中，将是一场维护的噩梦。我们需要一个清晰、可扩展、易于维护的 API 层。 我们将采用一个分层设计的思想，这是构建大型应用的事实标准。 核心思想：三层分离架构 我们将把 API 相关的代码清晰地划分为三层，各司其职：   Axios 实例层 (The Core Engine)：  职责：这是最底层。负责创建和配置axios实例，设置 baseURL、t">
+<meta property="og:type" content="article">
+<meta property="og:title" content="组织和封装 API 模块">
+<meta property="og:url" content="http://example.com/2025/05/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Axios/%E7%BB%84%E7%BB%87%E5%92%8C%E5%B0%81%E8%A3%85%20API%20%E6%A8%A1%E5%9D%97/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="在大型项目中，如果 API 请求散落在各个组件中，将是一场维护的噩梦。我们需要一个清晰、可扩展、易于维护的 API 层。 我们将采用一个分层设计的思想，这是构建大型应用的事实标准。 核心思想：三层分离架构 我们将把 API 相关的代码清晰地划分为三层，各司其职：   Axios 实例层 (The Core Engine)：  职责：这是最底层。负责创建和配置axios实例，设置 baseURL、t">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/axios.png">
+<meta property="article:published_time" content="2025-05-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-26T11:56:43.436Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/axios.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>组织和封装 API 模块 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="组织和封装 API 模块"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-24 00:00" pubdate>
+          2025年5月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">组织和封装 API 模块</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月26日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>在大型项目中，如果 API 请求散落在各个组件中，将是一场维护的噩梦。我们需要一个清晰、可扩展、易于维护的 API 层。</p>
+<p>我们将采用一个分层设计的思想，这是构建大型应用的事实标准。</p>
+<h3 id="核心思想：三层分离架构">核心思想：三层分离架构</h3>
+<p>我们将把 API 相关的代码清晰地划分为三层，各司其职：</p>
+<ol>
+<li>
+<p><strong>Axios 实例层 (The Core Engine)</strong>：</p>
+<ul>
+<li><strong>职责</strong>：这是最底层。负责创建和配置axios实例，设置 <code>baseURL</code>、<code>timeout</code>，以及最重要的——<strong>全局拦截器</strong>（我们之前讨论的实例拦截器）。它处理所有请求的共性问题，如 Token 认证、统一错误处理、数据格式化等。</li>
+<li><strong>文件名</strong>：通常是 <code>src/utils/request.ts</code> 或 <code>src/plugins/axios.ts</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>API 模块层 (The Business Logic)</strong>：</p>
+<ul>
+<li><strong>职责</strong>：这一层负责定义具体的API请求函数。根据后端的业务模块（如用户、订单、商品）来组织文件。每个函数封装一个API端点，明确定义其 <code>url</code>、<code>method</code> 以及所需的参数。它调用第一层的 axios 实例来发送请求。</li>
+<li><strong>文件结构</strong>：通常是 <code>src/api/modules/user.ts</code>, <code>src/api/modules/order.ts</code> 等。</li>
+</ul>
+</li>
+<li>
+<p><strong>视图/业务层 (The Consumer)</strong>：</p>
+<ul>
+<li><strong>职责</strong>：这是你的 Vue/React 组件或业务逻辑文件。这一层 <strong>不应该直接接触到 axios</strong>。它只需要从第二层导入 API 函数，像调用一个普通的异步函数一样使用它们，然后处理返回的数据或捕获错误。</li>
+<li><strong>文件名</strong>：例如 <code>src/views/UserManagement.vue</code>。</li>
+</ul>
+</li>
+</ol>
+<p>这种分层的好处是<strong>关注点分离</strong>：</p>
+<ul>
+<li>改 <code>baseURL</code> 或 <code>Token</code> 逻辑？只需要动 <strong>第一层</strong>。</li>
+<li>后端某个接口的 URL 或参数变了？只需要动 <strong>第二层</strong>。</li>
+<li>UI 组件的业务逻辑调整？只需要动 <strong>第三层</strong>。</li>
+</ul>
+<hr>
+<h3 id="实战演练：一步步构建优雅的-API-层（使用-TypeScript）">实战演练：一步步构建优雅的 API 层（使用 TypeScript）</h3>
+<p>在大型项目中，强烈推荐使用 TypeScript，它能为你的 API 层带来无与伦比的健壮性和可维护性。</p>
+<h4 id="第-1-步：创建目录结构">第 1 步：创建目录结构</h4>
+<figure class="highlight nix"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs nix">src<span class="hljs-symbol">/</span><br>├── api<span class="hljs-symbol">/</span><br>│   ├── modules<span class="hljs-symbol">/</span><br>│   │   ├── user.ts      <span class="hljs-comment"># 用户相关的所有API</span><br>│   │   └── order.ts     <span class="hljs-comment"># 订单相关的所有API</span><br>│   └── index.ts         <span class="hljs-comment"># 统一导出所有API模块</span><br>│<br>└── utils<span class="hljs-symbol">/</span><br>    └── request.ts       <span class="hljs-comment"># 我们封装的Axios实例（第一层）</span><br></code></pre></td></tr></table></figure>
+<h4 id="第2步：实现第一层-request-ts-核心引擎">第2步：实现第一层 - <code>request.ts</code> (核心引擎)</h4>
+<p>这个文件我们之前已经写过，现在我们用 TypeScript 来增强它，加入泛型和类型定义。</p>
+<p><strong><code>src/utils/request.ts</code></strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> axios, &#123; <span class="hljs-keyword">type</span> <span class="hljs-title class_">AxiosRequestConfig</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>;<br><br><span class="hljs-comment">// 定义后端返回数据的通用结构，T 是泛型，代表 data 的具体类型</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ApiResponse</span>&lt;T = <span class="hljs-built_in">any</span>&gt; &#123;<br>  <span class="hljs-attr">code</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">message</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">data</span>: T;<br>&#125;<br><br><span class="hljs-comment">// 创建 axios 实例</span><br><span class="hljs-keyword">const</span> service = axios.<span class="hljs-title function_">create</span>(&#123;<br>  <span class="hljs-attr">baseURL</span>: <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>.<span class="hljs-property">VITE_API_BASE_URL</span>, <span class="hljs-comment">// .env 文件中的基础路径</span><br>  <span class="hljs-attr">timeout</span>: <span class="hljs-number">10000</span>,<br>  <span class="hljs-attr">headers</span>: &#123; <span class="hljs-string">&#x27;Content-Type&#x27;</span>: <span class="hljs-string">&#x27;application/json;charset=utf-8&#x27;</span> &#125;,<br>&#125;);<br><br><span class="hljs-comment">// 请求拦截器</span><br>service.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">use</span>(<br>  <span class="hljs-function">(<span class="hljs-params">config</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> token = <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">&#x27;user-token&#x27;</span>);<br>    <span class="hljs-keyword">if</span> (token &amp;&amp; config.<span class="hljs-property">headers</span>) &#123;<br>      config.<span class="hljs-property">headers</span>[<span class="hljs-string">&#x27;Authorization&#x27;</span>] = <span class="hljs-string">&#x27;Bearer &#x27;</span> + token;<br>    &#125;<br>    <span class="hljs-keyword">return</span> config;<br>  &#125;,<br>  <span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(error);<br>  &#125;<br>);<br><br><span class="hljs-comment">// 响应拦截器</span><br><span class="hljs-comment">// 这里我们使用了泛型，使得调用时可以直接获得类型提示</span><br>service.<span class="hljs-property">interceptors</span>.<span class="hljs-property">response</span>.<span class="hljs-title function_">use</span>(<br>  <span class="hljs-function">(<span class="hljs-params">response</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> <span class="hljs-attr">res</span>: <span class="hljs-title class_">ApiResponse</span> = response.<span class="hljs-property">data</span>;<br>    <span class="hljs-keyword">if</span> (res.<span class="hljs-property">code</span> !== <span class="hljs-number">200</span>) &#123;<br>      <span class="hljs-comment">// 统一错误处理，例如弹窗提示</span><br>      <span class="hljs-comment">// ElMessage.error(res.message || &#x27;Error&#x27;);</span><br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(res.<span class="hljs-property">message</span> || <span class="hljs-string">&#x27;Error&#x27;</span>));<br>    &#125;<br>    <span class="hljs-comment">// 直接返回核心数据，调用方可以直接拿到 data</span><br>    <span class="hljs-keyword">return</span> res.<span class="hljs-property">data</span>;<br>  &#125;,<br>  <span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// ElMessage.error(error.message || &#x27;Network Error&#x27;);</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(error);<br>  &#125;<br>);<br><br><span class="hljs-comment">// 导出一个通用的请求函数，并为其添加了更强的类型支持</span><br><span class="hljs-comment">// T 是期望的响应数据类型</span><br><span class="hljs-keyword">const</span> request = &lt;T = <span class="hljs-built_in">any</span>&gt;(<span class="hljs-attr">config</span>: <span class="hljs-title class_">AxiosRequestConfig</span>): <span class="hljs-title class_">Promise</span>&lt;T&gt; =&gt; &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">service</span>(config);<br>&#125;;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> request;<br></code></pre></td></tr></table></figure>
+<p><strong>亮点</strong>：通过封装 <code>request</code> 函数并使用泛型 <code>&lt;T&gt;</code>，我们在调用 API 时可以精确地指定期望返回的数据类型，实现了端到端的类型安全。</p>
+<h4 id="第3步：实现第二层-api-modules-user-ts-API-模块">第3步：实现第二层 - <code>api/modules/user.ts</code> (API 模块)</h4>
+<p>现在我们来定义和用户相关的具体 API。</p>
+<p><strong><code>src/api/modules/user.ts</code></strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> request, &#123; <span class="hljs-keyword">type</span> <span class="hljs-title class_">ApiResponse</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/utils/request&#x27;</span>;<br><br><span class="hljs-comment">// 定义用户相关的类型</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">User</span> &#123;<br>  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span>;<br>  <span class="hljs-attr">email</span>: <span class="hljs-built_in">string</span>;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserListParams</span> &#123;<br>  <span class="hljs-attr">page</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">pageSize</span>: <span class="hljs-built_in">number</span>;<br>  <span class="hljs-attr">keyword</span>?: <span class="hljs-built_in">string</span>;<br>&#125;<br><br><span class="hljs-comment">// API 函数定义</span><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 获取用户列表</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> <span class="hljs-variable">params</span> - 查询参数</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getUserList</span>(<span class="hljs-params"><span class="hljs-attr">params</span>: <span class="hljs-title class_">UserListParams</span></span>) &#123;<br>  <span class="hljs-comment">// 注意这里的 &lt;User[]&gt;，它告诉 request 函数我们期望的 data 类型是用户数组</span><br>  <span class="hljs-keyword">return</span> request&lt;<span class="hljs-title class_">User</span>[]&gt;(&#123;<br>    <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;/users&#x27;</span>,<br>    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;get&#x27;</span>,<br>    params, <span class="hljs-comment">// GET 请求用 params</span><br>  &#125;);<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 获取单个用户信息</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> <span class="hljs-variable">id</span> - 用户ID</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getUserInfo</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span></span>) &#123;<br>  <span class="hljs-keyword">return</span> request&lt;<span class="hljs-title class_">User</span>&gt;(&#123;<br>    <span class="hljs-attr">url</span>: <span class="hljs-string">`/users/<span class="hljs-subst">$&#123;id&#125;</span>`</span>,<br>    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;get&#x27;</span>,<br>  &#125;);<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 创建新用户</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> <span class="hljs-variable">data</span> - 用户数据</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createUser</span>(<span class="hljs-params"><span class="hljs-attr">data</span>: <span class="hljs-title class_">Omit</span>&lt;<span class="hljs-title class_">User</span>, <span class="hljs-string">&#x27;id&#x27;</span>&gt;</span>) &#123;<br>  <span class="hljs-keyword">return</span> request&lt;<span class="hljs-title class_">User</span>&gt;(&#123;<br>    <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;/users&#x27;</span>,<br>    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;post&#x27;</span>,<br>    data, <span class="hljs-comment">// POST, PUT, PATCH 请求用 data</span><br>  &#125;);<br>&#125;<br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * 更新用户信息</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> <span class="hljs-variable">id</span> - 用户ID</span><br><span class="hljs-comment"> * <span class="hljs-doctag">@param</span> <span class="hljs-variable">data</span> - 用户数据</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">updateUser</span>(<span class="hljs-params"><span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span>, <span class="hljs-attr">data</span>: <span class="hljs-title class_">Partial</span>&lt;<span class="hljs-title class_">User</span>&gt;</span>) &#123;<br>  <span class="hljs-keyword">return</span> request&lt;<span class="hljs-title class_">User</span>&gt;(&#123;<br>    <span class="hljs-attr">url</span>: <span class="hljs-string">`/users/<span class="hljs-subst">$&#123;id&#125;</span>`</span>,<br>    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;put&#x27;</span>,<br>    data,<br>  &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="第4步：实现统一出口-api-index-ts">第4步：实现统一出口 - <code>api/index.ts</code></h4>
+<p>为了方便在组件中导入，我们创建一个统一的出口文件。</p>
+<p><strong><code>src/api/index.ts</code></strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> userApi <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./modules/user&#x27;</span>;<br><span class="hljs-keyword">import</span> * <span class="hljs-keyword">as</span> orderApi <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./modules/order&#x27;</span>;<br><br><span class="hljs-keyword">export</span> &#123;<br>  userApi,<br>  orderApi,<br>&#125;;<br></code></pre></td></tr></table></figure>
+<p>这样，我们在任何地方都可以通过 <code>import &#123; userApi &#125; from '@/api';</code> 来获取所有用户相关的 API。</p>
+<h4 id="第5步：实现第三层-views-UserManagement-vue-消费-API">第5步：实现第三层 - <code>views/UserManagement.vue</code> (消费 API)</h4>
+<p>最后，在我们的 Vue 组件中，优雅地调用这些 API。</p>
+<p><strong><code>src/views/UserManagement.vue</code></strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;h1&gt;User Management&lt;/h1&gt;<br>    &lt;div v-if=&quot;loading&quot;&gt;Loading...&lt;/div&gt;<br>    &lt;ul v-else-if=&quot;users.length&quot;&gt;<br>      &lt;li v-for=&quot;user in users&quot; :key=&quot;user.id&quot;&gt;&#123;&#123; user.name &#125;&#125; - &#123;&#123; user.email &#125;&#125;&lt;/li&gt;<br>    &lt;/ul&gt;<br>    &lt;div v-else&gt;No users found.&lt;/div&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br><br>&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; ref, onMounted &#125; from &#x27;vue&#x27;;<br>import &#123; userApi &#125; from &#x27;@/api&#x27;; // 从统一出口导入<br>import type &#123; User &#125; from &#x27;@/api/modules/user&#x27;; // 导入类型<br><br>const users = ref&lt;User[]&gt;([]);<br>const loading = ref(false);<br><br>const fetchUsers = async () =&gt; &#123;<br>  try &#123;<br>    loading.value = true;<br>    // 调用 API 就像调用一个本地函数，非常清晰<br>    const userList = await userApi.getUserList(&#123; page: 1, pageSize: 10 &#125;);<br>    // userList 已经被拦截器处理过，直接就是 User[] 类型的数据<br>    users.value = userList;<br>  &#125; catch (error) &#123;<br>    console.error(&#x27;Failed to fetch users:&#x27;, error);<br>  &#125; finally &#123;<br>    loading.value = false;<br>  &#125;<br>&#125;;<br><br>onMounted(() =&gt; &#123;<br>  fetchUsers();<br>&#125;);<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="总结与最佳实践">总结与最佳实践</h3>
+<ol>
+<li><strong>分层架构</strong>：严格遵守 <code>实例层 -&gt; 模块层 -&gt; 视图层</code> 的数据流，保持代码清晰。</li>
+<li><strong>TypeScript 全覆盖</strong>：从请求到响应，为所有数据定义类型接口，利用泛型实现端到端的类型安全。</li>
+<li><strong>按模块组织</strong>：在 <code>api/modules/</code> 目录下，根据后端微服务或业务领域划分 API 文件。</li>
+<li><strong>统一出口</strong>：使用 <code>api/index.ts</code> 提供一个简洁的 API 导入入口，提升开发体验。</li>
+<li><strong>命名规范</strong>：API函数名应清晰地反映其操作，如 <code>getUsers</code>、<code>createUser</code>、<code>deleteUser</code>。</li>
+<li><strong>环境变量</strong>：使用 <code>.env</code> 文件（如 Vite 的 <code>import.meta.env.VITE_API_BASE_URL</code>）管理不同环境的 <code>baseURL</code>，不要硬编码。</li>
+</ol>
+<p>这套架构几乎可以应对任何规模的项目，它不仅优雅，而且极其健壮和可维护，是现代前端开发的标准实践。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Axios/" class="category-chain-item">Axios</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>组织和封装 API 模块</div>
+      <div>http://example.com/2025/05/24/JavaScript、Typescript/Framework and Library/Axios/组织和封装 API 模块/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/props%20-Typescript/" title="props - Typescript">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">props - Typescript</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Axios/%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%88Interceptors%EF%BC%89/" title="拦截器（Interceptors）">
+                        <span class="hidden-mobile">拦截器（Interceptors）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

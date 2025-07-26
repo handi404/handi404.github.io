@@ -1,0 +1,923 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="axios 最核心、最强大的功能之一：拦截器（Interceptors）。 一、拦截器是什么？一个生动的比喻 想象一下你的每一次 API 请求和响应，都必须经过一个**“机场安检口”**。   请求拦截器 (Request Interceptor)：就是你出国前的 “出境安检”。在你的“包裹”（请求数据）发往“国外”（服务器）之前，安检员（拦截器）会打开它，检查一遍。他可以：  加点东西：比如给你">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拦截器（Interceptors）">
+<meta property="og:url" content="http://example.com/2025/05/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Axios/%E6%8B%A6%E6%88%AA%E5%99%A8%EF%BC%88Interceptors%EF%BC%89/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="axios 最核心、最强大的功能之一：拦截器（Interceptors）。 一、拦截器是什么？一个生动的比喻 想象一下你的每一次 API 请求和响应，都必须经过一个**“机场安检口”**。   请求拦截器 (Request Interceptor)：就是你出国前的 “出境安检”。在你的“包裹”（请求数据）发往“国外”（服务器）之前，安检员（拦截器）会打开它，检查一遍。他可以：  加点东西：比如给你">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/axios.png">
+<meta property="article:published_time" content="2025-05-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-26T11:56:00.775Z">
+<meta property="article:author" content="Han Di">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/axios.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>拦截器（Interceptors） - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="拦截器（Interceptors）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-05-24 00:00" pubdate>
+          2025年5月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          30 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">拦截器（Interceptors）</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月26日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>axios 最核心、最强大的功能之一：<strong>拦截器（Interceptors）</strong>。</p>
+<h3 id="一、拦截器是什么？一个生动的比喻">一、拦截器是什么？一个生动的比喻</h3>
+<p>想象一下你的每一次 API 请求和响应，都必须经过一个**“机场安检口”**。</p>
+<ul>
+<li>
+<p><strong>请求拦截器 (Request Interceptor)</strong>：就是你出国前的 <strong>“出境安检”</strong>。在你的“包裹”（请求数据）发往“国外”（服务器）之前，安检员（拦截器）会打开它，检查一遍。他可以：</p>
+<ul>
+<li><strong>加点东西</strong>：比如给你的护照（请求头）盖个章，贴上一个“签证”（<code>Authorization</code> Token）。</li>
+<li><strong>改变包裹形态</strong>：对你的数据进行加密或格式化。</li>
+<li><strong>拦下不合格的包裹</strong>：如果发现你没带护照，就直接取消本次行程（取消请求）。</li>
+</ul>
+</li>
+<li>
+<p><strong>响应拦截器 (Response Interceptor)</strong>：就是你回国后的 <strong>“入境海关”</strong>。在“国外”（服务器）的包裹送达到你手上之前，海关人员（拦截器）会先检查一遍。他可以：</p>
+<ul>
+<li><strong>拆开外包装</strong>：服务器返回的数据可能包了好几层（如 <code>res.data.data</code>），他可以直接帮你拆开，只把最有用的核心物品（<code>data</code>）给你。</li>
+<li><strong>检查违禁品</strong>：如果发现返回的状态是 <code>401</code>（未授权），他会立刻把你引导到“重新登录”页面，而不是把错误信息直接给你。</li>
+<li><strong>统一处理问题件</strong>：对于所有服务器返回的错误（比如 500 Internal Server Error），他可以统一贴上“问题件”标签并进行上报，而不用你每次都自己处理。</li>
+</ul>
+</li>
+</ul>
+<p><strong>一句话总结</strong>：拦截器提供了一个在 <strong>发送请求前</strong> 和 <strong>收到响应后</strong> 对数据进行全局、统一处理的机制。这是构建健壮、可维护的前端应用的关键。</p>
+<hr>
+<h3 id="二、如何使用拦截器？（代码实战）">二、如何使用拦截器？（代码实战）</h3>
+<p>拦截器分为两种，都是通过 <code>axios.interceptors</code> 对象来使用。在实际项目中，我们强烈推荐为 axios <strong>创建一个实例</strong> 来配置拦截器，这样可以避免污染全局的 axios 对象，方便管理。</p>
+<h4 id="1-请求拦截器-request-use">1. 请求拦截器 (<code>.request.use</code>)</h4>
+<p>它的作用是在请求被 <code>then</code> 或 <code>catch</code> 处理之前拦截。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// request.js - 实际项目中，我们通常会创建一个这样的文件来封装 axios</span><br><br><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>;<br><br><span class="hljs-comment">// 1. 创建 axios 实例</span><br><span class="hljs-keyword">const</span> service = axios.<span class="hljs-title function_">create</span>(&#123;<br>  <span class="hljs-attr">baseURL</span>: <span class="hljs-string">&#x27;/api&#x27;</span>, <span class="hljs-comment">// 统一设置基础路径</span><br>  <span class="hljs-attr">timeout</span>: <span class="hljs-number">10000</span>, <span class="hljs-comment">// 请求超时时间</span><br>&#125;);<br><br><span class="hljs-comment">// 2. 添加请求拦截器</span><br>service.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">use</span>(<br>  <span class="hljs-function"><span class="hljs-params">config</span> =&gt;</span> &#123;<br>    <span class="hljs-comment">// 在发送请求之前做些什么</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;请求要出发了，这是我的配置:&#x27;</span>, config);<br><br>    <span class="hljs-comment">// 经典应用：统一添加 token</span><br>    <span class="hljs-keyword">const</span> token = <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">&#x27;user-token&#x27;</span>);<br>    <span class="hljs-keyword">if</span> (token) &#123;<br>      <span class="hljs-comment">// &#x27;Bearer &#x27; 是一种常见的认证方案，具体看后端要求</span><br>      config.<span class="hljs-property">headers</span>[<span class="hljs-string">&#x27;Authorization&#x27;</span>] = <span class="hljs-string">&#x27;Bearer &#x27;</span> + token;<br>    &#125;<br><br>    <span class="hljs-comment">// 必须返回 config，不然请求会中断</span><br>    <span class="hljs-keyword">return</span> config; <br>  &#125;,<br>  <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>    <span class="hljs-comment">// 对请求错误做些什么</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;请求出错了:&#x27;</span>, error); <br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(error); <span class="hljs-comment">// 将错误继续向外抛出</span><br>  &#125;<br>);<br></code></pre></td></tr></table></figure>
+<p><strong>核心逻辑</strong>：</p>
+<ul>
+<li><code>use</code> 方法接收两个函数作为参数：<code>onFulfilled</code> (请求成功) 和 <code>onRejected</code> (请求错误)。</li>
+<li>在 <code>onFulfilled</code> 函数中，你<strong>必须</strong> <code>return config</code> 对象，否则请求链会在此中断，请求无法被发送出去。</li>
+<li>你可以在这里修改 <code>config</code> 的任何内容，比如 <code>headers</code>, <code>params</code>, <code>data</code> 等。</li>
+</ul>
+<h4 id="2-响应拦截器-response-use">2. 响应拦截器 (<code>.response.use</code>)</h4>
+<p>它的作用是在响应数据被 <code>then</code> 或 <code>catch</code> 处理之前拦截。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// ...接上文 request.js</span><br><br><span class="hljs-comment">// 3. 添加响应拦截器</span><br>service.<span class="hljs-property">interceptors</span>.<span class="hljs-property">response</span>.<span class="hljs-title function_">use</span>(<br>  <span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>    <span class="hljs-comment">// 对响应数据做点什么</span><br>    <span class="hljs-comment">// HTTP 状态码在 2xx 范围内会进入这里</span><br><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;收到响应了:&#x27;</span>, response);<br><br>    <span class="hljs-comment">// 经典应用：数据简化，直接返回 response.data</span><br>    <span class="hljs-comment">// 后端返回的数据结构通常是 &#123; code: 200, message: &#x27;success&#x27;, data: &#123; ... &#125; &#125;</span><br>    <span class="hljs-keyword">const</span> res = response.<span class="hljs-property">data</span>;<br><br>    <span class="hljs-comment">// 根据自定义 code 判断，而不是 HTTP status</span><br>    <span class="hljs-keyword">if</span> (res.<span class="hljs-property">code</span> !== <span class="hljs-number">200</span>) &#123;<br>      <span class="hljs-comment">// 比如 code 是 401，代表未授权</span><br>      <span class="hljs-keyword">if</span> (res.<span class="hljs-property">code</span> === <span class="hljs-number">401</span>) &#123;<br>         <span class="hljs-comment">// 做一些如“跳转到登录页”之类的操作</span><br>         <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Token 过期或无效，请重新登录&#x27;</span>);<br>         <span class="hljs-comment">// window.location.href = &#x27;/login&#x27;;</span><br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>         <span class="hljs-comment">// 其他业务错误，可以统一弹窗提示</span><br>         <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;业务错误:&#x27;</span>, res.<span class="hljs-property">message</span>);<br>         <span class="hljs-comment">// alert(res.message);</span><br>      &#125;<br>      <br>      <span class="hljs-comment">// 抛出一个错误，这样请求的 catch 分支就能捕获到</span><br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(res.<span class="hljs-property">message</span> || <span class="hljs-string">&#x27;Error&#x27;</span>));<br>    &#125;<br><br>    <span class="hljs-comment">// 如果 code 是 200，则只返回核心的 data 部分</span><br>    <span class="hljs-keyword">return</span> res.<span class="hljs-property">data</span>; <br>  &#125;,<br>  <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>    <span class="hljs-comment">// 对响应错误做点什么</span><br>    <span class="hljs-comment">// 超出 2xx 范围的 HTTP 状态码会进入这里</span><br>    <br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;HTTP 错误:&#x27;</span>, error.<span class="hljs-property">message</span>);<br>    <span class="hljs-comment">// 可以在这里做统一的错误提示，比如弹出一个 Toast</span><br>    <span class="hljs-comment">// alert(`网络错误: $&#123;error.message&#125;`);</span><br>    <br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(error); <span class="hljs-comment">// 将错误继续向外抛出</span><br>  &#125;<br>);<br><br><span class="hljs-comment">// 4. 导出配置好的实例</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> service;<br></code></pre></td></tr></table></figure>
+<p><strong>核心逻辑</strong>：</p>
+<ul>
+<li>同样接收 <code>onFulfilled</code> 和 <code>onRejected</code> 两个函数。</li>
+<li><code>onFulfilled</code>：处理 HTTP 状态码为 2 xx 的情况。在这里，你可以：
+<ul>
+<li><strong>简化数据层级</strong>：直接 <code>return response.data</code>，这样业务代码里 <code>await api.getUser()</code> 拿到的直接就是数据，而不是整个 <code>response</code> 对象。</li>
+<li><strong>处理业务错误</strong>：根据后端定义的业务状态码（如 <code>code: 50001</code>）进行统一处理。</li>
+</ul>
+</li>
+<li><code>onRejected</code>：处理 HTTP 状态码非 2 xx 的情况（网络错误、404、500 等）。在这里可以做全局的错误上报或提示。</li>
+</ul>
+<hr>
+<h3 id="三、扩展与应用：一个完整的请求模块">三、扩展与应用：一个完整的请求模块</h3>
+<p>将上面的代码整合，你的项目中就会有一个非常优雅的 <code>request.js</code> 文件。</p>
+<p><strong><code>src/api/request.js</code> (完整示例)</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>;<br><span class="hljs-comment">// 引入你的UI库的提示组件，例如 Element Plus</span><br><span class="hljs-comment">// import &#123; ElMessage &#125; from &#x27;element-plus&#x27;; </span><br><br><span class="hljs-keyword">const</span> service = axios.<span class="hljs-title function_">create</span>(&#123;<br>  <span class="hljs-attr">baseURL</span>: <span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">env</span>.<span class="hljs-property">VITE_API_BASE_URL</span>, <span class="hljs-comment">// 使用环境变量，更灵活</span><br>  <span class="hljs-attr">timeout</span>: <span class="hljs-number">10000</span>,<br>&#125;);<br><br><span class="hljs-comment">// 请求拦截器</span><br>service.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">use</span>(<br>  <span class="hljs-function"><span class="hljs-params">config</span> =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> token = <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">&#x27;user-token&#x27;</span>);<br>    <span class="hljs-keyword">if</span> (token &amp;&amp; config.<span class="hljs-property">headers</span>) &#123;<br>      config.<span class="hljs-property">headers</span>[<span class="hljs-string">&#x27;Authorization&#x27;</span>] = <span class="hljs-string">&#x27;Bearer &#x27;</span> + token;<br>    &#125;<br>    <span class="hljs-keyword">return</span> config;<br>  &#125;,<br>  <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(error);<br>  &#125;<br>);<br><br><span class="hljs-comment">// 响应拦截器</span><br>service.<span class="hljs-property">interceptors</span>.<span class="hljs-property">response</span>.<span class="hljs-title function_">use</span>(<br>  <span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> res = response.<span class="hljs-property">data</span>;<br>    <span class="hljs-keyword">if</span> (res.<span class="hljs-property">code</span> !== <span class="hljs-number">200</span>) &#123;<br>      <span class="hljs-comment">// ElMessage.error(res.message || &#x27;Error&#x27;); // 统一错误提示</span><br>      <span class="hljs-keyword">if</span> (res.<span class="hljs-property">code</span> === <span class="hljs-number">401</span>) &#123;<br>        <span class="hljs-comment">// 处理 token 过期</span><br>        <span class="hljs-comment">// showLoginModal();</span><br>      &#125;<br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(res.<span class="hljs-property">message</span> || <span class="hljs-string">&#x27;Error&#x27;</span>));<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-keyword">return</span> res.<span class="hljs-property">data</span>; <span class="hljs-comment">// 返回核心数据</span><br>    &#125;<br>  &#125;,<br>  <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Network Error:&#x27;</span>, error);<br>    <span class="hljs-comment">// ElMessage.error(error.message); // 网络错误提示</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(error);<br>  &#125;<br>);<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> service;<br></code></pre></td></tr></table></figure>
+<p><strong>在业务代码中使用：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// src/api/user.js</span><br><span class="hljs-keyword">import</span> request <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./request&#x27;</span>;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">getUserInfo</span>(<span class="hljs-params">id</span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-title function_">request</span>(&#123;<br>    <span class="hljs-attr">url</span>: <span class="hljs-string">`/user/<span class="hljs-subst">$&#123;id&#125;</span>`</span>,<br>    <span class="hljs-attr">method</span>: <span class="hljs-string">&#x27;get&#x27;</span>,<br>  &#125;);<br>&#125;<br><br><span class="hljs-comment">// 在 Vue 组件或 React 组件中使用</span><br><span class="hljs-keyword">import</span> &#123; getUserInfo &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@/api/user&#x27;</span>;<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchUser</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">const</span> userInfo = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getUserInfo</span>(<span class="hljs-number">1</span>); <span class="hljs-comment">// 直接拿到的是 res.data</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(userInfo); <br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-comment">// 这里捕获到的是拦截器中 reject 的错误</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;获取用户信息失败:&#x27;</span>, error);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>看到好处了吗？业务代码变得极其干净，只关心“调用”和“使用数据”，所有认证、错误处理、数据转换的脏活累活都交给了拦截器。</p>
+<hr>
+<h3 id="四、要点与注意事项">四、要点与注意事项</h3>
+<ol>
+<li><strong>必须 <code>return</code></strong>：在拦截器的 <code>onFulfilled</code> 函数中，无论是请求拦截器的 <code>config</code> 还是响应拦截器的 <code>response</code> / <code>data</code>，<strong>都必须返回</strong>。否则，请求/响应链会中断。</li>
+<li><strong>必须 <code>Promise.reject</code></strong>：在拦截器中处理完错误后，如果你希望调用方的 <code>.catch</code> 或 <code>try...catch</code> 能够捕获到这个错误，你<strong>必须</strong> <code>return Promise.reject(error)</code>。</li>
+<li><strong>实例 vs 全局</strong>：始终使用 <code>axios.create()</code> 创建实例来配置拦截器。这能有效隔离不同业务模块的请求配置（比如有的需要 token，有的不需要）。</li>
+<li><strong>执行顺序</strong>：
+<ul>
+<li><strong>请求拦截器</strong>：后定义的先执行（像穿衣服，后穿的在外层）。</li>
+<li><strong>响应拦截器</strong>：先定义的先执行（像脱衣服，先脱外层的）。</li>
+</ul>
+</li>
+<li><strong>异步拦截器</strong>：拦截器函数可以是 <code>async</code> 函数。例如，你可能需要异步获取一个动态的 token。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript">service.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">use</span>(<span class="hljs-title function_">async</span> (config) =&gt; &#123;<br>  <span class="hljs-keyword">const</span> dynamicToken = <span class="hljs-keyword">await</span> <span class="hljs-title function_">getDynamicToken</span>(); <span class="hljs-comment">// 异步操作</span><br>  config.<span class="hljs-property">headers</span>[<span class="hljs-string">&#x27;Authorization&#x27;</span>] = <span class="hljs-string">&#x27;Bearer &#x27;</span> + dynamicToken;<br>  <span class="hljs-keyword">return</span> config;<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>移除拦截器</strong>：虽然不常用，但你可以通过 <code>eject</code> 方法移除拦截器，这在一些动态场景（如单页应用中组件卸载时）可能有用。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> myInterceptor = axios.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">use</span>(<span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) &#123;<span class="hljs-comment">/*...*/</span>&#125;);<br>axios.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">eject</span>(myInterceptor);<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="全局拦截器">全局拦截器</h2>
+<p><strong>全局拦截器</strong>。这是一个非常重要但又需要谨慎使用的概念。</p>
+<h3 id="一、什么是全局拦截器？">一、什么是全局拦截器？</h3>
+<p>全局拦截器，顾名思义，是直接在 <code>axios</code> 这个根对象上设置的拦截器。一旦设置，它将对你项目中 <strong>所有通过 <code>axios</code> 发起的请求</strong> 生效，无论这个请求是通过 <code>axios(...)</code> 直接调用，还是通过 <code>axios.create()</code> 创建的实例发出的。</p>
+<p><strong>代码上的区别非常直观：</strong></p>
+<ul>
+<li>
+<p><strong>实例拦截器 (我们之前讨论的)</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> service = axios.<span class="hljs-title function_">create</span>();<br>service.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">use</span>(<span class="hljs-comment">/* ... */</span>); <span class="hljs-comment">// 只对 service 实例生效</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>全局拦截器 (我们现在讨论的)</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>;<br>axios.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">use</span>(<span class="hljs-comment">/* ... */</span>); <span class="hljs-comment">// 对所有 axios 请求生效</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="二、全局拦截器-vs-实例拦截器：终极对决">二、全局拦截器 vs. 实例拦截器：终极对决</h3>
+<p>这自然引出了一个核心问题：我应该使用全局拦截器，还是像我们之前讨论的那样，使用 <code>axios.create()</code> 创建的实例拦截器？</p>
+<p><strong>答案是：在 99% 的现代前端项目中，你应该优先且总是使用“实例拦截器”。</strong></p>
+<p>为了让你彻底理解，我们用一个表格来清晰地对比它们：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">对比维度</th>
+<th style="text-align:left">全局拦截器 (<code>axios.interceptors</code>)</th>
+<th style="text-align:left">实例拦截器 (<code>instance.interceptors</code>)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>作用范围</strong></td>
+<td style="text-align:left"><strong>应用级</strong>：影响项目里所有 axios 请求，包括你可能引入的第三方库中的 axios 请求。</td>
+<td style="text-align:left"><strong>实例级</strong>：只影响通过这个特定实例发出的请求。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>核心优势</strong></td>
+<td style="text-align:left">真正意义上的“一处配置，处处生效”，对于极少数绝对通用的逻辑（如全局 loading）很方便。</td>
+<td style="text-align:left">✅ <strong>隔离性与模块化</strong>：不同业务模块可以有不同的 <code>baseURL</code>、<code>timeout</code>、<code>headers</code> 和拦截逻辑，互不干扰。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>主要风险</strong></td>
+<td style="text-align:left">⚠️ <strong>“污染”风险</strong>：可能会意外地影响到你不想影响的请求，尤其是第三方库。这是它最大的弊端。</td>
+<td style="text-align:left"><strong>无风险</strong>：每个实例都是一个沙箱，行为可预测，没有副作用。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>典型用例</strong></td>
+<td style="text-align:left">1. 启动/关闭全局 Loading 动画。<br>2. 极简项目的快速配置（不推荐）。</td>
+<td style="text-align:left">🚀 <strong>企业级标准</strong>：<br>1. 添加认证 <code>Token</code>。<br>2. 统一处理业务错误码。<br>3. 统一处理 <code>baseURL</code>。<br>4. 针对不同后端服务创建不同实例。</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>推荐度</strong></td>
+<td style="text-align:left">⭐⭐（谨慎使用）</td>
+<td style="text-align:left">⭐⭐⭐⭐⭐（<strong>最佳实践</strong>）</td>
+</tr>
+</tbody>
+</table>
+<h4 id="“污染”风险的生动例子">“污染”风险的生动例子</h4>
+<p>想象一下，你的项目中用了一个第三方的数据可视化库（比如 <code>some-chart-lib</code>），这个库的内部也使用了 <code>axios</code> 来获取地图边界数据。</p>
+<p>现在，你在全局拦截器里添加了逻辑：“所有请求都必须带上 <code>Authorization</code> 请求头”。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// main.js - 你在项目入口设置了全局拦截器</span><br><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>;<br>axios.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">use</span>(<span class="hljs-function"><span class="hljs-params">config</span> =&gt;</span> &#123;<br>  config.<span class="hljs-property">headers</span>[<span class="hljs-string">&#x27;Authorization&#x27;</span>] = <span class="hljs-string">&#x27;Bearer &#x27;</span> + myToken;<br>  <span class="hljs-keyword">return</span> config;<br>&#125;);<br></code></pre></td></tr></table></figure>
+<p><strong>结果会发生什么？</strong><br>
+<code>some-chart-lib</code> 内部发起的请求（比如 <code>axios.get('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')</code>）也会被你的全局拦截器捕捉到，并被强行加上 <code>Authorization</code> 请求头。</p>
+<p>阿里的地图数据接口服务器并不需要这个请求头，甚至可能因为这个非预期的 <code>header</code> 而拒绝请求，导致你的图表库无法正常工作。<strong>这就是“全局污染”</strong>。</p>
+<p>而如果你使用实例拦截器，这个问题就迎刃而解了：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// src/api/request.js</span><br><span class="hljs-keyword">const</span> service = axios.<span class="hljs-title function_">create</span>(&#123; <span class="hljs-attr">baseURL</span>: <span class="hljs-string">&#x27;/my-api&#x27;</span> &#125;);<br>service.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">use</span>(<span class="hljs-comment">/* 添加 token 的逻辑 */</span>); <span class="hljs-comment">// 只会影响你的业务API</span><br><br><span class="hljs-comment">// some-chart-lib 内部的 axios 不受任何影响</span><br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="三、全局与实例拦截器的执行顺序">三、全局与实例拦截器的执行顺序</h3>
+<p>一个有趣的问题是：如果我同时设置了全局拦截器和实例拦截器，它们会如何执行？</p>
+<p><strong>记住这个顺序，就像一个三明治：全局拦截器是面包，实例拦截器是夹心。</strong></p>
+<ol>
+<li>
+<p><strong>请求阶段（发出请求）</strong></p>
+<ul>
+<li><code>全局请求拦截器</code> (先执行，像最外层的面包)</li>
+<li><code>实例请求拦截器</code> (后执行，像里面的夹心)</li>
+<li><strong>[请求正式发出]</strong></li>
+</ul>
+</li>
+<li>
+<p><strong>响应阶段（收到响应）</strong></p>
+<ul>
+<li><strong>[收到服务器响应]</strong></li>
+<li><code>实例响应拦截器</code> (先执行，先处理夹心)</li>
+<li><code>全局响应拦截器</code> (后执行，最后处理面包)</li>
+</ul>
+</li>
+</ol>
+<p>这个顺序设计得非常合理：<strong>全局拦截器总是包在实例拦截器的外面</strong>。</p>
+<hr>
+<h3 id="四、全局拦截器的极少数合理用例">四、全局拦截器的极少数合理用例</h3>
+<p>尽管我们强烈推荐实例拦截器，但在某些极端通用、且与业务逻辑完全无关的场景下，全局拦截器可以派上用场。</p>
+<p><strong>用例：实现全局的 <code>loading</code> 状态</strong></p>
+<p>你可以用全局拦截器来轻松实现“只要有请求在飞，就显示一个全局的 loading 动画”。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// loading.js</span><br><span class="hljs-keyword">let</span> requestCount = <span class="hljs-number">0</span>;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">showLoading</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">if</span> (requestCount === <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-comment">// 调用你的 UI 库的 showLoading() 方法</span><br>  &#125;<br>  requestCount++;<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">hideLoading</span>(<span class="hljs-params"></span>) &#123;<br>  requestCount--;<br>  <span class="hljs-keyword">if</span> (requestCount === <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-comment">// 调用你的 UI 库的 hideLoading() 方法</span><br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// main.js - 在项目入口配置</span><br><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; showLoading, hideLoading &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./loading&#x27;</span>;<br><br>axios.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">use</span>(<span class="hljs-function"><span class="hljs-params">config</span> =&gt;</span> &#123;<br>  <span class="hljs-title function_">showLoading</span>();<br>  <span class="hljs-keyword">return</span> config;<br>&#125;, <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>  <span class="hljs-title function_">hideLoading</span>(); <span class="hljs-comment">// 请求失败也要隐藏 loading</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(error);<br>&#125;);<br><br>axios.<span class="hljs-property">interceptors</span>.<span class="hljs-property">response</span>.<span class="hljs-title function_">use</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>  <span class="hljs-title function_">hideLoading</span>();<br>  <span class="hljs-keyword">return</span> response;<br>&#125;, <span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>  <span class="hljs-title function_">hideLoading</span>(); <span class="hljs-comment">// 响应错误也要隐藏 loading</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(error);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<p>这个用例是合理的，因为它不修改请求的认证或业务数据，只是一个纯粹的 UI 行为，对所有请求一视同仁通常是可接受的。</p>
+<hr>
+<h3 id="五、要点与注意事项总结">五、要点与注意事项总结</h3>
+<ol>
+<li><strong>首选实例拦截器</strong>：这是现代前端工程化的基石，能保证代码的模块化、可维护性和无副作用。</li>
+<li><strong>警惕全局污染</strong>：使用全局拦截器前，请三思：“这个逻辑是否真的需要应用于项目中的<strong>每一个</strong> <code>axios</code> 请求，包括我无法控制的第三方库？”</li>
+<li><strong>理解执行顺序</strong>：当你需要混合使用时，记住“全局在外，实例在内”的三明治模型。</li>
+<li><strong>合理用于纯粹的副作用</strong>：全局 <code>loading</code>、全局请求日志记录等，是全局拦截器为数不多的“舒适区”。</li>
+</ol>
+<p>总而言之，将实例拦截器作为你的默认武器，而将全局拦截器看作是只有在特殊情况下才会动用的“大招”，并且使用时要格外小心。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Axios/" class="category-chain-item">Axios</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>拦截器（Interceptors）</div>
+      <div>http://example.com/2025/05/24/JavaScript、Typescript/Framework and Library/Axios/拦截器（Interceptors）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年5月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/05/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Axios/%E7%BB%84%E7%BB%87%E5%92%8C%E5%B0%81%E8%A3%85%20API%20%E6%A8%A1%E5%9D%97/" title="组织和封装 API 模块">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">组织和封装 API 模块</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/05/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Axios/%E8%AF%B7%E6%B1%82%E5%8F%96%E6%B6%88/" title="请求取消">
+                        <span class="hidden-mobile">请求取消</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
