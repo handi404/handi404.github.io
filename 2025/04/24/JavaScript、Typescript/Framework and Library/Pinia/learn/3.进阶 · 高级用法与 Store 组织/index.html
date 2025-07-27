@@ -1,0 +1,901 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从一个 Pinia 的“使用者”提升为一个能写出更健壮、更优雅代码的“熟练者”。解决一些在实际开发中一定会遇到的痛点问题。  组件中的最佳实践 - storeToRefs 的妙用 目标：理解为什么不能直接从 Store 实例中解构 State 和 Getters，并学会使用 storeToRefs 来解决这个问题。这是 Pinia 新手最常犯的错误，务必掌握！ 【概念讲解】 在组件的 &lt;sc">
+<meta property="og:type" content="article">
+<meta property="og:title" content="高级用法与 Store 组织">
+<meta property="og:url" content="http://example.com/2025/04/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Pinia/learn/3.%E8%BF%9B%E9%98%B6%20%C2%B7%20%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B8%8E%20Store%20%E7%BB%84%E7%BB%87/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="从一个 Pinia 的“使用者”提升为一个能写出更健壮、更优雅代码的“熟练者”。解决一些在实际开发中一定会遇到的痛点问题。  组件中的最佳实践 - storeToRefs 的妙用 目标：理解为什么不能直接从 Store 实例中解构 State 和 Getters，并学会使用 storeToRefs 来解决这个问题。这是 Pinia 新手最常犯的错误，务必掌握！ 【概念讲解】 在组件的 &lt;sc">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/pinia.png">
+<meta property="article:published_time" content="2025-04-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-27T12:42:53.583Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="pinia">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/pinia.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>高级用法与 Store 组织 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="高级用法与 Store 组织"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-24 00:00" pubdate>
+          2025年4月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.5k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          38 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">高级用法与 Store 组织</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月27日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>从一个 Pinia 的“使用者”提升为一个能写出更健壮、更优雅代码的“熟练者”。解决一些在实际开发中一定会遇到的痛点问题。</p>
+<hr>
+<h3 id="组件中的最佳实践-storeToRefs-的妙用"><strong>组件中的最佳实践 - <code>storeToRefs</code> 的妙用</strong></h3>
+<p><strong>目标</strong>：理解为什么不能直接从 Store 实例中解构 State 和 Getters，并学会使用 <code>storeToRefs</code> 来解决这个问题。<strong>这是 Pinia 新手最常犯的错误，务必掌握！</strong></p>
+<h4 id="【概念讲解】"><strong>【概念讲解】</strong></h4>
+<p>在组件的 <code>&lt;script setup&gt;</code> 中，我们常常想用 ES 6 的解构赋值来简化代码，比如这样：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 这是一个错误的做法！</span><br><span class="hljs-keyword">import</span> &#123; useCounterStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./stores/counter.store&#x27;</span><br><span class="hljs-keyword">const</span> counterStore = <span class="hljs-title function_">useCounterStore</span>()<br><br><span class="hljs-comment">// 错误！这样解构会丢失响应性</span><br><span class="hljs-keyword">const</span> &#123; count, doubleCount &#125; = counterStore <br><br><span class="hljs-comment">// count 和 doubleCount 变成了普通的变量，不再是响应式的。</span><br><span class="hljs-comment">// 当 store 里的值变化时，模板中的 &#123;&#123; count &#125;&#125; 不会更新！</span><br></code></pre></td></tr></table></figure>
+<p><strong>为什么会这样？</strong></p>
+<p>原因在于 JavaScript 的解构赋值。当你写 <code>const &#123; count &#125; = counterStore</code> 时，<code>counterStore.count</code> 本质上是一个 <code>Ref&lt;number&gt;</code> 对象 (即 <code>&#123; value: 0 &#125;</code>)。解构 <code>count</code> 实际上是把 <code>counterStore.count</code> 这个 Ref 对象本身赋值给了新的变量 <code>count</code>。但是，如果你解构的是一个普通响应式对象中的属性，比如 <code>const &#123; name &#125; = reactive(&#123; name: 'Alice' &#125;)</code>，那么 <code>name</code> 就只是一个普通的字符串 <code>'Alice'</code>，它的响应性连接已经断开了。</p>
+<p>Pinia 为了让 State 像普通数据一样易于访问，对 Store 实例做了代理。当你访问 <code>counterStore.count</code> 时，它内部会自动返回 <code>count.value</code>。所以，<code>const &#123; count &#125; = counterStore</code> 相当于 <code>const count = counterStore.count</code>，这会得到一个普通的 number，而不是一个响应式的 Ref。</p>
+<p><strong>解决方案：<code>storeToRefs()</code></strong></p>
+<p>Pinia 提供了一个非常方便的工具函数 <code>storeToRefs</code>。它的作用是：</p>
+<ul>
+<li>接收一个 Store 实例作为参数。</li>
+<li>将这个 Store 实例中的 <strong>所有 State 和 Getters</strong> 转换成一个普通的响应式对象，其中每个属性都是一个 Ref。</li>
+<li>这样，你就可以安全地解构这个对象，而不会丢失响应性。</li>
+</ul>
+<h4 id="【代码示例】"><strong>【代码示例】</strong></h4>
+<p>让我们用 <code>counter.store.ts</code> 来演示正确和错误的用法。</p>
+<p><strong>Store 定义 (无需改变):</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/stores/counter.store.ts</span><br><span class="hljs-keyword">import</span> &#123; ref, computed &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> &#123; defineStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useCounterStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-string">&#x27;counter&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> count = <span class="hljs-title function_">ref</span>(<span class="hljs-number">0</span>)<br>  <span class="hljs-keyword">const</span> doubleCount = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> count.<span class="hljs-property">value</span> * <span class="hljs-number">2</span>)<br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">increment</span>(<span class="hljs-params"></span>) &#123;<br>    count.<span class="hljs-property">value</span>++<br>  &#125;<br>  <span class="hljs-keyword">return</span> &#123; count, doubleCount, increment &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p><strong>组件中的正确用法 (<code>App.vue</code>):</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; useCounterStore &#125; from &#x27;./stores/counter.store&#x27;<br>import &#123; storeToRefs &#125; from &#x27;pinia&#x27; // 1. 导入 storeToRefs<br><br>const counterStore = useCounterStore()<br><br>// --- 错误的方式 (仅作演示) ---<br>// const &#123; count: wrongCount, doubleCount: wrongDoubleCount &#125; = counterStore;<br>// `wrongCount` 和 `wrongDoubleCount` 将不会在模板中更新<br><br>// --- 正确的方式 ---<br>// 2. 使用 storeToRefs 包裹 store 实例<br>const &#123; count, doubleCount &#125; = storeToRefs(counterStore)<br><br>// --- Actions 不需要 storeToRefs ---<br>// 3. Actions 是函数，可以直接从 store 实例中解构<br>const &#123; increment &#125; = counterStore<br><br>// 现在，count 和 doubleCount 都是 Ref 对象，可以在模板中正常使用<br>// increment 是一个普通的函数<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;h1&gt;storeToRefs 演示&lt;/h1&gt;<br><br>    &lt;p&gt;<br>      来自 storeToRefs 的 count: &#123;&#123; count &#125;&#125; &lt;br&gt;<br>      来自 storeToRefs 的 doubleCount: &#123;&#123; doubleCount &#125;&#125;<br>    &lt;/p&gt;<br><br>    &lt;!-- <br>      &lt;p&gt;<br>        来自错误解构的 count: &#123;&#123; wrongCount &#125;&#125; &lt;br&gt;<br>        来自错误解构的 doubleCount: &#123;&#123; wrongDoubleCount &#125;&#125;<br>      &lt;/p&gt; <br>      (取消注释会发现，这部分数据不会更新)<br>    --&gt;<br><br>    &lt;button @click=&quot;increment&quot;&gt;调用解构出的 Action (+1)&lt;/button&gt;<br>    &lt;br&gt;<br>    &lt;button @click=&quot;counterStore.count++&quot;&gt;直接修改 Store (+1)&lt;/button&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p>当你点击按钮时，你会发现使用 <code>storeToRefs</code> 解构出的 <code>count</code> 和 <code>doubleCount</code> 能够正确地响应更新，而错误方式解构出的值则始终保持不变。</p>
+<h4 id="【扩展与应用】"><strong>【扩展与应用】</strong></h4>
+<ul>
+<li><strong><code>storeToRefs</code> vs. 直接使用 <code>store.prop</code></strong>：
+<ul>
+<li>如果你在 <code>&lt;script setup&gt;</code> 中只需要一两个来自 store 的值，并且不介意在模板中使用 <code>counterStore.count</code> 这样的写法，那么<strong>不使用 <code>storeToRefs</code> 也是完全可以的</strong>。</li>
+<li>当你需要将 store 的状态传递给组合式函数（Composables）时，<code>storeToRefs</code> 就显得尤为重要，因为它能确保你传递的是响应式的 Ref。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/composables/useLogger.ts</span><br><span class="hljs-keyword">import</span> &#123; watch, <span class="hljs-keyword">type</span> <span class="hljs-title class_">Ref</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useLogger</span>(<span class="hljs-params"><span class="hljs-attr">value</span>: <span class="hljs-title class_">Ref</span>&lt;<span class="hljs-built_in">any</span>&gt;, <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span></span>) &#123;<br>  <span class="hljs-title function_">watch</span>(value, <span class="hljs-function">(<span class="hljs-params">newValue</span>) =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;name&#125;</span> 的值变成了:`</span>, newValue)<br>  &#125;)<br>&#125;<br><br><span class="hljs-comment">// 在组件中</span><br><span class="hljs-keyword">import</span> &#123; useLogger &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./composables/useLogger&#x27;</span><br><span class="hljs-keyword">const</span> &#123; count &#125; = <span class="hljs-title function_">storeToRefs</span>(counterStore)<br><span class="hljs-comment">// 正确！因为 count 是一个 Ref，可以被 watch 监听</span><br><span class="hljs-title function_">useLogger</span>(count, <span class="hljs-string">&#x27;计数器&#x27;</span>) <br></code></pre></td></tr></table></figure>
+<h4 id="【要点-注意事项】"><strong>【要点 / 注意事项】</strong></h4>
+<ol>
+<li><strong>只对 State 和 Getters 使用 <code>storeToRefs</code></strong>：<code>storeToRefs</code> 只会处理 Store 中的响应式属性，也就是 <code>state</code> 和 <code>getters</code>。它会忽略 <code>actions</code> 和其他非响应式属性。</li>
+<li><strong>Actions 可以直接解构</strong>：因为 Actions 本身是绑定到 Store 实例的函数，它们不依赖于响应性包装，所以可以直接从 Store 实例上解构出来使用，完全没有问题。</li>
+<li><strong>何时使用 <code>storeToRefs</code></strong>：<strong>黄金法则 -&gt; 当你想在组件的 <code>&lt;script setup&gt;</code> 中使用解构赋值来获取 State 或 Getters，并且希望保持它们的响应性时，就必须使用 <code>storeToRefs</code>。</strong></li>
+</ol>
+<hr>
+<p>掌握了 <code>storeToRefs</code>，你就避免了 Pinia 开发中最常见的“坑”。现在，你的组件代码可以写得既简洁又安全了。</p>
+<p>接下来，我们将探讨一个更具架构性的问题：当应用变得复杂，拥有多个 Store 时，<strong>如何让它们之间优雅地进行通信？</strong> 比如，在一个 <code>cartStore</code> 中，当用户添加商品时，需要检查 <code>userStore</code> 的登录状态。</p>
+<hr>
+<h3 id="Store-之间的通信-构建协作网络"><strong>Store 之间的通信 - 构建协作网络</strong></h3>
+<p><strong>目标</strong>：掌握在一个 Store 内部安全、高效地调用另一个 Store 的 State、Getters 或 Actions。</p>
+<h4 id="【概念讲解】-2"><strong>【概念讲解】</strong></h4>
+<p>在真实的应用中，各个功能模块（也即各个 Store）很少是完全孤立的。它们之间常常需要协作。例如：</p>
+<ul>
+<li><strong>购物车 Store (<code>cartStore</code>)</strong> 在添加商品到购物车前，需要检查 <strong>用户 Store (<code>userStore</code>)</strong> 是否已登录。</li>
+<li><strong>订单 Store (<code>orderStore</code>)</strong> 在创建订单时，需要清空 <strong>购物车 Store (<code>cartStore</code>)</strong> 的内容。</li>
+<li>一个 <strong>仪表盘 Store (<code>dashboardStore</code>)</strong> 可能需要从多个其他 Store（如 <code>userStore</code>, <code>productStore</code>）中聚合数据来生成统计报告。</li>
+</ul>
+<p>Pinia 的设计哲学使得这种跨 Store 通信变得极其简单和直观。因为每个 Store 都是一个独立的、可通过 <code>use...Store()</code> 函数导入和使用的模块，所以<strong>在一个 Store 中使用另一个 Store，就和在组件中使用它完全一样</strong>。</p>
+<h4 id="【代码示例】-2"><strong>【代码示例】</strong></h4>
+<p>我们将创建两个 Store：<code>user.store.ts</code> 和 <code>cart.store.ts</code>，并演示 <code>cartStore</code> 如何与 <code>userStore</code> 互动。</p>
+<p><strong>Step 1: 创建 <code>user.store.ts</code> (简化版)</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/stores/user.store.ts</span><br><span class="hljs-keyword">import</span> &#123; ref, computed &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> &#123; defineStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useUserStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> user = ref&lt;&#123; <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span> &#125; | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)<br>  <br>  <span class="hljs-keyword">const</span> isLoggedIn = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> user.<span class="hljs-property">value</span> !== <span class="hljs-literal">null</span>)<br>  <span class="hljs-keyword">const</span> username = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> user.<span class="hljs-property">value</span>?.<span class="hljs-property">name</span> ?? <span class="hljs-string">&#x27;游客&#x27;</span>)<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">login</span>(<span class="hljs-params"></span>) &#123;<br>    user.<span class="hljs-property">value</span> = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Alice&#x27;</span> &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">logout</span>(<span class="hljs-params"></span>) &#123;<br>    user.<span class="hljs-property">value</span> = <span class="hljs-literal">null</span><br>  &#125;<br><br>  <span class="hljs-keyword">return</span> &#123; user, isLoggedIn, username, login, logout &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p><strong>Step 2: 创建 <code>cart.store.ts</code>，并在其中调用 <code>userStore</code></strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/stores/cart.store.ts</span><br><span class="hljs-keyword">import</span> &#123; ref, computed &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> &#123; defineStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><span class="hljs-keyword">import</span> &#123; useUserStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./user.store&#x27;</span> <span class="hljs-comment">// 1. 导入另一个 Store</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">CartItem</span> &#123;<br>  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span><br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span><br>  <span class="hljs-attr">price</span>: <span class="hljs-built_in">number</span><br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useCartStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-string">&#x27;cart&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-comment">// --- State ---</span><br>  <span class="hljs-keyword">const</span> items = ref&lt;<span class="hljs-title class_">CartItem</span>[]&gt;([])<br><br>  <span class="hljs-comment">// --- Getter 中使用其他 Store ---</span><br>  <span class="hljs-comment">// 这个 Getter 会根据用户登录状态显示不同的信息</span><br>  <span class="hljs-keyword">const</span> summary = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> userStore = <span class="hljs-title function_">useUserStore</span>() <span class="hljs-comment">// 2. 在 Getter 内部获取 userStore 实例</span><br>    <span class="hljs-keyword">const</span> totalItems = items.<span class="hljs-property">value</span>.<span class="hljs-property">length</span><br>    <span class="hljs-keyword">if</span> (totalItems === <span class="hljs-number">0</span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;userStore.username&#125;</span> 的购物车是空的。`</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;userStore.username&#125;</span> 的购物车中有 <span class="hljs-subst">$&#123;totalItems&#125;</span> 件商品。`</span><br>  &#125;)<br><br>  <span class="hljs-comment">// --- Action 中使用其他 Store ---</span><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">addItem</span>(<span class="hljs-params"><span class="hljs-attr">item</span>: <span class="hljs-title class_">CartItem</span></span>) &#123;<br>    <span class="hljs-keyword">const</span> userStore = <span class="hljs-title function_">useUserStore</span>() <span class="hljs-comment">// 3. 在 Action 内部获取 userStore 实例</span><br><br>    <span class="hljs-comment">// 业务逻辑：只有登录用户才能添加商品</span><br>    <span class="hljs-keyword">if</span> (!userStore.<span class="hljs-property">isLoggedIn</span>) &#123;<br>      <span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;请先登录后再添加商品！&#x27;</span>)<br>      <span class="hljs-keyword">return</span> <span class="hljs-comment">// 提前退出</span><br>    &#125;<br><br>    items.<span class="hljs-property">value</span>.<span class="hljs-title function_">push</span>(item)<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`&#x27;<span class="hljs-subst">$&#123;item.name&#125;</span>&#x27; 已添加到购物车。`</span>)<br>  &#125;<br>  <br>  <span class="hljs-comment">// --- Action 调用另一个 Store 的 Action ---</span><br>  <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">checkout</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> userStore = <span class="hljs-title function_">useUserStore</span>()<br>    <span class="hljs-keyword">if</span> (!userStore.<span class="hljs-property">isLoggedIn</span>) &#123;<br>      <span class="hljs-title function_">alert</span>(<span class="hljs-string">&#x27;请登录后结算！&#x27;</span>)<br>      <span class="hljs-keyword">return</span><br>    &#125;<br>    <br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`用户 <span class="hljs-subst">$&#123;userStore.username&#125;</span> 正在结算...`</span>)<br>    <span class="hljs-comment">// 模拟结算 API 调用</span><br>    <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">setTimeout</span>(resolve, <span class="hljs-number">1000</span>))<br>    <br>    <span class="hljs-comment">// 清空购物车</span><br>    items.<span class="hljs-property">value</span> = []<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;结算完成，购物车已清空！&#x27;</span>)<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> &#123; items, summary, addItem, checkout &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p><strong>Step 3: 在组件中同时使用这两个 Store</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs vue">// src/App.vue<br>&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; useUserStore &#125; from &#x27;./stores/user.store&#x27;<br>import &#123; useCartStore, type CartItem &#125; from &#x27;./stores/cart.store&#x27;<br>import &#123; storeToRefs &#125; from &#x27;pinia&#x27;<br><br>const userStore = useUserStore()<br>const cartStore = useCartStore()<br><br>// 使用 storeToRefs 来保持响应性<br>const &#123; username, isLoggedIn &#125; = storeToRefs(userStore)<br>const &#123; items, summary &#125; = storeToRefs(cartStore)<br><br>const sampleItem: CartItem = &#123; id: 1, name: &#x27;Vue 3 T-shirt&#x27;, price: 25 &#125;<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;h1&gt;Store 间通信演示&lt;/h1&gt;<br><br>    &lt;section&gt;<br>      &lt;h2&gt;用户面板&lt;/h2&gt;<br>      &lt;p&gt;当前用户: &#123;&#123; username &#125;&#125;&lt;/p&gt;<br>      &lt;button v-if=&quot;!isLoggedIn&quot; @click=&quot;userStore.login&quot;&gt;登录&lt;/button&gt;<br>      &lt;button v-else @click=&quot;userStore.logout&quot;&gt;登出&lt;/button&gt;<br>    &lt;/section&gt;<br><br>    &lt;hr&gt;<br><br>    &lt;section&gt;<br>      &lt;h2&gt;购物车面板&lt;/h2&gt;<br>      &lt;!-- 这个 summary getter 依赖 userStore --&gt;<br>      &lt;p&gt;&lt;strong&gt;&#123;&#123; summary &#125;&#125;&lt;/strong&gt;&lt;/p&gt;<br>      <br>      &lt;ul&gt;<br>        &lt;li v-for=&quot;item in items&quot; :key=&quot;item.id&quot;&gt;<br>          &#123;&#123; item.name &#125;&#125; - $&#123;&#123; item.price &#125;&#125;<br>        &lt;/li&gt;<br>      &lt;/ul&gt;<br><br>      &lt;button @click=&quot;cartStore.addItem(sampleItem)&quot;&gt;<br>        添加 T-shirt 到购物车<br>      &lt;/button&gt;<br>      &lt;button @click=&quot;cartStore.checkout&quot; :disabled=&quot;items.length === 0&quot;&gt;<br>        结算<br>      &lt;/button&gt;<br>    &lt;/section&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br><br>&lt;style scoped&gt;<br>section &#123; border: 1px solid #eee; padding: 1rem; margin-bottom: 1rem; &#125;<br>hr &#123; margin: 2rem 0; &#125;<br>&lt;/style&gt;<br></code></pre></td></tr></table></figure>
+<p>现在运行应用并操作：</p>
+<ol>
+<li><strong>未登录时</strong>，点击“添加 T-shirt”，会弹出提示，商品无法添加。<code>summary</code> 显示“游客的购物车…”。</li>
+<li>点击 <strong>登录</strong>，<code>username</code> 变为 “Alice”。</li>
+<li><strong>登录后</strong>，点击“添加 T-shirt”，商品成功添加。<code>summary</code> 也同步更新为“Alice 的购物车…”。</li>
+<li>点击 <strong>结算</strong>，商品列表被清空。</li>
+</ol>
+<p>你已经成功实现了两个 Store 之间的完美协作！</p>
+<h4 id="【扩展与应用】-2"><strong>【扩展与应用】</strong></h4>
+<ul>
+<li>
+<p><strong>避免循环依赖</strong>：要小心一种情况，<code>userStore</code> 导入 <code>cartStore</code>，同时 <code>cartStore</code> 又导入 <code>userStore</code>。虽然现代的模块打包工具（如 Vite 和 Webpack）通常能处理这种循环依赖，但这在设计上是不良的。如果遇到这种情况，思考一下是否能通过<strong>事件总线 (Event Bus)</strong> 或将共享逻辑<strong>抽离到第三个独立的 Store 或 Composable</strong> 中来解耦。</p>
+</li>
+<li>
+<p><strong>性能考量</strong>：在 Getter 或 Action 中调用 <code>use...Store()</code> 是非常轻量的。Pinia 内部会确保每个 Store 只被实例化一次（单例模式）。所以，不必担心性能问题，可以放心地在需要的地方调用它。</p>
+</li>
+</ul>
+<h4 id="【要点-注意事项】-2"><strong>【要点 / 注意事项】</strong></h4>
+<ol>
+<li>
+<p><strong>在需要时才调用</strong>：最佳实践是<strong>在 Action 或 Getter 函数的内部</strong>调用 <code>useOtherStore()</code>，而不是在 <code>defineStore</code> 的 setup 函数顶层作用域。这可以确保在所有 Store 都被正确初始化后才建立连接，避免潜在的初始化顺序问题，尤其是在涉及插件时。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 推荐做法</span><br><span class="hljs-title function_">defineStore</span>(<span class="hljs-string">&#x27;cart&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">someAction</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> userStore = <span class="hljs-title function_">useUserStore</span>() <span class="hljs-comment">// 在 Action 内部调用</span><br>    <span class="hljs-comment">// ...</span><br>  &#125;<br>  <span class="hljs-keyword">return</span> &#123; someAction &#125;<br>&#125;)<br><br><span class="hljs-comment">// 不推荐的做法</span><br><span class="hljs-title function_">defineStore</span>(<span class="hljs-string">&#x27;cart&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> userStore = <span class="hljs-title function_">useUserStore</span>() <span class="hljs-comment">// 在顶层作用域调用</span><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">someAction</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// ... use userStore</span><br>  &#125;<br>  <span class="hljs-keyword">return</span> &#123; someAction &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>保持模块化</strong>：即使 Store 之间可以方便地通信，也要时刻保持模块化思想。一个 Store 应该只关心与自己核心职责紧密相关的数据。不要因为通信方便，就把不相关的逻辑和状态都塞进一个 Store。</p>
+</li>
+</ol>
+<hr>
+<p>已经了解了 Pinia 的高级用法，能够处理组件交互和 Store 间的复杂协作。</p>
+<p>开始探索 Pinia 最具扩展性的特性——<strong>插件系统 (Plugins)</strong>。通过插件，可以为所有的 Store 统一添加新功能，比如实现本地持久化存储，这在实际项目中非常有用。</p>
+<hr>
+<h3 id="插件系统-Plugins-为-Store-赋能"><strong>插件系统 (Plugins) - 为 Store 赋能</strong></h3>
+<p><strong>目标</strong>：理解 Pinia 插件的运行机制，并亲手编写一个非常实用的插件——将 Store 的状态自动同步到浏览器的 <code>localStorage</code> 中，实现数据持久化。</p>
+<h4 id="【概念讲解】-3"><strong>【概念讲解】</strong></h4>
+<p>想象一下你的 Pinia Store 是一家工厂，生产着各种数据产品。而<strong>插件（Plugin）就像是给这家工厂加装的一套自动化流水线设备</strong>。</p>
+<p>这套设备可以做到：</p>
+<ol>
+<li><strong>自动质检 (监听变化)</strong>：每当工厂的任何一个产品（State）发生变化时，设备都能立即察觉。</li>
+<li><strong>添加新功能 (扩展 Store)</strong>：给每个出厂的产品（Store 实例）都打上一个特殊的标签或添加一个新的功能按钮（例如，给每个 store 添加一个 <code>$reset</code> 方法）。</li>
+<li><strong>初始化设置 (初始化 Store)</strong>：当一个新的产品（Store）开始生产时，设备可以根据预设的图纸（例如 <code>localStorage</code> 里的数据）来设定它的初始状态。</li>
+</ol>
+<p><strong>技术上讲，Pinia 插件就是一个简单的函数</strong>。这个函数会在 Pinia 实例被创建后，应用到每一个由该实例创建的 Store 上。通过插件，我们可以用一种集中、可复用的方式来扩展所有 Store 的能力。</p>
+<h4 id="【代码示例：实战！编写一个持久化插件】"><strong>【代码示例：实战！编写一个持久化插件】</strong></h4>
+<p>最常见的插件需求就是<strong>状态持久化</strong>：用户刷新页面后，Store 的数据不会丢失。我们将创建一个插件来实现这个功能。</p>
+<p><strong>Step 1: 创建插件文件</strong></p>
+<p>在 <code>src</code> 目录下新建 <code>plugins</code> 文件夹，并在其中创建 <code>localStorage.plugin.ts</code> 文件。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/plugins/localStorage.plugin.ts</span><br><br><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> &#123; <span class="hljs-title class_">PiniaPluginContext</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">localStoragePlugin</span>(<span class="hljs-params"><span class="hljs-attr">context</span>: <span class="hljs-title class_">PiniaPluginContext</span></span>) &#123;<br>  <span class="hljs-comment">// 插件是一个函数，它接收一个 context 对象</span><br>  <span class="hljs-keyword">const</span> &#123; store &#125; = context<br><br>  <span class="hljs-comment">// 1. 从 localStorage 获取初始状态 (数据恢复/Hydration)</span><br>  <span class="hljs-keyword">const</span> storageKey = <span class="hljs-string">`pinia-<span class="hljs-subst">$&#123;store.$id&#125;</span>`</span><br>  <span class="hljs-keyword">const</span> storedState = <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(storageKey)<br><br>  <span class="hljs-keyword">if</span> (storedState) &#123;<br>    <span class="hljs-comment">// 如果 localStorage 中有数据，用它来覆盖 store 的初始状态</span><br>    store.$patch(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(storedState))<br>  &#125;<br><br>  <span class="hljs-comment">// 2. 监听 state 的变化，并将其存入 localStorage (持久化)</span><br>  <span class="hljs-comment">// store.$subscribe 会在 state 每次变化后被调用</span><br>  store.$subscribe(<span class="hljs-function">(<span class="hljs-params">mutation, state</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// `mutation` 包含了变化的详细信息，我们这里暂时用不到</span><br>    <span class="hljs-comment">// `state` 是变化后的完整 state 对象</span><br>    <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">setItem</span>(storageKey, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(state))<br>  &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>代码解析：</strong></p>
+<ul>
+<li><code>PiniaPluginContext</code>: 这是 Pinia 提供的插件上下文类型，包含了 <code>store</code>（当前被插件处理的 store 实例）、<code>pinia</code>（Pinia 实例）、<code>app</code>（Vue 应用实例）和 <code>options</code>（定义 store 时的选项）。</li>
+<li><code>store.$id</code>: 每个 store 的唯一 ID（就是 <code>defineStore</code> 的第一个参数）。我们用它来构造独一无二的 <code>localStorage</code> key。</li>
+<li><code>store.$patch()</code>: 用来批量更新 state。我们用它把从 <code>localStorage</code> 解析出来的对象应用到 store 上。</li>
+<li><code>store.$subscribe()</code>: 这是插件的核心。它订阅了 store 的所有 state 变化。一旦有变化，回调函数就会执行，我们就在这里把最新的 state 保存到 <code>localStorage</code>。</li>
+</ul>
+<p><strong>Step 2: 在 <code>main.ts</code> 中注册插件</strong></p>
+<p>光创建插件还不够，需要告诉 Pinia 去使用它。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/main.ts</span><br><br><span class="hljs-keyword">import</span> &#123; createApp &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> &#123; createPinia &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App.vue&#x27;</span><br><br><span class="hljs-comment">// 1. 导入你创建的插件</span><br><span class="hljs-keyword">import</span> &#123; localStoragePlugin &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./plugins/localStorage.plugin&#x27;</span><br><br><span class="hljs-keyword">const</span> app = <span class="hljs-title function_">createApp</span>(<span class="hljs-title class_">App</span>)<br><br><span class="hljs-keyword">const</span> pinia = <span class="hljs-title function_">createPinia</span>()<br><span class="hljs-comment">// 2. 使用 .use() 方法注册插件</span><br>pinia.<span class="hljs-title function_">use</span>(localStoragePlugin) <br><br>app.<span class="hljs-title function_">use</span>(pinia)<br>app.<span class="hljs-title function_">mount</span>(<span class="hljs-string">&#x27;#app&#x27;</span>)<br></code></pre></td></tr></table></figure>
+<p><strong>Step 3: 验证插件效果</strong></p>
+<p>现在，神奇的事情发生了！你<strong>不需要修改任何一个已有的 Store</strong>。我们用之前的 <code>counter.store.ts</code> 来测试。</p>
+<ol>
+<li>运行你的应用。</li>
+<li>点击按钮，将计数器的值增加到比如 <code>5</code>。</li>
+<li>打开浏览器的开发者工具，切换到 “Application” (或 “存储”) -&gt; “Local Storage”，你会看到一条 key 为 <code>pinia-counter</code>，value 为 <code>&#123;&quot;count&quot;:5&#125;</code> 的记录。</li>
+<li><strong>刷新页面！</strong></li>
+<li>你会发现，计数器并没有回到 <code>0</code>，而是直接显示为 <code>5</code>。插件成功地从 <code>localStorage</code> 恢复了状态。</li>
+</ol>
+<h4 id="【扩展与应用】-3"><strong>【扩展与应用】</strong></h4>
+<p>我们刚才的插件会对所有 Store 生效。但在实际项目中，你可能只想持久化某几个 Store，或者一个 Store 里的某几个字段。我们可以让插件变得“可配置”。</p>
+<p><strong>可配置的持久化插件：</strong></p>
+<p><strong>首先</strong>，在定义 Store 时，通过第三个参数传入自定义选项。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/stores/user.store.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useUserStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> token = ref&lt;<span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)<br>  <span class="hljs-keyword">const</span> profile = ref&lt;&#123; <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span> &#125; | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)<br>  <span class="hljs-keyword">return</span> &#123; token, profile &#125;<br>&#125;, &#123;<br>  <span class="hljs-comment">// 自定义第三个参数，告诉插件如何持久化</span><br>  <span class="hljs-attr">persisted</span>: &#123;<br>    <span class="hljs-comment">// 只持久化 token，不持久化 profile</span><br>    <span class="hljs-attr">paths</span>: [<span class="hljs-string">&#x27;token&#x27;</span>],<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p><strong>然后</strong>，修改我们的插件来读取这个配置。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/plugins/localStorage.plugin.ts (增强版)</span><br><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> &#123; <span class="hljs-title class_">PiniaPluginContext</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><br><span class="hljs-comment">// 定义我们自定义选项的类型</span><br><span class="hljs-keyword">interface</span> <span class="hljs-title class_">PersistedOptions</span> &#123;<br>  <span class="hljs-attr">paths</span>?: <span class="hljs-built_in">string</span>[]<br>&#125;<br><br><span class="hljs-comment">// 告诉 TypeScript，Store 的选项中可能包含我们的自定义字段</span><br><span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&#x27;pinia&#x27;</span> &#123;<br>  <span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">DefineStoreOptionsBase</span>&lt;S, <span class="hljs-title class_">Store</span>&gt; &#123;<br>    <span class="hljs-attr">persisted</span>?: <span class="hljs-title class_">PersistedOptions</span><br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">localStoragePlugin</span>(<span class="hljs-params">&#123; store, options &#125;: <span class="hljs-title class_">PiniaPluginContext</span></span>) &#123;<br>  <span class="hljs-comment">// 如果这个 store 没有配置 persisted 选项，则直接跳过</span><br>  <span class="hljs-keyword">if</span> (!options.<span class="hljs-property">persisted</span>) &#123;<br>    <span class="hljs-keyword">return</span><br>  &#125;<br>  <br>  <span class="hljs-keyword">const</span> storageKey = <span class="hljs-string">`pinia-<span class="hljs-subst">$&#123;store.$id&#125;</span>`</span><br>  <span class="hljs-keyword">const</span> storedState = <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(storageKey)<br>  <br>  <span class="hljs-keyword">if</span> (storedState) &#123;<br>    store.$patch(<span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(storedState))<br>  &#125;<br><br>  store.$subscribe(<span class="hljs-function">(<span class="hljs-params">mutation, state</span>) =&gt;</span> &#123;<br>    <span class="hljs-comment">// 如果配置了 paths，只保存指定的字段</span><br>    <span class="hljs-keyword">const</span> targetState = options.<span class="hljs-property">persisted</span>?.<span class="hljs-property">paths</span> <br>      ? options.<span class="hljs-property">persisted</span>.<span class="hljs-property">paths</span>.<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">obj, key</span>) =&gt;</span> &#123;<br>          obj[key] = state[key]<br>          <span class="hljs-keyword">return</span> obj<br>        &#125;, &#123;&#125; <span class="hljs-keyword">as</span> <span class="hljs-title class_">Record</span>&lt;<span class="hljs-built_in">string</span>, <span class="hljs-built_in">any</span>&gt;)<br>      : state<br>      <br>    <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">setItem</span>(storageKey, <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">stringify</span>(targetState))<br>  &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>现在，这个插件变得更加智能和灵活了！</p>
+<h4 id="【要点-注意事项】-3"><strong>【要点 / 注意事项】</strong></h4>
+<ol>
+<li><strong>插件顺序</strong>：如果你注册了多个插件，它们的执行顺序与 <code>pinia.use()</code> 的调用顺序一致。</li>
+<li><strong>序列化限制</strong>：<code>localStorage</code> 只能存储字符串。<code>JSON.stringify</code> 无法正确处理 <code>Date</code>, <code>Set</code>, <code>Map</code>, <code>RegExp</code> 等复杂类型。如果你的 state 中包含这些类型，需要自己实现特殊的序列化和反序列化逻辑。</li>
+<li><strong>服务端渲染 (SSR)</strong>：在 Node.js 环境中（如 Nuxt），<code>localStorage</code> 不存在。你的插件需要判断当前环境，避免在服务端执行浏览器特有的 API，否则会报错。可以简单地用 <code>if (typeof window !== 'undefined') &#123; ... &#125;</code> 来包裹相关逻辑。</li>
+<li><strong>善用社区插件</strong>：对于持久化这种常见需求，社区已经有非常成熟的插件，比如 <code>pinia-plugin-persistedstate</code>。它提供了比我们手写的更丰富的功能（支持 <code>sessionStorage</code>、自定义序列化、按 key 过滤等）。学习手写插件是为了理解原理，但在生产项目中，优先使用经过社区检验的成熟方案。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Pinia/" class="category-chain-item">Pinia</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vue/" class="print-no-link">#vue</a>
+      
+        <a href="/tags/pinia/" class="print-no-link">#pinia</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>高级用法与 Store 组织</div>
+      <div>http://example.com/2025/04/24/JavaScript、Typescript/Framework and Library/Pinia/learn/3.进阶 · 高级用法与 Store 组织/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Pinia/learn/4.%E5%AE%9E%E6%88%98%20%C2%B7%20%E6%9E%B6%E6%9E%84%E3%80%81%E6%B5%8B%E8%AF%95%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="架构、测试与实践">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">架构、测试与实践</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/23/Java/Framework/Spring%20Boot/Jackson/@JsonProperty/" title="@JsonProperty">
+                        <span class="hidden-mobile">@JsonProperty</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

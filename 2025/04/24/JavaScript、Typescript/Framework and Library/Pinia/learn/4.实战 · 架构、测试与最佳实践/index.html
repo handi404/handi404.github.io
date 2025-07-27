@@ -1,0 +1,845 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="跳出 API 的具体使用，从项目全局的视角来审视 Pinia。学习如何像一名经验丰富的架构师一样，组织你的代码，保证其质量，并优化其性能。  项目结构 (Architecture) - 搭建可维护的 Store 大厦 目标：学会在中大型项目中，如何优雅地组织你的 stores 目录，使其清晰、可扩展。 【概念讲解】 当你的应用只有一个或两个 Store 时，把它们都放在 src&#x2F;stores&#x2F; 目">
+<meta property="og:type" content="article">
+<meta property="og:title" content="架构、测试与实践">
+<meta property="og:url" content="http://example.com/2025/04/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Pinia/learn/4.%E5%AE%9E%E6%88%98%20%C2%B7%20%E6%9E%B6%E6%9E%84%E3%80%81%E6%B5%8B%E8%AF%95%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="跳出 API 的具体使用，从项目全局的视角来审视 Pinia。学习如何像一名经验丰富的架构师一样，组织你的代码，保证其质量，并优化其性能。  项目结构 (Architecture) - 搭建可维护的 Store 大厦 目标：学会在中大型项目中，如何优雅地组织你的 stores 目录，使其清晰、可扩展。 【概念讲解】 当你的应用只有一个或两个 Store 时，把它们都放在 src&#x2F;stores&#x2F; 目">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/pinia.png">
+<meta property="article:published_time" content="2025-04-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-27T12:43:32.093Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="pinia">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/pinia.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>架构、测试与实践 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="架构、测试与实践"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-24 00:00" pubdate>
+          2025年4月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">架构、测试与实践</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月27日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>跳出 API 的具体使用，从项目全局的视角来审视 Pinia。学习如何像一名经验丰富的架构师一样，组织你的代码，保证其质量，并优化其性能。</p>
+<hr>
+<h3 id="项目结构-Architecture-搭建可维护的-Store-大厦"><strong>项目结构 (Architecture) - 搭建可维护的 Store 大厦</strong></h3>
+<p><strong>目标</strong>：学会在中大型项目中，如何优雅地组织你的 <code>stores</code> 目录，使其清晰、可扩展。</p>
+<h4 id="【概念讲解】"><strong>【概念讲解】</strong></h4>
+<p>当你的应用只有一个或两个 Store 时，把它们都放在 <code>src/stores/</code> 目录下没什么问题。但当你有十几个甚至几十个 Store 时，一个扁平的目录结构会变成一场灾难。</p>
+<p><strong>最佳实践：按功能或领域（Feature/Domain）组织 Store。</strong></p>
+<p>就像你在电脑里会用文件夹把“工作文件”、“学习资料”、“娱乐影音”分门别类一样，我们也应该这样组织 Store。</p>
+<h4 id="【示例：推荐的目录结构】"><strong>【示例：推荐的目录结构】</strong></h4>
+<p><strong>简单结构 (适用于中小型项目):</strong></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-attribute">src</span>/<br>└── stores/<br>    ├── user<span class="hljs-selector-class">.store</span><span class="hljs-selector-class">.ts</span><br>    ├── cart<span class="hljs-selector-class">.store</span><span class="hljs-selector-class">.ts</span><br>    ├── products<span class="hljs-selector-class">.store</span><span class="hljs-selector-class">.ts</span><br>    └── index<span class="hljs-selector-class">.ts</span>  &lt;-- (可选，但推荐)<br></code></pre></td></tr></table></figure>
+<p><strong><code>stores/index.ts</code> (桶文件 - Barrel File):</strong><br>
+这个文件的作用是重新导出来自其他模块的所有内容，让外部导入更方便。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/stores/index.ts</span><br><span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./user.store&#x27;</span><br><span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./cart.store&#x27;</span><br><span class="hljs-keyword">export</span> * <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./products.store&#x27;</span><br></code></pre></td></tr></table></figure>
+<p><strong>使用时：</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 不使用 index.ts 的导入方式</span><br><span class="hljs-keyword">import</span> &#123; useUserStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./stores/user.store&#x27;</span><br><span class="hljs-keyword">import</span> &#123; useCartStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./stores/cart.store&#x27;</span><br><br><span class="hljs-comment">// 使用 index.ts 后的导入方式，更简洁</span><br><span class="hljs-keyword">import</span> &#123; useUserStore, useCartStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./stores&#x27;</span><br></code></pre></td></tr></table></figure>
+<p><strong>高级结构 (适用于大型、复杂项目):</strong><br>
+当一个功能（如“后台管理”）自身就包含多个相关的 Store 时，可以进一步嵌套。</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs vim">src/<br>└── stores/<br>    ├── user/<br>    |   ├── auth.store.<span class="hljs-keyword">ts</span>      // 用户认证相关<br>    |   ├── <span class="hljs-keyword">profile</span>.store.<span class="hljs-keyword">ts</span>   // 用户资料相关<br>    |   └── <span class="hljs-built_in">index</span>.<span class="hljs-keyword">ts</span>           // 导出 user/ 下的所有 store<br>    ├── products/<br>    |   ├── <span class="hljs-keyword">list</span>.store.<span class="hljs-keyword">ts</span>      // 商品列表<br>    |   ├── detail.store.<span class="hljs-keyword">ts</span>    // 商品详情<br>    |   └── <span class="hljs-built_in">index</span>.<span class="hljs-keyword">ts</span><br>    └── cart.store.<span class="hljs-keyword">ts</span>          // 购物车比较独立，可以放顶层<br></code></pre></td></tr></table></figure>
+<h4 id="【要点-注意事项】"><strong>【要点 / 注意事项】</strong></h4>
+<ol>
+<li><strong>一致性是关键</strong>：无论选择哪种结构，最重要的是在整个团队和项目中保持一致。</li>
+<li><strong>文件名约定</strong>：坚持使用 <code>*.store.ts</code> 作为 Store 文件的后缀，可以让你和团队成员一眼就识别出文件的用途。</li>
+</ol>
+<hr>
+<h3 id="TypeScript-高级技巧-充分释放类型潜力"><strong>TypeScript 高级技巧 - 充分释放类型潜力</strong></h3>
+<p><strong>目标</strong>：利用 Pinia 优秀的类型推断，编写更安全、可复用的类型代码。</p>
+<h4 id="【概念讲解-代码示例】"><strong>【概念讲解 &amp; 代码示例】</strong></h4>
+<p>Pinia 的类型推断非常出色，但我们还可以更进一步，<strong>获取一个 Store 实例的类型</strong>，以便在别处复用。这在为组件的 <code>props</code> 添加类型时尤其有用。</p>
+<p><strong>场景</strong>：假设你有一个子组件，需要接收一个完整的 <code>userStore</code> 实例作为 prop。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/stores/user.store.ts</span><br><span class="hljs-comment">// (假设 user.store.ts 已存在)</span><br><span class="hljs-keyword">import</span> &#123; defineStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useUserStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-comment">/*...*/</span>)<br><br><span class="hljs-comment">// --- 获取 Store 类型 ---</span><br><span class="hljs-comment">// 使用 TypeScript 的 ReturnType 工具类型，获取 useUserStore 函数的返回类型</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> <span class="hljs-title class_">UserStore</span> = <span class="hljs-title class_">ReturnType</span>&lt;<span class="hljs-keyword">typeof</span> useUserStore&gt;<br></code></pre></td></tr></table></figure>
+<p>现在 <code>UserStore</code> 就是 <code>userStore</code> 实例的精确类型！</p>
+<p><strong>在组件中使用：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs vue">// src/components/UserProfile.vue<br>&lt;script setup lang=&quot;ts&quot;&gt;<br>import type &#123; UserStore &#125; from &#x27;@/stores/user.store&#x27; // 导入类型<br><br>// 使用 defineProps 来定义 props 的类型<br>const props = defineProps&lt;&#123;<br>  // 告诉组件，我需要一个 UserStore 类型的 prop<br>  store: UserStore<br>&#125;&gt;()<br><br>// 现在你可以安全地使用 props.store，并获得完整的类型提示<br>// props.store.username<br>// props.store.login()<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;!-- 使用传入的 store prop --&gt;<br>    &lt;p&gt;用户名: &#123;&#123; props.store.username &#125;&#125;&lt;/p&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<h4 id="【要点-注意事项】-2"><strong>【要点 / 注意事项】</strong></h4>
+<ul>
+<li><strong>类型与值分离</strong>：注意，我们使用 <code>import type</code> 来导入类型。这告诉 TypeScript，我们只导入类型信息，在编译成 JavaScript 后，这条导入语句会被完全移除，不会产生运行时开销。</li>
+</ul>
+<hr>
+<h3 id="单元测试-Unit-Testing-保证你的逻辑坚如磐石"><strong>单元测试 (Unit Testing) - 保证你的逻辑坚如磐石</strong></h3>
+<p><strong>目标</strong>：学会使用 Vitest（一个现代的测试框架）为你的 Pinia Store 编写单元测试。</p>
+<h4 id="【概念讲解】-2"><strong>【概念讲解】</strong></h4>
+<p>Pinia Store 是测试的理想对象，因为它们是<strong>独立的、可被导入的模块</strong>。你可以不依赖任何 Vue 组件，直接测试 Store 的 State、Getters 和 Actions 的逻辑是否正确。</p>
+<p><strong>核心步骤：</strong></p>
+<ol>
+<li>安装 <code>vitest</code>。</li>
+<li>创建一个测试环境，并为 Pinia 激活一个实例。</li>
+<li>在每个测试用例开始前，重置 Store 的状态，确保测试之间互不干扰。</li>
+<li>编写测试用例，断言（assert）State、Getters 和 Actions 的行为符合预期。</li>
+</ol>
+<h4 id="【代码示例】"><strong>【代码示例】</strong></h4>
+<p>假设我们要测试 <code>counter.store.ts</code>。</p>
+<p><strong>Step 1: 安装 Vitest</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install -D vitest @vue/test-utils<br></code></pre></td></tr></table></figure>
+<p>在 <code>vite.config.ts</code> 中配置 Vitest（如果你的项目模板没有自动配置）：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">/// &lt;reference types=&quot;vitest&quot; /&gt;</span><br><span class="hljs-keyword">import</span> &#123; defineConfig &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vite&#x27;</span><br><span class="hljs-keyword">import</span> vue <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@vitejs/plugin-vue&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">vue</span>()],<br>  <span class="hljs-attr">test</span>: &#123;<br>    <span class="hljs-attr">globals</span>: <span class="hljs-literal">true</span>,<br>    <span class="hljs-attr">environment</span>: <span class="hljs-string">&#x27;jsdom&#x27;</span>, <span class="hljs-comment">// 模拟 DOM 环境</span><br>  &#125;,<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p><strong>Step 2: 编写测试文件</strong><br>
+在 <code>src/stores</code> 目录下，创建一个 <code>counter.store.spec.ts</code> 文件。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/stores/counter.store.spec.ts</span><br><br><span class="hljs-keyword">import</span> &#123; describe, it, expect, beforeEach &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vitest&#x27;</span><br><span class="hljs-keyword">import</span> &#123; createPinia, setActivePinia &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><span class="hljs-keyword">import</span> &#123; useCounterStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./counter.store&#x27;</span><br><br><span class="hljs-comment">// `describe` 用于组织一组相关的测试</span><br><span class="hljs-title function_">describe</span>(<span class="hljs-string">&#x27;Counter Store&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-comment">// `beforeEach` 会在每个 `it` 测试用例运行前执行</span><br>  <span class="hljs-title function_">beforeEach</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// 1. 创建一个新的 Pinia 实例</span><br>    <span class="hljs-keyword">const</span> pinia = <span class="hljs-title function_">createPinia</span>()<br>    <span class="hljs-comment">// 2. 将其设置为活动的 Pinia 实例。这是必须的！</span><br>    <span class="hljs-title function_">setActivePinia</span>(pinia)<br>  &#125;)<br><br>  <span class="hljs-comment">// `it` 定义一个具体的测试用例</span><br>  <span class="hljs-title function_">it</span>(<span class="hljs-string">&#x27;initializes with count 0&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">useCounterStore</span>()<br>    <span class="hljs-comment">// `expect` 是断言库，用来检查值是否符合预期</span><br>    <span class="hljs-title function_">expect</span>(store.<span class="hljs-property">count</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">0</span>)<br>  &#125;)<br><br>  <span class="hljs-title function_">it</span>(<span class="hljs-string">&#x27;increments the count&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">useCounterStore</span>()<br>    <span class="hljs-comment">// 调用 action</span><br>    store.<span class="hljs-title function_">increment</span>()<br>    <span class="hljs-comment">// 断言 state 发生了变化</span><br>    <span class="hljs-title function_">expect</span>(store.<span class="hljs-property">count</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">1</span>)<br>  &#125;)<br><br>  <span class="hljs-title function_">it</span>(<span class="hljs-string">&#x27;doubles the count with a getter&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">const</span> store = <span class="hljs-title function_">useCounterStore</span>()<br>    <span class="hljs-title function_">expect</span>(store.<span class="hljs-property">doubleCount</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">0</span>)<br><br>    store.<span class="hljs-title function_">increment</span>()<br>    <span class="hljs-title function_">expect</span>(store.<span class="hljs-property">count</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">1</span>)<br>    <span class="hljs-comment">// 断言 getter 也随之更新</span><br>    <span class="hljs-title function_">expect</span>(store.<span class="hljs-property">doubleCount</span>).<span class="hljs-title function_">toBe</span>(<span class="hljs-number">2</span>)<br>  &#125;)<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p><strong>Step 3: 运行测试</strong><br>
+在 <code>package.json</code> 中添加一个脚本：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;test&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;vitest&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<p>然后在终端运行 <code>npm test</code>。</p>
+<h4 id="【要点-注意事项】-3"><strong>【要点 / 注意事项】</strong></h4>
+<ul>
+<li><strong><code>setActivePinia</code> 是关键</strong>：在测试环境中，Pinia 不知道 Vue 应用的存在，所以你必须手动创建一个 Pinia 实例，并通过 <code>setActivePinia</code> 告诉 Pinia “现在请使用这个实例”。</li>
+<li><strong>隔离测试</strong>：<code>beforeEach</code> 确保了每个测试用例都在一个全新的、干净的 Store 实例上运行，避免了测试间的状态污染。</li>
+</ul>
+<hr>
+<h3 id="性能与优化-Performance-Optimization-思考状态的边界"><strong>性能与优化 (Performance &amp; Optimization) - 思考状态的边界</strong></h3>
+<p><strong>目标</strong>：学会判断哪些状态应该放入 Pinia，哪些应该保留在组件本地。</p>
+<h4 id="【概念讲解】-3"><strong>【概念讲解】</strong></h4>
+<p>Pinia 非常强大，但这不意味着你应该把应用的所有状态都塞进去。滥用全局状态会使应用状态变得难以追踪和管理。</p>
+<p><strong>决策框架：什么时候应该用 Pinia？</strong></p>
+<p>问自己以下几个问题，如果答案大部分是“是”，那么这个状态就适合放在 Pinia：</p>
+<ol>
+<li><strong>跨组件共享？</strong> 这个数据是否被多个<strong>没有直接父子关系</strong>的组件需要？</li>
+<li><strong>需要持久化？</strong> 这个数据是否需要在用户刷新页面，或在不同路由/页面之间保持不变？（例如：用户信息、主题设置）</li>
+<li><strong>全局性概念？</strong> 这个数据是否代表一个应用的全局概念？（例如：登录状态、购物车内容）</li>
+<li><strong>与服务端状态同步？</strong> 这个数据是否需要通过 Actions 从服务器获取，并在多处使用？</li>
+</ol>
+<p><strong>反之，如果一个状态只被单个组件或其紧密的子组件使用，并且它的生命周期与该组件绑定（组件销毁，状态也无需保留），那么使用组件本地状态（<code>ref</code>, <code>reactive</code>）是更好的选择。</strong></p>
+<h4 id="【要点-注意事项】-4"><strong>【要点 / 注意事项】</strong></h4>
+<ul>
+<li><strong>本地状态优先</strong>：养成优先考虑组件本地状态的习惯。只有当数据确实需要“提升”到全局时，才将其移入 Pinia。</li>
+<li><strong>按需加载 Store (超大型应用)</strong>：在一些极大型的应用或微前端架构中，你甚至可以结合 Vue Router 的路由懒加载，实现 Store 的按需加载，但这属于非常高级的优化范畴。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Pinia/" class="category-chain-item">Pinia</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vue/" class="print-no-link">#vue</a>
+      
+        <a href="/tags/pinia/" class="print-no-link">#pinia</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>架构、测试与实践</div>
+      <div>http://example.com/2025/04/24/JavaScript、Typescript/Framework and Library/Pinia/learn/4.实战 · 架构、测试与最佳实践/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Pinia/learn/2.%E4%B8%89%E5%A4%A7%E6%94%AF%E6%9F%B1/" title="State、Getters 和 Actions 三大支柱">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">State、Getters 和 Actions 三大支柱</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Pinia/learn/3.%E8%BF%9B%E9%98%B6%20%C2%B7%20%E9%AB%98%E7%BA%A7%E7%94%A8%E6%B3%95%E4%B8%8E%20Store%20%E7%BB%84%E7%BB%87/" title="高级用法与 Store 组织">
+                        <span class="hidden-mobile">高级用法与 Store 组织</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

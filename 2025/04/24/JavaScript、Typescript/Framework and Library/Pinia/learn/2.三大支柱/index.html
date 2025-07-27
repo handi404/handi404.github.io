@@ -1,0 +1,891 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="逐一剖析构成 Pinia Store 的 State、Getters 和 Actions。掌握它们，你就掌握了 Pinia 80% 的核心功能。  State (状态) - 数据的基石 目标：熟练定义、读取和修改 State，特别是掌握多种修改方式的适用场景。 【概念讲解】 State 是 Store 的灵魂，它就是你需要跨组件共享的、响应式的原始数据。在 setup store 中，它通常由 r">
+<meta property="og:type" content="article">
+<meta property="og:title" content="State、Getters 和 Actions 三大支柱">
+<meta property="og:url" content="http://example.com/2025/04/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Pinia/learn/2.%E4%B8%89%E5%A4%A7%E6%94%AF%E6%9F%B1/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="逐一剖析构成 Pinia Store 的 State、Getters 和 Actions。掌握它们，你就掌握了 Pinia 80% 的核心功能。  State (状态) - 数据的基石 目标：熟练定义、读取和修改 State，特别是掌握多种修改方式的适用场景。 【概念讲解】 State 是 Store 的灵魂，它就是你需要跨组件共享的、响应式的原始数据。在 setup store 中，它通常由 r">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/pinia.png">
+<meta property="article:published_time" content="2025-04-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-27T12:42:06.397Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="vue">
+<meta property="article:tag" content="pinia">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/pinia.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>State、Getters 和 Actions 三大支柱 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="State、Getters 和 Actions 三大支柱"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-04-24 00:00" pubdate>
+          2025年4月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">State、Getters 和 Actions 三大支柱</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月27日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>逐一剖析构成 Pinia Store 的 <code>State</code>、<code>Getters</code> 和 <code>Actions</code>。掌握它们，你就掌握了 Pinia 80% 的核心功能。</p>
+<hr>
+<h3 id="State-状态-数据的基石"><strong>State (状态) - 数据的基石</strong></h3>
+<p><strong>目标</strong>：熟练定义、读取和修改 State，特别是掌握多种修改方式的适用场景。</p>
+<h4 id="【概念讲解】"><strong>【概念讲解】</strong></h4>
+<p>State 是 Store 的灵魂，它就是你需要跨组件共享的、响应式的原始数据。在 <code>setup</code> store 中，它通常由 <code>ref()</code> 或 <code>reactive()</code> 创建。</p>
+<ul>
+<li><code>ref()</code>: 用于定义基本类型 (如 <code>string</code>, <code>number</code>, <code>boolean</code>) 或需要整个替换的对象/数组。</li>
+<li><code>reactive()</code>: 用于定义一个复杂对象，当你希望对象内部的属性也是响应式的，并且你会频繁地修改对象内部的多个属性时。</li>
+</ul>
+<h4 id="【代码示例】"><strong>【代码示例】</strong></h4>
+<p>让我们来创建一个更丰富的用户信息 Store。</p>
+<p><strong>Step 1: 定义一个包含多种类型 State 的 Store</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/stores/user.store.ts</span><br><br><span class="hljs-keyword">import</span> &#123; ref, reactive &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> &#123; defineStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><br><span class="hljs-comment">// 定义一个用户信息的接口，增强类型安全</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserInfo</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span><br>  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span><br>  <span class="hljs-attr">isAdmin</span>: <span class="hljs-built_in">boolean</span><br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useUserStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-comment">// 使用 ref 定义一个可能为 null 的对象</span><br>  <span class="hljs-keyword">const</span> user = ref&lt;<span class="hljs-title class_">UserInfo</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)<br><br>  <span class="hljs-comment">// 使用 reactive 定义一个设置对象</span><br>  <span class="hljs-keyword">const</span> settings = <span class="hljs-title function_">reactive</span>(&#123;<br>    <span class="hljs-attr">theme</span>: <span class="hljs-string">&#x27;dark&#x27;</span>,<br>    <span class="hljs-attr">notifications</span>: &#123;<br>      <span class="hljs-attr">email</span>: <span class="hljs-literal">true</span>,<br>      <span class="hljs-attr">sms</span>: <span class="hljs-literal">false</span><br>    &#125;<br>  &#125;)<br><br>  <span class="hljs-comment">// 必须 return</span><br>  <span class="hljs-keyword">return</span> &#123; user, settings &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p><strong>Step 2: 在组件中读取和修改 State</strong></p>
+<p>修改 <code>src/App.vue</code> 来使用这个新的 <code>userStore</code>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; useUserStore, type UserInfo &#125; from &#x27;./stores/user.store&#x27;<br><br>const userStore = useUserStore()<br><br>// --- 修改 State 的几种方式 ---<br><br>// 1. 直接修改 (最简单直接，适用于简单的单个修改)<br>function login() &#123;<br>  userStore.user = &#123; name: &#x27;Alice&#x27;, age: 30, isAdmin: false &#125;<br>&#125;<br><br>function logout() &#123;<br>  userStore.user = null<br>&#125;<br><br>function toggleEmailNotifications() &#123;<br>  // 对于 reactive 对象，可以直接修改其属性<br>  userStore.settings.notifications.email = !userStore.settings.notifications.email<br>&#125;<br><br>// 2. 使用 $patch 方法 (推荐用于多个状态的批量同步修改)<br>function updateUserProfile() &#123;<br>  // $patch 可以接收一个对象<br>  userStore.$patch(&#123;<br>    user: &#123;<br>      // 注意：这里会合并 user 对象，而不是替换它<br>      // 如果 user 是 ref&lt;UserInfo | null&gt;，这里的 patch 行为是对 ref.value 的 patch<br>      name: &#x27;Bob&#x27;, <br>      age: 35<br>      // isAdmin 不会被修改<br>    &#125;,<br>    settings: &#123;<br>      theme: &#x27;light&#x27;<br>    &#125;<br>  &#125;)<br>&#125;<br><br>// 3. 使用 $patch + 函数 (当修改依赖于当前状态时，功能更强大)<br>function celebrateBirthday() &#123;<br>  userStore.$patch((state) =&gt; &#123;<br>    if (state.user) &#123;<br>      state.user.age++<br>      // 可以在一个函数里做更复杂的逻辑<br>      if (state.user.age &gt;= 60) &#123;<br>        state.user.isAdmin = true // 假设年满60自动成为管理员<br>      &#125;<br>    &#125;<br>  &#125;)<br>&#125;<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;h2&gt;用户信息&lt;/h2&gt;<br>    &lt;div v-if=&quot;userStore.user&quot;&gt;<br>      &lt;p&gt;姓名: &#123;&#123; userStore.user.name &#125;&#125;&lt;/p&gt;<br>      &lt;p&gt;年龄: &#123;&#123; userStore.user.age &#125;&#125;&lt;/p&gt;<br>      &lt;p&gt;是管理员吗: &#123;&#123; userStore.user.isAdmin &#125;&#125;&lt;/p&gt;<br>    &lt;/div&gt;<br>    &lt;p v-else&gt;用户未登录&lt;/p&gt;<br>    <br>    &lt;h2&gt;设置&lt;/h2&gt;<br>    &lt;p&gt;主题: &#123;&#123; userStore.settings.theme &#125;&#125;&lt;/p&gt;<br>    &lt;p&gt;邮件通知: &#123;&#123; userStore.settings.notifications.email &#125;&#125;&lt;/p&gt;<br><br>    &lt;hr&gt;<br>    <br>    &lt;button @click=&quot;login&quot;&gt;登录&lt;/button&gt;<br>    &lt;button @click=&quot;logout&quot;&gt;登出&lt;/button&gt;<br>    &lt;button @click=&quot;toggleEmailNotifications&quot;&gt;切换邮件通知&lt;/button&gt;<br>    &lt;button @click=&quot;updateUserProfile&quot;&gt;更新个人资料 (Patch Object)&lt;/button&gt;<br>    &lt;button @click=&quot;celebrateBirthday&quot;&gt;过生日 (Patch Function)&lt;/button&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<h4 id="【扩展与应用】"><strong>【扩展与应用】</strong></h4>
+<ul>
+<li><strong><code>$state</code></strong>：你可以通过 <code>store.$state</code> 直接访问或替换整个 Store 的 state，这在某些场景下（如服务端渲染后的状态同步）非常有用。例如：<code>userStore.$state = &#123; user: newUserInfo, settings: newSettings &#125;</code>。这会完全替换掉 Store 的所有 State，请谨慎使用。</li>
+<li><strong><code>$reset()</code></strong>：如果你想将 Store 重置回其初始状态（即 <code>defineStore</code> 时定义的状态），可以调用 <code>store.$reset()</code> 方法。这需要使用 <strong>Options Store</strong> 语法定义 <code>state</code> 函数才能工作，在 Setup Store 中需要自己实现一个 <code>reset</code> action。</li>
+</ul>
+<p><strong>自己实现 reset Action (Setup Store 推荐方式):</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// in user.store.ts</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useUserStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> user = ref&lt;<span class="hljs-title class_">UserInfo</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)<br>  <span class="hljs-comment">// ... 其他 state</span><br><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">reset</span>(<span class="hljs-params"></span>) &#123;<br>    user.<span class="hljs-property">value</span> = <span class="hljs-literal">null</span><br>    <span class="hljs-comment">// ...重置其他 state</span><br>  &#125;<br><br>  <span class="hljs-keyword">return</span> &#123; user, reset &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<h4 id="【要点-注意事项】"><strong>【要点 / 注意事项】</strong></h4>
+<ol>
+<li>
+<p><strong>直接修改 vs <code>$patch</code></strong>：</p>
+<ul>
+<li><strong>直接修改</strong> (<code>store.prop = ...</code>) 简单直观，但如果你在短时间内进行多次修改，可能会触发多次组件更新，虽然 Vue 会进行优化，但语义上不是最优。</li>
+<li><strong><code>$patch</code></strong> 在性能上更优，因为它将多次修改合并为一次更新通知。这对于性能敏感的大型应用或频繁更新的场景尤其重要。<strong>当你要同时修改多个 state 属性时，强烈推荐使用 <code>$patch</code></strong>。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>$patch</code> 对象的合并行为</strong>：当使用 <code>$patch</code> 传递一个对象时，它会进行<strong>浅合并 (shallow patch)</strong>。在上面的 <code>updateUserProfile</code> 例子中，<code>user</code> 对象里的 <code>isAdmin</code> 属性没有被修改，因为它不在 patch 对象中。<code>settings.notifications</code> 也同理。</p>
+</li>
+<li>
+<p><strong>类型安全</strong>：始终为你的 State（尤其是复杂对象）定义 TypeScript 接口 (<code>interface</code>) 或类型 (<code>type</code>)，这会让你的代码更健壮，并享受完美的自动补全。</p>
+</li>
+</ol>
+<hr>
+<p>我们已经深入了解了 <code>State</code>。它就像是应用程序的数据仓库。但是，我们常常需要基于这些原始数据进行计算，得到一些派生数据。这就是 <code>Getters</code> 的用武之地了。</p>
+<p>接下来，我们将探索 <strong><code>Getters</code> (计算属性)</strong>，了解如何创建派生状态，以及如何在一个 Getter 中访问其他 Getter。</p>
+<hr>
+<h3 id="Getters-计算属性-数据的衍生与加工"><strong>Getters (计算属性) - 数据的衍生与加工</strong></h3>
+<p><strong>目标</strong>：理解 Getters 的作用，熟练定义和使用它们，并掌握 Getter 之间的相互调用。</p>
+<h4 id="【概念讲解】-2"><strong>【概念讲解】</strong></h4>
+<p>如果你熟悉 Vue 的 <code>computed</code> 属性，那么恭喜你，你已经理解了 Pinia Getters 的 90%。<strong>Getters 本质上就是 Store 的计算属性</strong>。</p>
+<p>它们的作用是：</p>
+<ol>
+<li><strong>派生状态</strong>：基于已有的 State 计算出新的值。例如，从一个用户列表中筛选出已激活的用户。</li>
+<li><strong>缓存结果</strong>：和 <code>computed</code> 一样，Getter 的结果会被缓存。只要它依赖的 State 没有发生变化，多次访问 Getter 都会立即返回之前计算好的结果，而不会重新计算，这能提升性能。</li>
+<li><strong>简化模板</strong>：将复杂的逻辑从组件模板中抽离到 Store 中，让模板更干净、更具可读性。</li>
+</ol>
+<h4 id="【代码示例】-2"><strong>【代码示例】</strong></h4>
+<p>让我们回到之前的 <code>user.store.ts</code>，并为其添加一些 Getters。</p>
+<p><strong>Step 1: 在 Store 中定义 Getters</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/stores/user.store.ts</span><br><br><span class="hljs-comment">// (我们继续使用上一节的 UserInfo 接口和 state)</span><br><span class="hljs-keyword">import</span> &#123; ref, reactive, computed &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span> <span class="hljs-comment">// 引入 computed</span><br><span class="hljs-keyword">import</span> &#123; defineStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">UserInfo</span> &#123;<br>  <span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span><br>  <span class="hljs-attr">age</span>: <span class="hljs-built_in">number</span><br>  <span class="hljs-attr">isAdmin</span>: <span class="hljs-built_in">boolean</span><br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> useUserStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-comment">// --- State ---</span><br>  <span class="hljs-keyword">const</span> user = ref&lt;<span class="hljs-title class_">UserInfo</span> | <span class="hljs-literal">null</span>&gt;(&#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Alice&#x27;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">30</span>, <span class="hljs-attr">isAdmin</span>: <span class="hljs-literal">false</span> &#125;)<br>  <span class="hljs-keyword">const</span> settings = <span class="hljs-title function_">reactive</span>(&#123; <span class="hljs-attr">theme</span>: <span class="hljs-string">&#x27;dark&#x27;</span> &#125;)<br><br>  <span class="hljs-comment">// --- Getters ---</span><br>  <br>  <span class="hljs-comment">// Getter 1: 一个简单的布尔值 Getter</span><br>  <span class="hljs-keyword">const</span> isLoggedIn = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> user.<span class="hljs-property">value</span> !== <span class="hljs-literal">null</span>)<br><br>  <span class="hljs-comment">// Getter 2: 一个依赖 State 中复杂对象的 Getter</span><br>  <span class="hljs-comment">// 返回一个格式化后的欢迎信息</span><br>  <span class="hljs-keyword">const</span> welcomeMessage = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (user.<span class="hljs-property">value</span>) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-string">`欢迎, <span class="hljs-subst">$&#123;user.value.name&#125;</span>!`</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;欢迎, 游客!&#x27;</span><br>  &#125;)<br><br>  <span class="hljs-comment">// Getter 3: 在一个 Getter 中访问其他 Getter (这是高级用法)</span><br>  <span class="hljs-comment">// 注意：要访问其他 getter，直接使用 .value 即可</span><br>  <span class="hljs-keyword">const</span> fullUserDetails = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (isLoggedIn.<span class="hljs-property">value</span> &amp;&amp; user.<span class="hljs-property">value</span>) &#123; <span class="hljs-comment">// 使用了 isLoggedIn getter</span><br>      <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;user.value.name&#125;</span> (年龄: <span class="hljs-subst">$&#123;user.value.age&#125;</span>, 主题: <span class="hljs-subst">$&#123;settings.theme&#125;</span>)`</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&#x27;无用户详情&#x27;</span><br>  &#125;)<br><br><br>  <span class="hljs-comment">// --- Actions --- (先定义一个简单的 Action 用于演示)</span><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">updateUser</span>(<span class="hljs-params"><span class="hljs-attr">newUser</span>: <span class="hljs-title class_">UserInfo</span></span>) &#123;<br>    user.<span class="hljs-property">value</span> = newUser<br>  &#125;<br>  <br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">logout</span>(<span class="hljs-params"></span>) &#123;<br>    user.<span class="hljs-property">value</span> = <span class="hljs-literal">null</span><br>  &#125;<br><br>  <span class="hljs-comment">// 必须 return 出去才能在组件中使用</span><br>  <span class="hljs-keyword">return</span> &#123;<br>    user,<br>    settings,<br>    isLoggedIn,         <span class="hljs-comment">// &lt;-- 导出 Getter</span><br>    welcomeMessage,     <span class="hljs-comment">// &lt;-- 导出 Getter</span><br>    fullUserDetails,    <span class="hljs-comment">// &lt;-- 导出 Getter</span><br>    updateUser,<br>    logout<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p><strong>Step 2: 在组件中使用 Getters</strong></p>
+<p>现在，在组件中使用这些 Getters 就像访问普通属性一样简单。</p>
+<p>修改 <code>src/App.vue</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; useUserStore, type UserInfo &#125; from &#x27;./stores/user.store&#x27;<br>import &#123; storeToRefs &#125; from &#x27;pinia&#x27; // 稍后会详细讲解这个重要的工具<br><br>const userStore = useUserStore()<br><br>// 像访问 state 一样直接访问 getters<br>// userStore.isLoggedIn<br>// userStore.welcomeMessage<br>// userStore.fullUserDetails<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;h1&gt;Getters 演示&lt;/h1&gt;<br>    <br>    &lt;!-- 使用 Getter 来控制 UI 显示 --&gt;<br>    &lt;div v-if=&quot;userStore.isLoggedIn&quot;&gt;<br>      &lt;p&gt;&lt;strong&gt;来自 Getter:&lt;/strong&gt; &#123;&#123; userStore.welcomeMessage &#125;&#125;&lt;/p&gt;<br>      &lt;p&gt;&lt;strong&gt;组合 Getter:&lt;/strong&gt; &#123;&#123; userStore.fullUserDetails &#125;&#125;&lt;/p&gt;<br>    &lt;/div&gt;<br>    &lt;p v-else&gt;&lt;strong&gt;来自 Getter:&lt;/strong&gt; 请先登录。&lt;/p&gt;<br><br>    &lt;hr&gt;<br>    &lt;button @click=&quot;userStore.updateUser(&#123; name: &#x27;Charlie&#x27;, age: 40, isAdmin: true &#125;)&quot;&gt;<br>      切换用户<br>    &lt;/button&gt;<br>    &lt;button @click=&quot;userStore.logout&quot;&gt;登出&lt;/button&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br></code></pre></td></tr></table></figure>
+<p>当你点击按钮切换用户或登出时，你会看到所有依赖 <code>user</code> state 的 Getters 都会自动更新，这就是响应式的魔力。</p>
+<h4 id="【扩展与应用】-2"><strong>【扩展与应用】</strong></h4>
+<ul>
+<li><strong>带参数的 Getters</strong>：有时你可能希望 Getter 能接收参数。在 Pinia 中，这可以通过 <strong>让 Getter 返回一个函数</strong> 来实现。</li>
+</ul>
+<p><strong>示例：按 ID 查找用户的 Getter</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 在一个管理用户列表的 store 中</span><br><span class="hljs-keyword">const</span> users = <span class="hljs-title function_">ref</span>([<br>  &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Alice&#x27;</span>, <span class="hljs-attr">active</span>: <span class="hljs-literal">true</span> &#125;,<br>  &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">2</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Bob&#x27;</span>, <span class="hljs-attr">active</span>: <span class="hljs-literal">false</span> &#125;,<br>  &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">3</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Charlie&#x27;</span>, <span class="hljs-attr">active</span>: <span class="hljs-literal">true</span> &#125;,<br>])<br><br><span class="hljs-comment">// 这个 getter 返回了一个函数，该函数接收 id 作为参数</span><br><span class="hljs-keyword">const</span> getUserById = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">userId</span>: <span class="hljs-built_in">number</span></span>) =&gt;</span> users.<span class="hljs-property">value</span>.<span class="hljs-title function_">find</span>(<span class="hljs-function"><span class="hljs-params">user</span> =&gt;</span> user.<span class="hljs-property">id</span> === userId)<br>&#125;)<br><br><span class="hljs-comment">// 在组件中使用</span><br><span class="hljs-comment">// const userStore = useUserStore()</span><br><span class="hljs-comment">// const userTwo = userStore.getUserById(2) // &#123; id: 2, name: &#x27;Bob&#x27;, active: false &#125;</span><br></code></pre></td></tr></table></figure>
+<p><strong>注意</strong>：带参数的 Getter <strong>不会被缓存</strong>！因为它们每次调用都可能传入不同参数，无法像普通 <code>computed</code> 那样缓存结果。每次调用都会重新执行。</p>
+<h4 id="【要点-注意事项】-2"><strong>【要点 / 注意事项】</strong></h4>
+<ol>
+<li>
+<p><strong>Getter 是只读的</strong>：你不能直接修改一个 Getter 的值 (<code>userStore.isLoggedIn = false</code> 会报错)。它完全由其依赖的 State 决定。想要改变 Getter 的值，必须去修改它所依赖的 State。</p>
+</li>
+<li>
+<p><strong>Getter vs. Actions</strong>：</p>
+<ul>
+<li><strong>Getters</strong> 用于 <strong>同步</strong> 派生数据，且具有缓存。它们是<strong>计算</strong>。</li>
+<li><strong>Actions</strong> 用于处理用户交互、异步操作、和 <strong>修改</strong> State。它们是<strong>行为</strong>。<br>
+.<br>
+如果只是基于现有 state 计算一个新值，用 Getter；如果需要处理逻辑（比如 API 请求）或改变 state，用 Action。</li>
+</ul>
+</li>
+<li>
+<p><strong>Getter 中访问其他 Store</strong>：和我们稍后会讲到的在 Action 中访问其他 Store 一样，你可以在一个 Getter 中导入并使用另一个 Store。</p>
+</li>
+</ol>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 在 cart.store.ts 的 getter 中</span><br><span class="hljs-keyword">import</span> &#123; useUserStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./user.store&#x27;</span><br><br><span class="hljs-comment">// ...</span><br><span class="hljs-keyword">const</span> cartSummary = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> userStore = <span class="hljs-title function_">useUserStore</span>() <span class="hljs-comment">// 在 getter 内部获取实例</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-string">`<span class="hljs-subst">$&#123;userStore.user?.name&#125;</span> 的购物车有 <span class="hljs-subst">$&#123;items.value.length&#125;</span> 件商品。`</span><br>&#125;)<br></code></pre></td></tr></table></figure>
+<hr>
+<p>我们已经成功掌握了 <code>State</code> 和 <code>Getters</code>。State 是原始数据，Getters 是派生数据。现在，我们还缺少改变这些数据的“手臂”——那就是 <code>Actions</code>。</p>
+<p>接下来，我们将进入最重要、也是实战中最核心的部分：<strong>Actions (动作)</strong>。了解如何定义同步和异步 Actions，以及如何优雅地处理加载和错误状态。</p>
+<hr>
+<h3 id="Actions-动作-逻辑的执行者与状态的改变者"><strong>Actions (动作) - 逻辑的执行者与状态的改变者</strong></h3>
+<p><strong>目标</strong>：掌握定义和使用 Actions，特别是能够熟练处理异步操作（如 API 请求），并管理伴随的加载（loading）和错误（error）状态。</p>
+<h4 id="【概念讲解】-3"><strong>【概念讲解】</strong></h4>
+<p><strong>Actions 就是 Store 里的“方法”</strong>。它们是封装业务逻辑的地方。与 Getters 不同，Actions 可以是<strong>同步的</strong>，也可以是<strong>异步的</strong>。</p>
+<p><strong>Actions 的核心职责：</strong></p>
+<ol>
+<li><strong>封装业务逻辑</strong>：比如“用户登录”、“添加到购物车”、“从服务器获取文章列表”等。这些逻辑可能很复杂，将它们放在 Action 中能让组件代码保持干净。</li>
+<li><strong>修改 State</strong>：Actions 是修改 State 的主要场所。虽然我们之前可以直接修改 State，但在复杂的应用中，将修改逻辑统一放在 Actions 中是一种最佳实践，使得状态变更的来源更清晰、可追溯。</li>
+<li><strong>处理异步操作</strong>：这是 Actions 最重要的用途。任何与后端 API 的交互、定时器等异步任务都应该在 Actions 中完成。</li>
+</ol>
+<h4 id="【代码示例】-3"><strong>【代码示例】</strong></h4>
+<p>我们将创建一个 <code>posts.store.ts</code>，模拟从一个假 API 获取文章列表。这个例子将涵盖同步和异步 Action，以及 loading 和 error 状态管理。</p>
+<p><strong>Step 1: 创建 Posts Store 并定义 Actions</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/stores/posts.store.ts</span><br><br><span class="hljs-keyword">import</span> &#123; ref &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> &#123; defineStore &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;pinia&#x27;</span><br><br><span class="hljs-comment">// 定义文章的数据结构</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Post</span> &#123;<br>  <span class="hljs-attr">userId</span>: <span class="hljs-built_in">number</span><br>  <span class="hljs-attr">id</span>: <span class="hljs-built_in">number</span><br>  <span class="hljs-attr">title</span>: <span class="hljs-built_in">string</span><br>  <span class="hljs-attr">body</span>: <span class="hljs-built_in">string</span><br>&#125;<br><br><span class="hljs-comment">// 模拟一个会延迟并可能失败的 API 请求</span><br><span class="hljs-keyword">const</span> fakeApi = &#123;<br>  <span class="hljs-attr">fetchPosts</span>: <span class="hljs-title function_">async</span> (): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-title class_">Post</span>[]&gt; =&gt; &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;正在请求文章列表...&#x27;</span>)<br>    <span class="hljs-keyword">await</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function"><span class="hljs-params">resolve</span> =&gt;</span> <span class="hljs-built_in">setTimeout</span>(resolve, <span class="hljs-number">1500</span>)) <span class="hljs-comment">// 模拟网络延迟</span><br>    <br>    <span class="hljs-comment">// 模拟 20% 的概率请求失败</span><br>    <span class="hljs-keyword">if</span> (<span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() &lt; <span class="hljs-number">0.2</span>) &#123;<br>      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;服务器开小差了，请稍后再试！&#x27;</span>)<br>    &#125;<br>    <br>    <span class="hljs-comment">// 模拟成功返回的数据</span><br>    <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;https://jsonplaceholder.typicode.com/posts?_limit=5&#x27;</span>)<br>    <span class="hljs-keyword">return</span> response.<span class="hljs-title function_">json</span>()<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> usePostsStore = <span class="hljs-title function_">defineStore</span>(<span class="hljs-string">&#x27;posts&#x27;</span>, <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-comment">// --- State ---</span><br>  <span class="hljs-keyword">const</span> posts = ref&lt;<span class="hljs-title class_">Post</span>[]&gt;([])<br>  <span class="hljs-keyword">const</span> isLoading = <span class="hljs-title function_">ref</span>(<span class="hljs-literal">false</span>)<br>  <span class="hljs-keyword">const</span> error = ref&lt;<span class="hljs-built_in">string</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)<br><br>  <span class="hljs-comment">// --- Action 1: 同步 Action ---</span><br>  <span class="hljs-comment">// 用于在列表头部添加一篇新文章</span><br>  <span class="hljs-keyword">function</span> <span class="hljs-title function_">addPost</span>(<span class="hljs-params"><span class="hljs-attr">post</span>: <span class="hljs-title class_">Post</span></span>) &#123;<br>    <span class="hljs-comment">//可以直接修改 state</span><br>    posts.<span class="hljs-property">value</span>.<span class="hljs-title function_">unshift</span>(post)<br>  &#125;<br><br>  <span class="hljs-comment">// --- Action 2: 核心！异步 Action ---</span><br>  <span class="hljs-comment">// 用于从服务器获取文章列表</span><br>  <span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchPosts</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// 1. 开始加载，清空旧错误</span><br>    isLoading.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span><br>    error.<span class="hljs-property">value</span> = <span class="hljs-literal">null</span><br>    <br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-comment">// 2. 执行异步操作 (API 请求)</span><br>      <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> fakeApi.<span class="hljs-title function_">fetchPosts</span>()<br>      <br>      <span class="hljs-comment">// 3. 异步操作成功，更新 state</span><br>      posts.<span class="hljs-property">value</span> = data<br>    &#125; <span class="hljs-keyword">catch</span> (<span class="hljs-attr">e</span>: <span class="hljs-built_in">any</span>) &#123;<br>      <span class="hljs-comment">// 4. 异步操作失败，记录错误信息</span><br>      error.<span class="hljs-property">value</span> = e.<span class="hljs-property">message</span><br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>      <span class="hljs-comment">// 5. 无论成功与否，结束加载状态</span><br>      isLoading.<span class="hljs-property">value</span> = <span class="hljs-literal">false</span><br>    &#125;<br>  &#125;<br><br>  <span class="hljs-keyword">return</span> &#123;<br>    posts,<br>    isLoading,<br>    error,<br>    addPost,<br>    fetchPosts<br>  &#125;<br>&#125;)<br></code></pre></td></tr></table></figure>
+<p><strong>Step 2: 在组件中使用 Actions 和相关状态</strong></p>
+<p>现在，我们可以在组件中调用这些 Actions，并根据 <code>isLoading</code> 和 <code>error</code> 状态来渲染不同的 UI。</p>
+<p>修改 <code>src/App.vue</code>:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; usePostsStore &#125; from &#x27;./stores/posts.store&#x27;<br><br>const postsStore = usePostsStore()<br><br>// 组件挂载时，自动调用 action 获取数据<br>import &#123; onMounted &#125; from &#x27;vue&#x27;<br>onMounted(() =&gt; &#123;<br>  postsStore.fetchPosts()<br>&#125;)<br><br>function handleAddNewPost() &#123;<br>  postsStore.addPost(&#123;<br>    id: Date.now(),<br>    userId: 1,<br>    title: &#x27;一篇新文章&#x27;,<br>    body: &#x27;这是通过同步 Action 添加的内容。&#x27;<br>  &#125;)<br>&#125;<br>&lt;/script&gt;<br><br>&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;h1&gt;Actions 演示：文章列表&lt;/h1&gt;<br>    <br>    &lt;button @click=&quot;postsStore.fetchPosts&quot; :disabled=&quot;postsStore.isLoading&quot;&gt;<br>      &#123;&#123; postsStore.isLoading ? &#x27;正在加载...&#x27; : &#x27;重新加载文章&#x27; &#125;&#125;<br>    &lt;/button&gt;<br>    &lt;button @click=&quot;handleAddNewPost&quot; style=&quot;margin-left: 10px;&quot;&gt;<br>      添加一篇新文章<br>    &lt;/button&gt;<br><br>    &lt;!-- 错误状态展示 --&gt;<br>    &lt;div v-if=&quot;postsStore.error&quot; class=&quot;error&quot;&gt;<br>      &lt;p&gt;出错了: &#123;&#123; postsStore.error &#125;&#125;&lt;/p&gt;<br>    &lt;/div&gt;<br><br>    &lt;!-- 加载状态展示 --&gt;<br>    &lt;div v-else-if=&quot;postsStore.isLoading&quot; class=&quot;loading&quot;&gt;<br>      &lt;p&gt;数据加载中，请稍候...&lt;/p&gt;<br>    &lt;/div&gt;<br><br>    &lt;!-- 成功获取数据并展示 --&gt;<br>    &lt;ul v-else-if=&quot;postsStore.posts.length &gt; 0&quot;&gt;<br>      &lt;li v-for=&quot;post in postsStore.posts&quot; :key=&quot;post.id&quot;&gt;<br>        &lt;h3&gt;&#123;&#123; post.title &#125;&#125;&lt;/h3&gt;<br>        &lt;p&gt;&#123;&#123; post.body &#125;&#125;&lt;/p&gt;<br>      &lt;/li&gt;<br>    &lt;/ul&gt;<br><br>    &lt;!-- 无数据状态 --&gt;<br>    &lt;p v-else&gt;没有文章可展示。&lt;/p&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br><br>&lt;style scoped&gt;<br>.error &#123; color: red; border: 1px solid red; padding: 10px; margin-top: 10px; &#125;<br>.loading &#123; color: blue; margin-top: 10px; &#125;<br>ul &#123; list-style: none; padding: 0; &#125;<br>li &#123; border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 10px; &#125;<br>h3 &#123; margin-bottom: 5px; &#125;<br>&lt;/style&gt;<br></code></pre></td></tr></table></figure>
+<p>现在运行你的应用，你会看到：</p>
+<ol>
+<li>页面加载时，会显示“数据加载中…”。</li>
+<li>1.5 秒后，如果请求成功，文章列表会显示出来。</li>
+<li>如果你多次点击“重新加载文章”，有概率会看到红色的错误提示信息。</li>
+<li>点击“添加一篇新文章”会立即在列表顶部插入一条新数据。</li>
+</ol>
+<p>这就是一个完整的、健壮的异步数据获取流程！</p>
+<h4 id="【扩展与应用】-3"><strong>【扩展与应用】</strong></h4>
+<ul>
+<li><strong>Action 的参数与返回值</strong>：Actions 可以接收任意参数，并且可以有返回值。这在需要将异步操作的结果直接返回给调用方时非常有用。</li>
+</ul>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 在 store 中</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">createUser</span>(<span class="hljs-params"><span class="hljs-attr">name</span>: <span class="hljs-built_in">string</span></span>): <span class="hljs-title class_">Promise</span>&lt;&#123; <span class="hljs-attr">success</span>: <span class="hljs-built_in">boolean</span>; <span class="hljs-attr">userId</span>?: <span class="hljs-built_in">number</span> &#125;&gt; &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> api.<span class="hljs-title function_">createUser</span>(name)<br>    <span class="hljs-comment">// 成功后修改 state</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">users</span>.<span class="hljs-title function_">push</span>(response.<span class="hljs-property">data</span>) <span class="hljs-comment">// &#x27;this&#x27; 在 action 中指向 store 实例</span><br>    <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">success</span>: <span class="hljs-literal">true</span>, <span class="hljs-attr">userId</span>: response.<span class="hljs-property">data</span>.<span class="hljs-property">id</span> &#125;<br>  &#125; <span class="hljs-keyword">catch</span> (e) &#123;<br>    <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">success</span>: <span class="hljs-literal">false</span> &#125;<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 在组件中</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">onRegister</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> result = <span class="hljs-keyword">await</span> userStore.<span class="hljs-title function_">createUser</span>(<span class="hljs-string">&#x27;NewUser&#x27;</span>)<br>  <span class="hljs-keyword">if</span> (result.<span class="hljs-property">success</span>) &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`用户创建成功，ID: <span class="hljs-subst">$&#123;result.userId&#125;</span>`</span>)<br>  &#125; <span class="hljs-keyword">else</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;用户创建失败&#x27;</span>)<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<ul>
+<li><strong><code>this</code> 的使用</strong>：在 <code>defineStore</code> 的 setup 函数中，<code>this</code> 是 <code>undefined</code>。但在返回的 Actions 函数内部，Pinia 做了一些处理，使得 <code>this</code> 指向 Store 实例本身。这意味着你可以用 <code>this.count++</code> 来代替 <code>count.value++</code>，或用 <code>this.increment()</code> 调用另一个 action。<strong>不过，为了保持与 Composition API 的一致性，我个人更推荐直接使用 ref/reactive 定义的变量本身（如 <code>count.value</code>），而不是 <code>this</code>。</strong></li>
+</ul>
+<h4 id="【要点-注意事项】-3"><strong>【要点 / 注意事项】</strong></h4>
+<ol>
+<li><strong>Action 的职责分离</strong>：一个 Action 应该只做一件事情。例如，<code>fetchPosts</code> 只负责获取文章，而不应该包含创建文章的逻辑。保持 Action 的单一职责原则。</li>
+<li><strong>优雅的 Loading/Error 管理</strong>：为每个可能需要独立加载状态的异步 Action 创建对应的 <code>isLoading</code> 标记。例如，<code>isFetchingList</code>, <code>isCreatingUser</code>。不要用一个全局的 <code>isLoading</code> 来管理所有异步操作，这会导致 UI 状态混乱。</li>
+<li><strong>Action 是业务逻辑的核心</strong>：组件应该尽可能地“傻瓜化”。它只负责调用 Action 并根据 Store 的状态来渲染 UI。所有复杂的、可复用的逻辑都应该沉淀到 Actions 中。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Pinia/" class="category-chain-item">Pinia</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vue/" class="print-no-link">#vue</a>
+      
+        <a href="/tags/pinia/" class="print-no-link">#pinia</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>State、Getters 和 Actions 三大支柱</div>
+      <div>http://example.com/2025/04/24/JavaScript、Typescript/Framework and Library/Pinia/learn/2.三大支柱/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年4月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/04/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Pinia/learn/5.%E7%94%9F%E6%80%81%E4%B8%8E%E6%BA%90%E7%A0%81%E7%90%86%E8%A7%A3/" title="生态">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">生态</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/04/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Pinia/learn/4.%E5%AE%9E%E6%88%98%20%C2%B7%20%E6%9E%B6%E6%9E%84%E3%80%81%E6%B5%8B%E8%AF%95%E4%B8%8E%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5/" title="架构、测试与实践">
+                        <span class="hidden-mobile">架构、测试与实践</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
