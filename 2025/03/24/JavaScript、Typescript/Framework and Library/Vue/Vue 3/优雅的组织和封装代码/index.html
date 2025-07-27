@@ -1,0 +1,854 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Composition API 是什么？ 核心概念 Composition API（组合式 API）是 Vue 3 引入的一套函数式 API，旨在解决 Vue 2 中 Options API（选项式 API）在大型项目中遇到的两个主要痛点：  逻辑分散：在 Options API 中，一个功能（比如，用户数据获取）的逻辑被迫分散在 data、methods、computed、watch 等不同选项">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Composition API 的组织和封装">
+<meta property="og:url" content="http://example.com/2025/03/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E4%BC%98%E9%9B%85%E7%9A%84%E7%BB%84%E7%BB%87%E5%92%8C%E5%B0%81%E8%A3%85%E4%BB%A3%E7%A0%81/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Composition API 是什么？ 核心概念 Composition API（组合式 API）是 Vue 3 引入的一套函数式 API，旨在解决 Vue 2 中 Options API（选项式 API）在大型项目中遇到的两个主要痛点：  逻辑分散：在 Options API 中，一个功能（比如，用户数据获取）的逻辑被迫分散在 data、methods、computed、watch 等不同选项">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/vue.png">
+<meta property="article:published_time" content="2025-03-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-27T11:38:35.351Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/vue.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Composition API 的组织和封装 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Composition API 的组织和封装"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-03-24 00:00" pubdate>
+          2025年3月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Composition API 的组织和封装</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月27日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="Composition-API-是什么？">Composition API 是什么？</h3>
+<p><strong>核心概念</strong></p>
+<p>Composition API（组合式 API）是 Vue 3 引入的一套函数式 API，旨在解决 Vue 2 中 Options API（选项式 API）在大型项目中遇到的两个主要痛点：</p>
+<ol>
+<li><strong>逻辑分散</strong>：在 Options API 中，一个功能（比如，用户数据获取）的逻辑被迫分散在 <code>data</code>、<code>methods</code>、<code>computed</code>、<code>watch</code> 等不同选项中，难以阅读和维护。</li>
+<li><strong>逻辑复用困难</strong>：传统的 Mixins 复用方式存在命名冲突、数据来源不清晰等问题。</li>
+</ol>
+<p>Composition API 的核心思想是 <strong>“按逻辑功能组织代码”</strong>。你可以将同一个功能相关的所有代码（响应式状态、方法、计算属性等）都放在一起，然后将这些逻辑块轻松地抽离、复用。</p>
+<p>使用 Composition API 的最佳实践是在 <code>*.vue</code> 文件的 <code>&lt;script setup&gt;</code> 块中，这是目前最简洁、最高效的写法。</p>
+<hr>
+<h3 id="优雅地组织代码">优雅地组织代码</h3>
+<p>掌握了 API 后，如何将它们组织得像一件艺术品？</p>
+<ol>
+<li>
+<p><strong>逻辑相关性分组</strong>：在 <code>&lt;script setup&gt;</code> 内部，使用注释或空行将相关的代码块放在一起。例如：</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs ts">&lt;script setup lang=<span class="hljs-string">&quot;ts&quot;</span>&gt;<br><span class="hljs-keyword">import</span> &#123; ref, computed &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><br><span class="hljs-comment">// --- Props &amp; Emits ---</span><br><span class="hljs-keyword">const</span> props = defineProps&lt;<span class="hljs-comment">/* ... */</span>&gt;();<br><br><span class="hljs-comment">// --- State ---</span><br><span class="hljs-keyword">const</span> form = <span class="hljs-title function_">reactive</span>(&#123; <span class="hljs-comment">/* ... */</span> &#125;);<br><span class="hljs-keyword">const</span> isLoading = <span class="hljs-title function_">ref</span>(<span class="hljs-literal">false</span>);<br><br><span class="hljs-comment">// --- Computed ---</span><br><span class="hljs-keyword">const</span> isFormValid = <span class="hljs-title function_">computed</span>(<span class="hljs-function">() =&gt;</span> <span class="hljs-comment">/* ... */</span>);<br><br><span class="hljs-comment">// --- Logic &amp; Methods ---</span><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">submit</span>(<span class="hljs-params"></span>) &#123; <span class="hljs-comment">/* ... */</span> &#125;<br><br><span class="hljs-comment">// --- Watchers &amp; Lifecycle ---</span><br><span class="hljs-title function_">watch</span>(form, <span class="hljs-function">() =&gt;</span> &#123; <span class="hljs-comment">/* ... */</span> &#125;);<br><span class="hljs-title function_">onMounted</span>(<span class="hljs-function">() =&gt;</span> &#123; <span class="hljs-comment">/* ... */</span> &#125;);<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>积极抽离为 Composables</strong>：一旦发现某个“逻辑组”变得复杂（超过 20-30 行），或者这个逻辑可能在其他组件中被复用，立即将它抽离成一个 <code>useXXX.ts</code> 文件。</p>
+<ul>
+<li><strong>组件的职责</strong>：组件的 <code>&lt;script setup&gt;</code> 应该像一个“指挥官”，它调用各种 Composables (<code>useForm</code>, <code>useDataFetching</code>)，并将它们返回的状态和方法连接到模板上。组件本身应该保持简洁，只关心“做什么”，而将“怎么做”的细节交给 Composables。</li>
+</ul>
+</li>
+<li>
+<p><strong>清晰的文件结构</strong>：</p>
+<ul>
+<li><code>src/composables/</code> (或 <code>src/hooks/</code>)：存放所有可复用的 <code>use</code> 函数。</li>
+<li><code>src/types/</code>：存放共享的 TypeScript 接口和类型定义。</li>
+<li><code>src/services/</code> 或 <code>src/api/</code>：存放与后端 API 交互的函数。Composables (如 <code>useFetch</code>) 内部可以调用这些服务。</li>
+</ul>
+</li>
+</ol>
+<p>当然。这是一个极好的问题，也是 Composition API 的核心优势所在。</p>
+<p><strong>Composition API 的精髓在于，它允许我们根据“逻辑功能”来组织代码，而不是像过去 Options API 那样被“选项类型”（data, methods, computed）所分割。</strong></p>
+<p>实现这一点的核心武器就是 <strong>Composable 函数</strong>（组合式函数）。</p>
+<hr>
+<h3 id="Composable-是什么？">Composable 是什么？</h3>
+<p><strong>一个 Composable 就是一个函数</strong>，它利用 Vue 的 Composition API（如 <code>ref</code>, <code>computed</code>, <code>watch</code>, <code>onMounted</code> 等）来<strong>封装和复用有状态的逻辑</strong>。</p>
+<p><strong>关键特征：</strong></p>
+<ul>
+<li><strong>它是一个普通函数</strong>：通常以 <code>use</code> 开头，例如 <code>useCounter</code>, <code>useFetch</code>。这是一种社区约定，能清晰地表明其用途。</li>
+<li><strong>它可以有状态</strong>：内部可以使用 <code>ref</code> 或 <code>reactive</code> 创建响应式数据。</li>
+<li><strong>它可以有副作用</strong>：可以包含生命周期钩子（<code>onMounted</code>, <code>onUnmounted</code> 等）来处理例如事件监听、数据请求等副作用。</li>
+<li><strong>它返回一个普通对象</strong>：通常返回一个包含响应式状态和方法的对象，供组件解构使用。</li>
+</ul>
+<p>通过 Composable，我们可以将一个复杂组件中“与用户头像上传相关的所有逻辑”（状态、方法、校验）都抽离到一个 <code>useAvatarUpload.ts</code> 文件中，而不是分散在 <code>data</code>, <code>methods</code>, <code>computed</code> 等各个角落。</p>
+<hr>
+<h3 id="创建和使用一个-Composable">创建和使用一个 Composable</h3>
+<p>我们以一个非常常见的场景为例：<strong>封装一个异步数据请求的逻辑 <code>useFetch</code></strong>。这个 Composable 将处理加载状态、错误状态和最终数据。</p>
+<h4 id="第-1-步：创建-Composable-文件">第 1 步：创建 Composable 文件</h4>
+<p>在你的项目中创建一个 <code>composables</code> 目录（约定俗成），然后新建 <code>useFetch.ts</code> 文件。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/composables/useFetch.ts</span><br><br><span class="hljs-keyword">import</span> &#123; ref, watch, toValue &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> &#123; <span class="hljs-title class_">Ref</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><br><span class="hljs-comment">// 使用泛型 &lt;T&gt; 使其可以用于任何数据类型</span><br><span class="hljs-comment">// url 参数可以是 ref，也可以是普通字符串，toValue 会智能处理</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> useFetch&lt;T&gt;(<span class="hljs-attr">url</span>: <span class="hljs-title class_">Ref</span>&lt;<span class="hljs-built_in">string</span>&gt; | <span class="hljs-built_in">string</span>) &#123;<br><br>  <span class="hljs-comment">// 1. 封装的状态 (State)</span><br>  <span class="hljs-keyword">const</span> data = ref&lt;T | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)<br>  <span class="hljs-keyword">const</span> error = ref&lt;<span class="hljs-title class_">Error</span> | <span class="hljs-literal">null</span>&gt;(<span class="hljs-literal">null</span>)<br>  <span class="hljs-keyword">const</span> isLoading = <span class="hljs-title function_">ref</span>(<span class="hljs-literal">true</span>)<br><br>  <span class="hljs-comment">// 2. 封装的逻辑 (Logic / Action)</span><br>  <span class="hljs-keyword">const</span> <span class="hljs-title function_">fetchData</span> = <span class="hljs-keyword">async</span> (<span class="hljs-params"></span>) =&gt; &#123;<br>    <span class="hljs-comment">// 重置状态</span><br>    isLoading.<span class="hljs-property">value</span> = <span class="hljs-literal">true</span><br>    error.<span class="hljs-property">value</span> = <span class="hljs-literal">null</span><br><br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-comment">// toValue() 是 Vue 3.3+ 的新 API，可以智能地获取 ref 的 .value 或返回普通值本身</span><br>      <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-title function_">toValue</span>(url))<br>      <span class="hljs-keyword">if</span> (!response.<span class="hljs-property">ok</span>) &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">`HTTP error! status: <span class="hljs-subst">$&#123;response.status&#125;</span>`</span>)<br>      &#125;<br>      data.<span class="hljs-property">value</span> = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>()<br>    &#125; <span class="hljs-keyword">catch</span> (<span class="hljs-attr">e</span>: <span class="hljs-built_in">any</span>) &#123;<br>      error.<span class="hljs-property">value</span> = e<br>    &#125; <span class="hljs-keyword">finally</span> &#123;<br>      isLoading.<span class="hljs-property">value</span> = <span class="hljs-literal">false</span><br>    &#125;<br>  &#125;<br><br>  <span class="hljs-comment">// 3. 封装的副作用 (Side Effect)</span><br>  <span class="hljs-comment">// 使用 watch 监听 url 变化，自动重新请求数据</span><br>  <span class="hljs-comment">// &#123; immediate: true &#125; 确保了组件一挂载就会立即执行一次 fetchData</span><br>  <span class="hljs-title function_">watch</span>(<br>    <span class="hljs-function">() =&gt;</span> <span class="hljs-title function_">toValue</span>(url),<br>    fetchData,<br>    &#123; <span class="hljs-attr">immediate</span>: <span class="hljs-literal">true</span> &#125;<br>  )<br><br>  <span class="hljs-comment">// 4. 返回需要暴露给组件的接口</span><br>  <span class="hljs-keyword">return</span> &#123; data, error, isLoading, <span class="hljs-attr">refetch</span>: fetchData &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="第-2-步：在组件中使用-Composable">第 2 步：在组件中使用 Composable</h4>
+<p>现在，任何需要请求数据的组件都可以优雅地使用这个 <code>useFetch</code> Composable。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;!-- src/components/UserProfile.vue --&gt;<br>&lt;template&gt;<br>  &lt;div class=&quot;user-profile&quot;&gt;<br>    &lt;div v-if=&quot;isLoading&quot;&gt;正在加载用户数据...&lt;/div&gt;<br>    &lt;div v-else-if=&quot;error&quot; class=&quot;error&quot;&gt;加载失败: &#123;&#123; error.message &#125;&#125;&lt;/div&gt;<br>    &lt;div v-else-if=&quot;user&quot;&gt;<br>      &lt;h1&gt;&#123;&#123; user.name &#125;&#125;&lt;/h1&gt;<br>      &lt;p&gt;邮箱: &#123;&#123; user.email &#125;&#125;&lt;/p&gt;<br>      &lt;button @click=&quot;refetch&quot;&gt;刷新数据&lt;/button&gt;<br>    &lt;/div&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br><br>&lt;script setup lang=&quot;ts&quot;&gt;<br>import &#123; useFetch &#125; from &#x27;@/composables/useFetch&#x27;<br><br>// 定义期望的数据类型<br>interface User &#123;<br>  id: number;<br>  name: string;<br>  email: string;<br>&#125;<br><br>// 一行代码，就拥有了数据请求的全部能力！<br>// 使用解构和重命名，让模板代码更具可读性<br>const &#123; data: user, error, isLoading, refetch &#125; = useFetch&lt;User&gt;(&#x27;https://api.example.com/users/1&#x27;)<br><br>// 你看，&lt;script&gt; 部分是如此的干净和声明式。<br>// 所有的复杂逻辑都被封装在了 useFetch 内部。<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<p><strong>看到了吗？这就是优雅！</strong> 组件只关心“我需要用户数据”，而不用关心“如何请求、如何处理加载和错误状态、如何在 URL 变化时重新请求”。</p>
+<hr>
+<h3 id="扩展与应用">扩展与应用</h3>
+<p>这种模式的应用场景极其广泛，几乎所有可复用的逻辑都可以被封装：</p>
+<ul>
+<li><strong><code>useForm(initialState)</code></strong>：封装表单状态、校验逻辑和提交方法。</li>
+<li><strong><code>useLocalStorage(key, defaultValue)</code></strong>：封装与 <code>localStorage</code> 的双向同步逻辑。</li>
+<li><strong><code>useEventListener(target, event, callback)</code></strong>：封装事件监听，并在组件卸载时自动移除监听器。</li>
+<li><strong><code>useMouse()</code></strong>：封装获取鼠标位置的响应式坐标。</li>
+<li><strong><code>useDebounce(value, delay)</code></strong>：封装一个防抖的 ref。</li>
+</ul>
+<p><strong>强大的社区库</strong>：<a target="_blank" rel="noopener" href="https://vueuse.org/">VueUse</a> 已经为我们提供了海量高质量、开箱即用的 Composable 函数，强烈推荐在项目中使用。学习它的源码也是理解 Composable 最佳实践的绝佳方式。</p>
+<hr>
+<h3 id="要点与注意事项">要点与注意事项</h3>
+<ol>
+<li>
+<p><strong>命名约定</strong>：始终使用 <code>use</code> 作为 Composable 函数的前缀。这不仅是约定，也能让 Vue 的开发工具更好地理解你的代码。</p>
+</li>
+<li>
+<p><strong>TypeScript 的威力</strong>：务必使用 TypeScript 和泛型 (<code>&lt;T&gt;</code>)。这让你的 Composable 变得类型安全、可预测，并且拥有完美的自动补全体验。</p>
+</li>
+<li>
+<p><strong>返回 Ref，而非值</strong>：务必返回 <code>ref</code> 或 <code>reactive</code> 对象本身，而不是它们的 <code>.value</code>。组件需要的是响应式引用，以便在值变化时更新视图。</p>
+<ul>
+<li><strong>错误</strong>：<code>return &#123; data: data.value &#125;</code></li>
+<li><strong>正确</strong>：<code>return &#123; data &#125;</code></li>
+</ul>
+</li>
+<li>
+<p><strong>输入参数的响应式</strong>：如果 Composable 的行为依赖于一个可能变化的输入（比如 props），应该接收一个 <code>Ref</code> 作为参数（如 <code>useFetch</code> 中的 <code>url</code>），并在内部使用 <code>watch</code> 或 <code>computed</code> 来响应其变化。<code>toValue</code> (Vue 3.3+) 是处理这种“可能为 Ref”的参数的现代最佳实践。</p>
+</li>
+<li>
+<p><strong>生命周期管理</strong>：如果你的 Composable 创建了需要手动清理的副作用（如 <code>setInterval</code> 或全局事件监听），<strong>必须</strong>在 <code>onUnmounted</code> 钩子中进行清理，以防止内存泄漏。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-comment">// 示例：useInterval.ts</span><br><span class="hljs-keyword">import</span> &#123; onUnmounted &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span><br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useInterval</span>(<span class="hljs-params"><span class="hljs-attr">callback</span>: () =&gt; <span class="hljs-built_in">void</span>, <span class="hljs-attr">delay</span>: <span class="hljs-built_in">number</span></span>) &#123;<br>  <span class="hljs-keyword">const</span> timer = <span class="hljs-built_in">setInterval</span>(callback, delay)<br>  <br>  <span class="hljs-comment">// 组件销毁时，清除定时器</span><br>  <span class="hljs-title function_">onUnmounted</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-built_in">clearInterval</span>(timer)<br>  &#125;)<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>通过遵循以上原则，就能利用 Composition API 编写出高内聚、低耦合、易于测试和无限复用的优雅代码。这正是 Vue 3 如此强大的原因之一。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Vue/" class="category-chain-item">Vue</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Vue/Vue-3/" class="category-chain-item">Vue 3</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vue/" class="print-no-link">#vue</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Composition API 的组织和封装</div>
+      <div>http://example.com/2025/03/24/JavaScript、Typescript/Framework and Library/Vue/Vue 3/优雅的组织和封装代码/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年3月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/03/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%9F%BA%E7%A1%80/%E5%9F%BA%E7%A1%80/%E8%AE%A1%E7%AE%97%E5%B1%9E%E6%80%A7%E4%B8%8E%E4%BE%A6%E5%90%AC%E5%99%A8/" title="计算属性与侦听器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">计算属性与侦听器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/03/14/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E6%B7%B1%E5%85%A5%E6%8E%8C%E6%8F%A1%E4%B8%8E%E9%AB%98%E7%BA%A7%E4%B8%BB%E9%A2%98/Java%20Stream%20API%20%E4%B8%8E%E9%9B%86%E5%90%88/" title="Java Stream API 与集合">
+                        <span class="hidden-mobile">Java Stream API 与集合</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
