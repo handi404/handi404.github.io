@@ -1,0 +1,880 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="将 keycloak 与 spring boot 和 angular 应用程序集成。遍历所有配置：创建 realm（领域）、client (客户端)、users (用户)、roles (角色)、groups (组)、localisation (本地化)、social authentication (社交身份验证)、keycloak events……  说实话，不建议使用 JWT 保护您的应用程序，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2.安全与身份验证">
+<meta property="og:url" content="http://example.com/2025/07/29/Java/Framework/Spring%20Boot/Book%20Social%20Network/KEYCLOAK%20%E9%9B%86%E6%88%90/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="将 keycloak 与 spring boot 和 angular 应用程序集成。遍历所有配置：创建 realm（领域）、client (客户端)、users (用户)、roles (角色)、groups (组)、localisation (本地化)、social authentication (社交身份验证)、keycloak events……  说实话，不建议使用 JWT 保护您的应用程序，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/spring.png">
+<meta property="article:published_time" content="2025-07-28T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-29T11:43:19.791Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="fullstack">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/spring.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>2.安全与身份验证 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="2.安全与身份验证"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-29 00:00" pubdate>
+          2025年7月29日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">2.安全与身份验证</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月29日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>将 keycloak 与 spring boot 和 angular 应用程序集成。遍历所有配置：创建 realm（领域）、client (客户端)、users (用户)、roles (角色)、groups (组)、localisation (本地化)、social authentication (社交身份验证)、keycloak events……</p>
+<hr>
+<p>说实话，不建议使用 JWT 保护您的应用程序，而且它也不是最佳实践之一，原因证据是，例如 Spring 没有针对 JWT 的默认或内置实现，所以我们所做的主要是 100% 由我们自己完成。<br>
+所以现在我会推荐，对我来说最好的建议是使用 Auth 提供程序或身份和访问管理提供程序，对于这种情况，我推荐开源和免费工具 KEYCLOAK。</p>
+<h2 id="Keycloak-身份验证流程">Keycloak 身份验证流程</h2>
+<p>首先需要了解集成 Keycloak 时的流程，我们的身份验证和授权流程是什么样的。<br>
+<img src="keycloak.png" srcset="/img/loading.gif" lazyload alt=""><br>
+根据图中的步骤编号<br>
+首先，让我们从用户请求一个页面开始（1-Request a page），因此它将在浏览器上请求一个页面，例如 <code>http://localhost:4200/books</code>。然后浏览器将执行检查（2-Check），因为前端应用程序也配置 Keycloak，因此接下来要做的是联系 Keycloak 并确保用户是否已注册或用户是否有有效令牌。我们将发送用户或将重定向到登录页面（3-Redirect to login page），我们将使用默认的主题，因此用户需要输入他的用户名或电子邮件以及密码（4-username/password）。这是第一步检查。完成此检查后，我们将验证凭据（5-Check credentials）与Keycloak进行比对，因此，在单击“登录”后，我们将使用此信息（即用户名和密码）向 Keycloak 发送请求，一旦 Keycloak 检查了信息，我们有两个可能的选择（6-Invalid credentials、7-Valid credentials），凭据无效，显示错误消息告知用户名或密码无效，凭据正确且有效，我们将把用户重定向到请求的页面，即 <code>http://localhost:4200/books</code>。<br>
+这不是故事的结束，当尝试加载图书页面时，我们将要做的就是向后端发送一个请求（8-request），因此后端也需要检索或发回信息。后端还有另一个检查过程，正如你在第九步中看到的，后端需要验证令牌（9-Validate token），因为当发送一个请求时，我们会在标头请求中包含 bear 令牌或 JWT 令牌。自 Keycloak  作为我们的JWT令牌的发行方以来，有两种可能的情况，所以第一个是第 10 步，它是令牌有效或有效令牌，因此我们将向 API 发送回令牌有效，然后我们将前端请求数据发送回前端（11-response），第二种即步骤 12，令牌无效，向前端发送回 HTTP 403（13-403)。</p>
+<h2 id="使用-docker-设置-keycloak">使用 docker 设置 keycloak</h2>
+<p>docker compose 中添加</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">keycloak:</span><br>  <span class="hljs-attr">container_name:</span> <span class="hljs-string">keycloak-bsn</span><br>  <span class="hljs-attr">image:</span> <span class="hljs-string">quay.io/keycloak/keycloak:24.0.2</span><br>  <span class="hljs-attr">environment:</span><br>    <span class="hljs-attr">KEYCLOAK_ADMIN:</span> <span class="hljs-string">admin</span><br>    <span class="hljs-attr">KEYCLOAK_ADMIN_PASSWORD:</span> <span class="hljs-string">admin</span><br>  <span class="hljs-attr">ports:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-number">9090</span><span class="hljs-string">:8080</span><br>  <span class="hljs-attr">networks:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">spring-demo</span><br>  <span class="hljs-attr">command:</span><br>    <span class="hljs-bullet">-</span> <span class="hljs-string">&quot;start-dev&quot;</span><br></code></pre></td></tr></table></figure>
+<h2 id="创建一个新的-keycloak-realm-和-client">创建一个新的 keycloak realm 和 client</h2>
+<p>访问 kaycloak 管理页面：<a target="_blank" rel="noopener" href="http://localhost:9090">http://localhost:9090</a></p>
+<p><strong>创建 realm</strong><br>
+称为 book-social-network<br>
+<img src="create-realm.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>所以，建立领域和几乎所有其他设置都非常简单，只是为了开始。</p>
+<h3 id="client">client</h3>
+<p>接下来需要做的就是创建一个新的客户端，客户端将是用来连接到我们的前端，进入该领域，同时连接到我们的后端。<br>
+<img src="client-1.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>接下来这里我们到底想要什么，如果您想要客户端身份验证或身份验证流程直接访问，那么所有内容保留为默认值，如果需要更新某些内容，后面可以修改。<br>
+<img src="client-2.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>现在我们需要提供的是我们的 <strong>Root URL</strong>，根 URL 是你的前端应用程序的根 URL。<br>
+Home URL 不是必需的。<br>
+我们需要设置一个 <strong>Valid redirect URIs</strong>（有效的重定向 URL），这一点非常重要，因为这是 Keycloak 登录用户时会发生的情况，所以重定向 URL 是什么，点击?的弹出窗口中查看，所以 <code>*</code> 很重要。<br>
+设置当用户注销时，<strong>Valid post logout redirect URIs</strong>（有效的注销后重定向 URI），这意味着我们将尝试默认将用户重定向到我们应用程序的主页。<br>
+对于 <strong>Web Origins</strong>（网络源），我们可以指定我们的本地主机和后端的服务器端口。或只是做一些开发和实验，可以把它设为 <code>*</code>，不建议在这里使用 <code>*</code>，因为这些是我们希望允许访问我们客户端的 Origin。<br>
+<img src="client-3.png" srcset="/img/loading.gif" lazyload alt=""></p>
+<p>完成领域和客户端的配置，现在我们做一件小事，继续创建一个用户<br>
+<img src="user-1.png" srcset="/img/loading.gif" lazyload alt=""><br>
+对于 User，我们有详细信息；<br>
+Credentials (凭据)，创建了一个用户，但是我们的用户还没有密码，直接从 Keycloak 管理高级用户，而不从注册表单。<br>
+<img src="user-password.png" srcset="/img/loading.gif" lazyload alt=""><br>
+开启 Temporary，意味着当用户第一次登录时，需要更新密码。</p>
+<p>你拥有执行任何操作所需的所有权限，因此你需要小心，尤其是在使用 Keycloak 进行生产时。</p>
+<h2 id="Keycloak-与-Angular-集成">Keycloak 与 Angular 集成</h2>
+<h3 id="集成">集成</h3>
+<p>将 Keycloak 集成到 Angular 中，因此首先我们需要一个依赖项来帮助我们与 Keycloak 通信，因此这个依赖项称为 <a target="_blank" rel="noopener" href="https://www.keycloak.org/securing-apps/javascript-adapter"><code>keycloak-js</code></a>。<br>
+有一件事非常重要，在使用这些依赖项时，无论是在后端还是在前端，你都需要注意版本，所以尽可能选择与 Keycloak 服务器相同的版本。否则可能会有风险，例如不兼容。<br>
+所以： <code>npm i keycloak-js@24.0.2</code></p>
+<p>我们需要创建一个服务器，这个服务将初始化 Keycloak，它将我们的应用程序连接到 Keycloak 服务器并执行一些操作。<br>
+进入 services 创建 keycloak 文件夹，然后在其中 <code>ng g s keycloak</code>。</p>
+<p>当我们创建某些东西时，我们总是需要连接它，但在连接服务之前，让我们首先解释这项服务的含义。<br>
+所以这是将要运行的 keycloak 服务，它将在我们启动或引导应用程序时执行，所以在引导应用程序时，我们需要告诉我们的 angular 应用程序&quot;我们有一个身份验证提供程序&quot;，在这种情况下是 keycloak，我们想要使用它，并且你需要对 keycloak 服务器执行所有检查。</p>
+<p>所以接下来需要做的是转到我们的 app.module.ts，添加一个新的 provider</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">kcFactory</span>(<span class="hljs-params"><span class="hljs-attr">kcService</span>: <span class="hljs-title class_">KeycloakService</span></span>) &#123;<br>  <span class="hljs-keyword">return</span> <span class="hljs-function">() =&gt;</span> kcService.<span class="hljs-title function_">init</span>();<br>&#125;<br><br><span class="hljs-meta">@NgModule</span>(&#123;<br>  <span class="hljs-comment">//...</span><br>  <span class="hljs-attr">providers</span>: [<br>    <span class="hljs-title class_">HttpClient</span>,<br>    &#123;<br>      <span class="hljs-attr">provide</span>: <span class="hljs-variable constant_">HTTP_INTERCEPTORS</span>,<br>      <span class="hljs-attr">useClass</span>: <span class="hljs-title class_">HttpTokenInterceptor</span>,<br>      <span class="hljs-attr">multi</span>: <span class="hljs-literal">true</span><br>    &#125;,<br>    &#123;<br>      <span class="hljs-attr">provide</span>: <span class="hljs-variable constant_">APP_INITIALIZER</span>,<br>      <span class="hljs-attr">deps</span>: [<span class="hljs-title class_">KeycloakService</span>],<br>      <span class="hljs-attr">useFactory</span>: kcFactory,<br>      <span class="hljs-attr">multi</span>: <span class="hljs-literal">true</span><br>    &#125;<br><br>  ],<br>  <span class="hljs-attr">bootstrap</span>: [<span class="hljs-title class_">AppComponent</span>]<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">AppModule</span> &#123; &#125;<br></code></pre></td></tr></table></figure>
+<p>那么，加下来需要进入 KeycloakService 实现最主要的 init 方法，和一些其他方法。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">Injectable</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">Keycloak</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;keycloak-js&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">UserProfile</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./user-profile&#x27;</span>;<br><br><span class="hljs-meta">@Injectable</span>(&#123;<br>  <span class="hljs-attr">providedIn</span>: <span class="hljs-string">&#x27;root&#x27;</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">KeycloakService</span> &#123;<br>  <span class="hljs-keyword">private</span> <span class="hljs-attr">_keycloak</span>: <span class="hljs-title class_">Keycloak</span> | <span class="hljs-literal">undefined</span>;<br><br>  <span class="hljs-keyword">get</span> <span class="hljs-title function_">keycloak</span>() &#123;<br>    <span class="hljs-keyword">if</span> (!<span class="hljs-variable language_">this</span>.<span class="hljs-property">_keycloak</span>) &#123;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">_keycloak</span> = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Keycloak</span>(&#123;<br>        <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://localhost:9090&#x27;</span>,<br>        <span class="hljs-attr">realm</span>: <span class="hljs-string">&#x27;book-social-network&#x27;</span>,<br>        <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;bsn&#x27;</span><br>      &#125;);<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">_keycloak</span>;<br>  &#125;<br><br>  <span class="hljs-keyword">private</span> <span class="hljs-attr">_profile</span>: <span class="hljs-title class_">UserProfile</span> | <span class="hljs-literal">undefined</span>;<br><br>  <span class="hljs-keyword">get</span> <span class="hljs-title function_">profile</span>(): <span class="hljs-title class_">UserProfile</span> | <span class="hljs-literal">undefined</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">_profile</span>;<br>  &#125;<br>  <span class="hljs-comment">// 初始化</span><br>  <span class="hljs-keyword">async</span> <span class="hljs-title function_">init</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> authenticated = <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">keycloak</span>.<span class="hljs-title function_">init</span>(&#123;<br>      <span class="hljs-comment">// login-required: 检查用户是否已经登录</span><br>      <span class="hljs-comment">// check-sso: 单点登录</span><br>      <span class="hljs-attr">onLoad</span>: <span class="hljs-string">&#x27;login-required&#x27;</span>,<br>    &#125;);<br>	<span class="hljs-comment">// 若通过身份验证</span><br>    <span class="hljs-keyword">if</span> (authenticated) &#123;<br>      <span class="hljs-comment">// 加载用户详细信息</span><br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">_profile</span> = (<span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">keycloak</span>.<span class="hljs-title function_">loadUserProfile</span>()) <span class="hljs-keyword">as</span> <span class="hljs-title class_">UserProfile</span>;<br>      <span class="hljs-variable language_">this</span>.<span class="hljs-property">_profile</span>.<span class="hljs-property">token</span> = <span class="hljs-variable language_">this</span>.<span class="hljs-property">keycloak</span>.<span class="hljs-property">token</span> || <span class="hljs-string">&#x27;&#x27;</span>;<br>    &#125;<br>  &#125;<br>  <span class="hljs-comment">// 登录</span><br>  <span class="hljs-title function_">login</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">keycloak</span>.<span class="hljs-title function_">login</span>();<br>  &#125;<br>  <span class="hljs-comment">// 注销</span><br>  <span class="hljs-title function_">logout</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-comment">// this.keycloak.accountManagement();</span><br>    <span class="hljs-comment">// 可以指定重定向uri</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">keycloak</span>.<span class="hljs-title function_">logout</span>(&#123;<span class="hljs-attr">redirectUri</span>: <span class="hljs-string">&#x27;http://localhost:4200&#x27;</span>&#125;);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>创建 user-profile.ts</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">export</span> interface <span class="hljs-title class_">UserProfile</span> &#123;<br>  username?: string;<br>  email?: string;<br>  firstName?: string;<br>  lastName?: string;<br>  token?: string;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h3 id="guard">guard</h3>
+<p>在转到后端之前，首先是 guard（守卫），我们的身份验证守卫使用我们的 TokenService，使用 JWT 的情况是正确的，例如自定义或个性化实现，但是当</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">import</span> &#123; <span class="hljs-title class_">Injectable</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@angular/core&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123;<span class="hljs-title class_">JwtHelperService</span>&#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@auth0/angular-jwt&#x27;</span>;<br><br><span class="hljs-meta">@Injectable</span>(&#123;<br>  <span class="hljs-attr">providedIn</span>: <span class="hljs-string">&#x27;root&#x27;</span><br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TokenService</span> &#123;<br><br>  <span class="hljs-keyword">set</span> <span class="hljs-title function_">token</span>(<span class="hljs-params"><span class="hljs-attr">token</span>: <span class="hljs-built_in">string</span></span>) &#123;<br>    <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">setItem</span>(<span class="hljs-string">&#x27;token&#x27;</span>, token);<br>  &#125;<br><br>  <span class="hljs-keyword">get</span> <span class="hljs-title function_">token</span>() &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">getItem</span>(<span class="hljs-string">&#x27;token&#x27;</span>) <span class="hljs-keyword">as</span> <span class="hljs-built_in">string</span>;<br>  &#125;<br><br>  <span class="hljs-title function_">isTokenValid</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">const</span> token = <span class="hljs-variable language_">this</span>.<span class="hljs-property">token</span>;<br>    <span class="hljs-keyword">if</span> (!token) &#123;<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-comment">// decode the token</span><br>    <span class="hljs-keyword">const</span> jwtHelper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">JwtHelperService</span>();<br>    <span class="hljs-comment">// check expiry date</span><br>    <span class="hljs-keyword">const</span> isTokenExpired = jwtHelper.<span class="hljs-title function_">isTokenExpired</span>(token);<br>    <span class="hljs-keyword">if</span> (isTokenExpired) &#123;<br>      <span class="hljs-variable language_">localStorage</span>.<span class="hljs-title function_">clear</span>();<br>      <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>  &#125;<br><br>  <span class="hljs-title function_">isTokenNotValid</span>(<span class="hljs-params"></span>) &#123;<br>    <span class="hljs-keyword">return</span> !<span class="hljs-variable language_">this</span>.<span class="hljs-title function_">isTokenValid</span>();<br>  &#125;<br><br>  <span class="hljs-keyword">get</span> <span class="hljs-title function_">userRoles</span>(): <span class="hljs-built_in">string</span>[] &#123;<br>    <span class="hljs-keyword">const</span> token = <span class="hljs-variable language_">this</span>.<span class="hljs-property">token</span>;<br>    <span class="hljs-keyword">if</span> (token) &#123;<br>      <span class="hljs-keyword">const</span> jwtHelper = <span class="hljs-keyword">new</span> <span class="hljs-title class_">JwtHelperService</span>();<br>      <span class="hljs-keyword">const</span> decodedToken = jwtHelper.<span class="hljs-title function_">decodeToken</span>(token);<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(decodedToken.<span class="hljs-property">authorities</span>);<br>      <span class="hljs-keyword">return</span> decodedToken.<span class="hljs-property">authorities</span>;<br>    &#125;<br>    <span class="hljs-keyword">return</span> [];<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这对于使用 JWT 的情况是正确的，例如自定义或个性化实现，但是当谈到 keycloak 时，情况完全不同，就像我想让它更轻量或更柔和一些，但没有什么是 100% 不同的，keycloak 管理和处理令牌的方式也不同。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-attr">authGuard</span>: <span class="hljs-title class_">CanActivateFn</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-keyword">const</span> tokenService = <span class="hljs-title function_">inject</span>(<span class="hljs-title class_">KeycloakService</span>);<br>  <span class="hljs-keyword">const</span> router = <span class="hljs-title function_">inject</span>(<span class="hljs-title class_">Router</span>);<br>  <span class="hljs-comment">// 若令牌过期</span><br>  <span class="hljs-keyword">if</span> (tokenService.<span class="hljs-property">keycloak</span>.<span class="hljs-title function_">isTokenExpired</span>()) &#123;<br>    router.<span class="hljs-title function_">navigate</span>([<span class="hljs-string">&#x27;login&#x27;</span>]);<br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;<br>  &#125;<br>  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h3 id="intercept">intercept</h3>
+<p>第二部分是我们有拦截器，所以对于拦截器，我们以同样的方式使用令牌服务来获取令牌并将其作为 bear token 传递</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-meta">@Injectable</span>()<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">HttpTokenInterceptor</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">HttpInterceptor</span> &#123;<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span><br><span class="hljs-params">    <span class="hljs-keyword">private</span> <span class="hljs-attr">keycloakService</span>: <span class="hljs-title class_">KeycloakService</span></span><br><span class="hljs-params">  </span>) &#123;&#125;<br><br>  <span class="hljs-title function_">intercept</span>(<span class="hljs-attr">request</span>: <span class="hljs-title class_">HttpRequest</span>&lt;<span class="hljs-built_in">unknown</span>&gt;, <span class="hljs-attr">next</span>: <span class="hljs-title class_">HttpHandler</span>): <span class="hljs-title class_">Observable</span>&lt;<span class="hljs-title class_">HttpEvent</span>&lt;<span class="hljs-built_in">unknown</span>&gt;&gt; &#123;<br>    <span class="hljs-keyword">const</span> token = <span class="hljs-variable language_">this</span>.<span class="hljs-property">keycloakService</span>.<span class="hljs-property">keycloak</span>.<span class="hljs-property">token</span>;<br>    <span class="hljs-keyword">if</span> (token) &#123;<br>      <span class="hljs-keyword">const</span> authReq = request.<span class="hljs-title function_">clone</span>(&#123;<br>        <span class="hljs-attr">headers</span>: <span class="hljs-keyword">new</span> <span class="hljs-title class_">HttpHeaders</span>(&#123;<br>          <span class="hljs-title class_">Authorization</span>: <span class="hljs-string">`Bearer <span class="hljs-subst">$&#123;token&#125;</span>`</span><br>        &#125;)<br>      &#125;);<br>      <span class="hljs-keyword">return</span> next.<span class="hljs-title function_">handle</span>(authReq);<br>    &#125;<br>    <span class="hljs-keyword">return</span> next.<span class="hljs-title function_">handle</span>(request);<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>别忘记修改组件中的注销，以及注释掉所有的登录组件。</p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs ts"><span class="hljs-meta">@Component</span>(&#123;<br>  <span class="hljs-attr">selector</span>: <span class="hljs-string">&#x27;app-login&#x27;</span>,<br>  <span class="hljs-attr">templateUrl</span>: <span class="hljs-string">&#x27;./login.component.html&#x27;</span>,<br>  <span class="hljs-attr">styleUrls</span>: [<span class="hljs-string">&#x27;./login.component.scss&#x27;</span>]<br>&#125;)<br><span class="hljs-keyword">export</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">LoginComponent</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">OnInit</span> &#123;<br><br>  <span class="hljs-attr">authRequest</span>: <span class="hljs-title class_">AuthenticationRequest</span> = &#123;<span class="hljs-attr">email</span>: <span class="hljs-string">&#x27;&#x27;</span>, <span class="hljs-attr">password</span>: <span class="hljs-string">&#x27;&#x27;</span>&#125;;<br>  <span class="hljs-attr">errorMsg</span>: <span class="hljs-title class_">Array</span>&lt;<span class="hljs-built_in">string</span>&gt; = [];<br><br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params"></span><br><span class="hljs-params">    <span class="hljs-keyword">private</span> <span class="hljs-attr">ss</span>: <span class="hljs-title class_">KeycloakService</span></span><br><span class="hljs-params">  </span>) &#123;<br>  &#125;<br><br>  <span class="hljs-keyword">async</span> <span class="hljs-title function_">ngOnInit</span>(): <span class="hljs-title class_">Promise</span>&lt;<span class="hljs-built_in">void</span>&gt; &#123;<br>    <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">ss</span>.<span class="hljs-title function_">init</span>();<br>    <span class="hljs-keyword">await</span> <span class="hljs-variable language_">this</span>.<span class="hljs-property">ss</span>.<span class="hljs-title function_">login</span>();<br>  &#125;<br><br>  <span class="hljs-comment">/*login() &#123;</span><br><span class="hljs-comment">    this.errorMsg = [];</span><br><span class="hljs-comment">    this.authService.authenticate(&#123;</span><br><span class="hljs-comment">      body: this.authRequest</span><br><span class="hljs-comment">    &#125;).subscribe(&#123;</span><br><span class="hljs-comment">      next: (res) =&gt; &#123;</span><br><span class="hljs-comment">        this.tokenService.token = res.token as string;</span><br><span class="hljs-comment">        this.router.navigate([&#x27;books&#x27;]);</span><br><span class="hljs-comment">      &#125;,</span><br><span class="hljs-comment">      error: (err) =&gt; &#123;</span><br><span class="hljs-comment">        console.log(err);</span><br><span class="hljs-comment">        if (err.error.validationErrors) &#123;</span><br><span class="hljs-comment">          this.errorMsg = err.error.validationErrors;</span><br><span class="hljs-comment">        &#125; else &#123;</span><br><span class="hljs-comment">          this.errorMsg.push(err.error.errorMsg);</span><br><span class="hljs-comment">        &#125;</span><br><span class="hljs-comment">      &#125;</span><br><span class="hljs-comment">    &#125;);</span><br><span class="hljs-comment">  &#125;</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">  register() &#123;</span><br><span class="hljs-comment">    this.router.navigate([&#x27;register&#x27;]);</span><br><span class="hljs-comment">  &#125;*/</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<h2 id="Keycloak-与-Spring-Boot-集成">Keycloak 与 Spring Boot 集成</h2>
+<p>第一件事就是更新依赖项，我们正在使用 <code>spring-boot-starter-security</code>，现在不再使用，因为我们使用的是 Keycloak，所以 Keycloak 是 OAuth2 安全的一部分，所以在这里我们不再使用那个，而是使用 <code>spring-boot-starter-oauth2-resource-server</code>。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">dependency</span>&gt;</span><br>	<span class="hljs-tag">&lt;<span class="hljs-name">groupId</span>&gt;</span>org.springframework.boot<span class="hljs-tag">&lt;/<span class="hljs-name">groupId</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">artifactId</span>&gt;</span>spring-boot-starter-oauth2-resource-server<span class="hljs-tag">&lt;/<span class="hljs-name">artifactId</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">dependency</span>&gt;</span><br></code></pre></td></tr></table></figure>
+<p>在项目中，你不会遇到任何编译问题，因为这个 oauth 2-resource-server 中也有 Spring Security Starter，所以我们这里有所有的 Spring Security 依赖项。</p>
+<h3 id="更新属性"><strong>更新属性</strong></h3>
+<p>进入 application-dev.yml，删除 application 下的 security 和 mailing，因为不在使用 jwt，并且应用程序将不再处理电子邮件发送。</p>
+<p>我们需要配置 <code>spring.security.oauth 2.resourceserver.jwt.issuer-uri</code> 属性，<br>
+在这里我们需要做的就是提供 issuer-uri（发行者URI）。发行者是指哪个实体或哪个服务器，或者哪个资源服务器负责发行JWT令牌。<br>
+如何找到？<br>
+<img src="realm-settings.png" srcset="/img/loading.gif" lazyload alt=""><br>
+<img src="realm-uri.png" srcset="/img/loading.gif" lazyload alt=""><br>
+那么可看到是 <code>http://localhost:9090/realms/book-social-network</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">spring:</span><br>  <span class="hljs-attr">datasource:</span> <span class="hljs-comment"># 数据源</span><br>    <span class="hljs-attr">driver-class-name:</span> <span class="hljs-string">org.postgresql.Driver</span><br>    <span class="hljs-attr">url:</span> <span class="hljs-string">jdbc:postgresql://localhost:5432/book_social_network</span><br>    <span class="hljs-attr">username:</span> <span class="hljs-string">username</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">password</span><br>  <span class="hljs-attr">jpa:</span><br>    <span class="hljs-attr">hibernate:</span><br>      <span class="hljs-attr">ddl-auto:</span> <span class="hljs-string">update</span> <span class="hljs-comment"># 开发环境 保持更新</span><br>    <span class="hljs-attr">show-sql:</span> <span class="hljs-literal">false</span><br>    <span class="hljs-attr">properties:</span><br>      <span class="hljs-attr">hibernate:</span><br>        <span class="hljs-attr">format_sql:</span> <span class="hljs-literal">true</span><br>    <span class="hljs-comment"># 指定数据库有助于 JPA 和 Hibernate 更好地准备或生成</span><br>    <span class="hljs-attr">database:</span> <span class="hljs-string">postgresql</span><br>    <span class="hljs-attr">database-platform:</span> <span class="hljs-string">org.hibernate.dialect.PostgreSQLDialect</span> <span class="hljs-comment"># sql 方言</span><br>  <span class="hljs-comment"># 对邮件（JavaMail）功能的属性设置, 用于通过 SMTP 服务器发送邮件</span><br>  <span class="hljs-attr">mail:</span><br>    <span class="hljs-attr">host:</span> <span class="hljs-string">localhost</span> <span class="hljs-comment"># SMTP 服务器地址</span><br>    <span class="hljs-attr">port:</span> <span class="hljs-number">1025</span><br>    <span class="hljs-attr">username:</span> <span class="hljs-string">ali</span> <span class="hljs-comment"># 登录 SMTP 服务器的用户名</span><br>    <span class="hljs-attr">password:</span> <span class="hljs-string">ali</span> <span class="hljs-comment"># 登录 SMTP 服务器的密码</span><br>    <span class="hljs-attr">properties:</span> <span class="hljs-comment"># mail.properties 子项</span><br>      <span class="hljs-comment"># 把 JavaMail 的原生 mail.* 属性传递给底层的 javax.mail.Session</span><br>      <span class="hljs-attr">mail:</span><br>        <span class="hljs-attr">smtp:</span><br>          <span class="hljs-attr">trust:</span> <span class="hljs-string">&quot;*&quot;</span><br>        <span class="hljs-attr">auth:</span> <span class="hljs-literal">true</span><br>        <span class="hljs-attr">starttls:</span><br>          <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br>        <span class="hljs-attr">connectiontimeout:</span> <span class="hljs-number">5000</span><br>        <span class="hljs-attr">timeout:</span> <span class="hljs-number">3000</span><br>        <span class="hljs-attr">writetimeout:</span> <span class="hljs-number">5000</span><br>  <span class="hljs-attr">security:</span><br>    <span class="hljs-attr">oauth2:</span><br>      <span class="hljs-attr">resourceserver:</span><br>        <span class="hljs-attr">jwt:</span><br>          <span class="hljs-attr">issuer-uri:</span> <span class="hljs-string">&quot;http://localhost:9090/realms/book-social-network&quot;</span><br><br><span class="hljs-attr">server:</span><br>  <span class="hljs-attr">port:</span> <span class="hljs-number">8088</span><br><br><span class="hljs-attr">application:</span><br><span class="hljs-comment">#  security:</span><br><span class="hljs-comment">#    jwt:</span><br><span class="hljs-comment">#      secret-key: 1fa1f80fd9c12472df8faa8fc41d213774937951f65ef878a72513f5871938ee</span><br><span class="hljs-comment">#      expiration: 86400000 # 1 day</span><br><span class="hljs-comment">#      refresh-token:</span><br><span class="hljs-comment">#        expiration: 604800000 # 7 days</span><br><span class="hljs-comment">#  mailing:</span><br><span class="hljs-comment">#    frontend:</span><br><span class="hljs-comment">#      activation-url: http://localhost:4200/activate # 前端</span><br>  <span class="hljs-attr">file:</span><br>    <span class="hljs-attr">upload:</span><br>      <span class="hljs-attr">photos-output-path:</span> <span class="hljs-string">./uploads</span> <span class="hljs-comment"># 文件上传到服务器路径</span><br></code></pre></td></tr></table></figure>
+<p>对于属性来说，这是需要执行的唯一更改。</p>
+<h3 id="调整安全配置"><strong>调整安全配置</strong></h3>
+<p>进入 SecurityConfig，删除 sessionManagement、authenticationProvider 和 addFilterBefore 配置，我将添加使用 <code>oauth2ResourceServer</code> 配置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-meta">@Bean</span><br><span class="hljs-keyword">public</span> SecurityFilterChain <span class="hljs-title function_">securityFilterChain</span><span class="hljs-params">(HttpSecurity http)</span> <span class="hljs-keyword">throws</span> Exception &#123;<br><br>	http<br>			.cors(withDefaults())<br>			<span class="hljs-comment">// 禁用 csrf</span><br>			.csrf(AbstractHttpConfigurer::disable)<br>			.authorizeHttpRequests(request -&gt; request<br>					<span class="hljs-comment">// requestMatchers：可以传递一个字符串列表或一个模式列表，这将代表应用程序白名单</span><br>					.requestMatchers(WHITE_LIST_URL).permitAll()<br>					<span class="hljs-comment">// 其余都需经过身份验证</span><br>					.anyRequest().authenticated()<br>			)<br>			.oauth2ResourceServer(auth -&gt;<br>					auth.jwt(token -&gt; token.jwtAuthenticationConverter(<span class="hljs-keyword">new</span> <span class="hljs-title class_">KeycloakJwtAuthenticationConverter</span>())));<br><br>	<span class="hljs-keyword">return</span> http.build();<br><br>&#125;<br></code></pre></td></tr></table></figure>
+<p>需要创建一个能够转换我的令牌的类，不完全是令牌，但我们需要执行一些转换，所以我们想要做的主要是将 Keycloak 角色转换为 Spring 角色。<br>
+所以 KeycloakJwtAuthenticationConverter 是将立即创建的类，它不需要任何参数，在同一个包中创建此类。</p>
+<h3 id="创建-KeycloakJwtAuthenticationConverter"><strong>创建 KeycloakJwtAuthenticationConverter</strong></h3>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">KeycloakJwtAuthenticationConverter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">org</span>.springframework.core.convert.converter.Converter&lt;org.springframework.security.oauth2.jwt.Jwt, ? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">org</span>.springframework.security.authentication.AbstractAuthenticationToken&gt; &#123;  <br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这里我们看到 spring 自动理解这是一个应该实现 Converter 类。<br>
+修改即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-keyword">import</span> org.springframework.core.convert.converter.Converter;<br><span class="hljs-keyword">import</span> org.springframework.security.authentication.AbstractAuthenticationToken;<br><span class="hljs-keyword">import</span> org.springframework.security.oauth2.jwt.Jwt;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">KeycloakJwtAuthenticationConverter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Converter</span>&lt;Jwt, AbstractAuthenticationToken&gt; &#123;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>实现 convert 方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">KeycloakJwtAuthenticationConverter</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Converter</span>&lt;Jwt, AbstractAuthenticationToken&gt; &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> AbstractAuthenticationToken <span class="hljs-title function_">convert</span><span class="hljs-params">(<span class="hljs-meta">@NonNull</span> Jwt source)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">JwtAuthenticationToken</span>(<br>                source,<br>                Stream.concat(<br>                        <span class="hljs-keyword">new</span> <span class="hljs-title class_">JwtGrantedAuthoritiesConverter</span>().convert(source).stream(),<br>                        extractResourceRoles(source).stream()<br>                ).collect(Collectors.toSet())<br>        );<br>    &#125;<br><br>    <span class="hljs-comment">// JWT 令牌中提取这个 resource_access 对象，然后提取 account 对象，</span><br>    <span class="hljs-comment">// 然后提取 roles 列表，最后将每个 roles 中的每个 role 转换为 spring role</span><br>    <span class="hljs-keyword">public</span> Collection&lt;? <span class="hljs-keyword">extends</span> <span class="hljs-title class_">GrantedAuthority</span>&gt; extractResourceRoles(Jwt jwt) &#123;<br>        <span class="hljs-type">var</span> <span class="hljs-variable">resourceAccess</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;(jwt.getClaim(<span class="hljs-string">&quot;resource_access&quot;</span>));<br>        <span class="hljs-type">var</span> <span class="hljs-variable">eternal</span> <span class="hljs-operator">=</span> (Map&lt;String, List&lt;String&gt;&gt;) resourceAccess.get(<span class="hljs-string">&quot;account&quot;</span>);<br>        <span class="hljs-type">var</span> <span class="hljs-variable">roles</span> <span class="hljs-operator">=</span> eternal.get(<span class="hljs-string">&quot;roles&quot;</span>);<br><br>        <span class="hljs-keyword">return</span> roles.stream()<br>                <span class="hljs-comment">//  spring 角色默认是 `ROLE_[角色名称]`，并且若角色名称中有 `-`，需替换为 `_`</span><br>                .map(role -&gt; <span class="hljs-keyword">new</span> <span class="hljs-title class_">SimpleGrantedAuthority</span>(<span class="hljs-string">&quot;ROLE_&quot;</span> + role.replace(<span class="hljs-string">&quot;-&quot;</span>, <span class="hljs-string">&quot;_&quot;</span>)))<br>                .collect(Collectors.toSet());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>讲解一下 extractResourceRoles 方法，首先进行一次登录<br>
+<img src="access_token.png" srcset="/img/loading.gif" lazyload alt=""><br>
+复制，到 <a target="_blank" rel="noopener" href="http://jwt.io">jwt.io</a>，进行解码得到 Payload 部分为</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;exp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1753778570</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;iat&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1753778270</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;auth_time&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">1753778268</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;jti&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;94b8b380-c632-4d84-aa71-56e85d6dfb4d&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;iss&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;http://localhost:9090/realms/book-social-network&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;aud&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;account&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;sub&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ff13e645-b014-41e7-93a8-d7392189b691&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;typ&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Bearer&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;azp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;bsn&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;nonce&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;45c36948-95ae-4f07-91fa-62375ca2c4c1&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;session_state&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;957764ed-771f-4040-bd32-8118ca320d1c&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;acr&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;1&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;allowed-origins&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;*&quot;</span><br>  <span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;realm_access&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;roles&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>      <span class="hljs-string">&quot;offline_access&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-string">&quot;uma_authorization&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-string">&quot;default-roles-book-social-network&quot;</span><br>    <span class="hljs-punctuation">]</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;resource_access&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;account&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;roles&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>        <span class="hljs-string">&quot;manage-account&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-string">&quot;manage-account-links&quot;</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-string">&quot;view-profile&quot;</span><br>      <span class="hljs-punctuation">]</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;scope&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;openid email profile&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;sid&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;957764ed-771f-4040-bd32-8118ca320d1c&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;email_verified&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;han di&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;preferred_username&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;han@mail.com&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;given_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;han&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;family_name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;di&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;email&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;han@mail.com&quot;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+<p>其中有 realm_access 和 resource_access，在资源访问权限中，我们有一个名为 account 的对象，在 account 中我们有一个角色列表 roles，所以我们需要从这里提取角色并将它们转换为 spring roles。<br>
+你知道 spring 角色默认是 <code>ROLE_[角色名称]</code>，并且若角色名称中有 <code>-</code>，需替换为 <code>_</code>。<br>
+所以 extractResourceRoles 方法只是从我们的 JWT 令牌中提取这个 resource_access 对象，然后提取 account 对象，然后提取 roles 列表，最后将每个 roles 中的每个 role 转换为 spring role。类似于最开始时 User 实现 UserDetails 所实现的 getAuthorities 方法。</p>
+<h3 id="清理修改"><strong>清理修改</strong></h3>
+<p>那么现在我们实现了转换器，回到我们的安全配置并执行一些清理，所以这里我们不再需要 JwtAuthFilter、AuthenticationProvider、JwtService。<br>
+将其进行注释掉。</p>
+<p>进入 BeansConfig，authenticationProvider、passwordEncoder、authenticationManager 注释掉，留下 auditorAware 和 corsFilter。</p>
+<p>UserDetailsServiceImpl 也不再需要。</p>
+<p>auth 包下的也都不再需要，将 AuthenticationController、AuthenticationService 注释掉。</p>
+<p>用户不再由我们管理，它不再由应用程序管理，所以我们不应该有 User 实体，自然也不需要 Token 和 Role。Book 和 BookTransactionHistory 与 User 之间关系的映射也要注释掉。</p>
+<hr>
+<h3 id="问题修复"><strong>问题修复</strong></h3>
+<p>用户不再存在，首先通过连接用户转换为 User 已无法实现，注释掉。这并不意味着无法使用连接用户。</p>
+<h4 id="book"><strong>book</strong></h4>
+<p>在 BookRepository 中不应再使用 <a target="_blank" rel="noopener" href="http://book.owner.id">book.owner.id</a>，应该为 book.createdBy。<br>
+BaseEntity 中的 createdBy 和 lastModifiedBy 类型修改为 String。</p>
+<p>以及 BookService 中很多处都用到了 owner，将 setOwner 注释掉，getOwner 替换为 getCreatedBy。<br>
+以及 user.getId() 将替换使用 connectedUser.getName()，以及修改方法参数类型，将 Integer (user.getId()的类型) 改为 String (connectedUser.getName()的类型)。<br>
+<img src="user-1.png" srcset="/img/loading.gif" lazyload alt=""> connectedUser.getName() 将准确返回 Keycloak 中用户详细信息中的 ID。</p>
+<p>以及 BookMapper 中的。</p>
+<h4 id="history"><strong>history</strong></h4>
+<p>由于 BookTransactionHistory 是 book 与 user 之间的中间表，又因注释掉了与 User 的关系映射，那么我们需要添加一个字段 <code>userId</code>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Column(name = &quot;user_id&quot;)</span>  <br><span class="hljs-keyword">private</span> String userId;<br></code></pre></td></tr></table></figure>
+<p>然后将 BookTransactionHistoryRepository 中的 JPQL 语句中的 <a target="_blank" rel="noopener" href="http://user.id">user.id</a> 改为 userId。</p>
+<p>什么时候需要对 BookTransactionHistory 中的 userId 进行赋值，自然是构建实体时；什么时候需要创建 BookTransactionHistory 实体，自然时借书事件发生时。那么修改 BookService 中的 borrowBook 方法中的 BookTransactionHistory 实体的创建，将 user(user) 替换为 userId(connectedUser.getName())。</p>
+<h4 id="feedback"><strong>feedback</strong></h4>
+<p>对应需改即可</p>
+<h4 id="审计"><strong>审计</strong></h4>
+<p>keycloak 中的用户 ID 为一种 UUID，是字符串，所以我们将对应的类型从 Integer 改为了 String，例如 BaseEntity 中的 createdBy 与 lastModifiedBy。<br>
+这意味着审计员感知类型从 Integer 变为了 String，那么 ApplicationAuditorAware 与 BeansConfig 中的 auditorAware，他们中的 Integer 也应改为 String。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-comment">// AuditorAware 是一个通用接口，你可以决定要审计的内容</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">ApplicationAuditAware</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">AuditorAware</span>&lt;String&gt; &#123;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> Optional&lt;String&gt; <span class="hljs-title function_">getCurrentAuditor</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-type">Authentication</span> <span class="hljs-variable">authentication</span> <span class="hljs-operator">=</span> SecurityContextHolder.getContext().getAuthentication();<br><br>        <span class="hljs-comment">// authentication 为 null || authentication 未经过身份验证 || authentication 是匿名身份验证令牌的实例</span><br>        <span class="hljs-keyword">if</span> (authentication == <span class="hljs-literal">null</span> ||<br>                !authentication.isAuthenticated() ||<br>                authentication <span class="hljs-keyword">instanceof</span> AnonymousAuthenticationToken<br>        ) &#123;<br>            <span class="hljs-keyword">return</span> Optional.empty();<br>        &#125;<br>        <span class="hljs-comment">// User userPrincipal = (User)authentication.getPrincipal();</span><br><br>        <span class="hljs-comment">// Optional.ofNullable(value): 用一个可能为 null 的值创建一个 Optional 实例</span><br>        <span class="hljs-keyword">return</span> Optional.ofNullable(authentication.getName());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs Java"><span class="hljs-meta">@Bean</span>  <br><span class="hljs-keyword">public</span> AuditorAware&lt;String&gt; <span class="hljs-title function_">auditorAware</span><span class="hljs-params">()</span> &#123;  <br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ApplicationAuditAware</span>();  <br>&#125;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Book-Social-Network/" class="category-chain-item">Book Social Network</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/fullstack/" class="print-no-link">#fullstack</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>2.安全与身份验证</div>
+      <div>http://example.com/2025/07/29/Java/Framework/Spring Boot/Book Social Network/KEYCLOAK 集成/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月29日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/03/Java/Framework/Spring%20Boot/Book%20Social%20Network/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" title="3.异常处理">
+                        <span class="hidden-mobile">3.异常处理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

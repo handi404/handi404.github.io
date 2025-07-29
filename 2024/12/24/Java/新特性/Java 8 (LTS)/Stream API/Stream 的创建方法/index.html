@@ -1,0 +1,907 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="java.util.stream.Stream 接口中所有的静态方法。 这些静态方法是所有 Stream 流水线操作的起点，它们扮演着“工厂”的角色，负责从各种数据源创建出 Stream 实例。  核心概念 (Core Concept) Stream 的静态方法，本质上就是Stream 的创建方法。它们不依赖于任何已存在的 Stream 实例，而是直接通过 Stream.methodName()">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stream 的创建方法">
+<meta property="og:url" content="http://example.com/2024/12/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%208%20(LTS)/Stream%20API/Stream%20%E7%9A%84%E5%88%9B%E5%BB%BA%E6%96%B9%E6%B3%95/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="java.util.stream.Stream 接口中所有的静态方法。 这些静态方法是所有 Stream 流水线操作的起点，它们扮演着“工厂”的角色，负责从各种数据源创建出 Stream 实例。  核心概念 (Core Concept) Stream 的静态方法，本质上就是Stream 的创建方法。它们不依赖于任何已存在的 Stream 实例，而是直接通过 Stream.methodName()">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2024-12-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-07-29T11:37:30.917Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Stream 的创建方法 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Stream 的创建方法"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-12-24 00:00" pubdate>
+          2024年12月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          20 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Stream 的创建方法</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年7月29日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p><code>java.util.stream.Stream</code> 接口中所有的静态方法。</p>
+<p>这些静态方法是所有 Stream 流水线操作的<strong>起点</strong>，它们扮演着“工厂”的角色，负责从各种数据源创建出 Stream 实例。</p>
+<hr>
+<h3 id="核心概念-Core-Concept">核心概念 (Core Concept)</h3>
+<p><code>Stream</code> 的静态方法，本质上就是<strong>Stream 的创建方法</strong>。它们不依赖于任何已存在的 Stream 实例，而是直接通过 <code>Stream.methodName()</code> 的形式调用，用于从无到有地生成一个流。</p>
+<p>想象一下，你要处理一批货物。这些静态方法就是帮你把货物（数据）放上传送带（Stream）的第一步。货物可以是一个一个给的，可以是一整箱给的，也可以是按照一个规则持续不断生成的。</p>
+<p>为了便于理解，我将它们分为三大类：</p>
+<ol>
+<li><strong>从已知元素创建</strong>：当你手头已经有明确的数据时使用。</li>
+<li><strong>从函数生成 (无限流)</strong>：当你需要根据一个规则动态生成数据序列时使用。</li>
+<li><strong>特殊用途创建</strong>：用于一些特殊场景，如合并、构建空流等。</li>
+</ol>
+<hr>
+<h3 id="1-从已知元素创建">1. 从已知元素创建</h3>
+<p>这类方法适用于数据已经存在且确定的情况。</p>
+<h4 id="Stream-of"><code>Stream.of(...)</code></h4>
+<ul>
+<li>
+<p><strong>核心概念：</strong> 最常用、最直接的创建方式。像把几个零散的物品直接放上传送带。</p>
+</li>
+<li>
+<p><strong>方法签名：</strong></p>
+<ul>
+<li><code>static &lt;T&gt; Stream&lt;T&gt; of(T... values)</code>: 接受一个可变参数数组。</li>
+<li><code>static &lt;T&gt; Stream&lt;T&gt; of(T t)</code>: 接受单个元素。</li>
+</ul>
+</li>
+<li>
+<p><strong>代码示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 1. 从多个元素创建</span><br>Stream&lt;String&gt; streamFromElements = Stream.of(<span class="hljs-string">&quot;Java&quot;</span>, <span class="hljs-string">&quot;Python&quot;</span>, <span class="hljs-string">&quot;Go&quot;</span>);<br>streamFromElements.map(String::toUpperCase).forEach(System.out::println); <span class="hljs-comment">// JAVA PYTHON GO</span><br><br><span class="hljs-comment">// 2. 从单个元素创建</span><br>Stream&lt;String&gt; streamFromSingle = Stream.of(<span class="hljs-string">&quot;Rust&quot;</span>);<br>streamFromSingle.forEach(System.out::println); <span class="hljs-comment">// Rust</span><br><br><span class="hljs-comment">// 3. 传入一个数组 (注意：是把整个数组作为单一元素，还是数组内容作为流元素)</span><br>String[] languages = &#123;<span class="hljs-string">&quot;C++&quot;</span>, <span class="hljs-string">&quot;C#&quot;</span>&#125;;<br>Stream&lt;String&gt; streamFromArray = Stream.of(languages); <span class="hljs-comment">// 正确用法，将数组内容作为流元素</span><br>streamFromArray.forEach(System.out::println); <span class="hljs-comment">// C++ C#</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Stream-ofNullable-T-t-Java-9-新增"><code>Stream.ofNullable(T t)</code> (Java 9 新增)</h4>
+<ul>
+<li>
+<p><strong>核心概念：</strong> <code>of()</code> 方法的“安全”版本。如果传入的元素是 <code>null</code>，它会创建一个空流，而不是像 <code>of(null)</code> 那样创建一个包含单个 <code>null</code> 元素的流。这能有效避免 <code>NullPointerException</code>。</p>
+</li>
+<li>
+<p><strong>比喻：</strong> 一个智能的传送带入口，你给它一个空盒子，它会生成一个空的传送带，而不是让这个空盒子在传送带上跑。</p>
+</li>
+<li>
+<p><strong>代码示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">User</span> &#123;<br>    <span class="hljs-keyword">private</span> String name;<br>    <span class="hljs-comment">// getter &amp; setter</span><br>&#125;<br><br><span class="hljs-type">User</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>; <span class="hljs-comment">// 假设从数据库或API获取的用户可能为null</span><br><br><span class="hljs-comment">// 旧方法，需要手动检查</span><br>Stream&lt;String&gt; oldWay = (user != <span class="hljs-literal">null</span>) ? Stream.of(user.getName()) : Stream.empty();<br><br><span class="hljs-comment">// 现代、简洁的方法 (since Java 9)</span><br>Stream&lt;String&gt; modernWay = Stream.ofNullable(user).map(User::getName);<br><span class="hljs-type">long</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> modernWay.count(); <span class="hljs-comment">// count为0，不会抛出NPE</span><br><br>System.out.println(<span class="hljs-string">&quot;Stream中的元素数量: &quot;</span> + count);<br><br><span class="hljs-comment">// 对比 of(null)</span><br><span class="hljs-comment">// Stream&lt;User&gt; streamWithNull = Stream.of(null);</span><br><span class="hljs-comment">// streamWithNull.map(User::getName).forEach(System.out::println); // 这会抛出 NullPointerException</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="2-从函数生成-无限流">2. 从函数生成 (无限流)</h3>
+<p>这类方法会创建一个“无限”流，数据在被访问时才动态生成。<strong>必须配合 <code>limit()</code> 等短路操作使用，否则会无限运行导致程序挂起或内存溢出。</strong></p>
+<h4 id="Stream-iterate"><code>Stream.iterate(...)</code></h4>
+<ul>
+<li>
+<p><strong>核心概念：</strong> 一个“数列生成器”。给定一个初始值（种子）和一个函数，它会不断地将函数应用于前一个结果，以生成下一个元素。<code>seed, f(seed), f(f(seed)), ...</code></p>
+</li>
+<li>
+<p><strong>方法签名：</strong></p>
+<ul>
+<li><code>static &lt;T&gt; Stream&lt;T&gt; iterate(T seed, UnaryOperator&lt;T&gt; f)</code>: (经典无限流)</li>
+<li><code>static &lt;T&gt; Stream&lt;T&gt; iterate(T seed, Predicate&lt;? super T&gt; hasNext, UnaryOperator&lt;T&gt; next)</code>: (Java 9 新增的有限流版本，更安全)</li>
+</ul>
+</li>
+<li>
+<p><strong>代码示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 1. 经典用法：生成一个偶数序列 (必须 limit)</span><br>System.out.println(<span class="hljs-string">&quot;经典iterate生成偶数序列:&quot;</span>);<br>Stream.iterate(<span class="hljs-number">0</span>, n -&gt; n + <span class="hljs-number">2</span>)<br>      .limit(<span class="hljs-number">5</span>) <span class="hljs-comment">// 如果没有limit()，这里会无限执行</span><br>      .forEach(System.out::println); <span class="hljs-comment">// 0 2 4 6 8</span><br><br><span class="hljs-comment">// 2. 现代用法 (Java 9+)，自带终止条件，类似 for 循环</span><br>System.out.println(<span class="hljs-string">&quot;\nJava 9+ iterate生成序列:&quot;</span>);<br>Stream.iterate(<span class="hljs-number">0</span>, n -&gt; n &lt; <span class="hljs-number">10</span>, n -&gt; n + <span class="hljs-number">2</span>) <span class="hljs-comment">// (初始值; 终止条件; 迭代步进)</span><br>      .forEach(System.out::println); <span class="hljs-comment">// 0 2 4 6 8</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Stream-generate-Supplier-T-s"><code>Stream.generate(Supplier&lt;T&gt; s)</code></h4>
+<ul>
+<li>
+<p><strong>核心概念：</strong> 一个“重复供应器”。它接受一个不接受参数但返回一个值的 <code>Supplier</code> 函数，并不断调用它来生成流的每一个元素。每个元素之间没有关联。</p>
+</li>
+<li>
+<p><strong>比喻：</strong> 一个不停生产同一种商品（或随机商品）的机器。</p>
+</li>
+<li>
+<p><strong>代码示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 1. 生成5个随机数 (必须 limit)</span><br>System.out.println(<span class="hljs-string">&quot;生成随机数:&quot;</span>);<br>Stream.generate(Math::random)<br>      .limit(<span class="hljs-number">5</span>)<br>      .forEach(System.out::println);<br><br><span class="hljs-comment">// 2. 生成固定的字符串</span><br>System.out.println(<span class="hljs-string">&quot;\n生成常量:&quot;</span>);<br>Stream.generate(() -&gt; <span class="hljs-string">&quot;Hello&quot;</span>)<br>      .limit(<span class="hljs-number">3</span>)<br>      .forEach(System.out::println); <span class="hljs-comment">// Hello Hello Hello</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="3-特殊用途创建">3. 特殊用途创建</h3>
+<h4 id="Stream-empty"><code>Stream.empty()</code></h4>
+<ul>
+<li>
+<p><strong>核心概念：</strong> 创建一个不包含任何元素的空流。</p>
+</li>
+<li>
+<p><strong>应用：</strong> 当一个方法的返回值类型是 <code>Stream</code>，但在某些逻辑下需要返回一个“无结果”的流时，返回 <code>Stream.empty()</code> 是最佳实践，而不是返回 <code>null</code>。这符合函数式编程的风格，避免了调用方进行烦人的 <code>null</code> 检查。</p>
+</li>
+<li>
+<p><strong>代码示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> Stream&lt;String&gt; <span class="hljs-title function_">getValidTags</span><span class="hljs-params">(List&lt;String&gt; tags)</span> &#123;<br>    <span class="hljs-keyword">if</span> (tags == <span class="hljs-literal">null</span> || tags.isEmpty()) &#123;<br>        <span class="hljs-keyword">return</span> Stream.empty(); <span class="hljs-comment">// 返回空流，而不是null</span><br>    &#125;<br>    <span class="hljs-keyword">return</span> tags.stream().filter(tag -&gt; tag.startsWith(<span class="hljs-string">&quot;#&quot;</span>));<br>&#125;<br><br><span class="hljs-comment">// 调用方可以安全地直接操作，无需null检查</span><br>getValidTags(<span class="hljs-literal">null</span>).forEach(System.out::println); <span class="hljs-comment">// 不会报错，什么也不输出</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Stream-concat-Stream-extends-T-a-Stream-extends-T-b"><code>Stream.concat(Stream&lt;? extends T&gt; a, Stream&lt;? extends T&gt; b)</code></h4>
+<ul>
+<li>
+<p><strong>核心概念：</strong> 将两个流按顺序拼接成一个新流。</p>
+</li>
+<li>
+<p><strong>比喻：</strong> 连接两个传送带的首尾，形成一个更长的传送带。</p>
+</li>
+<li>
+<p><strong>代码示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">Stream&lt;String&gt; streamA = Stream.of(<span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-string">&quot;B&quot;</span>);<br>Stream&lt;String&gt; streamB = Stream.of(<span class="hljs-string">&quot;C&quot;</span>, <span class="hljs-string">&quot;D&quot;</span>);<br><br>Stream.concat(streamA, streamB)<br>      .forEach(System.out::println); <span class="hljs-comment">// A B C D</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="Stream-builder"><code>Stream.builder()</code></h4>
+<ul>
+<li>
+<p><strong>核心概念：</strong> 提供一个 <code>Builder</code> 对象，允许你以编程方式、分步地向流中添加元素，最后调用 <code>build()</code> 方法一次性创建出流。</p>
+</li>
+<li>
+<p><strong>应用：</strong> 当流的元素需要根据复杂的业务逻辑动态、分步添加时，<code>Builder</code> 模式非常有用。</p>
+</li>
+<li>
+<p><strong>代码示例：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs java">Stream.Builder&lt;String&gt; builder = Stream.builder();<br><br>builder.add(<span class="hljs-string">&quot;Java&quot;</span>);<br><br><span class="hljs-comment">// 根据条件动态添加</span><br><span class="hljs-type">boolean</span> <span class="hljs-variable">includeAdvanced</span> <span class="hljs-operator">=</span> <span class="hljs-literal">true</span>;<br><span class="hljs-keyword">if</span> (includeAdvanced) &#123;<br>    builder.accept(<span class="hljs-string">&quot;Kotlin&quot;</span>); <span class="hljs-comment">// accept是add的别名</span><br>    builder.accept(<span class="hljs-string">&quot;Scala&quot;</span>);<br>&#125;<br><br><span class="hljs-comment">// 最后构建流</span><br>Stream&lt;String&gt; finalStream = builder.build();<br>finalStream.forEach(System.out::println); <span class="hljs-comment">// Java Kotlin Scala</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="深入解析与演进-In-depth-Analysis-Evolution">深入解析与演进 (In-depth Analysis &amp; Evolution)</h3>
+<ul>
+<li><strong>为什么是接口里的静态方法？</strong> Java 8 允许在接口中定义静态方法。这使得像 <code>Stream</code> 这样的核心 API 可以在不破坏现有实现类的情况下，提供方便的工厂方法。这些方法不依赖于任何特定实现（如 <code>ArrayList.stream()</code>），而是直接属于 <code>Stream</code> 这个抽象本身。</li>
+<li><strong>惰性求值 (Lazy Evaluation):</strong> 所有这些静态方法（以及后续的中间操作如 <code>map</code>, <code>filter</code>）都遵循惰性求值。也就是说，调用 <code>Stream.iterate(...)</code> 并不会立即生成所有数字，只有当终端操作（如 <code>forEach</code>, <code>collect</code>）被调用时，数据才会按需生成。这是 Stream API 高性能的关键。</li>
+<li><strong>演进：</strong> Java 9 的 <code>ofNullable</code> 和新版 <code>iterate</code> 是对 Java 8 的重要补充，它们让代码更安全、更易读，体现了 Java 在函数式编程领域的持续改进。</li>
+</ul>
+<hr>
+<h3 id="扩展与应用-Extension-Application">扩展与应用 (Extension &amp; Application)</h3>
+<ul>
+<li><strong>与集合创建对比：</strong> 最常见的流创建方式是 <code>collection.stream()</code>。你应该优先使用这种方式，因为它最直观。当你的数据源不是一个现成的集合（例如，零散的几个变量、一个数组、或一个生成规则）时，这些静态方法就派上用场了。</li>
+<li><strong>真实项目场景（Spring Boot）:</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-meta">@Service</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NotificationService</span> &#123;<br>    <span class="hljs-comment">// 假设配置中有一些默认的通知渠道</span><br>    <span class="hljs-meta">@Value(&quot;$&#123;notification.default-channels:EMAIL,SMS&#125;&quot;)</span><br>    <span class="hljs-keyword">private</span> String[] defaultChannels;<br><br>    <span class="hljs-keyword">public</span> Stream&lt;String&gt; <span class="hljs-title function_">getChannels</span><span class="hljs-params">(User user)</span> &#123;<br>        <span class="hljs-comment">// 从配置中获取默认渠道</span><br>        Stream&lt;String&gt; defaultStream = Stream.of(defaultChannels);<br>        <span class="hljs-comment">// 从用户偏好中获取额外渠道 (可能为null)</span><br>        Stream&lt;String&gt; userPrefStream = Stream.ofNullable(user.getPreferredChannel());<br><br>        <span class="hljs-comment">// 合并去重后返回</span><br>        <span class="hljs-keyword">return</span> Stream.concat(defaultStream, userPrefStream).distinct();<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>原始类型流 (Primitive Streams):</strong> 对于 <code>int</code>, <code>long</code>, <code>double</code>，有专门的 <code>IntStream</code>, <code>LongStream</code>, <code>DoubleStream</code>，它们也提供了更高效的静态方法，如 <code>range</code> 和 <code>rangeClosed</code>，用于生成数值范围，避免了自动装箱/拆箱的性能开销。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 生成 1 到 4 的整数流</span><br>IntStream.range(<span class="hljs-number">1</span>, <span class="hljs-number">5</span>).forEach(System.out::println); <span class="hljs-comment">// 1, 2, 3, 4</span><br><span class="hljs-comment">// 生成 1 到 5 的整数流</span><br>IntStream.rangeClosed(<span class="hljs-number">1</span>, <span class="hljs-number">5</span>).forEach(System.out::println); <span class="hljs-comment">// 1, 2, 3, 4, 5</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="要点与注意事项-Key-Points-Best-Practices">要点与注意事项 (Key Points &amp; Best Practices)</h3>
+<ol>
+<li><strong>流只能消费一次：</strong> 任何 <code>Stream</code> 实例（无论如何创建）在经过终端操作后就会关闭，不能重用。如果你需要再次使用，必须重新创建。</li>
+<li><strong>无限流必须短路：</strong> 使用 <code>iterate</code> 或 <code>generate</code> 创建的流，如果没有 <code>limit()</code>, <code>findFirst()</code> 等短路操作，将导致无限循环。这是新手最常犯的错误。</li>
+<li><strong>优先使用 <code>ofNullable</code>:</strong> 在处理可能为 <code>null</code> 的单个对象时，用 <code>Stream.ofNullable()</code> 替代 <code>if-else</code> 判断，代码更优雅。</li>
+<li><strong><code>Stream.empty()</code> vs <code>null</code>:</strong> 方法返回值是流时，用 <code>Stream.empty()</code> 表示空集合，这是更健壮的 API 设计。</li>
+<li><strong>I/O 资源管理：</strong> 如果从 I/O 操作（如 <code>Files.lines()</code>，它也创建流）创建流，务必使用 <code>try-with-resources</code> 语句来确保流和底层资源被正确关闭。</li>
+<li><strong>性能考量：</strong> 对于原始数字类型，优先使用 <code>IntStream</code>, <code>LongStream</code>, <code>DoubleStream</code> 及其静态方法（如 <code>range</code>），以获得更好的性能。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-8/" class="category-chain-item">Java 8</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-8/Stream-API/" class="category-chain-item">Stream API</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Stream 的创建方法</div>
+      <div>http://example.com/2024/12/24/Java/新特性/Java 8 (LTS)/Stream API/Stream 的创建方法/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年12月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/12/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%208%20(LTS)/Stream%20API/%E9%AB%98%E7%BA%A7%E6%94%B6%E9%9B%86%E5%99%A8%EF%BC%88Collectors%EF%BC%89/" title="高级收集器（Collectors）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">高级收集器（Collectors）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/10/13/Java/Framework/Spring%20Boot/CORS%20%E9%85%8D%E7%BD%AE/" title="CORS 配置">
+                        <span class="hidden-mobile">CORS 配置</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
