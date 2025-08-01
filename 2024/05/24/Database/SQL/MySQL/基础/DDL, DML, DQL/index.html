@@ -1,0 +1,1170 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从 SQL 的基石——DDL, DML, DQL 开始。这三者构成了我们与数据库交互的核心语言。我会逐一讲解，并穿插一些最佳实践和注意事项。 SQL 语言分类 SQL (Structured Query Language) 是一种用于管理关系数据库管理系统 (RDBMS) 的标准化语言。通常，我们会将其命令按功能划分为几个主要类别：  DDL (Data Definition Language -">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DDL, DML, DQL">
+<meta property="og:url" content="http://example.com/2024/05/24/Database/SQL/MySQL/%E5%9F%BA%E7%A1%80/DDL,%20DML,%20DQL/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="从 SQL 的基石——DDL, DML, DQL 开始。这三者构成了我们与数据库交互的核心语言。我会逐一讲解，并穿插一些最佳实践和注意事项。 SQL 语言分类 SQL (Structured Query Language) 是一种用于管理关系数据库管理系统 (RDBMS) 的标准化语言。通常，我们会将其命令按功能划分为几个主要类别：  DDL (Data Definition Language -">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/database/mysql.png">
+<meta property="article:published_time" content="2024-05-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-01T12:58:19.703Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/database/mysql.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>DDL, DML, DQL - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DDL, DML, DQL"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-24 00:00" pubdate>
+          2024年5月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          41 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">DDL, DML, DQL</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年8月1日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>从 SQL 的基石——DDL, DML, DQL 开始。这三者构成了我们与数据库交互的核心语言。我会逐一讲解，并穿插一些最佳实践和注意事项。</p>
+<p><strong>SQL 语言分类</strong></p>
+<p>SQL (Structured Query Language) 是一种用于管理关系数据库管理系统 (RDBMS) 的标准化语言。通常，我们会将其命令按功能划分为几个主要类别：</p>
+<ol>
+<li><strong>DDL (Data Definition Language - 数据定义语言)</strong>：用于定义和管理数据库对象（如数据库本身、表、索引、视图等）的结构。它不直接操作数据，而是操作数据的“骨架”。</li>
+<li><strong>DML (Data Manipulation Language - 数据操作语言)</strong>：用于检索、插入、更新和删除数据库中的数据。这是我们与数据内容打交道最频繁的部分。</li>
+<li><strong>DQL (Data Query Language - 数据查询语言)</strong>：严格来说，DQL 是 DML 的一个子集，专门用于从数据库中检索数据。由于 <code>SELECT</code> 语句的复杂性和重要性，经常被单独拎出来强调。</li>
+<li><strong>DCL (Data Control Language - 数据控制语言)</strong>：用于控制对数据库对象的访问权限，如 <code>GRANT</code> (授权) 和 <code>REVOKE</code> (撤销权限)。</li>
+<li><strong>TCL (Transaction Control Language - 事务控制语言)</strong>：用于管理数据库事务，如 <code>COMMIT</code> (提交事务) 和 <code>ROLLBACK</code> (回滚事务)。</li>
+</ol>
+<p>我们今天重点关注前三者：DDL, DML, DQL。</p>
+<hr>
+<h3 id="一、-DDL-Data-Definition-Language-数据定义语言">一、 DDL (Data Definition Language - 数据定义语言)</h3>
+<p>DDL 负责创建、修改和删除数据库的结构，而不是数据本身。可以把它想象成设计房子的蓝图。</p>
+<p><strong>核心命令：</strong></p>
+<ol>
+<li>
+<p><strong><code>CREATE DATABASE database_name;</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 创建一个新的数据库。</li>
+<li><strong>示例：</strong> <code>CREATE DATABASE my_store;</code></li>
+<li><strong>扩展与应用：</strong>
+<ul>
+<li>可以指定字符集和排序规则：<code>CREATE DATABASE my_store CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;</code> (推荐使用 <code>utf8mb4</code> 以支持包括 emoji 在内的所有 Unicode 字符)。</li>
+<li>在创建数据库前，最好检查数据库是否已存在：<code>CREATE DATABASE IF NOT EXISTS my_store;</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>CREATE TABLE table_name ( column1_name data_type [constraints], column2_name data_type [constraints], ... [table_constraints] );</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 在当前选定的数据库中创建一个新表。</li>
+<li><strong>示例：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql">USE my_store; <span class="hljs-comment">-- 先选择数据库</span><br><span class="hljs-keyword">CREATE TABLE</span> products (<br>    id <span class="hljs-type">INT</span> AUTO_INCREMENT <span class="hljs-keyword">PRIMARY KEY</span>,  <span class="hljs-comment">-- id 列，整数，自增，主键</span><br>    name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>,        <span class="hljs-comment">-- 产品名称，可变长度字符串，不能为空</span><br>    price <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">10</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0.00</span>, <span class="hljs-comment">-- 价格，固定精度和小数位数，默认值为 0.00</span><br>    created_at <span class="hljs-type">TIMESTAMP</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-built_in">CURRENT_TIMESTAMP</span> <span class="hljs-comment">-- 创建时间，时间戳，默认为当前时间</span><br>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>扩展与应用：</strong>
+<ul>
+<li><strong>约束 (Constraints)：</strong>
+<ul>
+<li><code>PRIMARY KEY</code>: 主键，唯一标识表中的每一行，不能为空。</li>
+<li><code>FOREIGN KEY</code>: 外键，用于建立表与表之间的关联。</li>
+<li><code>UNIQUE</code>: 唯一约束，确保列中的所有值都是唯一的。</li>
+<li><code>NOT NULL</code>: 非空约束，确保列不能有 NULL 值。</li>
+<li><code>DEFAULT value</code>: 为列设置默认值。</li>
+<li><code>CHECK (condition)</code>: (MySQL 8.0.16+ 支持) 检查约束，确保列值满足特定条件。</li>
+<li><code>AUTO_INCREMENT</code>: 自动递增，通常用于主键。</li>
+</ul>
+</li>
+<li><strong>存储引擎选择：</strong> 可以在 <code>CREATE TABLE</code> 语句末尾指定存储引擎，如 <code>ENGINE=InnoDB;</code> (InnoDB 是 MySQL 8.0 的默认引擎，推荐使用)。</li>
+<li><strong>字符集与排序规则：</strong> 可以为表或列指定字符集和排序规则。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>ALTER TABLE table_name action;</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 修改已存在的表结构。</li>
+<li><strong>常见的 <code>action</code>：</strong>
+<ul>
+<li><code>ADD column_name data_type [constraints];</code> (添加列)</li>
+<li><code>DROP COLUMN column_name;</code> (删除列)</li>
+<li><code>MODIFY COLUMN column_name new_data_type [constraints];</code> (修改列的数据类型或约束)</li>
+<li><code>CHANGE COLUMN old_column_name new_column_name new_data_type [constraints];</code> (修改列名和定义)</li>
+<li><code>ADD CONSTRAINT constraint_name constraint_definition;</code> (添加约束，如外键)</li>
+<li><code>DROP CONSTRAINT constraint_name;</code> (删除约束)</li>
+<li><code>RENAME TO new_table_name;</code> (重命名表，MySQL 也支持 <code>RENAME TABLE old_name TO new_name;</code>)</li>
+</ul>
+</li>
+<li><strong>示例：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> products <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">COLUMN</span> description TEXT; <span class="hljs-comment">-- 添加描述列</span><br><span class="hljs-keyword">ALTER TABLE</span> products MODIFY <span class="hljs-keyword">COLUMN</span> name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">300</span>) <span class="hljs-keyword">NOT NULL</span>; <span class="hljs-comment">-- 修改 name 列长度</span><br><span class="hljs-keyword">ALTER TABLE</span> products <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">COLUMN</span> created_at; <span class="hljs-comment">-- 删除创建时间列</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>扩展与应用：</strong>
+<ul>
+<li><code>ALTER TABLE</code> 操作可能会很耗时，尤其是在大表上。某些操作会导致表锁定，影响线上服务。</li>
+<li>对于大表的结构变更，推荐使用如 <code>pt-online-schema-change</code> (Percona Toolkit) 或 <code>gh-ost</code> (GitHub) 这样的在线 DDL 工具，它们可以在不锁表或极短锁表时间的情况下完成操作。</li>
+<li>MySQL 8.0 引入了原子 DDL (Atomic DDL)，使得一些 DDL 操作（如 <code>DROP TABLE</code>, <code>RENAME TABLE</code>）具备原子性，要么完全成功，要么完全回滚，减少了部分 DDL 失败导致数据不一致的风险。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>DROP DATABASE database_name;</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 删除一个数据库及其包含的所有表和数据。<strong>这是一个非常危险的操作，请谨慎使用！</strong></li>
+<li><strong>示例：</strong> <code>DROP DATABASE my_store;</code></li>
+<li><strong>扩展与应用：</strong>
+<ul>
+<li>最好先备份再删除。</li>
+<li>可以使用 <code>DROP DATABASE IF EXISTS my_store;</code> 来避免数据库不存在时报错。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>DROP TABLE table_name;</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 删除一个表及其所有数据和索引。<strong>同样危险，谨慎操作！</strong></li>
+<li><strong>示例：</strong> <code>DROP TABLE products;</code></li>
+<li><strong>扩展与应用：</strong>
+<ul>
+<li>可以使用 <code>DROP TABLE IF EXISTS products;</code></li>
+<li>删除有外键关联的表时，需要先解除外键约束或删除依赖它的表。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>TRUNCATE TABLE table_name;</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 快速删除表中的所有行，但保留表结构 (包括列、索引、约束等)。</li>
+<li><strong>与 <code>DELETE FROM table_name;</code> (不带 <code>WHERE</code> 条件) 的区别：</strong>
+<ul>
+<li><strong>速度：</strong> <code>TRUNCATE</code> 通常比 <code>DELETE</code> 快得多，因为它不记录每条删除的行，而是直接释放数据页。</li>
+<li><strong>事务：</strong> <code>TRUNCATE</code> 是 DDL 操作，在某些数据库中（包括 MySQL 的大部分情况，特别是对于 InnoDB 表）会隐式提交当前事务。而 <code>DELETE</code> 是 DML 操作，可以回滚。</li>
+<li><strong>触发器：</strong> <code>TRUNCATE</code> 通常不会触发与 <code>DELETE</code> 相关的触发器。</li>
+<li><strong>自增计数器：</strong> <code>TRUNCATE</code> 通常会重置自增列的计数器，而 <code>DELETE</code> 不会。</li>
+</ul>
+</li>
+<li><strong>示例：</strong> <code>TRUNCATE TABLE products;</code></li>
+<li><strong>应用场景：</strong> 当需要快速清空一个大表并且不需要回滚时，<code>TRUNCATE</code> 是个好选择。</li>
+</ul>
+</li>
+</ol>
+<p><strong>DDL 的注意事项：</strong></p>
+<ul>
+<li><strong>原子性：</strong> 并非所有 DDL 操作在所有 MySQL 版本和存储引擎中都是完全原子的。MySQL 8.0 在这方面有很大改进。</li>
+<li><strong>性能影响：</strong> 许多 DDL 操作（尤其是 <code>ALTER TABLE</code>）在繁忙的生产系统上执行时需要特别小心，因为它们可能导致长时间的表锁定，影响应用程序的可用性。</li>
+<li><strong>元数据锁 (Metadata Locks, MDL)：</strong> MySQL 使用 MDL 来保护数据库对象的定义，防止在 DDL 操作期间对象被并发的 DML 或其他 DDL 修改。不当的 DDL 或长时间运行的查询可能导致 MDL 等待，从而阻塞其他操作。</li>
+</ul>
+<hr>
+<h3 id="二、-DML-Data-Manipulation-Language-数据操作语言">二、 DML (Data Manipulation Language - 数据操作语言)</h3>
+<p>DML 用于管理数据库中的实际数据。</p>
+<p><strong>核心命令：</strong></p>
+<ol>
+<li>
+<p><strong><code>INSERT INTO table_name (column1, column2, ...) VALUES (value1, value2, ...);</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 向表中插入一行或多行数据。</li>
+<li><strong>示例 (单行插入)：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> products (name, price) <span class="hljs-keyword">VALUES</span> (<span class="hljs-string">&#x27;Laptop X1&#x27;</span>, <span class="hljs-number">1200.50</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>示例 (多行插入)：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> products (name, price) <span class="hljs-keyword">VALUES</span><br>(<span class="hljs-string">&#x27;Mouse M5&#x27;</span>, <span class="hljs-number">25.00</span>),<br>(<span class="hljs-string">&#x27;Keyboard K100&#x27;</span>, <span class="hljs-number">75.99</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>扩展与应用：</strong>
+<ul>
+<li>如果插入的值与列的顺序一致，可以省略列名列表：<code>INSERT INTO products VALUES (NULL, 'Monitor Z27', 350.00, NOW());</code> (假设 id 是自增的，最后一个是 created_at)。但不推荐这样做，因为表结构变化时容易出错。</li>
+<li><strong><code>INSERT ... SELECT ...</code>：</strong> 从其他表查询数据并插入到当前表。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> old_products (name, price)<br><span class="hljs-keyword">SELECT</span> name, price <span class="hljs-keyword">FROM</span> products <span class="hljs-keyword">WHERE</span> price <span class="hljs-operator">&lt;</span> <span class="hljs-number">100</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong><code>INSERT IGNORE ...</code>：</strong> 如果插入会导致唯一键冲突，则忽略该行，不报错。</li>
+<li><strong><code>INSERT ... ON DUPLICATE KEY UPDATE ...</code>：</strong> 如果插入会导致唯一键 (包括主键) 冲突，则执行 <code>UPDATE</code> 子句中的操作，而不是报错。非常有用！<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">INSERT INTO</span> products (id, name, price) <span class="hljs-keyword">VALUES</span> (<span class="hljs-number">1</span>, <span class="hljs-string">&#x27;Laptop X1 Pro&#x27;</span>, <span class="hljs-number">1250.00</span>)<br><span class="hljs-keyword">ON</span> DUPLICATE KEY <span class="hljs-keyword">UPDATE</span> price <span class="hljs-operator">=</span> <span class="hljs-keyword">VALUES</span>(price), name <span class="hljs-operator">=</span> <span class="hljs-keyword">VALUES</span>(name);<br><span class="hljs-comment">-- VALUES(column_name) 用于引用 INSERT 部分试图插入的值</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong><code>REPLACE INTO ...</code>：</strong> 行为类似 <code>INSERT</code>，但如果存在唯一键冲突，它会先删除旧行，再插入新行。这与 <code>ON DUPLICATE KEY UPDATE</code> 的区别在于 <code>REPLACE</code> 会导致行的物理删除和重新插入，可能会触发 <code>DELETE</code> 和 <code>INSERT</code> 触发器，并且自增 ID 可能会改变。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>UPDATE table_name SET column1 = value1, column2 = value2, ... WHERE condition;</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 修改表中已存在的数据行。</li>
+<li><strong>示例：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> products <span class="hljs-keyword">SET</span> price <span class="hljs-operator">=</span> <span class="hljs-number">1150.00</span> <span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Laptop X1&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>扩展与应用：</strong>
+<ul>
+<li><strong><code>WHERE</code> 子句至关重要！</strong> 如果省略 <code>WHERE</code> 子句，将会更新表中的所有行！务必小心。</li>
+<li>可以使用子查询在 <code>SET</code> 或 <code>WHERE</code> 子句中。</li>
+<li><strong>多表更新 (Multi-table Update)：</strong> MySQL 支持在一个 <code>UPDATE</code> 语句中更新多个表的数据 (通常通过 JOIN)。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">UPDATE</span> orders o<br><span class="hljs-keyword">JOIN</span> customers c <span class="hljs-keyword">ON</span> o.customer_id <span class="hljs-operator">=</span> c.id<br><span class="hljs-keyword">SET</span> o.customer_name <span class="hljs-operator">=</span> c.name<br><span class="hljs-keyword">WHERE</span> c.city <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;New York&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><code>LIMIT</code> 子句可以与 <code>UPDATE</code> (和 <code>DELETE</code>) 结合使用，但通常需要配合 <code>ORDER BY</code> 来确保确定性，以更新特定数量的行。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>DELETE FROM table_name WHERE condition;</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 从表中删除满足条件的行。</li>
+<li><strong>示例：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">FROM</span> products <span class="hljs-keyword">WHERE</span> price <span class="hljs-operator">&lt;</span> <span class="hljs-number">10</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>扩展与应用：</strong>
+<ul>
+<li><strong><code>WHERE</code> 子句至关重要！</strong> 如果省略 <code>WHERE</code> 子句，将会删除表中的所有行！(与 <code>TRUNCATE</code> 不同，<code>DELETE</code> 是逐行删除，记录日志，可以回滚，速度较慢)。</li>
+<li><strong>多表删除 (Multi-table Delete)：</strong> MySQL 支持在一个 <code>DELETE</code> 语句中从多个表中删除行 (通常通过 JOIN)。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DELETE</span> p<br><span class="hljs-keyword">FROM</span> products p<br><span class="hljs-keyword">JOIN</span> categories c <span class="hljs-keyword">ON</span> p.category_id <span class="hljs-operator">=</span> c.id<br><span class="hljs-keyword">WHERE</span> c.name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Obsolete&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><code>LIMIT</code> 子句可以与 <code>DELETE</code> 结合使用，但同样需要注意确定性。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>DML 的注意事项：</strong></p>
+<ul>
+<li><strong><code>WHERE</code> 子句的精确性：</strong> 在 <code>UPDATE</code> 和 <code>DELETE</code> 中，<code>WHERE</code> 子句是防止误操作的关键。执行前最好先用 <code>SELECT</code> 语句配合相同的 <code>WHERE</code> 子句检查将要影响的行。</li>
+<li><strong>事务：</strong> DML 操作通常在事务中执行，以确保数据的一致性。如果发生错误，可以回滚。</li>
+<li><strong>性能：</strong> 大量的 <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> 操作会对性能产生影响，特别是涉及到索引更新和日志写入。批量操作通常比单条操作更高效。</li>
+</ul>
+<hr>
+<h3 id="三、-DQL-Data-Query-Language-数据查询语言">三、 DQL (Data Query Language - 数据查询语言)</h3>
+<p>DQL 的核心就是 <code>SELECT</code> 语句，它是我们从数据库中获取信息的方式。</p>
+<p><strong>核心命令及子句 (按典型执行顺序大致排列，但逻辑顺序不同)：</strong></p>
+<ol>
+<li>
+<p><strong><code>SELECT column1, column2, ... | *</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 指定要检索的列。<code>*</code> 表示选择所有列 (生产环境中应尽量避免使用 <code>*</code>，明确指定列名以提高效率和可读性)。</li>
+<li>可以对列使用表达式、函数、别名 (<code>AS</code>)。</li>
+<li><strong>示例：</strong> <code>SELECT id, name, price * 0.8 AS discounted_price FROM products;</code></li>
+</ul>
+</li>
+<li>
+<p><strong><code>FROM table_name [AS alias]</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 指定数据来源的表。可以为表指定别名，在多表连接时非常有用。</li>
+<li><strong>示例：</strong> <code>SELECT p.name FROM products AS p;</code></li>
+</ul>
+</li>
+<li>
+<p><strong><code>JOIN table_name ON condition</code> (多种 JOIN 类型)</strong></p>
+<ul>
+<li><strong>作用：</strong> 用于根据某些条件将多个表中的行组合起来。</li>
+<li><strong>类型：</strong> <code>INNER JOIN</code> (内连接), <code>LEFT JOIN</code> (左连接), <code>RIGHT JOIN</code> (右连接), <code>FULL OUTER JOIN</code> (MySQL 通过 <code>LEFT JOIN ... UNION ... RIGHT JOIN</code> 模拟), <code>CROSS JOIN</code> (笛卡尔积)。</li>
+<li><strong>示例 (内连接)：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> o.id <span class="hljs-keyword">AS</span> order_id, p.name <span class="hljs-keyword">AS</span> product_name<br><span class="hljs-keyword">FROM</span> orders o<br><span class="hljs-keyword">INNER</span> <span class="hljs-keyword">JOIN</span> products p <span class="hljs-keyword">ON</span> o.product_id <span class="hljs-operator">=</span> p.id;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>WHERE condition</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 过滤行，只选择满足指定条件的行。</li>
+<li>使用比较运算符 (<code>=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>&lt;&gt;</code>, <code>!=</code>)、逻辑运算符 (<code>AND</code>, <code>OR</code>, <code>NOT</code>)、范围 (<code>BETWEEN</code>), 列表 (<code>IN</code>, <code>NOT IN</code>), 模式匹配 (<code>LIKE</code>, <code>RLIKE</code> / <code>REGEXP</code>)、空值判断 (<code>IS NULL</code>, <code>IS NOT NULL</code>)。</li>
+<li><strong>示例：</strong> <code>SELECT name, price FROM products WHERE price &gt; 100 AND name LIKE 'Laptop%';</code></li>
+</ul>
+</li>
+<li>
+<p><strong><code>GROUP BY column1, column2, ...</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 将结果集中的行按照一个或多个列进行分组，通常与聚合函数 (如 <code>COUNT()</code>, <code>SUM()</code>, <code>AVG()</code>) 配合使用，对每个组进行计算。</li>
+<li><strong>示例：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> category_id, <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">AS</span> product_count, <span class="hljs-built_in">AVG</span>(price) <span class="hljs-keyword">AS</span> average_price<br><span class="hljs-keyword">FROM</span> products<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> category_id;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>MySQL 扩展：<code>WITH ROLLUP</code></strong> 可以为 <code>GROUP BY</code> 的结果添加一个汇总行。</li>
+<li><strong><code>ONLY_FULL_GROUP_BY</code> SQL Mode:</strong> MySQL 默认启用此模式 (自 5.7.5 起)。它要求 <code>SELECT</code> 列表、<code>HAVING</code> 条件或 <code>ORDER BY</code> 列表中的非聚合列必须出现在 <code>GROUP BY</code> 子句中，或者函数依赖于 <code>GROUP BY</code> 列。这是符合 SQL 标准的行为，有助于避免不确定的查询结果。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>HAVING condition</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 在 <code>GROUP BY</code> 分组之后，对分组结果进行过滤。<code>WHERE</code> 过滤的是行，<code>HAVING</code> 过滤的是组。</li>
+<li><code>HAVING</code> 子句中可以使用聚合函数，而 <code>WHERE</code> 子句中通常不能 (除非在子查询中)。</li>
+<li><strong>示例：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> category_id, <span class="hljs-built_in">AVG</span>(price) <span class="hljs-keyword">AS</span> average_price<br><span class="hljs-keyword">FROM</span> products<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> category_id<br><span class="hljs-keyword">HAVING</span> <span class="hljs-built_in">AVG</span>(price) <span class="hljs-operator">&gt;</span> <span class="hljs-number">500</span>; <span class="hljs-comment">-- 只显示平均价格大于 500 的类别</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>ORDER BY column1 [ASC|DESC], column2 [ASC|DESC], ...</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 对结果集进行排序。<code>ASC</code> (升序，默认)，<code>DESC</code> (降序)。</li>
+<li>可以按多个列排序。</li>
+<li><strong>示例：</strong> <code>SELECT name, price FROM products ORDER BY price DESC, name ASC;</code> (先按价格降序，价格相同时按名称升序)</li>
+</ul>
+</li>
+<li>
+<p><strong><code>LIMIT [offset,] row_count</code></strong></p>
+<ul>
+<li><strong>作用：</strong> 限制返回的行数。常用于分页。</li>
+<li><code>row_count</code>: 要返回的行数。</li>
+<li><code>offset</code>: 可选参数，表示从结果集的第几行开始返回 (第一行为 0)。</li>
+<li><strong>示例 (取前 10 条)：</strong> <code>SELECT * FROM products LIMIT 10;</code></li>
+<li><strong>示例 (分页，第 2 页，每页 10 条)：</strong> <code>SELECT * FROM products LIMIT 10, 10;</code> (跳过前 10 条，取接下来的 10 条)</li>
+<li><strong>注意：</strong> 当使用 <code>LIMIT</code> 时，为了保证结果的确定性，通常需要配合 <code>ORDER BY</code>。否则，返回的行可能是随机的 (取决于内部执行计划)。</li>
+</ul>
+</li>
+</ol>
+<p><strong>DQL (SELECT 语句) 的逻辑执行顺序 (重要！与书写顺序不同)：</strong></p>
+<p>理解这个顺序有助于编写更高效、更正确的 SQL：</p>
+<ol>
+<li><code>FROM</code> (包括 <code>JOIN</code> s)</li>
+<li><code>WHERE</code></li>
+<li><code>GROUP BY</code></li>
+<li><code>HAVING</code></li>
+<li><code>SELECT</code> (包括窗口函数，窗口函数在 <code>SELECT</code> 阶段，但其计算依赖于前面的步骤)</li>
+<li><code>DISTINCT</code> (如果使用)</li>
+<li><code>ORDER BY</code></li>
+<li><code>LIMIT</code></li>
+</ol>
+<p><strong>DQL 的应用与扩展：</strong></p>
+<ul>
+<li><strong>子查询 (Subqueries)：</strong> 嵌套在其他 SQL 语句中的查询。</li>
+<li><strong>公用表表达式 (CTEs - Common Table Expressions)：</strong> 使用 <code>WITH</code> 子句定义临时的、命名的结果集，使复杂查询更易读和维护 (MySQL 8.0+)。</li>
+<li><strong>窗口函数 (Window Functions)：</strong> 对与当前行相关的行集执行计算，但不像 <code>GROUP BY</code> 那样将行折叠 (MySQL 8.0+)。</li>
+<li><strong><code>UNION</code> 和 <code>UNION ALL</code>：</strong> 合并多个 <code>SELECT</code> 语句的结果集。<code>UNION</code> 会去除重复行，<code>UNION ALL</code> 不会。</li>
+</ul>
+<hr>
+<h3 id="四、常用数据类型选择及其适用场景">四、常用数据类型选择及其适用场景</h3>
+<p>选择正确的数据类型对于数据库的性能、存储效率和数据完整性至关重要。</p>
+<ol>
+<li>
+<p><strong>整数类型 (Integer Types)：</strong></p>
+<ul>
+<li><code>TINYINT</code>: 1 字节，范围 <code>-128</code> 到 <code>127</code> (有符号) 或 <code>0</code> 到 <code>255</code> (无符号 <code>UNSIGNED</code>)。适用于存储年龄、小的计数等。</li>
+<li><code>SMALLINT</code>: 2 字节。</li>
+<li><code>MEDIUMINT</code>: 3 字节。</li>
+<li><code>INT</code> 或 <code>INTEGER</code>: 4 字节。最常用，适用于大多数 ID、计数等。</li>
+<li><code>BIGINT</code>: 8 字节。适用于需要非常大范围的整数，如分布式系统中的雪花 ID。</li>
+<li><strong>选择建议：</strong> 选择能覆盖数据范围的最小类型。如果确定是非负数，使用 <code>UNSIGNED</code> 可以扩大正数范围一倍。<code>AUTO_INCREMENT</code> 通常与 <code>INT UNSIGNED</code> 或 <code>BIGINT UNSIGNED</code> 配合。</li>
+</ul>
+</li>
+<li>
+<p><strong>浮点数与定点数类型 (Floating-Point and Fixed-Point Types)：</strong></p>
+<ul>
+<li><code>FLOAT(M,D)</code>: 单精度浮点数，4 字节。<code>M</code> 是总位数，<code>D</code> 是小数点后的位数。存在精度问题，不适用于精确计算（如货币）。</li>
+<li><code>DOUBLE(M,D)</code> 或 <code>REAL(M,D)</code>: 双精度浮点数，8 字节。精度比 <code>FLOAT</code> 高，但同样存在精度问题。</li>
+<li><strong><code>DECIMAL(M,D)</code> 或 <code>NUMERIC(M,D)</code> (推荐用于精确计算)：</strong> 定点数。以字符串形式存储，用于精确计算，如货币、金融数据。<code>M</code> 是最大总位数 (精度)，<code>D</code> 是小数点后的位数 (标度)。
+<ul>
+<li><strong>示例：</strong> <code>DECIMAL(10, 2)</code> 可以存储最多 10 位数字，其中 2 位在小数点后 (例如 <code>12345678.90</code>)。</li>
+</ul>
+</li>
+<li><strong>选择建议：</strong> <strong>对于货币或任何需要精确计算的场景，请务必使用 <code>DECIMAL</code>。</strong> 避免使用 <code>FLOAT</code> 和 <code>DOUBLE</code> 进行此类计算，因为它们可能导致舍入误差。</li>
+</ul>
+</li>
+<li>
+<p><strong>字符串类型 (String Types)：</strong></p>
+<ul>
+<li><strong><code>CHAR(M)</code>:</strong> 固定长度字符串。长度范围 0 到 255。如果存储的字符串短于 <code>M</code>，右边会用空格填充 (但在检索时，如果 <code>PAD_CHAR_TO_FULL_LENGTH</code> SQL mode 未启用，尾部空格通常会被移除)。适用于长度基本固定的值，如邮政编码、性别 (M/F)、国家代码。</li>
+<li><strong><code>VARCHAR(M)</code>:</strong> 可变长度字符串。长度范围 0 到 65535 (实际最大长度受行大小限制和字符集影响)。只存储实际字符内容加 1 或 2 个字节的长度前缀。是<strong>最常用的字符串类型</strong>。</li>
+<li><strong><code>TINYTEXT</code>:</strong> 最多 255 字节。</li>
+<li><strong><code>TEXT</code>:</strong> 最多 65,535 (2^16 - 1) 字节。</li>
+<li><strong><code>MEDIUMTEXT</code>:</strong> 最多 16,777,215 (2^24 - 1) 字节。</li>
+<li><strong><code>LONGTEXT</code>:</strong> 最多 4,294,967,295 (2^32 - 1) 字节 (4 GB)。</li>
+<li><strong><code>BINARY(M)</code> 和 <code>VARBINARY(M)</code>:</strong> 类似于 <code>CHAR</code> 和 <code>VARCHAR</code>，但存储的是二进制字节串，区分大小写，没有字符集概念。</li>
+<li><strong><code>BLOB</code> 类型 (Binary Large Object)：</strong> <code>TINYBLOB</code>, <code>BLOB</code>, <code>MEDIUMBLOB</code>, <code>LONGBLOB</code>。用于存储二进制数据，如图片、音频、文件。通常不建议在数据库中存储大型二进制对象，更推荐存储文件路径，将文件存放在文件系统或对象存储中。</li>
+<li><strong>选择建议：</strong>
+<ul>
+<li>大部分短文本使用 <code>VARCHAR</code>。根据预估的最大长度选择合适的 <code>M</code> 值。</li>
+<li>非常长的文本内容使用 <code>TEXT</code> 系列。<code>TEXT</code> 和 <code>BLOB</code> 列在某些情况下存储和处理方式与 <code>VARCHAR</code> 不同 (例如，它们可能存储在行外，影响查询性能)。</li>
+<li>如果字符串长度几乎总是固定的，可以考虑 <code>CHAR</code>，但 <code>VARCHAR</code> 更灵活且通常更节省空间 (除非字符串长度都接近 <code>M</code>)。</li>
+<li><strong>字符集 (Character Set) 和排序规则 (Collation)</strong> 对字符串类型非常重要。推荐使用 <code>utf8mb4</code> 字符集以支持所有 Unicode 字符。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>日期和时间类型 (Date and Time Types)：</strong></p>
+<ul>
+<li><strong><code>DATE</code>:</strong> 存储日期，格式 ‘YYYY-MM-DD’。范围 ‘1000-01-01’ 到 ‘9999-12-31’。</li>
+<li><strong><code>TIME</code>:</strong> <em>不推荐用于时间点</em>。存储时间或时间间隔，格式 ‘HH:MM:SS’。范围 ‘-838:59:59’ 到 ‘838:59:59’。</li>
+<li><strong><code>DATETIME(fsp)</code>:</strong> 存储日期和时间，格式 ‘YYYY-MM-DD HH:MM:SS[.fraction]’。范围 ‘1000-01-01 00:00:00.000000’ 到 ‘9999-12-31 23:59:59.999999’。<code>fsp</code> 是可选的，表示秒的小数部分的精度 (0-6)。<strong>不存储时区信息，存储的是字面值。</strong></li>
+<li><strong><code>TIMESTAMP(fsp)</code> (推荐用于记录事件发生时间)：</strong> 存储日期和时间，也带可选的毫秒精度。范围 ‘1970-01-01 00:00:01.000000’ UTC 到 ‘2038-01-19 03:14:07.999999’ UTC。<strong><code>TIMESTAMP</code> 的值在存储时会从当前连接的时区转换为 UTC，在检索时会从 UTC 转换回当前连接的时区。</strong> 这使得它非常适合记录具有全局一致性的时间点。
+<ul>
+<li>在 MySQL 8.0.28 之前，<code>TIMESTAMP</code> 默认行为是 <code>DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP</code>，这可能不是期望的。之后版本，这些默认行为不再自动应用，除非显式指定。</li>
+</ul>
+</li>
+<li><strong><code>YEAR</code>:</strong> 存储年份，1 字节 (<code>YEAR(2)</code> 已废弃) 或 2 字节 (<code>YEAR(4)</code> 格式 ‘YYYY’)。</li>
+<li><strong>选择建议：</strong>
+<ul>
+<li>仅日期用 <code>DATE</code>。</li>
+<li><strong>记录事件发生时间、创建时间、修改时间等，强烈推荐使用 <code>TIMESTAMP</code></strong>，因为它会自动处理时区转换，确保时间的一致性。</li>
+<li>如果需要存储不带时区信息的特定日期和时间（例如，用户的生日，不应随时区改变），可以使用 <code>DATETIME</code>。</li>
+<li>使用 <code>NOW()</code> 或 <code>CURRENT_TIMESTAMP</code> 获取当前日期时间。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>枚举和集合类型 (Enum and Set Types)：</strong></p>
+<ul>
+<li><strong><code>ENUM('value1', 'value2', ...)</code>:</strong> 单选列表。列值只能是预定义列表中的一个值 (或 <code>NULL</code>，如果允许)。在内部，MySQL 将其存储为整数 (每个值的索引)。
+<ul>
+<li><strong>示例：</strong> <code>status ENUM('pending', 'processing', 'completed', 'failed')</code></li>
+</ul>
+</li>
+<li><strong><code>SET('value1', 'value2', ...)</code>:</strong> 多选列表。列值可以是预定义列表中的零个、一个或多个值的组合。内部存储为位图。
+<ul>
+<li><strong>示例：</strong> <code>permissions SET('read', 'write', 'execute')</code></li>
+</ul>
+</li>
+<li><strong>选择建议：</strong>
+<ul>
+<li><code>ENUM</code> 和 <code>SET</code> 在某些情况下可以节省空间，并且提供了一定的数据校验。</li>
+<li><strong>缺点：</strong> 修改 <code>ENUM</code> 或 <code>SET</code> 的定义 (如添加新值) 通常需要 <code>ALTER TABLE</code>，这可能是个昂贵的操作。它们也降低了数据库的可移植性，因为不是所有数据库都支持。</li>
+<li><strong>替代方案：</strong> 可以使用关联表 (查找表) 和外键来代替 <code>ENUM</code>，这更符合关系数据库设计原则，也更灵活。对于 <code>SET</code>，可以考虑使用多个 <code>BOOLEAN</code> / <code>TINYINT(1)</code> 列，或者（在支持良好的情况下）JSON 数组。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>布尔类型 (Boolean Type)：</strong></p>
+<ul>
+<li>MySQL 没有真正的 <code>BOOLEAN</code> 或 <code>BOOL</code> 类型。它们是 <code>TINYINT(1)</code> 的同义词。<code>TRUE</code> 被视为 <code>1</code>，<code>FALSE</code> 被视为 <code>0</code>。</li>
+<li><strong>选择建议：</strong> 使用 <code>TINYINT(1)</code> 并用 <code>0</code> 和 <code>1</code> 来表示 <code>false</code> 和 <code>true</code> 是常见做法。</li>
+</ul>
+</li>
+<li>
+<p><strong>JSON 类型 (JSON Type) (MySQL 5.7.8+)：</strong></p>
+<ul>
+<li>用于存储 JSON (JavaScript Object Notation) 文档。</li>
+<li>MySQL 会验证 JSON 文档的有效性，并以优化的二进制格式存储，以便快速访问其元素。</li>
+<li>提供了丰富的 JSON 函数来操作和查询 JSON 数据。</li>
+<li><strong>选择建议：</strong> 当需要存储半结构化数据，或者数据结构可能经常变化时，JSON 类型非常有用。避免滥用，如果数据是高度结构化的，传统的关系模型通常更好。</li>
+</ul>
+</li>
+</ol>
+<p><strong>数据类型选择的通用原则：</strong></p>
+<ul>
+<li><strong>选择最小的能正确存储数据的类型：</strong> 节省存储空间，提高查询效率。</li>
+<li><strong>简单性：</strong> 尽量选择简单的数据类型。例如，如果只需要存储 ‘Y’/‘N’，<code>CHAR(1)</code> 比 <code>VARCHAR(1)</code> 可能更好（尽管差异微小）。</li>
+<li><strong>避免 <code>NULL</code> (如果可能)：</strong> <code>NULL</code> 值需要额外的存储空间，并且在查询中处理起来比较复杂 (需要 <code>IS NULL</code> 或 <code>IS NOT NULL</code>)。如果业务允许，可以为列设置 <code>NOT NULL</code> 并提供一个有意义的默认值。</li>
+<li><strong>一致性：</strong> 在相关联的表和列中，使用相同或兼容的数据类型。</li>
+<li><strong>考虑查询需求：</strong> 数据类型会影响索引的效率和查询的性能。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Database/" class="category-chain-item">Database</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/" class="category-chain-item">SQL</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/MySQL/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MySQL/" class="print-no-link">#MySQL</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>DDL, DML, DQL</div>
+      <div>http://example.com/2024/05/24/Database/SQL/MySQL/基础/DDL, DML, DQL/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E9%AB%98%E7%BA%A7%20SQL%20%E6%9F%A5%E8%AF%A2/" title="高级 SQL 查询">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">高级 SQL 查询</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/04/24/Linux/Linux%20%E5%85%AB%E5%A4%A7%E7%B1%BB%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" title="Linux 八大类常用命令">
+                        <span class="hidden-mobile">Linux 八大类常用命令</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

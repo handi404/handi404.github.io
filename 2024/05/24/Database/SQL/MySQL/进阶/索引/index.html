@@ -1,0 +1,1188 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="索引是 MySQL 性能优化的核心武器。理解索引的原理、类型和优化原则，对于编写高效的 SQL 查询至关重要。  一、索引的原理与数据结构 (B+Tree 是核心) 1. 什么是索引？  通俗理解： 索引就像一本书的目录。没有目录，你需要逐页翻阅才能找到特定内容；有了目录，你可以快速定位到内容所在的页码。 数据库定义： 索引是一种特殊的数据结构，它存储了表中一个或多个列的值以及这些值对应的数据行在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="索引">
+<meta property="og:url" content="http://example.com/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E7%B4%A2%E5%BC%95/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="索引是 MySQL 性能优化的核心武器。理解索引的原理、类型和优化原则，对于编写高效的 SQL 查询至关重要。  一、索引的原理与数据结构 (B+Tree 是核心) 1. 什么是索引？  通俗理解： 索引就像一本书的目录。没有目录，你需要逐页翻阅才能找到特定内容；有了目录，你可以快速定位到内容所在的页码。 数据库定义： 索引是一种特殊的数据结构，它存储了表中一个或多个列的值以及这些值对应的数据行在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/database/mysql.png">
+<meta property="article:published_time" content="2024-05-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-01T12:58:51.623Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/database/mysql.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>索引 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="索引"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-24 00:00" pubdate>
+          2024年5月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          49 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">索引</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年8月1日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>索引是 MySQL 性能优化的核心武器。理解索引的原理、类型和优化原则，对于编写高效的 SQL 查询至关重要。</p>
+<hr>
+<h3 id="一、索引的原理与数据结构-B-Tree-是核心">一、索引的原理与数据结构 (B+Tree 是核心)</h3>
+<p><strong>1. 什么是索引？</strong></p>
+<ul>
+<li><strong>通俗理解：</strong> 索引就像一本书的目录。没有目录，你需要逐页翻阅才能找到特定内容；有了目录，你可以快速定位到内容所在的页码。</li>
+<li><strong>数据库定义：</strong> 索引是一种特殊的数据结构，它存储了表中一个或多个列的值以及这些值对应的数据行在磁盘上的物理位置（或指向数据行的指针）。数据库可以使用索引来快速查找包含特定列值的行，而无需扫描整个表。</li>
+</ul>
+<p><strong>2. 为什么需要索引？</strong></p>
+<ul>
+<li><strong>提高查询速度：</strong> 这是索引最主要的目的。通过索引，数据库可以避免全表扫描 (Full Table Scan)，大大减少磁盘 I/O 操作。</li>
+<li><strong>加速排序：</strong> 如果 <code>ORDER BY</code> 子句中的列有索引，数据库可以直接利用索引的有序性，避免额外的排序操作。</li>
+<li><strong>加速分组：</strong> 类似于排序，<code>GROUP BY</code> 子句中的列有索引也有助于提高分组效率。</li>
+<li><strong>保证数据的唯一性：</strong> 主键索引和唯一索引可以确保列值的唯一性。</li>
+</ul>
+<p><strong>3. 索引的代价：</strong></p>
+<ul>
+<li><strong>存储空间：</strong> 索引本身也需要占用磁盘空间。索引越多，占用的空间越大。</li>
+<li><strong>维护成本：</strong> 当对表中的数据进行 <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> 操作时，数据库不仅要修改数据行，还需要更新相关的索引结构，这会增加写操作的开셔 (overhead)。</li>
+<li><strong>创建时间：</strong> 在大表上创建索引可能需要较长时间。</li>
+</ul>
+<p><strong>4. 核心数据结构：B+Tree</strong></p>
+<p>MySQL 中最常用的索引类型（如 InnoDB 和 MyISAM 的普通索引、主键索引、唯一索引）默认都使用 B+Tree 数据结构。</p>
+<ul>
+<li>
+<p><strong>B-Tree (B 树，多路平衡查找树)：</strong></p>
+<ul>
+<li>是一种自平衡的树，所有叶子节点在同一层。</li>
+<li>每个节点可以存储多个键值和指向子节点的指针。</li>
+<li>非叶子节点也存储数据 (或指向数据的指针)。</li>
+<li>查找、插入、删除的时间复杂度都是 O(log N)。</li>
+</ul>
+</li>
+<li>
+<p><strong>B+Tree (B+树)：</strong> 是 B-Tree 的一种变体，专门为磁盘等外部存储设计，更适合数据库索引。</p>
+<ul>
+<li><strong>所有数据都存储在叶子节点：</strong> 非叶子节点只存储键值（作为索引）和指向下一层节点的指针，不存储实际数据记录。这使得非叶子节点可以存储更多的键值，从而降低树的高度，减少磁盘 I/O 次数。</li>
+<li><strong>叶子节点之间通过指针连接：</strong> 叶子节点形成一个有序链表。这对于范围查询 (Range Scan) 和顺序扫描非常高效，因为可以直接在叶子节点层级按顺序遍历。</li>
+<li><strong>查询效率更稳定：</strong> 任何关键字的查找都必须从根节点走到叶子节点，路径长度相同，所以查询性能相对稳定。</li>
+</ul>
+</li>
+</ul>
+<p><strong>B+Tree 在 InnoDB 和 MyISAM 中的实现差异：</strong></p>
+<ul>
+<li>
+<p><strong>InnoDB (聚集索引 Clustered Index)：</strong></p>
+<ul>
+<li>表数据本身就是按照主键的 B+Tree 结构存储的。叶子节点存储了完整的行数据。</li>
+<li>因此，通过主键查询非常快，因为只需要查找一次 B+Tree。</li>
+<li>二级索引 (Secondary Index) 的叶子节点存储的是索引列的值和对应行的主键值。通过二级索引查找数据需要两次 B+Tree 查找：一次找到主键，一次通过主键找到数据行 (这个过程称为“回表”)。</li>
+<li><strong>优点：</strong> 主键查询快，范围查询基于主键也快。</li>
+<li><strong>缺点：</strong> 二级索引查找可能需要回表；主键的插入顺序对性能影响较大（推荐使用自增 ID 作为主键，以减少页分裂）。</li>
+</ul>
+</li>
+<li>
+<p><strong>MyISAM (非聚集索引 Non-Clustered Index)：</strong></p>
+<ul>
+<li>主键索引和二级索引在结构上没有本质区别。</li>
+<li>索引的 B+Tree 叶子节点存储的是索引列的值和指向数据文件中实际数据行的物理地址的指针。</li>
+<li>数据文件和索引文件是分离的。</li>
+<li><strong>优点：</strong> 索引和数据分离，某些情况下二级索引查找可能比 InnoDB (需要回表时) 快一点点 (但 InnoDB 有 Buffer Pool 整体性能通常更好)。</li>
+<li><strong>缺点：</strong> 总是需要一次额外的寻址来获取数据行。</li>
+</ul>
+</li>
+</ul>
+<p><strong>现代 MySQL (尤其是 8.0+) 强烈推荐并默认使用 InnoDB。</strong></p>
+<hr>
+<h3 id="二、不同类型的索引">二、不同类型的索引</h3>
+<ol>
+<li>
+<p><strong>按功能划分：</strong></p>
+<ul>
+<li><strong>主键索引 (Primary Key Index)：</strong>
+<ul>
+<li>一种特殊的唯一索引，不允许有 NULL 值。</li>
+<li>一个表只能有一个主键索引。</li>
+<li>在 InnoDB 中，主键索引是聚集索引。</li>
+<li>创建方式：<code>PRIMARY KEY (column_list)</code></li>
+</ul>
+</li>
+<li><strong>唯一索引 (Unique Index)：</strong>
+<ul>
+<li>索引列的值必须唯一，但允许有 NULL 值 (多个 NULL 值是允许的)。</li>
+<li>一个表可以有多个唯一索引。</li>
+<li>创建方式：<code>UNIQUE INDEX index_name (column_list)</code> 或 <code>UNIQUE KEY index_name (column_list)</code></li>
+</ul>
+</li>
+<li><strong>普通索引 (Normal Index / Non-Unique Index)：</strong>
+<ul>
+<li>最基本的索引类型，没有唯一性或主键的限制。</li>
+<li>仅用于加速查询。</li>
+<li>创建方式：<code>INDEX index_name (column_list)</code> 或 <code>KEY index_name (column_list)</code></li>
+</ul>
+</li>
+<li><strong>全文索引 (Full-Text Index)：</strong>
+<ul>
+<li>用于对文本内容（如 <code>CHAR</code>, <code>VARCHAR</code>, <code>TEXT</code> 列）进行全文搜索，可以查找单词或短语。</li>
+<li>InnoDB 在 MySQL 5.6+ 开始支持全文索引 (使用倒排索引实现)。MyISAM 也支持。</li>
+<li>使用 <code>MATCH() ... AGAINST()</code> 语法进行查询。</li>
+<li>创建方式：<code>FULLTEXT INDEX index_name (column_list)</code></li>
+<li><strong>应用与扩展：</strong>
+<ul>
+<li>支持自然语言搜索 (<code>IN NATURAL LANGUAGE MODE</code>)、布尔搜索 (<code>IN BOOLEAN MODE</code>)。</li>
+<li>对于中文等需要分词的语言，InnoDB 的内置全文索引可能需要配置 ngram 解析器或使用外部插件。</li>
+<li>对于更专业的全文搜索需求，通常会考虑 Elasticsearch, Solr 等专用搜索引擎。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>按物理存储/结构划分：</strong></p>
+<ul>
+<li><strong>聚集索引 (Clustered Index)：</strong> (主要指 InnoDB 的主键索引)
+<ul>
+<li>索引的顺序与数据行在磁盘上的物理存储顺序一致。</li>
+<li>叶子节点包含完整的行数据。</li>
+</ul>
+</li>
+<li><strong>非聚集索引 (Non-Clustered Index)：</strong> (如 MyISAM 的所有索引，InnoDB 的二级索引)
+<ul>
+<li>索引的逻辑顺序与数据行的物理存储顺序不一定一致。</li>
+<li>叶子节点存储索引键和指向数据行的指针 (MyISAM) 或主键值 (InnoDB)。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>按索引列数量划分：</strong></p>
+<ul>
+<li><strong>单列索引 (Single-Column Index)：</strong> 索引建立在单个列上。</li>
+<li><strong>组合索引 / 联合索引 (Composite Index / Multi-Column Index)：</strong>
+<ul>
+<li>索引建立在多个列上。</li>
+<li>创建方式：<code>INDEX index_name (column1, column2, ...)</code></li>
+<li><strong>非常重要：</strong> 组合索引遵循“最左前缀原则”（后面会详细讲）。</li>
+<li><strong>应用场景：</strong>
+<ul>
+<li>当查询条件经常同时涉及多个列时。</li>
+<li>用于覆盖查询。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>其他特殊索引 (了解)：</strong></p>
+<ul>
+<li><strong>空间索引 (Spatial Index)：</strong> (MySQL 5.7.5+ InnoDB 支持 R-Tree)
+<ul>
+<li>用于地理空间数据类型 (如 <code>GEOMETRY</code>, <code>POINT</code>) 的索引，加速地理位置相关的查询 (如查找附近的点)。</li>
+</ul>
+</li>
+<li><strong>哈希索引 (Hash Index)：</strong>
+<ul>
+<li>Memory 存储引擎支持显式的哈希索引。</li>
+<li>InnoDB 有自适应哈希索引 (Adaptive Hash Index - AHI)，是内部优化，用户不能直接创建或控制。AHI 根据热点数据自动在 B+Tree 索引之上构建哈希索引，以加速等值查询。</li>
+<li><strong>特点：</strong> 等值查询非常快 (O(1) 理论上)，但不支持范围查询、排序。</li>
+</ul>
+</li>
+<li><strong>前缀索引 (Prefix Index)：</strong>
+<ul>
+<li>对于 <code>VARCHAR</code>, <code>CHAR</code>, <code>TEXT</code>, <code>BLOB</code> 等字符串列，可以只对列值的前缀部分创建索引，以节省空间和提高效率。</li>
+<li>创建方式：<code>INDEX index_name (column_name(length))</code></li>
+<li><strong>缺点：</strong> 不能用于覆盖索引，<code>ORDER BY</code> 和 <code>GROUP BY</code> 可能无法利用前缀索引。</li>
+<li><strong>选择 <code>length</code>：</strong> 需要权衡索引的选择性 (区分度) 和索引大小。通常通过 <code>SELECT COUNT(DISTINCT LEFT(column_name, N)) / COUNT(*) FROM table_name;</code> 来评估不同前缀长度的选择性。</li>
+</ul>
+</li>
+<li><strong>降序索引 (Descending Indexes)：</strong> (MySQL 8.0+)
+<ul>
+<li>允许在组合索引中为某些列指定降序 (<code>DESC</code>) 排序。</li>
+<li><code>CREATE INDEX idx_col_asc_col_desc ON t1 (c1 ASC, c2 DESC);</code></li>
+<li>这对于某些 <code>ORDER BY col1 ASC, col2 DESC</code> 类型的查询非常有用，可以避免 filesort。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="三、创建和管理索引的语法">三、创建和管理索引的语法</h3>
+<ol>
+<li>
+<p><strong>创建索引 (CREATE INDEX)：</strong></p>
+<ul>
+<li><strong>在创建表时定义：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> my_table (<br>    id <span class="hljs-type">INT</span> AUTO_INCREMENT,<br>    name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">NOT NULL</span>,<br>    email <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>),<br>    age <span class="hljs-type">INT</span>,<br>    <span class="hljs-keyword">PRIMARY KEY</span> (id),                         <span class="hljs-comment">-- 主键索引</span><br>    <span class="hljs-keyword">UNIQUE</span> INDEX uidx_email (email),           <span class="hljs-comment">-- 唯一索引</span><br>    INDEX idx_name_age (name, age),           <span class="hljs-comment">-- 组合普通索引</span><br>    FULLTEXT INDEX ft_description (description) <span class="hljs-comment">-- 全文索引 (假设有 description 列)</span><br>) ENGINE<span class="hljs-operator">=</span>InnoDB;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>使用 <code>ALTER TABLE</code> 添加索引：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> my_table <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">PRIMARY KEY</span> (id); <span class="hljs-comment">-- (如果表还没有主键)</span><br><span class="hljs-keyword">ALTER TABLE</span> my_table <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">UNIQUE</span> INDEX uidx_email (email);<br><span class="hljs-keyword">ALTER TABLE</span> my_table <span class="hljs-keyword">ADD</span> INDEX idx_age (age);<br><span class="hljs-keyword">ALTER TABLE</span> my_table <span class="hljs-keyword">ADD</span> FULLTEXT INDEX ft_description (description);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>使用 <code>CREATE INDEX</code> 语句 (更通用的方式)：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">UNIQUE</span> INDEX uidx_email <span class="hljs-keyword">ON</span> my_table (email);<br><span class="hljs-keyword">CREATE</span> INDEX idx_name <span class="hljs-keyword">ON</span> my_table (name);<br><span class="hljs-keyword">CREATE</span> FULLTEXT INDEX ft_profile <span class="hljs-keyword">ON</span> user_profiles (profile_text);<br><span class="hljs-keyword">CREATE</span> INDEX idx_name_prefix <span class="hljs-keyword">ON</span> my_table (name(<span class="hljs-number">10</span>)); <span class="hljs-comment">-- 前缀索引</span><br><span class="hljs-keyword">CREATE</span> INDEX idx_val_desc <span class="hljs-keyword">ON</span> my_table (<span class="hljs-keyword">value</span> <span class="hljs-keyword">DESC</span>); <span class="hljs-comment">-- 降序索引 (MySQL 8.0+)</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>查看索引 (SHOW INDEXES / SHOW KEYS)：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SHOW</span> INDEXES <span class="hljs-keyword">FROM</span> my_table;<br><span class="hljs-keyword">SHOW</span> KEYS <span class="hljs-keyword">FROM</span> my_table; <span class="hljs-comment">-- 同上</span><br><span class="hljs-comment">-- 结果列说明：</span><br><span class="hljs-comment">-- Table: 表名</span><br><span class="hljs-comment">-- Non_unique: 0 表示唯一索引, 1 表示非唯一索引</span><br><span class="hljs-comment">-- Key_name: 索引名称 (PRIMARY 表示主键)</span><br><span class="hljs-comment">-- Seq_in_index: 列在组合索引中的序号 (从 1 开始)</span><br><span class="hljs-comment">-- Column_name: 索引包含的列名</span><br><span class="hljs-comment">-- Collation: 列的排序规则 (A=Ascending, NULL=未排序/无定义，对于B+Tree通常是升序)</span><br><span class="hljs-comment">-- Cardinality: 索引中唯一值的估计数量 (基数)。越高通常意味着索引选择性越好。这是一个统计值，可能不完全准确。</span><br><span class="hljs-comment">-- Sub_part: 前缀索引的长度 (如果不是前缀索引则为 NULL)</span><br><span class="hljs-comment">-- Packed: 关键字如何被打包 (通常为 NULL)</span><br><span class="hljs-comment">-- Null: YES 表示列允许 NULL, 空字符串表示不允许</span><br><span class="hljs-comment">-- Index_type: 索引类型 (如 BTREE, FULLTEXT, HASH, RTREE)</span><br><span class="hljs-comment">-- Comment: 索引注释 (如 disabled)</span><br><span class="hljs-comment">-- Index_comment: 创建索引时指定的注释</span><br></code></pre></td></tr></table></figure>
+<p>也可以从 <code>information_schema.STATISTICS</code> 表查询索引信息。</p>
+</li>
+<li>
+<p><strong>删除索引 (DROP INDEX)：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> INDEX index_name <span class="hljs-keyword">ON</span> my_table;<br><span class="hljs-keyword">ALTER TABLE</span> my_table <span class="hljs-keyword">DROP</span> INDEX index_name;<br><span class="hljs-keyword">ALTER TABLE</span> my_table <span class="hljs-keyword">DROP</span> <span class="hljs-keyword">PRIMARY KEY</span>; <span class="hljs-comment">-- 删除主键 (表必须没有自增列依赖它，或者先移除自增属性)</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>重命名索引 (RENAME INDEX)：</strong> (MySQL 5.7+)</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> my_table RENAME INDEX old_index_name <span class="hljs-keyword">TO</span> new_index_name;<br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<h3 id="四、索引优化原则">四、索引优化原则</h3>
+<p>仅仅创建索引是不够的，关键在于创建<strong>正确且高效</strong>的索引，并编写能够利用这些索引的查询。</p>
+<ol>
+<li>
+<p><strong>最左前缀原则 (Leftmost Prefix Principle) - 针对组合索引</strong></p>
+<ul>
+<li><strong>核心思想：</strong> 如果你创建了一个组合索引 <code>(col1, col2, col3)</code>，那么查询条件中使用了这个索引的最左边的列（或列的组合）时，索引才会被有效利用。</li>
+<li><strong>有效情况：</strong>
+<ul>
+<li><code>WHERE col1 = ?</code></li>
+<li><code>WHERE col1 = ? AND col2 = ?</code></li>
+<li><code>WHERE col1 = ? AND col2 = ? AND col3 = ?</code></li>
+<li><code>WHERE col1 = ? AND col3 = ?</code> (此时只有 <code>col1</code> 部分的索引被利用，<code>col3</code> 不会直接通过这个索引的 B+Tree 结构快速定位，但如果 <code>col1</code> 过滤后结果集很小，MySQL 可能会继续使用索引扫描)</li>
+</ul>
+</li>
+<li><strong>失效或部分有效情况：</strong>
+<ul>
+<li><code>WHERE col2 = ?</code> (索引失效)</li>
+<li><code>WHERE col3 = ?</code> (索引失效)</li>
+<li><code>WHERE col2 = ? AND col3 = ?</code> (索引失效)</li>
+</ul>
+</li>
+<li><strong>重要推论：</strong>
+<ul>
+<li>创建组合索引时，将<strong>选择性最高</strong> (区分度最大，即不同值的数量多) 且<strong>最常用作查询条件</strong>的列放在最左边。</li>
+<li>如果查询条件中使用了组合索引的中间列但没有使用其左边的列，索引通常不会被使用 (例如 <code>WHERE col2 = ?</code> 对于索引 <code>(col1, col2, col3)</code> 来说是无效的)。</li>
+<li><strong>范围查询对后续列的影响：</strong> 如果组合索引的某个列使用了范围查询 (如 <code>&gt;</code>, <code>&lt;</code>, <code>BETWEEN</code>, <code>LIKE 'xx%'</code>)，那么该列右边的所有列通常无法再利用 B+Tree 索引的快速查找特性，但仍可能用于索引扫描或覆盖索引。
+<ul>
+<li>例：<code>WHERE col1 = 'A' AND col2 &gt; 10 AND col3 = 'X'</code>，对于索引 <code>(col1, col2, col3)</code>，<code>col1</code> 和 <code>col2</code> 可以利用索引，但 <code>col3</code> 在 <code>col2</code> 范围查询之后，B+Tree 结构优势减弱。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>覆盖索引 (Covering Index)</strong></p>
+<ul>
+<li><strong>定义：</strong> 如果一个查询需要的所有列都恰好包含在某个索引中 (无论是主键索引还是二级索引)，那么 MySQL 可以直接从该索引中获取所有需要的数据，而无需回表到数据行 (对于 InnoDB 的二级索引) 或数据文件 (对于 MyISAM) 去读取。这样的索引就称为“覆盖索引”。</li>
+<li><strong>优势：</strong>
+<ul>
+<li><strong>减少磁盘 I/O：</strong> 避免了回表操作，极大提高查询性能。</li>
+<li><strong>索引通常比数据行小：</strong> 扫描索引通常比扫描数据行更快。</li>
+</ul>
+</li>
+<li><strong>如何利用：</strong>
+<ul>
+<li>在 <code>SELECT</code> 列表中只选择索引中包含的列。</li>
+<li>在 <code>WHERE</code>, <code>ORDER BY</code>, <code>GROUP BY</code> 子句中使用的列也尽量是索引的一部分。</li>
+</ul>
+</li>
+<li><strong><code>EXPLAIN</code> 中的体现：</strong> <code>Extra</code> 列显示 <code>Using index</code>。</li>
+<li><strong>示例：</strong> 表 <code>users (id PK, name, age, email)</code>，有索引 <code>idx_name_age (name, age)</code>。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 这是覆盖索引查询</span><br><span class="hljs-keyword">SELECT</span> name, age <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Alice&#x27;</span>; <span class="hljs-comment">-- name, age 都在 idx_name_age 中</span><br><br><span class="hljs-comment">-- 这不是覆盖索引查询 (需要回表获取 email)</span><br><span class="hljs-keyword">SELECT</span> name, age, email <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Alice&#x27;</span>;<br></code></pre></td></tr></table></figure>
+为了让第二个查询也成为覆盖索引，可以创建 <code>idx_name_age_email (name, age, email)</code>。</li>
+</ul>
+</li>
+<li>
+<p><strong>索引下推 (Index Condition Pushdown - ICP)</strong> (MySQL 5.6+)</p>
+<ul>
+<li><strong>背景：</strong> 在没有 ICP 之前，对于组合索引，如果 <code>WHERE</code> 条件中有些列不符合最左前缀，但存在于索引中，MySQL Server 层会从存储引擎层获取所有满足最左前缀的行，然后在 Server 层根据剩余条件进行过滤。</li>
+<li><strong>ICP 作用：</strong> 允许存储引擎 (如 InnoDB) 在访问索引时，就利用索引中包含的但非最左前缀的列来过滤数据，从而减少从存储引擎返回给 Server 层的行数。</li>
+<li><strong><code>EXPLAIN</code> 中的体现：</strong> <code>Extra</code> 列显示 <code>Using index condition</code>。</li>
+<li><strong>示例：</strong> 表 <code>people (zipcode, lastname, firstname, address)</code>，有索引 <code>idx_zip_last_first (zipcode, lastname, firstname)</code>。<br>
+查询：<code>SELECT * FROM people WHERE zipcode='95054' AND lastname LIKE '%Smith%' AND firstname LIKE '%John%';</code>
+<ul>
+<li><strong>没有 ICP：</strong> 存储引擎通过 <code>zipcode='95054'</code> 找到所有匹配行，返回给 Server 层。Server 层再根据 <code>lastname LIKE '%Smith%'</code> 和 <code>firstname LIKE '%John%'</code> 进行过滤。</li>
+<li><strong>有 ICP：</strong> 存储引擎通过 <code>zipcode='95054'</code> 定位，然后在索引层面直接用 <code>lastname LIKE '%Smith%'</code> (虽然 <code>%</code> 开头不能用 B+Tree 快速定位，但可以在扫描索引时进行比较) 来过滤，减少返回给 Server 层的行。注意，<code>firstname LIKE '%John%'</code> 如果在 <code>lastname</code> 过滤之后，可能仍然需要在 Server 层处理，或者如果优化器认为合适，也可能部分下推。</li>
+</ul>
+</li>
+<li><strong>优势：</strong> 减少了存储引擎和 Server 层之间的数据传输，减少了 Server 层的 CPU 计算。</li>
+</ul>
+</li>
+<li>
+<p><strong>避免索引失效的场景 (常见误区与注意事项)：</strong></p>
+<ul>
+<li><strong>对索引列使用函数或表达式：</strong>
+<ul>
+<li><code>WHERE YEAR(create_date) = 2023</code> (索引失效)</li>
+<li>应改为：<code>WHERE create_date &gt;= '2023-01-01' AND create_date &lt; '2024-01-01'</code> (如果 <code>create_date</code> 有索引)</li>
+</ul>
+</li>
+<li><strong><code>LIKE</code> 查询以通配符 <code>%</code> 开头：</strong>
+<ul>
+<li><code>WHERE name LIKE '%john'</code> (索引失效)</li>
+<li><code>WHERE name LIKE 'john%'</code> (索引有效，遵循最左前缀)</li>
+<li>如果必须双向模糊查询，考虑全文索引或外部搜索引擎。</li>
+</ul>
+</li>
+<li><strong><code>OR</code> 条件的使用：</strong>
+<ul>
+<li>如果 <code>OR</code> 连接的条件中，<strong>有一个列没有索引</strong>，那么整个查询的索引可能会失效，倾向于全表扫描。</li>
+<li><code>WHERE indexed_col = ? OR unindexed_col = ?</code> (索引可能失效)</li>
+<li>如果 <code>OR</code> 连接的每个条件都涉及到独立的索引，优化器可能会使用索引合并 (Index Merge)。</li>
+<li>可以考虑将 <code>OR</code> 查询拆分为多个 <code>UNION ALL</code> 查询，每个查询使用各自的索引。</li>
+</ul>
+</li>
+<li><strong>类型不匹配 / 隐式类型转换：</strong>
+<ul>
+<li>如果索引列是字符串类型，但查询条件给的是数字 (或反之)，MySQL 可能会进行隐式类型转换，导致索引失效。</li>
+<li><code>WHERE string_col = 123</code> (如果 <code>string_col</code> 是 <code>VARCHAR</code>，可能会将 <code>string_col</code> 转换为数字再比较，索引失效)</li>
+<li>应保持查询条件的数据类型与索引列的数据类型一致：<code>WHERE string_col = '123'</code>。</li>
+</ul>
+</li>
+<li><strong><code>IS NULL</code> / <code>IS NOT NULL</code>：</strong>
+<ul>
+<li>早期版本的 MySQL (如 5.5 之前) 中，<code>IS NULL</code> 可能不走索引，<code>IS NOT NULL</code> 更可能不走。</li>
+<li>现代 MySQL (尤其是 InnoDB) 对 <code>IS NULL</code> 和 <code>IS NOT NULL</code> 的索引使用优化得更好，通常是可以走索引的，但取决于 NULL 值的占比和索引的选择性。</li>
+<li>如果列上 NULL 值非常多，<code>IS NOT NULL</code> 可能仍然导致全表扫描，反之亦然。</li>
+</ul>
+</li>
+<li><strong><code>NOT IN</code> 和 <code>NOT EXISTS</code>：</strong>
+<ul>
+<li><code>NOT IN (subquery)</code> 如果子查询结果包含 NULL，通常会导致非常差的性能或意外结果（如前述）。</li>
+<li><code>NOT EXISTS</code> 通常更健壮。</li>
+<li>直接使用 <code>col NOT IN (val1, val2)</code>，如果 <code>col</code> 有索引，通常是能利用的。</li>
+</ul>
+</li>
+<li><strong>组合索引未使用最左前缀。</strong> (已在最左前缀原则中详述)</li>
+<li><strong>排序 (<code>ORDER BY</code>) 与索引：</strong>
+<ul>
+<li>如果 <code>ORDER BY</code> 的列与查询条件中能利用的索引列顺序一致 (且排序方向一致，或 MySQL 8.0+ 支持降序索引)，可以避免 filesort。</li>
+<li>如果 <code>ORDER BY</code> 的列不在索引中，或者顺序不一致，或者中间断开 (如 <code>ORDER BY col1, col3</code> 而索引是 <code>(col1, col2, col3)</code> 且 <code>col2</code> 未用于等值过滤)，可能会导致 filesort。</li>
+<li><code>EXPLAIN</code> 中的 <code>Extra</code> 列出现 <code>Using filesort</code> 表示需要额外的排序操作。</li>
+</ul>
+</li>
+<li><strong>数据量过小：</strong> 如果表的数据量非常小 (例如几百行)，MySQL 优化器可能会认为全表扫描比走索引更快，因为走索引本身也有开销 (查找索引、回表等)。</li>
+<li><strong>统计信息不准：</strong> MySQL 优化器依赖表的统计信息 (如基数 <code>Cardinality</code>) 来选择最优执行计划。如果统计信息过时或不准确，可能导致选择了错误的索引或不走索引。可以使用 <code>ANALYZE TABLE table_name;</code> 来更新统计信息。</li>
+</ul>
+</li>
+<li>
+<p><strong>其他优化建议：</strong></p>
+<ul>
+<li><strong>选择合适的列创建索引：</strong>
+<ul>
+<li><strong>高选择性 (High Cardinality)：</strong> 列中不同值的数量越多，选择性越高，索引效果越好。例如，性别列的选择性就很低，通常不适合单独创建索引 (除非用于覆盖索引或与其他高选择性列组成组合索引)。</li>
+<li><strong>经常在 <code>WHERE</code> 子句中使用的列。</strong></li>
+<li><strong>经常在 <code>JOIN</code> 操作中作为连接条件的列 (外键列通常会自动或建议创建索引)。</strong></li>
+<li><strong>经常在 <code>ORDER BY</code> 或 <code>GROUP BY</code> 子句中使用的列。</strong></li>
+</ul>
+</li>
+<li><strong>避免冗余和重复索引：</strong>
+<ul>
+<li>例如，有了 <code>PRIMARY KEY (id)</code>，再创建 <code>UNIQUE INDEX (id)</code> 就是冗余的。</li>
+<li>有了组合索引 <code>(col1, col2)</code>，再单独创建 <code>INDEX (col1)</code> 通常也是冗余的 (因为 <code>(col1, col2)</code> 可以满足对 <code>col1</code> 的查询，遵循最左前缀)。但是，如果经常有只针对 <code>col1</code> 的覆盖查询，而 <code>(col1, col2)</code> 不能完全覆盖，或者 <code>col2</code> 使得索引过大，有时单独的 <code>(col1)</code> 索引可能有意义。</li>
+</ul>
+</li>
+<li><strong>控制索引数量：</strong> 索引不是越多越好。每个额外的索引都会增加写操作的开销和存储空间。只创建真正需要的索引。</li>
+<li><strong>短索引 (前缀索引)：</strong> 对于长的字符串列，考虑使用前缀索引。</li>
+<li><strong>考虑查询的具体场景：</strong> 没有万能的索引策略，需要根据应用的具体查询模式来设计。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="五、使用-EXPLAIN-分析查询计划">五、使用 <code>EXPLAIN</code> 分析查询计划</h3>
+<p><code>EXPLAIN</code> (或 <code>EXPLAIN EXTENDED</code>, <code>EXPLAIN FORMAT=JSON</code>) 是 MySQL 提供的用于分析 <code>SELECT</code> 查询执行计划的强大工具。它可以告诉你 MySQL 是如何执行查询的，是否使用了索引，使用了哪个索引，连接表的顺序等。</p>
+<p><strong>基本用法：</strong><br>
+<code>EXPLAIN SELECT ... FROM ... WHERE ...;</code></p>
+<p><strong><code>EXPLAIN</code> 输出的关键列：</strong></p>
+<ul>
+<li><strong><code>id</code>:</strong> 查询的标识符。每个 <code>SELECT</code> 关键字都会分配一个唯一的 <code>id</code>。<code>id</code> 越大，越先执行。<code>id</code> 相同，从上往下执行。</li>
+<li><strong><code>select_type</code>:</strong> <code>SELECT</code> 查询的类型。
+<ul>
+<li><code>SIMPLE</code>: 简单查询 (不包含子查询或 <code>UNION</code>)。</li>
+<li><code>PRIMARY</code>: 最外层的 <code>SELECT</code> (在子查询或 <code>UNION</code> 结构中)。</li>
+<li><code>SUBQUERY</code>: 在 <code>SELECT</code> 列表或 <code>WHERE</code> 子句中的子查询。</li>
+<li><code>DERIVED</code>: 在 <code>FROM</code> 子句中的子查询 (派生表)。</li>
+<li><code>UNION</code>: <code>UNION</code> 操作中第二个及后续的 <code>SELECT</code>。</li>
+<li><code>UNION RESULT</code>: <code>UNION</code> 操作的结果集。</li>
+</ul>
+</li>
+<li><strong><code>table</code>:</strong> 当前行正在访问的表名 (可能是派生表或 <code>UNION</code> 结果的别名)。</li>
+<li><strong><code>partitions</code>:</strong> (如果表有分区) 查询匹配的分区。</li>
+<li><strong><code>type</code>:</strong> <strong>非常重要！</strong> 表示 MySQL 如何查找表中的行，访问类型，性能从好到差大致如下：
+<ul>
+<li><code>system</code>: 表只有一行 (系统表)，是 <code>const</code> 的特例。</li>
+<li><code>const</code>: 表最多只有一行匹配，通过主键或唯一索引进行等值查询，非常快。</li>
+<li><code>eq_ref</code>: 对于前一个表的每一行，从当前表中只查找一行。通常出现在使用主键或唯一非空索引的 <code>JOIN</code> 操作中。</li>
+<li><code>ref</code>: 使用非唯一性索引或唯一索引的前缀进行的查找，返回匹配某个单独值的所有行。</li>
+<li><code>fulltext</code>: 使用全文索引。</li>
+<li><code>ref_or_null</code>: 类似于 <code>ref</code>，但 MySQL 会额外搜索包含 <code>NULL</code> 值的行。</li>
+<li><code>index_merge</code>: 使用了索引合并优化 (查询条件涉及多个索引)。</li>
+<li><code>unique_subquery</code>: 类似于 <code>eq_ref</code>，用于 <code>IN (subquery)</code> 且子查询是唯一索引查找。</li>
+<li><code>index_subquery</code>: 类似于 <code>unique_subquery</code>，但子查询是非唯一索引查找。</li>
+<li><code>range</code>: 使用索引进行范围扫描 (如 <code>BETWEEN</code>, <code>&gt;</code>, <code>&lt;</code>, <code>IN</code>)。</li>
+<li><code>index</code>: <strong>全索引扫描 (Full Index Scan)</strong>。扫描整个索引树。比 <code>ALL</code> 快，因为索引通常比表数据小。如果 <code>Extra</code> 中有 <code>Using index</code>，表示是覆盖索引。</li>
+<li><code>ALL</code>: <strong>全表扫描 (Full Table Scan)</strong>。扫描整个表的数据行。通常是性能最差的，应尽量避免。</li>
+</ul>
+</li>
+<li><strong><code>possible_keys</code>:</strong> 显示 MySQL 认为可能适用于此查询的索引列表。可能是 <code>NULL</code>。</li>
+<li><strong><code>key</code>:</strong> <strong>非常重要！</strong> MySQL 实际决定使用的索引。如果是 <code>NULL</code>，则没有使用索引。如果 <code>possible_keys</code> 有值而 <code>key</code> 为 <code>NULL</code>，需要分析原因。</li>
+<li><strong><code>key_len</code>:</strong> 表示索引中被实际使用的字节数。越短通常越好 (但要保证选择性)。可以用来判断组合索引是否被完全利用。</li>
+<li><strong><code>ref</code>:</strong> 显示哪些列或常量被用于从 <code>key</code> 列指定的索引中选取行。</li>
+<li><strong><code>rows</code>:</strong> MySQL 估计为了找到所需的行而必须检查的行数。这是一个估计值，不一定精确。越小越好。</li>
+<li><strong><code>filtered</code>:</strong> (MySQL 5.7+) 一个百分比，表示存储引擎返回的行中，预计有多少行会满足表条件（<code>WHERE</code> 子句中的条件，但不包括通过索引直接定位的条件）。<code>rows * filtered / 100</code> 是预计与下一张表连接的行数。</li>
+<li><strong><code>Extra</code>:</strong> <strong>非常重要！</strong> 包含不适合在其他列中显示但十分重要的额外信息。
+<ul>
+<li><code>Using index</code>: <strong>好！</strong> 查询使用了覆盖索引，无需回表。</li>
+<li><code>Using where</code>: 表示 MySQL 服务器层将在存储引擎返回行后应用 <code>WHERE</code> 子句中的过滤条件。</li>
+<li><code>Using index condition</code>: <strong>好！</strong> 查询使用了索引下推 (ICP)。</li>
+<li><code>Using temporary</code>: <strong>差！</strong> MySQL 需要创建一个临时表来处理查询 (通常在 <code>ORDER BY</code> 和 <code>GROUP BY</code> 的列不同时，或 <code>DISTINCT</code> 与 <code>ORDER BY</code> 一起使用时)。应尽量避免。</li>
+<li><code>Using filesort</code>: <strong>差！</strong> MySQL 需要在内存或磁盘上进行额外的排序操作 (当无法使用索引排序时)。应尽量避免。</li>
+<li><code>Select tables optimized away</code>: 查询被高度优化，甚至不需要访问表 (例如，<code>SELECT MIN(indexed_col) FROM tbl;</code> 可以直接从索引元数据获取)。</li>
+<li><code>Impossible WHERE</code>: <code>WHERE</code> 子句条件互相矛盾，永远为 false。</li>
+<li><code>Range checked for each record (index map: N)</code>: (不常见) 没有好的索引可用，MySQL 检查每条记录后决定使用哪个索引（或不使用）。</li>
+<li><code>Using join buffer (Block Nested Loop), Using join buffer (Batched Key Access), Using join buffer (Hash Join)</code>: JOIN 操作没有使用索引或者无法有效使用索引时，MySQL 使用的连接缓冲算法。通常意味着 JOIN 性能不佳，需要优化 JOIN 条件或相关索引。</li>
+</ul>
+</li>
+</ul>
+<p><strong>如何使用 <code>EXPLAIN</code> 进行优化：</strong></p>
+<ol>
+<li><strong>检查 <code>type</code> 列：</strong> 目标是至少达到 <code>range</code>，最好是 <code>ref</code>, <code>eq_ref</code>, <code>const</code>。避免 <code>index</code> (除非是覆盖索引) 和 <code>ALL</code>。</li>
+<li><strong>检查 <code>key</code> 列：</strong> 确保查询使用了预期的索引。如果为 <code>NULL</code>，分析 <code>possible_keys</code> 和 <code>WHERE</code> 条件。</li>
+<li><strong>检查 <code>rows</code> 列：</strong> 估计扫描的行数是否过大。</li>
+<li><strong>检查 <code>Extra</code> 列：</strong> 警惕 <code>Using temporary</code> 和 <code>Using filesort</code>。争取 <code>Using index</code>。理解 <code>Using where</code> 和 <code>Using index condition</code> 的含义。</li>
+<li><strong>分析组合索引的使用情况 (<code>key_len</code>)：</strong> 确认组合索引是否被充分利用。</li>
+<li><strong>迭代优化：</strong> 根据 <code>EXPLAIN</code> 的结果调整查询语句、修改或添加索引，然后重新 <code>EXPLAIN</code>，直到达到满意的执行计划。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Database/" class="category-chain-item">Database</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/" class="category-chain-item">SQL</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/" class="category-chain-item">进阶</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MySQL/" class="print-no-link">#MySQL</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>索引</div>
+      <div>http://example.com/2024/05/24/Database/SQL/MySQL/进阶/索引/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/05/24/Database/SQL/MySQL/%E5%9F%BA%E7%A1%80/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" title="核心概念">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">核心概念</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E8%A7%86%E5%9B%BE%20(Views)/" title="视图 (Views)">
+                        <span class="hidden-mobile">视图 (Views)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

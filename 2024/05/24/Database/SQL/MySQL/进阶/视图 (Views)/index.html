@@ -1,0 +1,978 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="MySQL 中的视图 (Views)。视图是一个非常有用的数据库对象，它可以帮助我们简化复杂的查询、封装业务逻辑，并提供一定程度的数据访问控制。  一、什么是视图 (View)？  定义： 视图是一个虚拟表 (Virtual Table)，其内容由一个 SQL 查询（SELECT 语句）定义。 虚拟性：  视图本身不存储实际的数据（除非是物化视图，但 MySQL 的标准视图不是物化视图）。 视图的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="视图 (Views)">
+<meta property="og:url" content="http://example.com/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E8%A7%86%E5%9B%BE%20(Views)/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="MySQL 中的视图 (Views)。视图是一个非常有用的数据库对象，它可以帮助我们简化复杂的查询、封装业务逻辑，并提供一定程度的数据访问控制。  一、什么是视图 (View)？  定义： 视图是一个虚拟表 (Virtual Table)，其内容由一个 SQL 查询（SELECT 语句）定义。 虚拟性：  视图本身不存储实际的数据（除非是物化视图，但 MySQL 的标准视图不是物化视图）。 视图的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/database/mysql.png">
+<meta property="article:published_time" content="2024-05-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-01T12:58:45.283Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/database/mysql.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>视图 (Views) - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="视图 (Views)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-24 00:00" pubdate>
+          2024年5月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">视图 (Views)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年8月1日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>MySQL 中的视图 (Views)。视图是一个非常有用的数据库对象，它可以帮助我们简化复杂的查询、封装业务逻辑，并提供一定程度的数据访问控制。</p>
+<hr>
+<h3 id="一、什么是视图-View-？">一、什么是视图 (View)？</h3>
+<ul>
+<li><strong>定义：</strong> 视图是一个<strong>虚拟表 (Virtual Table)</strong>，其内容由一个 SQL 查询（<code>SELECT</code> 语句）定义。</li>
+<li><strong>虚拟性：</strong>
+<ul>
+<li>视图本身<strong>不存储实际的数据</strong>（除非是物化视图，但 MySQL 的标准视图不是物化视图）。</li>
+<li>视图的数据是在<strong>每次被引用时动态生成</strong>的，通过执行其底层的 <code>SELECT</code> 查询来获取。</li>
+</ul>
+</li>
+<li><strong>表现：</strong> 从用户的角度看，视图就像一个普通的表，可以对其进行查询操作 (在某些情况下也可以进行 DML 操作，如 <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code>)。</li>
+</ul>
+<hr>
+<h3 id="二、创建视图-CREATE-VIEW">二、创建视图 (CREATE VIEW)</h3>
+<p><strong>基本语法：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> [<span class="hljs-keyword">OR</span> REPLACE]<br>    [ALGORITHM <span class="hljs-operator">=</span> &#123;UNDEFINED <span class="hljs-operator">|</span> <span class="hljs-keyword">MERGE</span> <span class="hljs-operator">|</span> TEMPTABLE&#125;]<br>    [DEFINER <span class="hljs-operator">=</span> <span class="hljs-keyword">user</span>]<br>    [<span class="hljs-keyword">SQL</span> SECURITY &#123;DEFINER <span class="hljs-operator">|</span> INVOKER&#125;]<br><span class="hljs-keyword">VIEW</span> view_name [(column_list)]<br><span class="hljs-keyword">AS</span><br>select_statement  <span class="hljs-comment">-- 定义视图的 SELECT 查询</span><br>[<span class="hljs-keyword">WITH</span> [<span class="hljs-keyword">CASCADED</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">LOCAL</span>] <span class="hljs-keyword">CHECK</span> OPTION];<br></code></pre></td></tr></table></figure>
+<p><strong>参数详解：</strong></p>
+<ul>
+<li><strong><code>OR REPLACE</code> (可选)：</strong> 如果已存在同名视图，则替换它；否则创建新视图。如果不使用此选项且视图已存在，则 <code>CREATE VIEW</code> 会报错。</li>
+<li><strong><code>ALGORITHM = &#123;UNDEFINED | MERGE | TEMPTABLE&#125;</code> (可选)：</strong>
+<ul>
+<li><strong><code>UNDEFINED</code> (默认)：</strong> MySQL 自行选择算法。如果可能，优先选择 <code>MERGE</code>。</li>
+<li><strong><code>MERGE</code>:</strong> 将视图的 <code>SELECT</code> 语句与引用视图的外部查询的相应部分合并起来执行。
+<ul>
+<li><strong>优点：</strong> 通常更高效，因为优化器可以整体优化合并后的查询。</li>
+<li><strong>限制：</strong> 如果视图的 <code>SELECT</code> 语句包含聚合函数 (<code>SUM()</code>, <code>COUNT()</code> 等)、<code>DISTINCT</code>、<code>GROUP BY</code>、<code>HAVING</code>、<code>LIMIT</code>、<code>UNION</code>、子查询在 <code>SELECT</code> 列表中，或者没有底层表 (如 <code>SELECT 1</code>)，则不能使用 <code>MERGE</code> 算法。</li>
+</ul>
+</li>
+<li><strong><code>TEMPTABLE</code>:</strong> 将视图的 <code>SELECT</code> 语句的结果存入一个临时表，然后外部查询再从这个临时表中读取数据。
+<ul>
+<li><strong>优点：</strong> 对于不能使用 <code>MERGE</code> 算法的复杂视图是必需的。</li>
+<li><strong>缺点：</strong> 性能通常不如 <code>MERGE</code>，因为需要创建和填充临时表。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong><code>DEFINER = user</code> (可选)：</strong>
+<ul>
+<li>指定创建视图的用户的账户，默认为当前执行 <code>CREATE VIEW</code> 语句的用户。</li>
+<li>与 <code>SQL SECURITY</code> 配合使用，决定了在检查视图访问权限时使用哪个用户的权限。</li>
+</ul>
+</li>
+<li><strong><code>SQL SECURITY &#123;DEFINER | INVOKER&#125;</code> (可选)：</strong>
+<ul>
+<li><strong><code>DEFINER</code> (默认)：</strong> 当用户查询视图时，MySQL 使用<strong>视图定义者 (DEFINER)</strong> 的权限来检查对底层表和列的访问权限。这意味着即使用户本身没有直接访问底层表的权限，只要视图定义者有权限，并且用户有访问该视图的权限，查询就可以成功。</li>
+<li><strong><code>INVOKER</code>:</strong> 当用户查询视图时，MySQL 使用<strong>调用者 (INVOKER，即当前查询视图的用户)</strong> 的权限来检查对底层表和列的访问权限。这意味着用户必须同时拥有访问视图的权限和访问视图所依赖的底层表的权限。</li>
+</ul>
+</li>
+<li><strong><code>view_name</code>:</strong> 要创建的视图的名称。</li>
+<li><strong><code>(column_list)</code> (可选)：</strong> 为视图的列指定名称。如果省略，则使用 <code>select_statement</code> 中 <code>SELECT</code> 列表的列名（或别名）。如果 <code>SELECT</code> 列表包含表达式或函数，建议明确指定列名。</li>
+<li><strong><code>AS select_statement</code>:</strong> 定义视图内容的 <code>SELECT</code> 查询。这个查询可以是简单的单表查询，也可以是复杂的多表连接、子查询等。</li>
+<li><strong><code>WITH [CASCADED | LOCAL] CHECK OPTION</code> (可选)：</strong>
+<ul>
+<li>用于可更新视图 (Updatable View)。当通过视图进行 <code>INSERT</code> 或 <code>UPDATE</code> 操作时，此选项会检查新插入或更新的行是否满足视图定义中的 <code>WHERE</code> 条件。</li>
+<li><strong><code>LOCAL</code>:</strong> 只检查直接定义在当前视图的 <code>WHERE</code> 条件。如果视图是基于另一个视图创建的，则不检查底层视图的 <code>WHERE</code> 条件。</li>
+<li><strong><code>CASCADED</code> (默认，如果只写 <code>WITH CHECK OPTION</code>)：</strong> 检查当前视图的 <code>WHERE</code> 条件，并且递归地检查所有底层视图的 <code>WHERE</code> 条件。</li>
+<li>如果插入或更新的行不满足检查条件，操作将失败并报错。</li>
+<li><strong>目的：</strong> 确保通过视图修改的数据仍然能通过视图本身被看到。</li>
+</ul>
+</li>
+</ul>
+<p><strong>示例：</strong></p>
+<ol>
+<li>
+<p><strong>简单的视图，隐藏某些列：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 假设有 employees 表 (id, name, salary, ssn, department_id)</span><br><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> employee_public_info <span class="hljs-keyword">AS</span><br><span class="hljs-keyword">SELECT</span> id, name, department_id<br><span class="hljs-keyword">FROM</span> employees;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>视图包含计算列和多表连接：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> employee_department_details (employee_id, employee_name, department_name, yearly_salary) <span class="hljs-keyword">AS</span><br><span class="hljs-keyword">SELECT</span><br>    e.id,<br>    e.name,<br>    d.name,<br>    e.salary <span class="hljs-operator">*</span> <span class="hljs-number">12</span><br><span class="hljs-keyword">FROM</span> employees e<br><span class="hljs-keyword">JOIN</span> departments d <span class="hljs-keyword">ON</span> e.department_id <span class="hljs-operator">=</span> d.id<br><span class="hljs-keyword">WHERE</span> d.location <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;New York&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>使用 <code>SQL SECURITY INVOKER</code>：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">SQL</span> SECURITY INVOKER <span class="hljs-keyword">VIEW</span> my_orders <span class="hljs-keyword">AS</span><br><span class="hljs-keyword">SELECT</span> order_id, order_date, total_amount<br><span class="hljs-keyword">FROM</span> orders<br><span class="hljs-keyword">WHERE</span> customer_id <span class="hljs-operator">=</span> <span class="hljs-built_in">CURRENT_USER</span>(); <span class="hljs-comment">-- 假设 CURRENT_USER() 返回当前登录用户的客户ID</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>可更新视图与 <code>WITH CHECK OPTION</code>：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> active_products <span class="hljs-keyword">AS</span><br><span class="hljs-keyword">SELECT</span> product_id, name, price, status<br><span class="hljs-keyword">FROM</span> products<br><span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;active&#x27;</span><br><span class="hljs-keyword">WITH</span> <span class="hljs-keyword">CASCADED</span> <span class="hljs-keyword">CHECK</span> OPTION;<br><br><span class="hljs-comment">-- 尝试通过视图插入一个非 active 的产品将会失败</span><br><span class="hljs-comment">-- INSERT INTO active_products (name, price, status) VALUES (&#x27;Old Gadget&#x27;, 10.00, &#x27;inactive&#x27;); -- 会报错</span><br><span class="hljs-comment">-- UPDATE active_products SET status = &#x27;discontinued&#x27; WHERE product_id = 1; -- 也会报错</span><br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<hr>
+<h3 id="三、使用视图">三、使用视图</h3>
+<p>使用视图与使用普通表非常相似。</p>
+<ul>
+<li>
+<p><strong>查询视图：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> employee_public_info <span class="hljs-keyword">WHERE</span> department_id <span class="hljs-operator">=</span> <span class="hljs-number">101</span>;<br><br><span class="hljs-keyword">SELECT</span> employee_name, yearly_salary<br><span class="hljs-keyword">FROM</span> employee_department_details<br><span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> yearly_salary <span class="hljs-keyword">DESC</span>;<br></code></pre></td></tr></table></figure>
+<p>当执行这些查询时，MySQL 内部会将视图的定义（<code>AS select_statement</code>）与外部查询结合起来，然后执行最终的查询。</p>
+</li>
+<li>
+<p><strong>更新视图 (Updatable Views)：</strong><br>
+并非所有视图都是可更新的。一个视图是可更新的，必须满足以下（主要）条件：</p>
+<ol>
+<li><code>SELECT</code> 列表不能包含 <code>DISTINCT</code>、聚合函数 (<code>SUM</code>, <code>COUNT</code> 等)、窗口函数、<code>GROUP BY</code> 或 <code>HAVING</code> 子句。</li>
+<li><code>FROM</code> 子句中只能包含一个表（可以是可更新视图），不能是多表 <code>JOIN</code> (某些简单的 <code>INNER JOIN</code> 可能允许，但有限制)。</li>
+<li>不能包含子查询在 <code>SELECT</code> 列表或 <code>WHERE</code> 子句中引用了 <code>FROM</code> 子句中的表。</li>
+<li>不能包含 <code>UNION</code> 或 <code>UNION ALL</code>。</li>
+<li>视图中选择的列必须直接映射到底层表的列，不能是表达式或计算列 (除非该列只是对单个基础表列的简单引用，如 <code>SELECT col AS alias FROM tbl</code>)。</li>
+<li>视图定义中不能有 <code>TEMPTABLE</code> 算法。</li>
+</ol>
+<p>如果视图是可更新的，你可以像操作表一样对其进行 <code>INSERT</code>, <code>UPDATE</code>, <code>DELETE</code> 操作。这些操作会直接作用于视图的底层基表。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 假设 simple_employee_view 是一个可更新视图，基于 employees 表的 name 和 salary 列</span><br><span class="hljs-keyword">UPDATE</span> simple_employee_view <span class="hljs-keyword">SET</span> salary <span class="hljs-operator">=</span> salary <span class="hljs-operator">*</span> <span class="hljs-number">1.1</span> <span class="hljs-keyword">WHERE</span> name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;Alice&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="四、视图的优点">四、视图的优点</h3>
+<ol>
+<li>
+<p><strong>简化复杂查询：</strong></p>
+<ul>
+<li>可以将复杂的、多表连接的、包含计算的查询封装在视图中。用户只需查询这个简单的视图，而无需关心底层的复杂逻辑。</li>
+<li><strong>例子：</strong> 报表生成，用户只需要 <code>SELECT * FROM sales_summary_view;</code> 而不需要写几十行的 JOIN 和聚合查询。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据抽象和逻辑独立性：</strong></p>
+<ul>
+<li>视图提供了一个抽象层。应用程序可以基于视图编写，即使底层表的结构发生变化（例如，列被重命名、表被拆分），只要视图的接口（列名、数据类型）保持不变（通过修改视图定义来适应底层变化），应用程序代码可能无需修改。</li>
+<li><strong>例子：</strong> 如果 <code>employees</code> 表的 <code>salary</code> 列改名为 <code>monthly_wage</code>，只需修改 <code>employee_department_details</code> 视图的定义，使用视图的应用代码不受影响。</li>
+</ul>
+</li>
+<li>
+<p><strong>数据安全性与访问控制：</strong></p>
+<ul>
+<li>可以通过视图向用户暴露表的特定列，隐藏敏感数据（如员工的 SSN、薪水细节等）。</li>
+<li>可以根据用户角色创建不同的视图，每个视图只显示该角色允许访问的数据行和列。</li>
+<li>结合 <code>SQL SECURITY DEFINER</code>，可以授予用户访问视图的权限，而不需要授予他们访问底层表的直接权限。</li>
+<li><strong>例子：</strong> <code>employee_public_info</code> 视图只暴露了员工的公开信息。</li>
+</ul>
+</li>
+<li>
+<p><strong>提高可重用性和一致性：</strong></p>
+<ul>
+<li>常用的查询逻辑可以定义为视图，在多个地方重用，确保了数据提取逻辑的一致性。</li>
+<li>避免了在多个应用或报表中重复编写相同的复杂 SQL。</li>
+</ul>
+</li>
+<li>
+<p><strong>向后兼容性：</strong></p>
+<ul>
+<li>当数据库模式演变时，可以使用视图来模拟旧的表结构，从而使旧的应用程序能够继续工作而无需立即修改。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="五、视图的缺点与限制">五、视图的缺点与限制</h3>
+<ol>
+<li>
+<p><strong>性能：</strong></p>
+<ul>
+<li>由于视图是动态生成的，每次查询视图都会执行其底层查询。如果视图定义非常复杂，或者基于它进行更复杂的查询，性能可能会受到影响。</li>
+<li>使用 <code>TEMPTABLE</code> 算法的视图通常性能不如 <code>MERGE</code> 算法。</li>
+<li>MySQL 对视图的优化能力可能不如对直接查询表的优化。</li>
+<li><strong>注意：</strong> 视图本身不是性能瓶颈的原因，而是其底层查询的复杂性。一个写得好的视图，其性能可以和直接执行其底层查询一样好。</li>
+</ul>
+</li>
+<li>
+<p><strong>更新限制：</strong></p>
+<ul>
+<li>如前所述，并非所有视图都是可更新的。复杂的视图通常是只读的。这限制了视图在某些场景下的应用。</li>
+</ul>
+</li>
+<li>
+<p><strong>嵌套视图：</strong></p>
+<ul>
+<li>可以基于一个视图创建另一个视图（嵌套视图）。过多的嵌套层级可能会使逻辑难以理解和调试，也可能影响性能。</li>
+</ul>
+</li>
+<li>
+<p><strong>物化视图的缺失 (标准 MySQL)：</strong></p>
+<ul>
+<li>标准的 MySQL 视图不是物化视图。物化视图会将查询结果实际存储起来，并可以定期刷新，这对于不经常变化但查询成本高昂的数据非常有用。</li>
+<li>MySQL 本身不直接支持创建用户定义的物化视图 (像 Oracle 或 PostgreSQL 那样)。可以通过其他方式模拟，例如：
+<ul>
+<li>创建一个实际的表，定期用视图的查询结果填充它（通过事件调度器或外部脚本）。</li>
+<li>某些第三方 MySQL 分支或云数据库服务可能提供物化视图功能。</li>
+<li>MySQL 8.0 引入了对某些聚合查询的 “Derived Table Merge” 优化，在特定情况下，如果派生表（或视图）的结果可以被缓存和重用，其行为有点类似物化视图的即时效果，但这依赖于优化器。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>索引：</strong></p>
+<ul>
+<li>不能直接在视图上创建索引。索引是在视图的底层基表上创建的。视图的查询性能依赖于底层表上索引的有效性。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="六、管理视图">六、管理视图</h3>
+<ul>
+<li>
+<p><strong>修改视图 (ALTER VIEW)：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER</span> <span class="hljs-keyword">VIEW</span> view_name [(column_list)]<br><span class="hljs-keyword">AS</span><br>select_statement<br>[<span class="hljs-keyword">WITH</span> [<span class="hljs-keyword">CASCADED</span> <span class="hljs-operator">|</span> <span class="hljs-keyword">LOCAL</span>] <span class="hljs-keyword">CHECK</span> OPTION];<br><span class="hljs-comment">-- 参数与 CREATE VIEW 类似。</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>删除视图 (DROP VIEW)：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">DROP</span> <span class="hljs-keyword">VIEW</span> [IF <span class="hljs-keyword">EXISTS</span>] view_name1, view_name2, ...;<br></code></pre></td></tr></table></figure>
+<p>删除视图不会影响其底层基表的数据。</p>
+</li>
+<li>
+<p><strong>查看视图定义 (SHOW CREATE VIEW)：</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SHOW</span> <span class="hljs-keyword">CREATE</span> <span class="hljs-keyword">VIEW</span> view_name;<br></code></pre></td></tr></table></figure>
+<p>这将显示创建该视图的完整 <code>CREATE VIEW</code> 语句。</p>
+</li>
+<li>
+<p><strong>查看视图元数据：</strong><br>
+可以从 <code>INFORMATION_SCHEMA.VIEWS</code> 表中查询视图的相关信息。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> INFORMATION_SCHEMA.VIEWS <span class="hljs-keyword">WHERE</span> TABLE_SCHEMA <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;your_database_name&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<p><strong>总结：</strong></p>
+<p>视图是 MySQL 中一个强大的工具，善用视图可以极大地提高数据库应用的可维护性、安全性和开发的便捷性。关键在于理解视图的虚拟性和其工作原理，根据具体需求合理设计视图，并注意其对性能和可更新性的潜在影响。</p>
+<p>对于只读的、用于封装复杂逻辑或提供数据子集的场景，视图非常有用。对于需要写入的场景，需要确保视图是可更新的，并考虑使用 <code>WITH CHECK OPTION</code> 来维护数据一致性。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Database/" class="category-chain-item">Database</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/" class="category-chain-item">SQL</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/" class="category-chain-item">进阶</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MySQL/" class="print-no-link">#MySQL</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>视图 (Views)</div>
+      <div>http://example.com/2024/05/24/Database/SQL/MySQL/进阶/视图 (Views)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E7%B4%A2%E5%BC%95/" title="索引">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">索引</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E9%AB%98%E7%BA%A7%20SQL%20%E6%9F%A5%E8%AF%A2/" title="高级 SQL 查询">
+                        <span class="hidden-mobile">高级 SQL 查询</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

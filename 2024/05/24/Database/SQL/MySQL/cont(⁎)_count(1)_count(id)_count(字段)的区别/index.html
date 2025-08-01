@@ -1,0 +1,847 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="COUNT(*)、COUNT(1)、COUNT(id)、COUNT(字段)的区别，以及性能对比。  结论先行 在现代的 MySQL（特别是 5.7 版本以后，默认使用 InnoDB 存储引擎）中，我们直接给出结论：  性能上： COUNT(*) ≈ COUNT(1) &gt; COUNT(主键 id) &gt; COUNT(普通索引字段) &gt; COUNT(未索引字段) 推荐使用： 始终使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="COUNT(*)、COUNT(1)、COUNT(id)、COUNT(字段)">
+<meta property="og:url" content="http://example.com/2024/05/24/Database/SQL/MySQL/cont(%E2%81%8E)_count(1)_count(id)_count(%E5%AD%97%E6%AE%B5)%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="COUNT(*)、COUNT(1)、COUNT(id)、COUNT(字段)的区别，以及性能对比。  结论先行 在现代的 MySQL（特别是 5.7 版本以后，默认使用 InnoDB 存储引擎）中，我们直接给出结论：  性能上： COUNT(*) ≈ COUNT(1) &gt; COUNT(主键 id) &gt; COUNT(普通索引字段) &gt; COUNT(未索引字段) 推荐使用： 始终使用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/database/mysql.png">
+<meta property="article:published_time" content="2024-05-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-01T12:58:12.699Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/database/mysql.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>COUNT(*)、COUNT(1)、COUNT(id)、COUNT(字段) - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="COUNT(*)、COUNT(1)、COUNT(id)、COUNT(字段)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-24 00:00" pubdate>
+          2024年5月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">COUNT(*)、COUNT(1)、COUNT(id)、COUNT(字段)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年8月1日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>COUNT(*)、COUNT(1)、COUNT(id)、COUNT(字段)的区别，以及性能对比。</p>
+<hr>
+<h3 id="结论先行">结论先行</h3>
+<p>在现代的 MySQL（特别是 5.7 版本以后，默认使用 InnoDB 存储引擎）中，我们直接给出结论：</p>
+<ul>
+<li><strong>性能上：</strong> <code>COUNT(*) ≈ COUNT(1)</code> &gt; <code>COUNT(主键 id)</code> &gt; <code>COUNT(普通索引字段)</code> &gt; <code>COUNT(未索引字段)</code></li>
+<li><strong>推荐使用：</strong> <strong>始终使用 <code>COUNT(*)</code></strong>。这是 SQL 标准的写法，也是 MySQL 官方推荐的，并且优化器会为它选择最优的执行路径。</li>
+</ul>
+<p>接下来，我们详细拆解。</p>
+<h3 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h3>
+<p>这几个 <code>COUNT</code> 函数的核心区别在于它们的<strong>统计目标</strong>：</p>
+<ul>
+<li><code>COUNT(*)</code>: 这是 SQL 标准语法，它统计的是<strong>结果集中的总行数</strong>。它不关心任何列的值，只是简单地“数数”。</li>
+<li><code>COUNT(1)</code>: <code>1</code> 是一个常量，它不为 NULL。所以 <code>COUNT(1)</code> 的作用和 <code>COUNT(*)</code> 完全一样，也是统计<strong>结果集中的总行数</strong>。</li>
+<li><code>COUNT(id)</code>: 统计结果集中，<code>id</code> 这一列<strong>值不为 NULL</strong> 的行数。由于主键（id）被定义为 <code>NOT NULL</code>，所以其效果等同于统计总行数。</li>
+<li><code>COUNT(字段)</code>: 统计结果集中，指定 <code>字段</code> 这一列<strong>值不为 NULL</strong> 的行数。如果该字段允许为 NULL，其结果可能与前三者不同。</li>
+</ul>
+<h3 id="2-工作原理与性能对比-The-“Why”">2. 工作原理与性能对比 (The “Why”)</h3>
+<p>性能差异的根源在于 <strong>InnoDB 存储引擎的工作方式</strong>和 <strong>MySQL 优化器的选择</strong>。</p>
+<h4 id="背景：InnoDB-vs-MyISAM">背景：InnoDB vs MyISAM</h4>
+<ul>
+<li><strong>MyISAM (已过时):</strong> MyISAM 引擎内部有一个计数器，专门记录表的总行数。因此，执行不带 <code>WHERE</code> 条件的 <code>COUNT(*)</code> 时，它可以直接返回这个计数器的值，时间复杂度是 O(1)，速度极快。但一旦有 <code>WHERE</code> 条件，它也需要扫表。</li>
+<li><strong>InnoDB (当前主流):</strong> InnoDB 是一个支持事务和行级锁的复杂引擎，它引入了 <strong>MVCC (多版本并发控制)</strong>。这意味着在同一时刻，不同的事务看到的数据行数可能是不一样的。因此，InnoDB 无法像 MyISAM 那样维护一个简单的全局行数计数器。它必须通过扫描来实时计算行数。</li>
+</ul>
+<h4 id="InnoDB-下的性能分析">InnoDB 下的性能分析</h4>
+<p>既然 InnoDB 必须通过“扫描”来计数，那么性能的关键就在于**“扫描什么”<strong>和</strong>“怎么扫描”**。MySQL 优化器的目标是：<strong>找到最小的、最快的数据集来完成计数</strong>。</p>
+<ol>
+<li>
+<p><strong><code>COUNT(*)</code> vs <code>COUNT(1)</code></strong></p>
+<ul>
+<li>MySQL 优化器会识别出 <code>COUNT(1)</code> 的意图与 <code>COUNT(*)</code> 完全相同，都是统计总行数。在内部处理上，它会将 <code>COUNT(1)</code> 转换成 <code>COUNT(*)</code>。</li>
+<li>因此，<strong><code>COUNT(*)</code> 和 <code>COUNT(1)</code> 在性能上没有任何区别</strong>。所谓 <code>COUNT(1)</code> 更快的说法，是一个流传已久的误解。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>COUNT(*)</code> vs <code>COUNT(主键 id)</code></strong></p>
+<ul>
+<li><code>COUNT(*)</code> 的执行策略：优化器会寻找表上<strong>最小的可用索引</strong>（通常是二级索引/辅助索引）来进行扫描。为什么是最小的索引？因为二级索引树只存储索引列和主键值，相比存储了所有列数据的聚簇索引（主键索引）要小得多。扫描一个更小的数据结构，I/O 开销自然更低。</li>
+<li><code>COUNT(主键 id)</code> 的执行策略：由于你明确指定了要统计 <code>id</code> 列，优化器可能会（但不一定）选择<strong>主键索引</strong>（聚簇索引）来进行扫描。聚簇索引的 B+Tree 叶子节点包含了完整的行数据，体积远大于二级索引。</li>
+<li><strong>结论：</strong> <code>COUNT(*)</code> 的执行路径给了优化器更大的自由度去选择最优（最小）的索引，因此<strong>通常比 <code>COUNT(id)</code> 更快或至少持平</strong>。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>COUNT(字段)</code></strong></p>
+<ul>
+<li><strong>未索引字段：</strong> 如果该字段没有索引，MySQL 别无选择，只能进行<strong>全表扫描 (Full Table Scan)</strong>，逐行检查该字段值是否为 NULL。这是最慢的情况。</li>
+<li><strong>有索引字段：</strong> 如果该字段有索引，MySQL 会扫描这个<strong>二级索引</strong>。性能就取决于这个索引的大小。如果这个索引恰好是最小的索引，那么性能就和 <code>COUNT(*)</code> 相当。</li>
+</ul>
+</li>
+</ol>
+<p><strong>一图胜千言：</strong><br>
+把它想象成去图书馆点书：</p>
+<ul>
+<li><strong><code>COUNT(*)</code>:</strong> “图书管理员，告诉我这里总共有多少本书？” -&gt; 管理员会选择最快的方式，比如查看书架索引总表（最小的二级索引），而不是一本本翻。</li>
+<li><strong><code>COUNT(id)</code>:</strong> “图书管理员，请核对每一本书的 ISBN 码（主键），告诉我总共有多少本？” -&gt; 管理员可能需要去查看每本书的版权页（聚簇索引），这个过程更慢。</li>
+<li><strong><code>COUNT(作者)</code>:</strong> “图书管理员，告诉我写了作者名的书有多少本？” -&gt; 管理员会去查作者索引卡片（二级索引），并跳过那些没有作者信息的卡片。</li>
+<li><strong><code>COUNT(摘要)</code>:</strong> (摘要未被索引) -&gt; 管理员只能一本一本地翻开书，看有没有摘要，效率最低。</li>
+</ul>
+<h3 id="3-实际应用场景">3. 实际应用场景</h3>
+<ul>
+<li><strong>获取全表总行数：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 推荐</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">FROM</span> users;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>获取符合条件的行数：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 推荐</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(<span class="hljs-operator">*</span>) <span class="hljs-keyword">FROM</span> users <span class="hljs-keyword">WHERE</span> status <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;active&#x27;</span>;<br></code></pre></td></tr></table></figure>
+<em>注意：当带有 <code>WHERE</code> 条件时，以上几种 <code>COUNT</code> 写法的性能差异会大大缩小，因为主要开销在于通过索引进行条件筛选，而不是最后的计数。但依然推荐使用 <code>COUNT(*)</code>。</em></li>
+<li><strong>统计特定字段非空的行数（这是 <code>COUNT(字段)</code> 的唯一正确场景）：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 统计设置了手机号的用户数量</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-built_in">COUNT</span>(phone_number) <span class="hljs-keyword">FROM</span> users;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="4-知识扩展">4. 知识扩展</h3>
+<p>对于海量数据（千万、亿级别）的表，即使是 <code>COUNT(*)</code> 也可能非常慢，因为它仍然需要扫描一个不小的索引。如何优化？</p>
+<ol>
+<li><strong>近似计数：</strong> 如果业务能接受一个不完全精确的值，可以利用 <code>EXPLAIN</code> 或者 <code>information_schema</code>。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs sql">EXPLAIN <span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> your_table;<br><span class="hljs-comment">-- 在输出结果中找到 `rows` 列，这是一个估算值。</span><br><span class="hljs-keyword">SELECT</span> table_rows <span class="hljs-keyword">FROM</span> information_schema.tables <span class="hljs-keyword">WHERE</span> table_schema <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;your_database&#x27;</span> <span class="hljs-keyword">AND</span> table_name <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;your_table&#x27;</span>;<br><span class="hljs-comment">-- 对于 InnoDB，这个值同样是估算的，非常不准。</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>计数表（Counter Table）方案：</strong> 这是最高效、最常用的方案。
+<ul>
+<li><strong>做法：</strong> 创建一个单独的汇总表（或缓存，如 Redis），专门用来存储计数值。</li>
+<li><strong>更新：</strong> 当主表发生 <code>INSERT</code> 或 <code>DELETE</code> 操作时，通过<strong>触发器 (Trigger)</strong>、<strong>消息队列 (MQ)</strong> 或在<strong>应用层代码</strong>中同步更新这个计数值。</li>
+<li><strong>优点：</strong> 查询计数值时，直接读取汇总表的一行记录，速度是 O(1)，极快。</li>
+<li><strong>缺点：</strong> 增加了系统复杂度和维护成本，需要处理数据一致性问题。</li>
+</ul>
+</li>
+</ol>
+<h3 id="5-要点与注意事项">5. 要点与注意事项</h3>
+<ul>
+<li><strong>始终用 <code>COUNT(*)</code>:</strong> 它是标准、清晰，且 MySQL 优化器会为它选择最高效的路径。</li>
+<li><strong>InnoDB 是前提:</strong> 以上所有关于性能的讨论都基于 InnoDB 存储引擎。</li>
+<li><strong><code>WHERE</code> 子句的影响:</strong> 当 <code>WHERE</code> 子句能够高效利用索引时，不同 <code>COUNT</code> 之间的性能差异会变得不那么明显。</li>
+<li><strong>警惕 <code>COUNT(字段)</code> 的误用:</strong> 除非你的业务逻辑确实是“统计该字段非空的行数”，否则不要使用它。</li>
+<li><strong>大表计数的性能问题:</strong> 要对大表的 <code>COUNT</code> 操作有性能预警，避免在主流程中直接 <code>COUNT(*)</code>，优先考虑使用计数表或缓存方案。</li>
+<li><strong><code>COUNT(DISTINCT a, b)</code>:</strong> 这是一个扩展知识，它可以统计多个列组合起来的唯一值数量，在数据分析场景中很有用。</li>
+</ul>
+<hr>
+<p>总结一下，<code>COUNT(*)</code> 不仅是正确的，而且在大多数情况下也是最高效的。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Database/" class="category-chain-item">Database</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/" class="category-chain-item">SQL</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MySQL/" class="print-no-link">#MySQL</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>COUNT(*)、COUNT(1)、COUNT(id)、COUNT(字段)</div>
+      <div>http://example.com/2024/05/24/Database/SQL/MySQL/cont(⁎)_count(1)_count(id)_count(字段)的区别/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/05/24/Database/SQL/MySQL/%E5%88%86%E9%A1%B5%E3%80%81%E6%9D%A1%E4%BB%B6%E5%88%86%E9%A1%B5%E4%B8%8E%E6%8E%92%E5%BA%8F/" title="分页、条件分页与排序 SQL">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">分页、条件分页与排序 SQL</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/24/Database/SQL/MySQL/MySQL%E9%AB%98%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E8%A7%84%E8%8C%83%E5%BB%BA%E8%AE%AE/" title="MySQL 高性能优化规范建议">
+                        <span class="hidden-mobile">MySQL 高性能优化规范建议</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

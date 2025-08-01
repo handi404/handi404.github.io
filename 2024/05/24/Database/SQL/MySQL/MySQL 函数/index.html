@@ -1,0 +1,1209 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="MySQL 函数全景图 MySQL 的内置函数可以主要划分为以下 七大类，这基本上涵盖了日常开发与数据分析的 99% 的场景：  聚合函数 (Aggregate Functions): 对一组值进行计算，并返回单个值。是 SQL 的核心。 字符串函数 (String Functions): 用于处理和操作字符串数据。 数值函数 (Numeric Functions): 用于执行数学运算。 日期与时">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 函数">
+<meta property="og:url" content="http://example.com/2024/05/24/Database/SQL/MySQL/MySQL%20%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="MySQL 函数全景图 MySQL 的内置函数可以主要划分为以下 七大类，这基本上涵盖了日常开发与数据分析的 99% 的场景：  聚合函数 (Aggregate Functions): 对一组值进行计算，并返回单个值。是 SQL 的核心。 字符串函数 (String Functions): 用于处理和操作字符串数据。 数值函数 (Numeric Functions): 用于执行数学运算。 日期与时">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/database/mysql.png">
+<meta property="article:published_time" content="2024-05-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-01T12:58:06.663Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/database/mysql.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>MySQL 函数 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="MySQL 函数"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-24 00:00" pubdate>
+          2024年5月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">MySQL 函数</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年8月1日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h3 id="MySQL-函数全景图">MySQL 函数全景图</h3>
+<p>MySQL 的内置函数可以主要划分为以下 <strong>七大类</strong>，这基本上涵盖了日常开发与数据分析的 99% 的场景：</p>
+<ol>
+<li><strong>聚合函数 (Aggregate Functions):</strong> 对一组值进行计算，并返回单个值。是 SQL 的核心。</li>
+<li><strong>字符串函数 (String Functions):</strong> 用于处理和操作字符串数据。</li>
+<li><strong>数值函数 (Numeric Functions):</strong> 用于执行数学运算。</li>
+<li><strong>日期与时间函数 (Date and Time Functions):</strong> 用于处理 <code>DATE</code>, <code>DATETIME</code>, <code>TIMESTAMP</code> 等类型的数据。</li>
+<li><strong>流程控制函数 (Control Flow Functions):</strong> 在 SQL 语句中实现条件逻辑。</li>
+<li><strong>窗口函数 (Window Functions):</strong> (MySQL 8.0+ 的明星特性) 对一组与当前行相关的行进行计算。</li>
+<li><strong>JSON 函数 (JSON Functions):</strong> (MySQL 5.7+ 的重要特性) 用于创建、解析和查询 JSON 数据。</li>
+</ol>
+<hr>
+<h3 id="1-聚合函数-Aggregate-Functions">1. 聚合函数 (Aggregate Functions)</h3>
+<p>它们是 <code>GROUP BY</code> 子句的黄金搭档，用于数据汇总。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>COUNT(expr)</code></strong></td>
+<td style="text-align:left">计算行数。<code>COUNT(*)</code> 计算所有行，<code>COUNT(column)</code> 计算该列非 NULL 的行。</td>
+<td style="text-align:left"><code>SELECT COUNT(*) FROM orders;</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>SUM(expr)</code></strong></td>
+<td style="text-align:left">计算数值列的总和。自动忽略 NULL 值。</td>
+<td style="text-align:left"><code>SELECT SUM(amount) FROM orders;</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>AVG(expr)</code></strong></td>
+<td style="text-align:left">计算数值列的平均值。自动忽略 NULL 值。</td>
+<td style="text-align:left"><code>SELECT AVG(score) FROM results;</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>MAX(expr)</code></strong></td>
+<td style="text-align:left">找出列中的最大值。可用于数值、字符串、日期。</td>
+<td style="text-align:left"><code>SELECT MAX(login_time) FROM logs;</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>MIN(expr)</code></strong></td>
+<td style="text-align:left">找出列中的最小值。</td>
+<td style="text-align:left"><code>SELECT MIN(price) FROM products;</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>GROUP_CONCAT(expr)</code></strong></td>
+<td style="text-align:left">将分组中的多个字符串值连接成一个单一的字符串。</td>
+<td style="text-align:left"><code>SELECT GROUP_CONCAT(tag) FROM tags WHERE post_id = 1;</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="深度剖析-GROUP-CONCAT">深度剖析: <code>GROUP_CONCAT()</code></h4>
+<ul>
+<li><strong>核心概念：</strong> 它是 <code>GROUP BY</code> 的“逆向操作”。<code>GROUP BY</code> 将多行聚合成一行，而 <code>GROUP_CONCAT</code> 则将多行中某一列的值聚合到一个字符串中。</li>
+<li><strong>实际应用场景：</strong>
+<ul>
+<li><strong>文章标签系统：</strong> 一篇文章有多个标签，查询文章列表时，希望将所有标签显示在一列。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> p.title, GROUP_CONCAT(t.name <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> t.name SEPARATOR <span class="hljs-string">&#x27;, &#x27;</span>) <span class="hljs-keyword">AS</span> tags<br><span class="hljs-keyword">FROM</span> posts p<br><span class="hljs-keyword">JOIN</span> post_tags pt <span class="hljs-keyword">ON</span> p.id <span class="hljs-operator">=</span> pt.post_id<br><span class="hljs-keyword">JOIN</span> tags t <span class="hljs-keyword">ON</span> pt.tag_id <span class="hljs-operator">=</span> t.id<br><span class="hljs-keyword">GROUP</span> <span class="hljs-keyword">BY</span> p.id;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>报表生成：</strong> 汇总一个部门下所有员工的姓名。</li>
+</ul>
+</li>
+<li><strong>要点与注意事项：</strong>
+<ul>
+<li><strong>长度限制：</strong> <code>GROUP_CONCAT</code> 的结果有最大长度限制，由系统变量 <code>group_concat_max_len</code> 控制（默认 1024 字节）。如果拼接内容超长，会被截断。可以动态调整它：<code>SET SESSION group_concat_max_len = 102400;</code></li>
+<li><strong>自定义分隔符：</strong> 默认分隔符是逗号 <code>,</code>，可以用 <code>SEPARATOR</code> 关键字自定义。</li>
+<li><strong>去重与排序：</strong> 可以在函数内部使用 <code>DISTINCT</code> 和 <code>ORDER BY</code>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="2-字符串函数-String-Functions">2. 字符串函数 (String Functions)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>CONCAT(s1, s2, ...)</code></strong></td>
+<td style="text-align:left">连接多个字符串。任何参数为 NULL，结果即为 NULL。</td>
+<td style="text-align:left"><code>CONCAT('My', 'S', 'QL');</code> -&gt; ‘MySQL’</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>CONCAT_WS(sep, s1, s2, ...)</code></strong></td>
+<td style="text-align:left">使用指定分隔符连接字符串，自动忽略 NULL 参数。</td>
+<td style="text-align:left"><code>CONCAT_WS('-', 'A', 'B', NULL, 'C');</code> -&gt; ‘A-B-C’</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>LENGTH(str)</code></strong></td>
+<td style="text-align:left">返回字符串的<strong>字节</strong>长度。</td>
+<td style="text-align:left"><code>LENGTH('你好');</code> (UTF8) -&gt; 6</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>CHAR_LENGTH(str)</code></strong></td>
+<td style="text-align:left">返回字符串的<strong>字符</strong>长度。</td>
+<td style="text-align:left"><code>CHAR_LENGTH('你好');</code> -&gt; 2</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>SUBSTRING(str, pos, len)</code></strong></td>
+<td style="text-align:left">截取子字符串。</td>
+<td style="text-align:left"><code>SUBSTRING('MySQL', 1, 2);</code> -&gt; ‘My’</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>LOCATE(substr, str)</code></strong></td>
+<td style="text-align:left">查找子串在字符串中第一次出现的位置。</td>
+<td style="text-align:left"><code>LOCATE('S', 'MySQL');</code> -&gt; 3</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>REPLACE(str, from_str, to_str)</code></strong></td>
+<td style="text-align:left">替换字符串中的所有子串。</td>
+<td style="text-align:left"><code>REPLACE('abab', 'a', 'c');</code> -&gt; ‘cbcb’</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>TRIM([remstr FROM] str)</code></strong></td>
+<td style="text-align:left">去除字符串两端或指定的字符。</td>
+<td style="text-align:left"><code>TRIM('  hello  ');</code> -&gt; ‘hello’</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>FIND_IN_SET(str, strlist)</code></strong></td>
+<td style="text-align:left">在逗号分隔的字符串列表 <code>strlist</code> 中查找 <code>str</code>。</td>
+<td style="text-align:left"><code>FIND_IN_SET('b', 'a,b,c');</code> -&gt; 2</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>UPPER(str)</code> / <code>LOWER(str)</code></strong></td>
+<td style="text-align:left">转换为大/小写。</td>
+<td style="text-align:left"><code>UPPER('mysql');</code> -&gt; ‘MYSQL’</td>
+</tr>
+</tbody>
+</table>
+<h4 id="深度剖析-FIND-IN-SET-vs-LIKE">深度剖析: <code>FIND_IN_SET()</code> vs <code>LIKE</code></h4>
+<ul>
+<li><strong>核心概念：</strong> <code>FIND_IN_SET('b', 'a,b,c')</code> 用于精确匹配逗号分隔列表中的一个完整单元。<code>LIKE '%,b,%'</code> 是模式匹配，更模糊。</li>
+<li><strong>实际应用场景：</strong>
+<ul>
+<li><code>FIND_IN_SET</code> 用于存储如 <code>'1,2,7'</code> 这样的简单 ID 集合的字段。</li>
+</ul>
+</li>
+<li><strong>要点与注意事项 (非常重要！)：</strong>
+<ul>
+<li><strong>性能陷阱：</strong> <code>FIND_IN_SET</code> 和 <code>LIKE '%,value,%'</code> 都<strong>无法有效利用索引</strong>，当数据量大时，会导致全表扫描，性能极差。</li>
+<li><strong>反模式设计：</strong> 在字段中用逗号分隔存储多个值，本身是<strong>违反数据库第一范式 (1NF)</strong> 的。它让更新、查询和数据完整性维护变得异常困难。</li>
+<li><strong>最佳实践：</strong> 强烈建议使用<strong>中间表/关联表 (Junction Table)</strong> 来代替这种设计。例如，<code>post_tags</code> 表来关联 <code>posts</code> 表和 <code>tags</code> 表，这才是关系型数据库的正道，性能和扩展性都最佳。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="3-日期与时间函数-Date-and-Time-Functions">3. 日期与时间函数 (Date and Time Functions)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>NOW()</code> / <code>CURRENT_TIMESTAMP()</code></strong></td>
+<td style="text-align:left">返回当前日期和时间 (YYYY-MM-DD HH:MM:SS)。</td>
+<td style="text-align:left"><code>SELECT NOW();</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>CURDATE()</code> / <code>CURRENT_DATE()</code></strong></td>
+<td style="text-align:left">返回当前日期 (YYYY-MM-DD)。</td>
+<td style="text-align:left"><code>SELECT CURDATE();</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>CURTIME()</code> / <code>CURRENT_TIME()</code></strong></td>
+<td style="text-align:left">返回当前时间 (HH:MM:SS)。</td>
+<td style="text-align:left"><code>SELECT CURTIME();</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>DATE_FORMAT(date, format)</code></strong></td>
+<td style="text-align:left">将日期按指定格式格式化为字符串。</td>
+<td style="text-align:left"><code>DATE_FORMAT(NOW(), '%Y年%m月%d日');</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>STR_TO_DATE(str, format)</code></strong></td>
+<td style="text-align:left">将字符串按指定格式解析为日期。</td>
+<td style="text-align:left"><code>STR_TO_DATE('2023-01-01', '%Y-%m-%d');</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>DATEDIFF(date1, date2)</code></strong></td>
+<td style="text-align:left">返回两个日期之间的天数差 (<code>date1</code> - <code>date2</code>)。</td>
+<td style="text-align:left"><code>DATEDIFF('2023-01-05', '2023-01-01');</code> -&gt; 4</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>DATE_ADD(date, INTERVAL expr unit)</code></strong></td>
+<td style="text-align:left">给日期增加一个时间间隔。</td>
+<td style="text-align:left"><code>DATE_ADD(NOW(), INTERVAL 1 DAY);</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>DATE_SUB(date, INTERVAL expr unit)</code></strong></td>
+<td style="text-align:left">给日期减去一个时间间隔。</td>
+<td style="text-align:left"><code>DATE_SUB(CURDATE(), INTERVAL 1 YEAR);</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>UNIX_TIMESTAMP([date])</code></strong></td>
+<td style="text-align:left">返回日期的 Unix 时间戳。</td>
+<td style="text-align:left"><code>SELECT UNIX_TIMESTAMP();</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>FROM_UNIXTIME(ts, [format])</code></strong></td>
+<td style="text-align:left">将 Unix 时间戳转换为日期。</td>
+<td style="text-align:left"><code>FROM_UNIXTIME(1672531200);</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="深度剖析-DATE-FORMAT-与索引">深度剖析: <code>DATE_FORMAT()</code> 与索引</h4>
+<ul>
+<li><strong>核心概念：</strong> <code>DATE_FORMAT</code> 是一个强大的格式化工具，但它也是一个**“索引杀手”**。</li>
+<li><strong>实际应用场景：</strong>
+<ul>
+<li><strong>错误用法 (导致索引失效)：</strong> 查询某个月份的数据。<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 错误！对列使用函数，索引无法生效！</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> DATE_FORMAT(create_time, <span class="hljs-string">&#x27;%Y-%m&#x27;</span>) <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;2023-01&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>正确用法 (保证索引生效)：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 正确！让列保持原始状态，对常量进行计算。</span><br><span class="hljs-keyword">SELECT</span> <span class="hljs-operator">*</span> <span class="hljs-keyword">FROM</span> orders <span class="hljs-keyword">WHERE</span> create_time <span class="hljs-operator">&gt;=</span> <span class="hljs-string">&#x27;2023-01-01&#x27;</span> <span class="hljs-keyword">AND</span> create_time <span class="hljs-operator">&lt;</span> <span class="hljs-string">&#x27;2023-02-01&#x27;</span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>要点与注意事项：</strong>
+<ul>
+<li><strong>SARGable 原则：</strong> 这是数据库查询优化的一个重要原则，意为“Search Argument Able”。要保证 <code>WHERE</code> 子句中的条件可以利用索引，就必须避免对<strong>被索引的列</strong>使用函数。始终将函数应用在等号的右侧（常量值）上。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="4-数值函数-Numeric-Functions">4. 数值函数 (Numeric Functions)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>ROUND(X, [D])</code></strong></td>
+<td style="text-align:left">四舍五入到指定小数位 D。</td>
+<td style="text-align:left"><code>ROUND(123.456, 2);</code> -&gt; 123.46</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>CEIL(X)</code> / <code>CEILING(X)</code></strong></td>
+<td style="text-align:left">向上取整，返回不小于 X 的最小整数。</td>
+<td style="text-align:left"><code>CEIL(1.23);</code> -&gt; 2</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>FLOOR(X)</code></strong></td>
+<td style="text-align:left">向下取整，返回不大于 X 的最大整数。</td>
+<td style="text-align:left"><code>FLOOR(1.89);</code> -&gt; 1</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>ABS(X)</code></strong></td>
+<td style="text-align:left">返回 X 的绝对值。</td>
+<td style="text-align:left"><code>ABS(-10);</code> -&gt; 10</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>RAND()</code></strong></td>
+<td style="text-align:left">返回一个 0 到 1 之间的随机浮点数。</td>
+<td style="text-align:left"><code>SELECT RAND();</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>MOD(N, M)</code> / <code>N % M</code></strong></td>
+<td style="text-align:left">取模，返回 N 除以 M 的余数。</td>
+<td style="text-align:left"><code>MOD(10, 3);</code> -&gt; 1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="要点与注意事项：">要点与注意事项：</h4>
+<ul>
+<li><strong>精度问题：</strong> 对于金融、货币等需要高精度的计算，不要使用 <code>FLOAT</code> 或 <code>DOUBLE</code> 类型，应使用 <code>DECIMAL</code> 类型，以避免浮点数精度丢失问题。</li>
+<li><strong>随机排序：</strong> <code>ORDER BY RAND()</code> 在小表上可以实现随机排序，但在大表上性能极差，因为它需要为每一行生成一个随机数并进行排序。大表随机取样有更高效的方案。</li>
+</ul>
+<hr>
+<h3 id="5-流程控制函数-Control-Flow-Functions">5. 流程控制函数 (Control Flow Functions)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>IF(expr1, expr2, expr3)</code></strong></td>
+<td style="text-align:left">如果 expr1 为真，返回 expr2，否则返回 expr3。</td>
+<td style="text-align:left"><code>SELECT IF(score &gt;= 60, '及格', '不及格') FROM results;</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>IFNULL(expr1, expr2)</code></strong></td>
+<td style="text-align:left">如果 expr1 不为 NULL，返回 expr1，否则返回 expr2。</td>
+<td style="text-align:left"><code>SELECT IFNULL(address, '地址未填写') FROM users;</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>NULLIF(expr1, expr2)</code></strong></td>
+<td style="text-align:left">如果 expr1 = expr2，返回 NULL，否则返回 expr1。</td>
+<td style="text-align:left"><code>NULLIF(1, 1);</code> -&gt; NULL, <code>NULLIF(1, 0);</code> -&gt; 1</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>CASE ... END</code></strong></td>
+<td style="text-align:left">标准的 SQL 条件分支语句，比 <code>IF</code> 更强大灵活。</td>
+<td style="text-align:left">见下方深度剖析。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="深度剖析-CASE-语句">深度剖析: <code>CASE</code> 语句</h4>
+<ul>
+<li><strong>核心概念：</strong> 提供了两种形式，用于在查询中实现 <code>if-then-else</code> 逻辑。</li>
+<li><strong>实际应用场景：</strong>
+<ul>
+<li><strong>简单 CASE (值匹配):</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">SELECT</span> <span class="hljs-keyword">CASE</span> status<br>           <span class="hljs-keyword">WHEN</span> <span class="hljs-number">1</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;待支付&#x27;</span><br>           <span class="hljs-keyword">WHEN</span> <span class="hljs-number">2</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;已支付&#x27;</span><br>           <span class="hljs-keyword">WHEN</span> <span class="hljs-number">3</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;已发货&#x27;</span><br>           <span class="hljs-keyword">ELSE</span> <span class="hljs-string">&#x27;未知状态&#x27;</span><br>       <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> status_text<br><span class="hljs-keyword">FROM</span> orders;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>搜索 CASE (条件匹配，更常用):</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 按年龄段给用户打标</span><br><span class="hljs-keyword">SELECT</span> name, <span class="hljs-keyword">CASE</span><br>                 <span class="hljs-keyword">WHEN</span> age <span class="hljs-operator">&lt;</span> <span class="hljs-number">18</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;少年&#x27;</span><br>                 <span class="hljs-keyword">WHEN</span> age <span class="hljs-keyword">BETWEEN</span> <span class="hljs-number">18</span> <span class="hljs-keyword">AND</span> <span class="hljs-number">40</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;青年&#x27;</span><br>                 <span class="hljs-keyword">WHEN</span> age <span class="hljs-operator">&gt;</span> <span class="hljs-number">40</span> <span class="hljs-keyword">THEN</span> <span class="hljs-string">&#x27;中老年&#x27;</span><br>             <span class="hljs-keyword">END</span> <span class="hljs-keyword">AS</span> age_group<br><span class="hljs-keyword">FROM</span> users;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>要点与注意事项：</strong>
+<ul>
+<li><code>CASE</code> 是一个表达式，不是一个语句。它可以用在 <code>SELECT</code>, <code>WHERE</code>, <code>ORDER BY</code> 等任何可以出现表达式的地方。</li>
+<li><code>CASE</code> 语句比多个 <code>IF</code> 嵌套更具可读性。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="6-窗口函数-Window-Functions-MySQL-8-0">6. 窗口函数 (Window Functions) (MySQL 8.0+)</h3>
+<p>这是 MySQL 8.0 引入的革命性功能，极大地增强了分析能力。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">示例 (均需配合 <code>OVER (...)</code>子句)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>ROW_NUMBER()</code></strong></td>
+<td style="text-align:left">为分区中的每一行分配一个从 1 开始的唯一序号。</td>
+<td style="text-align:left"><code>ROW_NUMBER() OVER (PARTITION BY class_id ORDER BY score DESC)</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>RANK()</code></strong></td>
+<td style="text-align:left">计算排名。值相同时排名相同，但会跳过后续排名 (1, 2, 2, 4)。</td>
+<td style="text-align:left"><code>RANK() OVER (ORDER BY salary DESC)</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>DENSE_RANK()</code></strong></td>
+<td style="text-align:left">计算排名。值相同时排名相同，且不跳过后续排名 (1, 2, 2, 3)。</td>
+<td style="text-align:left"><code>DENSE_RANK() OVER (ORDER BY salary DESC)</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>LEAD(expr, N, default)</code></strong></td>
+<td style="text-align:left">获取当前行之后第 N 行的 <code>expr</code> 值。</td>
+<td style="text-align:left"><code>LEAD(amount, 1, 0) OVER (ORDER BY month)</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>LAG(expr, N, default)</code></strong></td>
+<td style="text-align:left">获取当前行之前第 N 行的 <code>expr</code> 值。</td>
+<td style="text-align:left"><code>LAG(amount, 1, 0) OVER (ORDER BY month)</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>聚合函数 <code>OVER()</code></strong></td>
+<td style="text-align:left"><code>SUM</code>, <code>AVG</code>, <code>COUNT</code> 等聚合函数也可以用作窗口函数。</td>
+<td style="text-align:left"><code>SUM(amount) OVER (PARTITION BY user_id)</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="深度剖析-ROW-NUMBER-的应用">深度剖析: <code>ROW_NUMBER()</code> 的应用</h4>
+<ul>
+<li><strong>核心概念：</strong> 窗口函数在一个“窗口”（由 <code>OVER</code> 子句定义的一组行）上执行计算，但不会像 <code>GROUP BY</code> 那样将行折叠。它为每一行都返回一个结果。</li>
+<li><strong>实际应用场景 (Top-N 问题)：</strong>
+<ul>
+<li><strong>获取每个部门工资最高的 3 名员工：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">WITH</span> RankedEmployees <span class="hljs-keyword">AS</span> (<br>    <span class="hljs-keyword">SELECT</span><br>        name,<br>        department,<br>        salary,<br>        <span class="hljs-built_in">ROW_NUMBER</span>() <span class="hljs-keyword">OVER</span> (<span class="hljs-keyword">PARTITION</span> <span class="hljs-keyword">BY</span> department <span class="hljs-keyword">ORDER</span> <span class="hljs-keyword">BY</span> salary <span class="hljs-keyword">DESC</span>) <span class="hljs-keyword">as</span> rn<br>    <span class="hljs-keyword">FROM</span> employees<br>)<br><span class="hljs-keyword">SELECT</span> name, department, salary<br><span class="hljs-keyword">FROM</span> RankedEmployees<br><span class="hljs-keyword">WHERE</span> rn <span class="hljs-operator">&lt;=</span> <span class="hljs-number">3</span>;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>要点与注意事项：</strong>
+<ul>
+<li>窗口函数的学习关键在于理解 <code>OVER()</code> 子句中的 <code>PARTITION BY</code> (分组) 和 <code>ORDER BY</code> (排序)。</li>
+<li>在没有窗口函数之前，实现 Top-N 问题需要复杂的自连接或相关子查询，性能和可读性都很差。窗口函数是现代 SQL 的必备技能。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="7-JSON-函数-MySQL-5-7">7. JSON 函数 (MySQL 5.7+)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">函数</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong><code>JSON_OBJECT()</code></strong></td>
+<td style="text-align:left">创建 JSON 对象。</td>
+<td style="text-align:left"><code>JSON_OBJECT('id', 1, 'name', 'test');</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>JSON_ARRAY()</code></strong></td>
+<td style="text-align:left">创建 JSON 数组。</td>
+<td style="text-align:left"><code>JSON_ARRAY(1, &quot;a&quot;, TRUE);</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>JSON_EXTRACT(json, path)</code></strong></td>
+<td style="text-align:left">从 JSON 文档中提取数据。快捷方式：<code>-&gt;</code>。</td>
+<td style="text-align:left"><code>JSON_EXTRACT('&#123;&quot;a&quot;: 1&#125;', '$.a');</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>JSON_UNQUOTE(expr)</code></strong></td>
+<td style="text-align:left">解除 JSON 值的引号。快捷方式：<code>-&gt;&gt;</code>。</td>
+<td style="text-align:left"><code>JSON_UNQUOTE(JSON_EXTRACT('&#123;&quot;a&quot;: &quot;hello&quot;&#125;', '$.a'));</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>JSON_CONTAINS(json, val, [path])</code></strong></td>
+<td style="text-align:left">判断 JSON 文档中是否包含指定值。</td>
+<td style="text-align:left"><code>JSON_CONTAINS('[1,2,3]', '2');</code> -&gt; 1</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong><code>JSON_TABLE(expr, path COLUMNS(...) ...)</code></strong></td>
+<td style="text-align:left">(MySQL 8.0) 将 JSON 数据转换为关系表格式。</td>
+<td style="text-align:left">(用法较复杂，用于ETL和报表)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="深度剖析-vs">深度剖析: <code>-&gt;</code> vs <code>-&gt;&gt;</code></h4>
+<ul>
+<li><strong>核心概念：</strong> 这是 MySQL 5.7.13 后引入的便捷操作符，是 <code>JSON_EXTRACT</code> 的简写。
+<ul>
+<li><code>column-&gt;path</code>: 提取出的结果<strong>保留原始 JSON 类型</strong>。如果提取的是字符串，会带着双引号。</li>
+<li><code>column-&gt;&gt;path</code>: 相当于 <code>JSON_UNQUOTE(JSON_EXTRACT(column, path))</code>，它会<strong>解除引号</strong>，始终返回一个字符串。</li>
+</ul>
+</li>
+<li><strong>实际应用场景：</strong>
+<ul>
+<li>假设 <code>extra</code> 列是 JSON 类型：<code>'&#123;&quot;id&quot;: 101, &quot;tags&quot;: [&quot;mysql&quot;, &quot;json&quot;]&#125;'</code></li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 使用 -&gt;</span><br><span class="hljs-keyword">SELECT</span> extra<span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">&#x27;$.id&#x27;</span> <span class="hljs-keyword">FROM</span> users;   <span class="hljs-comment">-- 结果: 101 (JSON number)</span><br><span class="hljs-keyword">SELECT</span> extra<span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">&#x27;$.tags&#x27;</span> <span class="hljs-keyword">FROM</span> users; <span class="hljs-comment">-- 结果: [&quot;mysql&quot;, &quot;json&quot;] (JSON array)</span><br><br><span class="hljs-comment">-- 使用 -&gt;&gt;</span><br><span class="hljs-keyword">SELECT</span> extra<span class="hljs-operator">-</span><span class="hljs-operator">&gt;&gt;</span><span class="hljs-string">&#x27;$.tags&#x27;</span> <span class="hljs-keyword">FROM</span> users; <span class="hljs-comment">-- 结果: [\&quot;mysql\&quot;, \&quot;json\&quot;] (STRING)</span><br><br><span class="hljs-comment">-- 在 WHERE 子句中使用</span><br><span class="hljs-keyword">WHERE</span> extra<span class="hljs-operator">-</span><span class="hljs-operator">&gt;&gt;</span><span class="hljs-string">&#x27;$.name&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-string">&#x27;张三&#x27;</span>; <span class="hljs-comment">-- 正确，用 -&gt;&gt; 比较字符串</span><br><span class="hljs-keyword">WHERE</span> extra<span class="hljs-operator">-</span><span class="hljs-operator">&gt;</span><span class="hljs-string">&#x27;$.id&#x27;</span> <span class="hljs-operator">=</span> <span class="hljs-number">101</span>;       <span class="hljs-comment">-- 正确，用 -&gt; 比较数字</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>要点与注意事项：</strong>
+<ul>
+<li><strong>JSON 索引：</strong> 对 JSON 列中频繁查询的字段，可以创建<strong>虚拟列 (Generated Column)</strong> 并对其建立索引，从而实现对 JSON 内部数据的索引查询，极大提升性能。这是使用 JSON 功能的必备优化技巧。</li>
+</ul>
+</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Database/" class="category-chain-item">Database</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/" class="category-chain-item">SQL</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MySQL/" class="print-no-link">#MySQL</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>MySQL 函数</div>
+      <div>http://example.com/2024/05/24/Database/SQL/MySQL/MySQL 函数/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/05/24/Database/SQL/MySQL/MySQL%E9%AB%98%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E8%A7%84%E8%8C%83%E5%BB%BA%E8%AE%AE/" title="MySQL 高性能优化规范建议">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">MySQL 高性能优化规范建议</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E4%BA%8B%E5%8A%A1%E5%92%8C%E9%94%81/" title="事务和锁">
+                        <span class="hidden-mobile">事务和锁</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

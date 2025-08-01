@@ -1,0 +1,1091 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="探讨 MySQL 中的这些核心概念：约束（主键、外键、唯一约束、非空约束）和存储引擎（重点是 InnoDB 与 MyISAM 的对比）。这些概念对于理解数据完整性、并发控制以及数据库性能至关重要。  一、约束 (Constraints) 约束是施加在表的数据列上的规则，用于确保数据的准确性、一致性和完整性。当对表进行 DML 操作 (INSERT, UPDATE, DELETE) 时，如果数据违反">
+<meta property="og:type" content="article">
+<meta property="og:title" content="核心概念">
+<meta property="og:url" content="http://example.com/2024/05/24/Database/SQL/MySQL/%E5%9F%BA%E7%A1%80/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="探讨 MySQL 中的这些核心概念：约束（主键、外键、唯一约束、非空约束）和存储引擎（重点是 InnoDB 与 MyISAM 的对比）。这些概念对于理解数据完整性、并发控制以及数据库性能至关重要。  一、约束 (Constraints) 约束是施加在表的数据列上的规则，用于确保数据的准确性、一致性和完整性。当对表进行 DML 操作 (INSERT, UPDATE, DELETE) 时，如果数据违反">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/database/mysql.png">
+<meta property="article:published_time" content="2024-05-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-01T12:58:26.517Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="MySQL">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/database/mysql.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>核心概念 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="核心概念"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2024-05-24 00:00" pubdate>
+          2024年5月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          33 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">核心概念</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年8月1日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>探讨 MySQL 中的这些核心概念：约束（主键、外键、唯一约束、非空约束）和存储引擎（重点是 InnoDB 与 MyISAM 的对比）。这些概念对于理解数据完整性、并发控制以及数据库性能至关重要。</p>
+<hr>
+<h3 id="一、约束-Constraints">一、约束 (Constraints)</h3>
+<p>约束是施加在表的数据列上的规则，用于确保数据的准确性、一致性和完整性。当对表进行 DML 操作 (INSERT, UPDATE, DELETE) 时，如果数据违反了约束，操作将被阻止。</p>
+<ol>
+<li>
+<p><strong>主键 (Primary Key - PK)</strong></p>
+<ul>
+<li><strong>作用：</strong> 唯一标识表中的每一行。一个表最多只能有一个主键。</li>
+<li><strong>特性：</strong>
+<ul>
+<li><strong>唯一性 (Unique)：</strong> 主键列（或列组合）的值必须唯一，不允许重复。</li>
+<li><strong>非空性 (Not Null)：</strong> 主键列的值不允许为 NULL。</li>
+<li><strong>自动创建索引：</strong> MySQL 会自动为主键创建一个唯一索引（通常是聚集索引，在 InnoDB 中）。</li>
+</ul>
+</li>
+<li><strong>定义方式：</strong>
+<ul>
+<li>在 <code>CREATE TABLE</code> 时定义：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-comment">-- 单列主键</span><br><span class="hljs-keyword">CREATE TABLE</span> users (<br>    id <span class="hljs-type">INT</span> AUTO_INCREMENT <span class="hljs-keyword">PRIMARY KEY</span>,<br>    username <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>) <span class="hljs-keyword">NOT NULL</span><br>);<br><br><span class="hljs-comment">-- 复合主键 (由多列组成)</span><br><span class="hljs-keyword">CREATE TABLE</span> order_items (<br>    order_id <span class="hljs-type">INT</span>,<br>    product_id <span class="hljs-type">INT</span>,<br>    quantity <span class="hljs-type">INT</span>,<br>    <span class="hljs-keyword">PRIMARY KEY</span> (order_id, product_id) <span class="hljs-comment">-- 订单ID和产品ID共同构成主键</span><br>);<br></code></pre></td></tr></table></figure>
+</li>
+<li>使用 <code>ALTER TABLE</code> 添加主键：<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">ALTER TABLE</span> users <span class="hljs-keyword">ADD</span> <span class="hljs-keyword">PRIMARY KEY</span> (id);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><strong>选择主键的考量：</strong>
+<ul>
+<li><strong>业务无关性：</strong> 推荐使用与业务逻辑无关的自增整数 (<code>AUTO_INCREMENT INT</code> 或 <code>BIGINT</code>) 或 UUID 作为主键。这使得主键更加稳定，不受业务需求变化的影响。</li>
+<li><strong>简洁性：</strong> 单列主键通常比复合主键更易于管理和引用（尤其是在作为外键时）。</li>
+<li><strong>性能：</strong> InnoDB 表是索引组织表 (IOT)，数据行物理上按照主键顺序存储。选择一个好的主键（特别是对于 InnoDB）对性能有显著影响。短小、有序（如自增 ID）的主键通常性能更好。</li>
+</ul>
+</li>
+<li><strong>应用与扩展：</strong>
+<ul>
+<li>主键是表之间建立关系（通过外键）的基础。</li>
+<li>高效查询：通过主键查询行的速度非常快。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>外键 (Foreign Key - FK)</strong></p>
+<ul>
+<li><strong>作用：</strong> 用于在一个表中建立与另一个表（父表）的主键或唯一键的链接，以强制引用完整性。它确保子表中的外键列的值必须存在于父表的对应主键/唯一键列中，或者为 NULL (如果外键列允许 NULL)。</li>
+<li><strong>特性：</strong>
+<ul>
+<li>子表中的外键列值必须在父表的主键/唯一键列中存在，或者为 <code>NULL</code> (如果该外键列允许 <code>NULL</code>)。</li>
+<li>通常，外键列的数据类型必须与它引用的父表列的数据类型兼容。</li>
+<li>InnoDB 存储引擎支持外键约束，MyISAM 不支持。</li>
+</ul>
+</li>
+<li><strong>定义方式：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> orders (<br>    order_id <span class="hljs-type">INT</span> AUTO_INCREMENT <span class="hljs-keyword">PRIMARY KEY</span>,<br>    customer_id <span class="hljs-type">INT</span>,<br>    order_date <span class="hljs-type">DATE</span>,<br>    <span class="hljs-comment">-- 定义外键约束</span><br>    <span class="hljs-keyword">FOREIGN KEY</span> (customer_id) <span class="hljs-keyword">REFERENCES</span> customers(id) <span class="hljs-comment">-- customer_id 引用 customers 表的 id 列</span><br>        <span class="hljs-keyword">ON</span> <span class="hljs-keyword">DELETE</span> <span class="hljs-keyword">SET</span> <span class="hljs-keyword">NULL</span>  <span class="hljs-comment">-- 当父表记录删除时，子表对应行的 customer_id 设置为 NULL</span><br>        <span class="hljs-keyword">ON</span> <span class="hljs-keyword">UPDATE</span> CASCADE   <span class="hljs-comment">-- 当父表记录主键更新时，子表对应行的 customer_id 也级联更新</span><br>);<br><br><span class="hljs-keyword">CREATE TABLE</span> customers (<br>    id <span class="hljs-type">INT</span> AUTO_INCREMENT <span class="hljs-keyword">PRIMARY KEY</span>,<br>    name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>)<br>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong><code>ON DELETE</code> 和 <code>ON UPDATE</code> 子句的行为：</strong>
+<ul>
+<li><code>RESTRICT</code> (默认行为，如果未指定): 如果子表中有匹配的记录，则阻止删除或更新父表记录。</li>
+<li><code>CASCADE</code>: 如果父表记录被删除或更新，子表中所有匹配的记录也会被相应地删除或更新。<strong>谨慎使用 <code>ON DELETE CASCADE</code>，它可能导致意外的数据丢失。</strong></li>
+<li><code>SET NULL</code>: 如果父表记录被删除或更新，子表中所有匹配记录的外键列将被设置为 <code>NULL</code> (前提是外键列允许 <code>NULL</code>)。</li>
+<li><code>NO ACTION</code>: 与 <code>RESTRICT</code> 类似。在某些 SQL 标准中，检查是在语句结束时进行，但在 MySQL (InnoDB) 中，其行为通常与 <code>RESTRICT</code> 一致，即立即检查。</li>
+<li><code>SET DEFAULT</code>: (不常用) 将子表外键列设置为其默认值。父表列必须有默认值。</li>
+</ul>
+</li>
+<li><strong>应用与扩展：</strong>
+<ul>
+<li><strong>数据一致性：</strong> 确保了表之间的引用关系是有效的，防止了“孤儿记录”（子表记录引用了一个不存在的父表记录）。</li>
+<li><strong>性能考量：</strong> 外键约束会在 DML 操作时进行检查，这会带来一些性能开销。然而，这种开销通常是为了保证数据完整性所必需的。为了提高外键检查的效率，MySQL 通常要求在外键列上建立索引（如果不存在，InnoDB 会自动创建）。</li>
+<li>在进行大规模数据导入时，有时会暂时禁用外键检查 (<code>SET FOREIGN_KEY_CHECKS=0;</code>) 以提高速度，导入完成后再启用 (<code>SET FOREIGN_KEY_CHECKS=1;</code>)。但这样做有风险，需要确保导入数据的引用完整性。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>唯一约束 (Unique Constraint - UQ)</strong></p>
+<ul>
+<li><strong>作用：</strong> 确保表中的一列或多列组合的值是唯一的，即不允许出现重复值。</li>
+<li><strong>特性：</strong>
+<ul>
+<li>与主键类似，保证唯一性。</li>
+<li><strong>允许 <code>NULL</code> 值：</strong> 一个唯一约束列可以包含多个 <code>NULL</code> 值（因为 <code>NULL</code> 不等于任何值，包括另一个 <code>NULL</code>）。这是它与主键的主要区别之一（主键不允许 <code>NULL</code>）。但如果唯一约束是针对多列的，那么只有当所有列的值都为 <code>NULL</code> 时才被视为 <code>NULL</code>。</li>
+<li><strong>自动创建索引：</strong> MySQL 会为唯一约束自动创建一个唯一索引。</li>
+<li>一个表可以有多个唯一约束。</li>
+</ul>
+</li>
+<li><strong>定义方式：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> employees (<br>    employee_id <span class="hljs-type">INT</span> <span class="hljs-keyword">PRIMARY KEY</span>,<br>    email <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">100</span>) <span class="hljs-keyword">UNIQUE</span>, <span class="hljs-comment">-- email 列必须唯一</span><br>    social_security_number <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">20</span>),<br>    <span class="hljs-keyword">UNIQUE</span> KEY uq_ssn (social_security_number) <span class="hljs-comment">-- 另一种定义方式，可以指定约束名</span><br>);<br><br><span class="hljs-comment">-- 复合唯一约束</span><br><span class="hljs-keyword">CREATE TABLE</span> product_variants (<br>    product_id <span class="hljs-type">INT</span>,<br>    color <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">50</span>),<br>    size <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">10</span>),<br>    <span class="hljs-keyword">UNIQUE</span> (product_id, color, size) <span class="hljs-comment">-- 产品ID、颜色和尺寸的组合必须唯一</span><br>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>应用与扩展：</strong>
+<ul>
+<li>用于强制业务规则中的唯一性，例如用户邮箱、身份证号等。</li>
+<li>可以作为外键引用的候选键（除了主键）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>非空约束 (NOT NULL Constraint)</strong></p>
+<ul>
+<li><strong>作用：</strong> 确保列的值不能为 <code>NULL</code>。</li>
+<li><strong>特性：</strong>
+<ul>
+<li>如果尝试向声明为 <code>NOT NULL</code> 的列插入 <code>NULL</code> 值或更新为 <code>NULL</code> 值，操作将失败。</li>
+</ul>
+</li>
+<li><strong>定义方式：</strong><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">CREATE TABLE</span> products (<br>    id <span class="hljs-type">INT</span> AUTO_INCREMENT <span class="hljs-keyword">PRIMARY KEY</span>,<br>    name <span class="hljs-type">VARCHAR</span>(<span class="hljs-number">255</span>) <span class="hljs-keyword">NOT NULL</span>, <span class="hljs-comment">-- name 列不能为空</span><br>    price <span class="hljs-type">DECIMAL</span>(<span class="hljs-number">10</span>, <span class="hljs-number">2</span>) <span class="hljs-keyword">NOT NULL</span> <span class="hljs-keyword">DEFAULT</span> <span class="hljs-number">0.00</span> <span class="hljs-comment">-- price 列不能为空，并有默认值</span><br>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>应用与扩展：</strong>
+<ul>
+<li><strong>数据完整性：</strong> 确保关键信息不缺失。</li>
+<li><strong>简化查询：</strong> 避免了在查询中处理 <code>NULL</code> 值的复杂性（例如，<code>IS NULL</code>, <code>IS NOT NULL</code>, <code>COALESCE()</code> 函数）。</li>
+<li><strong>性能：</strong> 在某些情况下，<code>NOT NULL</code> 列上的索引可能比允许 <code>NULL</code> 的列上的索引更高效一点，因为不需要特殊处理 <code>NULL</code> 值。</li>
+<li><strong><code>DEFAULT</code> 子句：</strong> 通常与 <code>NOT NULL</code> 配合使用，为 <code>NOT NULL</code> 列提供一个默认值，这样在 <code>INSERT</code> 时如果未指定该列的值，会自动使用默认值。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>约束的通用注意事项：</strong></p>
+<ul>
+<li><strong>命名约束：</strong> 为约束（特别是主键、外键、唯一约束）指定一个明确的名称（如 <code>CONSTRAINT fk_orders_customer FOREIGN KEY (customer_id) REFERENCES customers(id)</code>) 是一个好习惯。这样在出错信息或需要修改/删除约束时更容易识别。</li>
+<li><strong>启用/禁用约束：</strong>
+<ul>
+<li>外键约束可以通过 <code>SET FOREIGN_KEY_CHECKS = 0;</code> (禁用) 和 <code>SET FOREIGN_KEY_CHECKS = 1;</code> (启用) 来控制。</li>
+<li>其他约束（如 <code>UNIQUE</code>, <code>PRIMARY KEY</code>）通常不能被简单地“禁用”，因为它们是通过索引实现的。要移除它们，需要 <code>DROP INDEX</code> 或 <code>ALTER TABLE DROP PRIMARY KEY</code>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="二、存储引擎-Storage-Engines">二、存储引擎 (Storage Engines)</h3>
+<p>存储引擎是 MySQL 中负责如何存储数据、如何检索数据以及如何实现特定功能（如事务、锁定机制）的组件。MySQL 的插件式存储引擎架构允许用户为不同的表选择不同的存储引擎，以满足不同的需求。</p>
+<p><strong>核心思想：</strong> 将数据存储和操作的实现细节从 MySQL 服务器核心中分离出来。</p>
+<p><strong>查看支持的存储引擎：</strong> <code>SHOW ENGINES;</code><br>
+<strong>查看表的存储引擎：</strong> <code>SHOW CREATE TABLE table_name;</code> 或 <code>SELECT ENGINE FROM information_schema.TABLES WHERE table_schema = 'your_database' AND table_name = 'your_table';</code></p>
+<p><strong>重点对比：InnoDB vs. MyISAM</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">特性</th>
+<th style="text-align:left">InnoDB</th>
+<th style="text-align:left">MyISAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>事务 (ACID)</strong></td>
+<td style="text-align:left"><strong>支持</strong> (原子性、一致性、隔离性、持久性)</td>
+<td style="text-align:left"><strong>不支持</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>行级锁</strong></td>
+<td style="text-align:left"><strong>支持</strong> (并发性能好，适合高并发写入和更新)</td>
+<td style="text-align:left"><strong>表级锁</strong> (并发写入性能差，一个写操作会锁住整个表)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>外键约束</strong></td>
+<td style="text-align:left"><strong>支持</strong></td>
+<td style="text-align:left"><strong>不支持</strong> (会解析语法，但实际不生效)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>崩溃恢复</strong></td>
+<td style="text-align:left"><strong>支持</strong> (通过 Redo Log 和 Undo Log 实现，数据更安全)</td>
+<td style="text-align:left"><strong>不支持</strong> (崩溃后可能需要手动修复，数据丢失风险高)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>MVCC</strong></td>
+<td style="text-align:left"><strong>支持</strong> (多版本并发控制，实现非阻塞读，提高并发)</td>
+<td style="text-align:left"><strong>不支持</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>聚集索引</strong></td>
+<td style="text-align:left"><strong>支持</strong> (表数据按主键顺序物理存储，主键查询快)</td>
+<td style="text-align:left"><strong>不支持</strong> (索引和数据是分开存储的，非聚集索引)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>全文索引</strong></td>
+<td style="text-align:left">MySQL 5.6+ 支持</td>
+<td style="text-align:left">支持</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>空间数据索引</strong></td>
+<td style="text-align:left">MySQL 5.7.5+ 支持 R-tree 索引</td>
+<td style="text-align:left">支持 R-tree 索引</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>备份</strong></td>
+<td style="text-align:left">支持热备份 (如 XtraBackup)，对在线服务影响小</td>
+<td style="text-align:left">通常需要锁表或停止服务进行冷备份，或者逻辑备份 (<code>mysqldump</code>)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>存储限制</strong></td>
+<td style="text-align:left">表大小受操作系统文件大小限制 (通常非常大)</td>
+<td style="text-align:left">表大小默认有 4GB 限制 (可通过 <code>MAX_ROWS</code> 和 <code>AVG_ROW_LENGTH</code> 调整，或文件系统限制)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>数据缓存</strong></td>
+<td style="text-align:left"><strong>Buffer Pool</strong> (缓存数据和索引)</td>
+<td style="text-align:left"><strong>Key Buffer</strong> (只缓存索引，数据依赖操作系统缓存)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>默认引擎</strong></td>
+<td style="text-align:left"><strong>MySQL 5.5.5+ 之后为默认引擎，MySQL 8.0 强制默认</strong></td>
+<td style="text-align:left">MySQL 5.5.5 之前为默认引擎</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>典型应用场景</strong></td>
+<td style="text-align:left"><strong>需要事务、高并发、数据完整性要求的 OLTP 系统 (在线事务处理)</strong>，如电商、金融、社交应用等。</td>
+<td style="text-align:left"><strong>只读或读密集型、对事务和并发写入要求不高的场景</strong>，如日志表、某些数据仓库的维度表 (但现在也更多用 InnoDB)。逐渐被 InnoDB 取代。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>1. InnoDB 存储引擎 (重点)</strong></p>
+<ul>
+<li><strong>设计目标：</strong> 处理海量数据时的最大性能，并保证事务的 ACID 特性。</li>
+<li><strong>核心特性详解：</strong>
+<ul>
+<li><strong>事务 (ACID)：</strong>
+<ul>
+<li><code>START TRANSACTION</code>, <code>COMMIT</code>, <code>ROLLBACK</code>, <code>SAVEPOINT</code>。</li>
+<li>确保一系列操作要么全部成功，要么全部失败，保证数据一致性。</li>
+</ul>
+</li>
+<li><strong>行级锁 (Row-Level Locking)：</strong>
+<ul>
+<li>只锁定需要修改的行，而不是整个表。大大提高了并发处理能力，尤其是在多用户写入操作时。</li>
+<li><strong>间隙锁 (Gap Locks) 和临键锁 (Next-Key Locks)：</strong> 在可重复读 (Repeatable Read) 隔离级别下，InnoDB 使用这些锁来防止幻读。</li>
+</ul>
+</li>
+<li><strong>外键约束 (Foreign Key Constraints)：</strong> 如前所述，用于维护表间的引用完整性。</li>
+<li><strong>崩溃恢复能力 (Crash Recovery)：</strong>
+<ul>
+<li><strong>Redo Log (重做日志)：</strong> 保证事务的持久性。即使数据库崩溃，也可以通过 Redo Log 恢复已提交的事务。</li>
+<li><strong>Undo Log (撤销日志)：</strong> 用于事务回滚和 MVCC。</li>
+</ul>
+</li>
+<li><strong>MVCC (Multi-Version Concurrency Control)：</strong>
+<ul>
+<li>多版本并发控制。读操作不会阻塞写操作，写操作也不会阻塞读操作（非锁定读）。</li>
+<li>通过在每行数据后保存两个隐藏的版本号（创建版本号和删除版本号）以及指向 Undo Log 的指针来实现。</li>
+<li>在可重复读和读已提交隔离级别下，<code>SELECT</code> 操作读取的是某个时间点的数据快照。</li>
+</ul>
+</li>
+<li><strong>聚集索引 (Clustered Index)：</strong>
+<ul>
+<li>表中的数据行按照主键的顺序物理存储。这意味着通过主键查找数据非常快。</li>
+<li>每个 InnoDB 表只有一个聚集索引（即主键索引）。</li>
+<li>如果表没有定义主键，InnoDB 会选择第一个 <code>UNIQUE NOT NULL</code> 索引作为聚集索引；如果还没有，InnoDB 会内部生成一个隐藏的 6 字节的 <code>ROWID</code> 作为聚集索引。</li>
+<li><strong>二级索引 (Secondary Indexes)</strong> 存储的是索引列的值和对应行的主键值。因此，通过二级索引查找数据通常需要两次查找：一次找到主键值，一次通过主键值找到数据行（这个过程称为回表）。覆盖索引可以避免回表。</li>
+</ul>
+</li>
+<li><strong>Buffer Pool：</strong> InnoDB 使用一块内存区域 (Buffer Pool) 来缓存表数据和索引。尽可能将热点数据保留在内存中，以减少磁盘 I/O。<code>innodb_buffer_pool_size</code> 是 InnoDB 最重要的性能参数之一。</li>
+</ul>
+</li>
+<li><strong>适用场景：</strong>
+<ul>
+<li>绝大多数需要关系型数据库的场景。</li>
+<li>需要事务支持的应用（如订单处理、金融交易）。</li>
+<li>高并发读写的应用。</li>
+<li>需要外键来保证数据完整性的应用。</li>
+</ul>
+</li>
+<li><strong>MySQL 8.0 及更高版本：</strong> InnoDB 是默认且强烈推荐的存储引擎。很多新特性也是围绕 InnoDB 开发的。</li>
+</ul>
+<p><strong>2. MyISAM 存储引擎</strong></p>
+<ul>
+<li><strong>历史地位：</strong> 在 InnoDB 成为主流之前，MyISAM 是 MySQL 的默认存储引擎。</li>
+<li><strong>核心特性：</strong>
+<ul>
+<li><strong>不支持事务。</strong></li>
+<li><strong>表级锁 (Table-Level Locking)：</strong> 对 MyISAM 表的写操作（INSERT, UPDATE, DELETE）会锁定整个表，阻塞其他写操作，甚至可能阻塞读操作（取决于锁的类型和查询）。这导致在高并发写入场景下性能很差。</li>
+<li><strong>不支持外键。</strong></li>
+<li><strong>崩溃恢复能力弱：</strong> MyISAM 表在数据库崩溃后可能损坏，需要使用 <code>REPAIR TABLE</code> 命令修复，且可能丢失数据。</li>
+<li><strong>非聚集索引：</strong> 索引文件 (.MYI) 和数据文件 (.MYD) 是分离的。索引存储的是指向数据文件中数据行物理位置的指针。</li>
+<li><strong>全文索引支持较早：</strong> 在 InnoDB 支持全文索引之前，MyISAM 是主要的全文搜索选择。</li>
+<li><strong>存储格式：</strong> 表在磁盘上存储为三个文件：<code>.frm</code> (表结构定义)，<code>.MYD</code> (数据文件)，<code>.MYI</code> (索引文件)。</li>
+<li><strong><code>COUNT(*)</code> 快速：</strong> 如果没有 <code>WHERE</code> 条件，<code>SELECT COUNT(*) FROM myisam_table;</code> 非常快，因为它直接存储了表的总行数。但 InnoDB 在有 <code>WHERE</code> 条件或事务上下文中，<code>COUNT(*)</code> 可能需要扫描索引或表。不过，现代 InnoDB 在 <code>COUNT(*)</code> 优化方面也有了很大进步。</li>
+</ul>
+</li>
+<li><strong>适用场景 (目前已非常有限)：</strong>
+<ul>
+<li>对事务、并发写入、数据完整性要求不高的只读或读密集型应用。</li>
+<li>某些特定的系统表仍可能使用 MyISAM (尽管也在逐渐减少)。</li>
+<li>如果需要非常快速的 <code>COUNT(*)</code> 且没有 <code>WHERE</code> 条件，并且可以接受 MyISAM 的其他缺点 (极少情况)。</li>
+</ul>
+</li>
+<li><strong>现状：</strong> <strong>已不推荐在新项目中使用 MyISAM。</strong> 绝大多数场景下，InnoDB 是更好的选择。如果还在使用 MyISAM 表，应考虑迁移到 InnoDB。</li>
+</ul>
+<p><strong>其他存储引擎简介 (了解即可)：</strong></p>
+<ul>
+<li><strong>Memory (HEAP)：</strong>
+<ul>
+<li>将所有数据存储在内存中，速度极快。</li>
+<li>表级锁。</li>
+<li>不支持事务。</li>
+<li>数据库重启后数据会丢失 (因为数据在内存中)。</li>
+<li>适用于临时表、缓存少量数据等。</li>
+</ul>
+</li>
+<li><strong>Archive：</strong>
+<ul>
+<li>用于存储和归档大量很少访问的历史数据。</li>
+<li>支持高压缩率，节省存储空间。</li>
+<li>只支持 <code>INSERT</code> 和 <code>SELECT</code> 操作，不支持 <code>UPDATE</code>, <code>DELETE</code>, <code>REPLACE</code>。</li>
+<li>不支持索引 (除了自增 ID 列会自动创建索引外)。</li>
+</ul>
+</li>
+<li><strong>CSV：</strong>
+<ul>
+<li>将数据以 CSV (逗号分隔值) 格式存储在文本文件中。</li>
+<li>便于与其他应用程序交换数据。</li>
+<li>不支持索引，不支持 <code>NULL</code> 值。</li>
+</ul>
+</li>
+<li><strong>Blackhole：</strong>
+<ul>
+<li>不存储任何数据，但会记录对它执行的 DML 操作的 Binlog (如果启用了 Binlog)。</li>
+<li>可用于复制的中继服务器，或者测试 Binlog 性能。</li>
+</ul>
+</li>
+<li><strong>NDB (NDBCLUSTER)：</strong>
+<ul>
+<li>MySQL Cluster 使用的存储引擎，提供高可用性和高并发的内存数据库集群。与常规 MySQL 服务器架构不同。</li>
+</ul>
+</li>
+</ul>
+<p><strong>如何选择存储引擎？</strong></p>
+<ul>
+<li><strong>对于绝大多数新应用和现有应用：选择 InnoDB。</strong> 它提供了事务、行级锁、外键、崩溃恢复等关键特性，是现代关系型应用的首选。</li>
+<li>只有在非常特殊且明确的场景下，才考虑其他存储引擎 (例如，用 Memory 引擎做临时高速缓存，用 Archive 引擎做纯归档)。</li>
+<li>MySQL 8.0 之后，系统表也逐渐从 MyISAM 迁移到了 InnoDB。</li>
+</ul>
+<hr>
+<p>总结一下，<strong>约束</strong>是保证数据质量的规则，而<strong>存储引擎</strong>是决定数据如何被物理存储和操作的底层机制。理解这两者对于设计健壮、高效的 MySQL 数据库至关重要。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Database/" class="category-chain-item">Database</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/" class="category-chain-item">SQL</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Database/SQL/MySQL/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/MySQL/" class="print-no-link">#MySQL</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>核心概念</div>
+      <div>http://example.com/2024/05/24/Database/SQL/MySQL/基础/核心概念/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2024年5月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E4%BA%8B%E5%8A%A1%E5%92%8C%E9%94%81/" title="事务和锁">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">事务和锁</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E7%B4%A2%E5%BC%95/" title="索引">
+                        <span class="hidden-mobile">索引</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
