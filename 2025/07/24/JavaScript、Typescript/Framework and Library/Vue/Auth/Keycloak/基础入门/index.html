@@ -1,0 +1,905 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从它是什么、为什么用，到怎么用、怎么用好，覆盖所有关键点。  Part 1: 核心原理 —— 它到底在做什么？ 要理解 keycloak-js，你首先要明白它背后的标准协议：OAuth 2.0 和 OpenID Connect (OIDC)。  OAuth 2.0 是一个授权框架，它允许第三方应用（你的前端）在用户授权后，访问用户在某个服务（Keycloak）上的受保护资源（例如 API）。它定义">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础入门">
+<meta property="og:url" content="http://example.com/2025/07/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Auth/Keycloak/%E5%9F%BA%E7%A1%80%E5%85%A5%E9%97%A8/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="从它是什么、为什么用，到怎么用、怎么用好，覆盖所有关键点。  Part 1: 核心原理 —— 它到底在做什么？ 要理解 keycloak-js，你首先要明白它背后的标准协议：OAuth 2.0 和 OpenID Connect (OIDC)。  OAuth 2.0 是一个授权框架，它允许第三方应用（你的前端）在用户授权后，访问用户在某个服务（Keycloak）上的受保护资源（例如 API）。它定义">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/keycloak.png">
+<meta property="article:published_time" content="2025-07-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-07T13:46:13.144Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="keycloak-js">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/keycloak.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>基础入门 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="基础入门"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-24 00:00" pubdate>
+          2025年7月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          23 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">基础入门</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年8月7日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>从它是什么、为什么用，到怎么用、怎么用好，覆盖所有关键点。</p>
+<hr>
+<h3 id="Part-1-核心原理-——-它到底在做什么？">Part 1: 核心原理 —— 它到底在做什么？</h3>
+<p>要理解 keycloak-js，你首先要明白它背后的标准协议：<strong>OAuth 2.0</strong> 和 <strong>OpenID Connect (OIDC)</strong>。</p>
+<ul>
+<li><strong>OAuth 2.0</strong> 是一个<strong>授权</strong>框架，它允许第三方应用（你的前端）在用户授权后，访问用户在某个服务（Keycloak）上的受保护资源（例如 API）。它定义了获取“访问令牌” (Access Token) 的流程。</li>
+<li><strong>OIDC</strong> 是建立在 OAuth 2.0 之上的一个<strong>身份认证</strong>层。它在 OAuth 2.0 的基础上增加了“ID 令牌” (ID Token)，这个令牌包含了用户的身份信息（如用户名、邮箱等）。</li>
+</ul>
+<p>keycloak-js 完美地封装了这两个协议中最适合现代前端应用的流程：<strong>授权码模式 + PKCE (Proof Key for Code Exchange)</strong>。</p>
+<p><strong>一个通俗的比喻：</strong></p>
+<p>想象一下，你的 Web 应用是一个高级俱乐部（<strong>Club App</strong>），用户（<strong>User</strong>）想进去。但你的俱乐部不自己负责发会员卡和验证身份，而是委托给一个非常权威、所有人都信任的中央认证中心（<strong>Keycloak Server</strong>）。</p>
+<ol>
+<li>
+<p><strong>认证请求 (Authorization Request)</strong>:</p>
+<ul>
+<li>用户访问你的 Club App。</li>
+<li>App 发现用户没有会员凭证，于是说：“请去 Keycloak 中心证明你的身份。” 并把用户重定向（Redirect）到 Keycloak 的登录页面。</li>
+</ul>
+</li>
+<li>
+<p><strong>身份认证 (Authentication)</strong>:</p>
+<ul>
+<li>用户在 Keycloak 页面上输入用户名和密码。</li>
+<li>Keycloak 验证成功，确认了“你是你”。</li>
+</ul>
+</li>
+<li>
+<p><strong>授权 (Authorization)</strong>:</p>
+<ul>
+<li>Keycloak 问用户：“Club App 想要获取你的基本信息（比如名字、邮箱）和访问权限，你同意吗？”</li>
+<li>用户点击“同意”。</li>
+</ul>
+</li>
+<li>
+<p><strong>发放凭证 (Issuing Tokens)</strong>:</p>
+<ul>
+<li>Keycloak 将用户重定向回你的 Club App，并在 URL 中附带一个一次性的<strong>授权码 (Authorization Code)</strong>。</li>
+<li><code>keycloak-js</code> 在后台悄悄拿到这个授权码，并再次向 Keycloak 发送请求，用授权码换取几张非常重要的“电子卡”—— <strong>Tokens</strong>。</li>
+</ul>
+</li>
+</ol>
+<p>这个过程，就是行业标准的 <strong>“授权码模式 + PKCE” (Authorization Code Flow with PKCE)</strong>。PKCE 是一种安全增强机制，防止授权码在传输过程中被截获冒用，现在是绝对的<strong>最佳实践</strong>。</p>
+<p><code>keycloak-js</code> 的核心使命，就是<strong>将这套复杂、繁琐的重定向、Code 交换 Token、Token 管理等流程，封装成几个简单的 JavaScript API</strong>，让你无需关心底层细节，专注于业务逻辑。</p>
+<p><strong>三个核心 Token：</strong></p>
+<ul>
+<li><strong>ID Token (身份证)</strong>: 包含了用户的身份信息（用户名、邮箱等），证明了“你是谁”。JWT 格式。</li>
+<li><strong>Access Token (访问令牌/门禁卡)</strong>: 用于访问受保护的后端 API 资源。你的应用在每次请求后端时，都应该带上它。后端 API 会验证这个 Token 的有效性，决定是否放行。JWT 格式。</li>
+<li><strong>Refresh Token (续期卡)</strong>: Access Token 通常很短命（比如 5 分钟），过期后就需要用 Refresh Token 去静默换取一个新的 Access Token，避免用户频繁重新登录。</li>
+</ul>
+<p><code>keycloak-js</code> 会帮你安全地存储和管理这些 Token。</p>
+<hr>
+<h3 id="Part-2-基础入门-——-快速上手">Part 2: 基础入门 —— 快速上手</h3>
+<h4 id="步骤-1-安装">步骤 1: 安装</h4>
+<p>有一件事非常重要，在使用这些依赖项时，无论是在后端还是在前端，你都需要注意版本，所以尽可能选择与 Keycloak 服务器相同的版本。否则可能会有风险，例如不兼容。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">npm install keycloak-js@选择合适版本<br><span class="hljs-comment"># 或者</span><br>yarn add keycloak-js@选择合适版本<br></code></pre></td></tr></table></figure>
+<h4 id="步骤-2-初始化">步骤 2: 初始化</h4>
+<p>这是 <code>keycloak-js</code> 最关键的一步。在你的应用入口文件（如 <code>main.js</code>, <code>index.js</code>）中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Keycloak</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;keycloak-js&#x27;</span>;<br><br><span class="hljs-comment">// 1. 创建 Keycloak 实例</span><br><span class="hljs-comment">// 这些信息需要和你在 Keycloak Admin Console 中配置的客户端(Client)信息一致</span><br><span class="hljs-keyword">const</span> keycloak = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Keycloak</span>(&#123;<br>  <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;http://your-keycloak-server/auth&#x27;</span>, <span class="hljs-comment">// Keycloak 服务地址</span><br>  <span class="hljs-attr">realm</span>: <span class="hljs-string">&#x27;your-realm&#x27;</span>,                     <span class="hljs-comment">// 你的 Realm 名称</span><br>  <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;your-client-id&#x27;</span>,              <span class="hljs-comment">// 你的 Client ID</span><br>&#125;);<br><br><span class="hljs-comment">// 2. 初始化适配器</span><br><span class="hljs-comment">// 这是整个魔法开始的地方</span><br>keycloak.<span class="hljs-title function_">init</span>(&#123; <br>    <span class="hljs-attr">onLoad</span>: <span class="hljs-string">&#x27;login-required&#x27;</span>, <span class="hljs-comment">// or &#x27;check-sso&#x27;</span><br>    <span class="hljs-attr">silentCheckSsoRedirectUri</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>.<span class="hljs-property">origin</span> + <span class="hljs-string">&#x27;/silent-check-sso.html&#x27;</span> <span class="hljs-comment">// 推荐配置，用于静默SSO检查</span><br>  &#125;)<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function">(<span class="hljs-params">authenticated</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (authenticated) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;用户已认证！&quot;</span>);<br>      <span class="hljs-comment">// Token 在这里已经获取并存储好了</span><br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Access Token:&quot;</span>, keycloak.<span class="hljs-property">token</span>);<br><br>      <span class="hljs-comment">// 在这里启动你的前端应用 (Vue, React, Angular等)</span><br>      <span class="hljs-comment">// createApp(App).mount(&#x27;#app&#x27;); </span><br>      <span class="hljs-comment">// ReactDOM.render(&lt;App /&gt;, document.getElementById(&#x27;root&#x27;));</span><br><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;用户未认证。&quot;</span>);<br>      <span class="hljs-comment">// 根据 onLoad 的设置，理论上如果不是 &#x27;check-sso&#x27;，不太会走到这里</span><br>    &#125;<br>  &#125;)<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Keycloak 初始化失败&quot;</span>, error);<br>    <span class="hljs-comment">// 可以显示一个错误页面</span><br>  &#125;);<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> keycloak; <span class="hljs-comment">// 导出实例，方便在其他地方使用</span><br></code></pre></td></tr></table></figure>
+<p><strong><code>onLoad</code> 选项解读（非常重要！）：</strong></p>
+<ul>
+<li><code>login-required</code>: <strong>推荐用于大多数应用</strong>。如果用户未登录，自动跳转到 Keycloak 登录页。登录成功后，再跳回你的应用。</li>
+<li><code>check-sso</code>: <strong>用于允许匿名访问的应用</strong>。它会静默检查（通过一个隐藏的 iframe）用户是否已经在其他应用中登录了 Keycloak。如果登录了，它会自动获取 Token，实现单点登录（SSO）；如果没登录，它什么也不做，用户保持未登录状态。</li>
+</ul>
+<h4 id="步骤-3-核心-API-使用">步骤 3: 核心 API 使用</h4>
+<p>在你的应用组件中，可以导入并使用上面导出的 <code>keycloak</code> 实例。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> keycloak <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./keycloak&#x27;</span>; <span class="hljs-comment">// 假设你从 keycloak.js 导出了实例</span><br><br><span class="hljs-comment">// 1. 获取用户信息</span><br><span class="hljs-keyword">if</span> (keycloak.<span class="hljs-property">authenticated</span>) &#123;<br>  <span class="hljs-comment">// keycloak.tokenParsed 是解码后的 Access Token</span><br>  <span class="hljs-keyword">const</span> username = keycloak.<span class="hljs-property">tokenParsed</span>.<span class="hljs-property">preferred_username</span>; <br>  <span class="hljs-comment">// keycloak.idTokenParsed 是解码后的 ID Token</span><br>  <span class="hljs-keyword">const</span> email = keycloak.<span class="hljs-property">idTokenParsed</span>.<span class="hljs-property">email</span>; <br><br>  <span class="hljs-comment">// 加载完整的用户信息 (会额外发一个请求到 UserInfo Endpoint)</span><br>  keycloak.<span class="hljs-title function_">loadUserProfile</span>().<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">profile</span> =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Full user profile:&#x27;</span>, profile);<br>  &#125;);<br>&#125;<br><br><span class="hljs-comment">// 2. 登出</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">handleLogout</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// redirectUri 是可选的，指定登出后跳转的页面</span><br>  keycloak.<span class="hljs-title function_">logout</span>(&#123; <span class="hljs-attr">redirectUri</span>: <span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>.<span class="hljs-property">origin</span> &#125;); <br>&#125;<br><br><span class="hljs-comment">// 3. 检查角色 (Keycloak的强大功能)</span><br><span class="hljs-keyword">const</span> hasAdminRole = keycloak.<span class="hljs-title function_">hasRealmRole</span>(<span class="hljs-string">&#x27;admin&#x27;</span>); <span class="hljs-comment">// 检查是否拥有 Realm 级别的 &#x27;admin&#x27; 角色</span><br><span class="hljs-keyword">const</span> hasUserRoleInClient = keycloak.<span class="hljs-title function_">hasResourceRole</span>(<span class="hljs-string">&#x27;user&#x27;</span>, <span class="hljs-string">&#x27;your-client-id&#x27;</span>); <span class="hljs-comment">// 检查是否拥有某个 Client 的 &#x27;user&#x27; 角色</span><br><br><span class="hljs-comment">// 4. 更新 Token (保持会话)</span><br><span class="hljs-comment">// Access Token 会过期，这个方法用于在过期前静默刷新它</span><br><span class="hljs-comment">// minValidity 参数（秒）：如果 Token 剩余有效期小于这个值，就去刷新。</span><br><span class="hljs-comment">// 返回一个 promise，告诉你刷新成功还是失败。</span><br>keycloak.<span class="hljs-title function_">updateToken</span>(<span class="hljs-number">30</span>) <span class="hljs-comment">// 尝试在 Token 过期前 30 秒刷新</span><br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">refreshed</span> =&gt;</span> &#123;<br>    <span class="hljs-keyword">if</span> (refreshed) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Token was successfully refreshed&#x27;</span>);<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Token is still valid&#x27;</span>);<br>    &#125;<br>  &#125;).<span class="hljs-title function_">catch</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Failed to refresh token&#x27;</span>);<br>    <span class="hljs-comment">// 刷新失败，可能需要强制用户重新登录</span><br>    keycloak.<span class="hljs-title function_">login</span>();<br>  &#125;);<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="Part-3-进阶应用与最佳实践">Part 3: 进阶应用与最佳实践</h3>
+<h4 id="1-API-请求拦截器（必学！）">1. API 请求拦截器（必学！）</h4>
+<p>这是 <code>keycloak-js</code> 在实际项目中最核心的应用。你需要确保每次调用后端 API 时，请求头 <code>Authorization</code> 都携带了最新的、有效的 Access Token。</p>
+<p><strong>使用 <code>axios</code> 拦截器的完美示例：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> axios <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;axios&#x27;</span>;<br><span class="hljs-keyword">import</span> keycloak <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./keycloak&#x27;</span>;<br><br><span class="hljs-keyword">const</span> apiClient = axios.<span class="hljs-title function_">create</span>(&#123;<br>  <span class="hljs-attr">baseURL</span>: <span class="hljs-string">&#x27;http://your-api-server/api&#x27;</span>,<br>&#125;);<br><br><span class="hljs-comment">// 添加请求拦截器</span><br>apiClient.<span class="hljs-property">interceptors</span>.<span class="hljs-property">request</span>.<span class="hljs-title function_">use</span>(<br>  <span class="hljs-title function_">async</span> (config) =&gt; &#123;<br>    <span class="hljs-comment">// 1. 确保用户已认证</span><br>    <span class="hljs-keyword">if</span> (!keycloak.<span class="hljs-property">authenticated</span>) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;用户未认证，无法发送API请求&quot;</span>);<br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(<span class="hljs-string">&quot;Unauthorized&quot;</span>);<br>    &#125;<br><br>    <span class="hljs-keyword">try</span> &#123;<br>      <span class="hljs-comment">// 2. 在每次请求前，调用 updateToken 检查并刷新 Token</span><br>      <span class="hljs-comment">// 这里的 5 代表如果 token 还有 5 秒就要过期了，就去刷新</span><br>      <span class="hljs-keyword">const</span> refreshed = <span class="hljs-keyword">await</span> keycloak.<span class="hljs-title function_">updateToken</span>(<span class="hljs-number">5</span>);<br>      <span class="hljs-keyword">if</span> (refreshed) &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Token refreshed!&quot;</span>);<br>      &#125;<br><br>      <span class="hljs-comment">// 3. 将最新的 Token 添加到请求头</span><br>      config.<span class="hljs-property">headers</span>.<span class="hljs-property">Authorization</span> = <span class="hljs-string">`Bearer <span class="hljs-subst">$&#123;keycloak.token&#125;</span>`</span>;<br>      <span class="hljs-keyword">return</span> config;<br><br>    &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;无法刷新 Token 或 Token 无效&quot;</span>, error);<br>      <span class="hljs-comment">// 如果刷新失败，可以触发重新登录</span><br>      keycloak.<span class="hljs-title function_">login</span>(); <br>      <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(error);<br>    &#125;<br>  &#125;,<br>  <span class="hljs-function">(<span class="hljs-params">error</span>) =&gt;</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">reject</span>(error);<br>  &#125;<br>);<br><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> apiClient;<br></code></pre></td></tr></table></figure>
+<p><strong>为什么这样做？</strong><br>
+这种模式一劳永逸。你以后所有的 API 请求都使用这个 <code>apiClient</code> 实例，它会自动处理 Token 的刷新和附加，业务代码干净整洁。</p>
+<h4 id="2-单点登录-SSO-与单点登出-SLO">2. 单点登录 (SSO) 与单点登出 (SLO)</h4>
+<ul>
+<li><strong>SSO</strong>: 当你使用 <code>onLoad: 'check-sso'</code> 时，SSO 就已经部分启用了。用户在浏览器中只要登录过一次你的 Keycloak Realm，打开任何一个配置了相同 Realm 的新应用时，都会被自动识别并登录。</li>
+<li><strong>SLO</strong>: 当你调用 <code>keycloak.logout()</code> 时，<code>keycloak-js</code> 会将浏览器重定向到 Keycloak 的登出端点。Keycloak 不仅会结束自己的会话，还会通知所有登录过的应用“这个用户登出了”，其他应用也会相应地清除本地会话，实现“一处登出，处处登出”。</li>
+</ul>
+<h4 id="3-与前端框架集成">3. 与前端框架集成</h4>
+<p>虽然 <code>keycloak-js</code> 本身是原生 JS 库，但社区为主流框架提供了便利的封装：</p>
+<ul>
+<li><strong>React</strong>: <code>@react-keycloak/web</code> 是一个不错的选择。它提供了 <code>ReactKeycloakProvider</code> 和 <code>useKeycloak</code> hook，可以优雅地在组件中访问 <code>keycloak</code> 实例和认证状态。</li>
+<li><strong>Vue</strong>: 可以通过插件（Plugin）的形式将 <code>keycloak</code> 实例注入到 Vue 的原型链上，方便全局访问。</li>
+<li><strong>Angular</strong>: <code>angular-auth-oidc-client</code> 是一个功能强大的库，虽然不专为 Keycloak 设计，但可以完美配置用于 Keycloak，并提供了 <code>AuthGuard</code> 等 Angular 特有的集成。</li>
+</ul>
+<p><strong>建议</strong>：在使用这些封装库时，一定要确认它底层依赖的 <code>keycloak-js</code> 版本是否是最新的，以及它是否遵循了最佳实践（如使用 PKCE）。</p>
+<hr>
+<h3 id="Part-4-要点与注意事项">Part 4: 要点与注意事项</h3>
+<ol>
+<li>
+<p><strong>安全：PKCE 是必须的</strong></p>
+<ul>
+<li>现代版本的 <code>keycloak-js</code> 和 Keycloak Server 默认启用 PKCE。请确保你的 Client 配置中，Access Type 是 <code>public</code> (而不是 <code>bearer-only</code> 或 <code>confidential</code>)，并且 <code>Standard Flow Enabled</code> 是开启的。不要再使用旧的 <code>Implicit Flow</code>！</li>
+</ul>
+</li>
+<li>
+<p><strong>CORS 配置</strong></p>
+<ul>
+<li>这是一个常见的坑。你的 <strong>Web 应用的域名</strong>必须被添加到 Keycloak Client 配置的 <code>Valid Redirect URIs</code> 和 <code>Web Origins</code> 中。否则，登录后的重定向和 Token 交换会因 CORS 策略失败。</li>
+</ul>
+</li>
+<li>
+<p><strong>Token 存储</strong></p>
+<ul>
+<li><code>keycloak-js</code> 默认将 Token 存储在 <code>sessionStorage</code> (浏览器关闭即失效) 或 <code>localStorage</code> (持久化) 中。这由 <code>init</code> 时的 <code>promiseType: 'native'</code> (现代默认) 决定，通常无需手动干预。了解即可。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>silent-check-sso.html</code> 文件</strong></p>
+<ul>
+<li>为了实现 <code>check-sso</code> 的静默检查，你需要在你的 Web 应用的 <code>public</code> 目录下创建一个简单的 HTML 文件，内容如下。这个文件被用于在隐藏的 iframe 中加载，以安全地检查 SSO 状态。</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-comment">&lt;!-- public/silent-check-sso.html --&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">html</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><br>      parent.postMessage(location.href, location.origin);<br>    <span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>版本匹配</strong></p>
+<ul>
+<li>尽量保持 <code>keycloak-js</code> 的版本与你的 Keycloak Server 版本大体一致。虽然不要求严格匹配，但版本差异过大可能导致某些新特性不兼容或出现未知问题。</li>
+</ul>
+</li>
+<li>
+<p><strong>Realm vs. Client ID</strong></p>
+<ul>
+<li>初学者常混淆。<strong>Realm</strong> 是一个独立的租户空间，包含了用户、角色、客户端等。<strong>Client ID</strong> 则是这个 Realm 中代表你这一个特定前端应用。一个 Realm 可以管理多个 Client。</li>
+</ul>
+</li>
+</ol>
+<h3 id="总结">总结</h3>
+<p><code>keycloak-js</code> 是一个强大而优雅的“粘合剂”。它将前端应用与 Keycloak 认证中心无缝连接起来，把复杂的 OIDC 认证授权流程简化为几个直观的 API 调用。</p>
+<p><strong>掌握它的关键路径是：</strong></p>
+<ol>
+<li><strong>理解原理</strong>：明白重定向、授权码、Token 交换的基本流程。</li>
+<li><strong>配对初始化</strong>：确保 <code>init()</code> 中的参数与 Keycloak Admin Console 的配置完全匹配。</li>
+<li><strong>拥抱拦截器</strong>：使用 API 请求拦截器来自动化 Token 管理，这是项目工程化的核心。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Vue/" class="category-chain-item">Vue</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Vue/Auth/" class="category-chain-item">Auth</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Vue/Auth/Keycloak/" class="category-chain-item">Keycloak</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/keycloak-js/" class="print-no-link">#keycloak-js</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>基础入门</div>
+      <div>http://example.com/2025/07/24/JavaScript、Typescript/Framework and Library/Vue/Auth/Keycloak/基础入门/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Auth/Keycloak/Keycloak%20%E4%B8%8E%20Vue%20%E9%9B%86%E6%88%90/" title="Keycloak 与 Vue 集成">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Keycloak 与 Vue 集成</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/03/Java/Framework/Spring%20Boot/Book%20Social%20Network/%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" title="3.异常处理">
+                        <span class="hidden-mobile">3.异常处理</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

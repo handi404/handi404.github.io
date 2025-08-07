@@ -1,0 +1,849 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="插件（Plugin）能让你将可复用的逻辑、组件或配置优雅地集成到任何 Vue 应用中。  第一部分：核心概念 —— 插件是什么？为什么需要它？ 1. 通俗理解：插件就像 App 的“扩展坞”或“应用商店” 想象一下你的 Vue 应用（app）是一个主机，比如一台笔记本电脑。它本身有核心功能，但如果你想连接更多设备（键盘、显示器、U 盘），你需要一个扩展坞。 Vue 插件就是这个“扩展坞”。它是一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="插件（Plugin）">
+<meta property="og:url" content="http://example.com/2025/06/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E6%8F%92%E4%BB%B6%EF%BC%88Plugin%EF%BC%89/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="插件（Plugin）能让你将可复用的逻辑、组件或配置优雅地集成到任何 Vue 应用中。  第一部分：核心概念 —— 插件是什么？为什么需要它？ 1. 通俗理解：插件就像 App 的“扩展坞”或“应用商店” 想象一下你的 Vue 应用（app）是一个主机，比如一台笔记本电脑。它本身有核心功能，但如果你想连接更多设备（键盘、显示器、U 盘），你需要一个扩展坞。 Vue 插件就是这个“扩展坞”。它是一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/vue.png">
+<meta property="article:published_time" content="2025-06-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-07T13:49:42.827Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/vue.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>插件（Plugin） - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="插件（Plugin）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 00:00" pubdate>
+          2025年6月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">插件（Plugin）</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年8月7日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>插件（Plugin）能让你将可复用的逻辑、组件或配置优雅地集成到任何 Vue 应用中。</p>
+<hr>
+<h3 id="第一部分：核心概念-——-插件是什么？为什么需要它？"><strong>第一部分：核心概念 —— 插件是什么？为什么需要它？</strong></h3>
+<h4 id="1-通俗理解：插件就像-App-的“扩展坞”或“应用商店”"><strong>1. 通俗理解：插件就像 App 的“扩展坞”或“应用商店”</strong></h4>
+<p>想象一下你的 Vue 应用（<code>app</code>）是一个主机，比如一台笔记本电脑。它本身有核心功能，但如果你想连接更多设备（键盘、显示器、U 盘），你需要一个扩展坞。</p>
+<p><strong>Vue 插件就是这个“扩展坞”</strong>。它是一个标准化的接口，允许你向 Vue 应用实例（<code>app</code>）中添加<strong>全局级别</strong>的功能，而无需在每个组件中单独引入或配置。</p>
+<h4 id="2-技术定义：插件的核心是-install-方法"><strong>2. 技术定义：插件的核心是 <code>install</code> 方法</strong></h4>
+<p>一个标准的 Vue 插件是一个暴露了 <code>install</code> 方法的对象。当你通过 <code>app.use(myPlugin)</code> 使用插件时，Vue 会自动调用这个 <code>install</code> 方法，并将 <code>app</code> 实例作为第一个参数传入。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 一个最简单的插件结构</span><br><span class="hljs-keyword">const</span> myPlugin = &#123;<br>  <span class="hljs-title function_">install</span>(<span class="hljs-params">app, options</span>) &#123;<br>    <span class="hljs-comment">// 在这里添加全局功能</span><br>    <span class="hljs-comment">// app: Vue 应用实例</span><br>    <span class="hljs-comment">// options: 用户在 app.use(myPlugin, options) 中传入的选项</span><br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="3-为什么需要插件？解决什么问题？"><strong>3. 为什么需要插件？解决什么问题？</strong></h4>
+<p>当你发现某些功能需要在应用的多个地方复用时，就应该考虑插件。典型的场景包括：</p>
+<ul>
+<li><strong>全局组件/指令</strong>：注册一些在整个应用中都可能用到的基础组件（如 <code>MyButton</code>, <code>MyCard</code>）或自定义指令（如 <code>v-focus</code>）。</li>
+<li><strong>全局资源注入</strong>：向所有组件注入一个可访问的属性或方法，例如一个 HTTP 请求库（<code>$http</code>）或一个翻译函数（<code>$t</code>）。</li>
+<li><strong>原型链扩展 (Vue 2 方式，Vue 3 不推荐)</strong>：Vue 3 推荐使用 <code>app.config.globalProperties</code>。</li>
+<li><strong>封装第三方库</strong>：将像 Axios、Element Plus、Pinia、Vue Router 这样的库集成到 Vue 中，它们本身就是通过插件机制工作的。</li>
+</ul>
+<hr>
+<h3 id="第二部分：实战演练-——-创建一个自己的插件"><strong>第二部分：实战演练 —— 创建一个自己的插件</strong></h3>
+<p>我们来创建一个实用的插件：一个简单的国际化 (i 18 n) 插件。</p>
+<p><strong>目标</strong>：</p>
+<ol>
+<li>插件可以接收一个翻译字典作为选项。</li>
+<li>提供一个全局方法 <code>$t(key)</code>，用于在模板中进行翻译。</li>
+<li>提供一个组合式函数 <code>useI18n()</code>，用于在 <code>&lt;script setup&gt;</code> 中进行翻译，这才是现代化的做法。</li>
+</ol>
+<h4 id="步骤-1：定义插件文件结构"><strong>步骤 1：定义插件文件结构</strong></h4>
+<p>在你的 <code>src</code> 目录下，创建一个 <code>plugins</code> 文件夹，并在其中新建 <code>i18n.ts</code>。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs stylus"><span class="hljs-attribute">src</span>/<br>├── plugins/<br>│   └── i18n<span class="hljs-selector-class">.ts</span><br>├── <span class="hljs-selector-tag">main</span><span class="hljs-selector-class">.ts</span><br>└── ...<br></code></pre></td></tr></table></figure>
+<h4 id="步骤-2：编写插件代码-src-plugins-i18n-ts"><strong>步骤 2：编写插件代码 (<code>src/plugins/i18n.ts</code>)</strong></h4>
+<p>我们将结合 TypeScript 的所有优势来编写这个插件。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/plugins/i18n.ts</span><br><br><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> &#123; <span class="hljs-title class_">App</span>, <span class="hljs-title class_">Plugin</span> &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; inject, ref &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><br><span class="hljs-comment">// 1. 定义插件选项的类型，让使用者获得类型提示</span><br><span class="hljs-keyword">interface</span> I18nOptions &#123;<br>  <span class="hljs-attr">messages</span>: &#123;<br>    [<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>]: &#123;<br>      [<span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span>]: <span class="hljs-built_in">string</span>;<br>    &#125;;<br>  &#125;;<br>  <span class="hljs-attr">defaultLocale</span>?: <span class="hljs-built_in">string</span>;<br>&#125;<br><br><span class="hljs-comment">// 2. 为了类型安全，使用 Symbol 作为 provide/inject 的 key</span><br><span class="hljs-comment">// 这是最佳实践，可以避免 key 命名冲突</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> i18nSymbol = <span class="hljs-title class_">Symbol</span>(<span class="hljs-string">&#x27;i18n&#x27;</span>);<br><br><span class="hljs-comment">// 3. 创建我们的组合式函数 (Composable)</span><br><span class="hljs-comment">// 这是插件提供给 &lt;script setup&gt; 使用的核心</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">useI18n</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> i18n = <span class="hljs-title function_">inject</span>(i18nSymbol);<br>  <span class="hljs-keyword">if</span> (!i18n) &#123;<br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&#x27;i18n plugin not installed!&#x27;</span>);<br>  &#125;<br>  <span class="hljs-keyword">return</span> i18n;<br>&#125;<br><br><span class="hljs-comment">// 4. 定义插件主体</span><br><span class="hljs-comment">// 使用 `Plugin` 类型可以获得 `install` 方法的类型提示</span><br><span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> <span class="hljs-attr">i18nPlugin</span>: <span class="hljs-title class_">Plugin</span> = &#123;<br>  <span class="hljs-title function_">install</span>(<span class="hljs-params"><span class="hljs-attr">app</span>: <span class="hljs-title class_">App</span>, <span class="hljs-attr">options</span>: I18nOptions</span>) &#123;<br>    <span class="hljs-comment">// 5. 准备响应式状态</span><br>    <span class="hljs-keyword">const</span> currentLocale = <span class="hljs-title function_">ref</span>(options.<span class="hljs-property">defaultLocale</span> || <span class="hljs-string">&#x27;en&#x27;</span>);<br>    <br>    <span class="hljs-comment">// 翻译函数</span><br>    <span class="hljs-keyword">const</span> <span class="hljs-title function_">t</span> = (<span class="hljs-params"><span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span></span>) =&gt; &#123;<br>      <span class="hljs-keyword">return</span> options.<span class="hljs-property">messages</span>[currentLocale.<span class="hljs-property">value</span>]?.[key] || key;<br>    &#125;;<br>    <br>    <span class="hljs-comment">// 切换语言的函数</span><br>    <span class="hljs-keyword">const</span> <span class="hljs-title function_">setLocale</span> = (<span class="hljs-params"><span class="hljs-attr">locale</span>: <span class="hljs-built_in">string</span></span>) =&gt; &#123;<br>      currentLocale.<span class="hljs-property">value</span> = locale;<br>    &#125;;<br>    <br>    <span class="hljs-comment">// 组合式函数需要用到的对象</span><br>    <span class="hljs-keyword">const</span> i18n = &#123;<br>      t,<br>      setLocale,<br>      currentLocale,<br>    &#125;;<br><br>    <span class="hljs-comment">// 6. 全局注入：这是现代 Vue 3 的方式</span><br>    <span class="hljs-comment">// 通过 provide，任何后代组件都可以通过 inject(i18nSymbol) 来获取</span><br>    app.<span class="hljs-title function_">provide</span>(i18nSymbol, i18n);<br><br>    <span class="hljs-comment">// 7. 为了兼容 Options API 或直接在模板中使用，可以挂载到 globalProperties</span><br>    <span class="hljs-comment">// 这会让 `$t` 在所有组件的模板中都可用</span><br>    app.<span class="hljs-property">config</span>.<span class="hljs-property">globalProperties</span>.<span class="hljs-property">$t</span> = t;<br>  &#125;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="步骤-3：在-main-ts-中安装和使用插件"><strong>步骤 3：在 <code>main.ts</code> 中安装和使用插件</strong></h4>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/main.ts</span><br><br><span class="hljs-keyword">import</span> &#123; createApp &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><span class="hljs-keyword">import</span> <span class="hljs-title class_">App</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./App.vue&#x27;</span>;<br><span class="hljs-keyword">import</span> &#123; i18nPlugin &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;./plugins/i18n&#x27;</span>; <span class="hljs-comment">// 引入插件</span><br><br><span class="hljs-keyword">const</span> app = <span class="hljs-title function_">createApp</span>(<span class="hljs-title class_">App</span>);<br><br><span class="hljs-comment">// 定义我们的翻译字典</span><br><span class="hljs-keyword">const</span> i18nMessages = &#123;<br>  <span class="hljs-attr">en</span>: &#123;<br>    <span class="hljs-attr">hello</span>: <span class="hljs-string">&#x27;Hello, World!&#x27;</span><br>  &#125;,<br>  <span class="hljs-attr">zh</span>: &#123;<br>    <span class="hljs-attr">hello</span>: <span class="hljs-string">&#x27;你好，世界！&#x27;</span><br>  &#125;<br>&#125;;<br><br><span class="hljs-comment">// 使用 app.use() 来安装插件，并传入选项</span><br>app.<span class="hljs-title function_">use</span>(i18nPlugin, &#123;<br>  <span class="hljs-attr">messages</span>: i18nMessages,<br>  <span class="hljs-attr">defaultLocale</span>: <span class="hljs-string">&#x27;en&#x27;</span><br>&#125;);<br><br>app.<span class="hljs-title function_">mount</span>(<span class="hljs-string">&#x27;#app&#x27;</span>);<br></code></pre></td></tr></table></figure>
+<h4 id="步骤-4：在组件中使用插件提供的功能"><strong>步骤 4：在组件中使用插件提供的功能</strong></h4>
+<p>现在，我们可以在任何组件中使用我们创建的 i 18 n 功能了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs vue">&lt;!-- src/components/HelloWorld.vue --&gt;<br>&lt;template&gt;<br>  &lt;div&gt;<br>    &lt;!-- 方法一：直接在模板中使用 $t (来自 globalProperties) --&gt;<br>    &lt;h1&gt;&#123;&#123; $t(&#x27;hello&#x27;) &#125;&#125;&lt;/h1&gt;<br><br>    &lt;!-- 方法二：使用组合式函数 (推荐) --&gt;<br>    &lt;p&gt;&#123;&#123; t(&#x27;hello&#x27;) &#125;&#125;&lt;/p&gt;<br><br>    &lt;button @click=&quot;changeLanguage&quot;&gt;切换语言&lt;/button&gt;<br>  &lt;/div&gt;<br>&lt;/template&gt;<br><br>&lt;script setup lang=&quot;ts&quot;&gt;<br>// 引入我们的组合式函数<br>import &#123; useI18n &#125; from &#x27;../plugins/i18n&#x27;;<br><br>// 通过组合式函数获取所有功能，类型安全！<br>const &#123; t, setLocale, currentLocale &#125; = useI18n();<br><br>const changeLanguage = () =&gt; &#123;<br>  const newLocale = currentLocale.value === &#x27;en&#x27; ? &#x27;zh&#x27; : &#x27;en&#x27;;<br>  setLocale(newLocale);<br>&#125;;<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="第三部分：要点与注意事项"><strong>第三部分：要点与注意事项</strong></h3>
+<h4 id="1-类型安全是第一要务"><strong>1. 类型安全是第一要务</strong></h4>
+<ul>
+<li>
+<p><strong>为 <code>globalProperties</code> 添加类型定义</strong>：虽然我们挂载了 <code>$t</code>，但 TypeScript 默认并不知道它的存在。我们需要通过“模块声明合并”来告诉 TypeScript。<br>
+在项目根目录或 <code>src</code> 下创建一个 <code>*.d.ts</code> 文件（例如 <code>env.d.ts</code> 或 <code>vue.d.ts</code>）：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// src/vue.d.ts</span><br><span class="hljs-keyword">import</span> <span class="hljs-string">&#x27;vue&#x27;</span>;<br><br><span class="hljs-comment">// 告诉 TypeScript Vue 的 ComponentCustomProperties 接口上有一个 $t 方法</span><br><span class="hljs-keyword">declare</span> <span class="hljs-variable language_">module</span> <span class="hljs-string">&#x27;vue&#x27;</span> &#123;<br>  <span class="hljs-keyword">interface</span> <span class="hljs-title class_">ComponentCustomProperties</span> &#123;<br>    <span class="hljs-attr">$t</span>: <span class="hljs-function">(<span class="hljs-params"><span class="hljs-attr">key</span>: <span class="hljs-built_in">string</span></span>) =&gt;</span> <span class="hljs-built_in">string</span>;<br>  &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这样，当你在模板或 Options API 中使用 <code>this.$t</code> 时，就能获得类型提示和检查。</p>
+</li>
+<li>
+<p><strong><code>provide/inject</code> 与 <code>Symbol</code></strong>：使用 <code>Symbol</code> 作为 <code>provide</code> 的 <code>key</code> 是最佳实践。它可以避免大型应用中不同插件或库之间的 <code>key</code> 冲突。同时，<code>inject(symbol)</code> 能更好地进行类型推导。</p>
+</li>
+</ul>
+<h4 id="2-插件的两种形式"><strong>2. 插件的两种形式</strong></h4>
+<p>插件不仅可以是对象，也可以是一个函数，效果完全一样。</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs typescript"><span class="hljs-comment">// 函数形式的插件</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">myPlugin</span>(<span class="hljs-params"><span class="hljs-attr">app</span>: <span class="hljs-title class_">App</span>, <span class="hljs-attr">options</span>: <span class="hljs-built_in">any</span></span>) &#123;<br>  <span class="hljs-comment">// 安装逻辑</span><br>&#125;<br><br>app.<span class="hljs-title function_">use</span>(myPlugin, &#123; <span class="hljs-comment">/* ... */</span> &#125;);<br></code></pre></td></tr></table></figure>
+<h4 id="3-插件的幂等性-Idempotency"><strong>3. 插件的幂等性 (Idempotency)</strong></h4>
+<p><code>app.use()</code> 会自动阻止你多次安装同一个插件。如果你多次调用 <code>app.use(myPlugin)</code>，该插件的 <code>install</code> 方法也只会被执行一次。这保证了插件的初始化逻辑不会重复执行。</p>
+<h4 id="4-依赖注入-provide-inject-是现代插件的核心"><strong>4. 依赖注入 (<code>provide</code> / <code>inject</code>) 是现代插件的核心</strong></h4>
+<p>虽然 <code>app.config.globalProperties</code> 很方便，但它污染了全局命名空间，且在 <code>&lt;script setup&gt;</code> 中访问 <code>this</code> 不方便。</p>
+<p><strong>现代插件设计的黄金法则是：通过 <code>provide</code> 提供功能，通过 <code>composable</code> 函数（内部使用 <code>inject</code>）暴露给组件。</strong></p>
+<p>这样做的好处：</p>
+<ul>
+<li><strong>显式依赖</strong>：在组件的 <code>setup</code> 中，<code>useI18n()</code> 清晰地表明了该组件依赖 i 18 n 功能。</li>
+<li><strong>类型安全</strong>：<code>inject</code> 结合 <code>Symbol</code> 和 TypeScript 能提供完美的类型推导。</li>
+<li><strong>更好的摇树优化 (Tree-shaking)</strong>：如果一个组件没有调用 <code>useI18n()</code>，相关的代码可能在打包时被优化掉。</li>
+</ul>
+<hr>
+<h3 id="总结"><strong>总结</strong></h3>
+<ol>
+<li><strong>理解其本质</strong>：插件是为 <code>app</code> 实例添加<strong>全局功能</strong>的标准化方式，核心是 <code>install</code> 方法。</li>
+<li><strong>明确使用场景</strong>：当需要提供全局组件、指令、方法或集成第三方库时，就应该使用插件。</li>
+<li><strong>掌握现代开发模式</strong>：
+<ul>
+<li>为你的插件创建 <code>composable</code> (组合式函数)，例如 <code>useMyPlugin()</code>。</li>
+<li>在 <code>install</code> 方法中使用 <code>app.provide()</code> 来注入功能。</li>
+<li>在 <code>composable</code> 中使用 <code>inject()</code> 来获取功能。</li>
+<li>使用 <code>Symbol</code> 作为 <code>provide/inject</code> 的 <code>key</code>。</li>
+</ul>
+</li>
+<li><strong>确保类型安全</strong>：
+<ul>
+<li>为插件的 <code>options</code> 定义 <code>interface</code>。</li>
+<li>如果使用了 <code>app.config.globalProperties</code>，务必通过声明合并为它添加类型。</li>
+</ul>
+</li>
+<li><strong>参考优秀实践</strong>：去阅读 <strong>Pinia</strong> 和 <strong>Vue Router</strong> 的源码。它们是学习插件设计的最佳范例。你会发现它们都遵循了 <code>install</code> + <code>provide/inject</code> + <code>composable</code> 的模式。</li>
+</ol>
+<p>你可以试着将项目中的 Axios 封装成一个插件，提供一个全局的 <code>$http</code> 服务和一个 <code>useHttp()</code> 组合式函数。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Vue/" class="category-chain-item">Vue</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Vue/Vue-3/" class="category-chain-item">Vue 3</a>
+  
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/vue/" class="print-no-link">#vue</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>插件（Plugin）</div>
+      <div>http://example.com/2025/06/24/JavaScript、Typescript/Framework and Library/Vue/Vue 3/插件（Plugin）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E5%8F%8C%E5%90%91%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A/" title="双向数据绑定">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">双向数据绑定</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/14/Java/Framework/Spring%20Boot/photos-clone/" title="photos-clone">
+                        <span class="hidden-mobile">photos-clone</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

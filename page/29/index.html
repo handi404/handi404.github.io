@@ -235,6 +235,495 @@
     
     
       <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.5Criteria%20API/" target="_self">
+          <img src="/img/java/jpa.png" srcset="/img/loading.gif" lazyload alt="Criteria API">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.5Criteria%20API/" target="_self">
+          Criteria API
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.5Criteria%20API/" target="_self">
+        <div>
+          探讨 JPA 的 Criteria API。这是一种用于构建动态查询的、类型安全的方式，作为 JPQL 字符串拼接的替代方案。  3.5 Criteria API 为什么需要 Criteria API？ 虽然 JPQL 是一种强大的查询语言，但在需要根据运行时条件动态构建查询（例如，用户在界面上选择了不同的过滤条件）的场景下，直接拼接 JPQL 字符串可能会变得复杂、易错，并且存在潜在的 JPQL
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-13 00:00" pubdate>
+              2024-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/" class="category-chain-item">Data</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/" class="category-chain-item">JPA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/" class="category-chain-item">大纲学习</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/" class="category-chain-item">核心功能</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JPA/">#JPA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.2%E5%AE%9E%E4%BD%93%E6%98%A0%E5%B0%84%20(Mappings)/" target="_self">
+          <img src="/img/java/jpa.png" srcset="/img/loading.gif" lazyload alt="实体映射 (Mappings)">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.2%E5%AE%9E%E4%BD%93%E6%98%A0%E5%B0%84%20(Mappings)/" target="_self">
+          实体映射 (Mappings)
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.2%E5%AE%9E%E4%BD%93%E6%98%A0%E5%B0%84%20(Mappings)/" target="_self">
+        <div>
+          探讨 JPA 中的实体映射 (Mappings)。这部分内容是 ORM 的核心，它定义了 Java 实体类及其属性如何与数据库表及其列进行对应。正确和高效地配置映射对于 JPA 应用的性能和行为至关重要。  3.2 实体映射 (Mappings) JPA 通过一系列注解来定义实体和数据库之间的映射关系。 3.2.1 基本类型映射 JPA 自动支持 Java 的基本数据类型及其包装类，以及 Stri
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-13 00:00" pubdate>
+              2024-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/" class="category-chain-item">Data</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/" class="category-chain-item">JPA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/" class="category-chain-item">大纲学习</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/" class="category-chain-item">核心功能</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JPA/">#JPA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.4JPQL/" target="_self">
+          <img src="/img/java/jpa.png" srcset="/img/loading.gif" lazyload alt="JPQL">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.4JPQL/" target="_self">
+          JPQL
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/06/13/Java/Framework/Spring%20Boot/Data/Hibernate%20&amp;%20JPA/JPA/3.%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/3.4JPQL/" target="_self">
+        <div>
+          探讨 JPQL (Java Persistence Query Language / Jakarta Persistence Query Language)。JPQL 是 JPA 规范中定义的一种强大的、面向对象的查询语言，它允许开发者以独立于特定数据库 SQL 方言的方式来查询持久化实体。  3.4 JPQL (Java Persistence Query Language) 核心特点：  面向
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-13 00:00" pubdate>
+              2024-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/" class="category-chain-item">Data</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/" class="category-chain-item">JPA</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/" class="category-chain-item">大纲学习</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/Data/JPA/%E5%A4%A7%E7%BA%B2%E5%AD%A6%E4%B9%A0/%E6%A0%B8%E5%BF%83%E5%8A%9F%E8%83%BD/" class="category-chain-item">核心功能</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/JPA/">#JPA</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/@Configuration%20and%20@Bean/" target="_self">
+          <img src="/img/java/spring.png" srcset="/img/loading.gif" lazyload alt="@Configuration and @Bean">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/06/13/Java/Framework/Spring%20Boot/@Configuration%20and%20@Bean/" target="_self">
+          @Configuration and @Bean
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/06/13/Java/Framework/Spring%20Boot/@Configuration%20and%20@Bean/" target="_self">
+        <div>
+          Spring Boot 中非常核心的两个注解：@Configuration 和 @Bean。它们是 Spring IoC (Inversion of Control，控制反转) 容器进行 Java 配置 (Java-based Configuration) 的基石。 简单来说：  @Configuration：告诉 Spring 这是一个配置类，就像一个“蓝图工厂”的声明。 @Bean：在配置类中
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-13 00:00" pubdate>
+              2024-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-Boot/" class="category-chain-item">Spring Boot</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/spring-boot/">#spring boot</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
+        <a href="/2024/06/13/Java/Framework/Spring%20MVC/%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94%E7%9A%84%E6%A0%B8%E5%BF%83%E6%B3%A8%E8%A7%A3/" target="_self">
+          <img src="/img/java/spring.png" srcset="/img/loading.gif" lazyload alt="处理请求与响应的核心注解">
+        </a>
+      </div>
+    
+    <article class="col-12 col-md-8 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2024/06/13/Java/Framework/Spring%20MVC/%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94%E7%9A%84%E6%A0%B8%E5%BF%83%E6%B3%A8%E8%A7%A3/" target="_self">
+          处理请求与响应的核心注解
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt " href="/2024/06/13/Java/Framework/Spring%20MVC/%E5%A4%84%E7%90%86%E8%AF%B7%E6%B1%82%E4%B8%8E%E5%93%8D%E5%BA%94%E7%9A%84%E6%A0%B8%E5%BF%83%E6%B3%A8%E8%A7%A3/" target="_self">
+        <div>
+          系统性地梳理 Controller 中处理请求与响应的所有核心注解。将它们分为五大类，建立一个清晰的知识框架。 这五类就像一个请求处理的流水线：  控制器定义注解：首先，得有个“车间”来处理请求。 请求映射注解：然后，需要“交通警察”根据请求的 URL、方法等，将其引导到正确的处理方法。 请求输入注解：接着，需要“装卸工”从请求中把数据（参数、请求体、头信息等）取出来。 响应输出注解：处理完毕后，
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-06-13 00:00" pubdate>
+              2024-06-13
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/" class="category-chain-item">Framework</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/Framework/Spring-MVC/" class="category-chain-item">Spring MVC</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/spring-mvc/">#spring mvc</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+      <div class="col-12 col-md-4 m-auto index-img">
         <a href="/2024/06/13/Java/Framework/Spring%20MVC/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" target="_self">
           <img src="/img/java/spring.png" srcset="/img/loading.gif" lazyload alt="核心概念">
         </a>
@@ -604,439 +1093,6 @@
     
   <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
   
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/MySQL/">#MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/05/24/Database/SQL/MySQL/MySQL%20%E5%87%BD%E6%95%B0/" target="_self">
-          <img src="/img/database/mysql.png" srcset="/img/loading.gif" lazyload alt="MySQL 函数">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/05/24/Database/SQL/MySQL/MySQL%20%E5%87%BD%E6%95%B0/" target="_self">
-          MySQL 函数
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt " href="/2024/05/24/Database/SQL/MySQL/MySQL%20%E5%87%BD%E6%95%B0/" target="_self">
-        <div>
-          MySQL 函数全景图 MySQL 的内置函数可以主要划分为以下 七大类，这基本上涵盖了日常开发与数据分析的 99% 的场景：  聚合函数 (Aggregate Functions): 对一组值进行计算，并返回单个值。是 SQL 的核心。 字符串函数 (String Functions): 用于处理和操作字符串数据。 数值函数 (Numeric Functions): 用于执行数学运算。 日期与时
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-05-24 00:00" pubdate>
-              2024-05-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Database/" class="category-chain-item">Database</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/" class="category-chain-item">SQL</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/MySQL/">#MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E4%BA%8B%E5%8A%A1%E5%92%8C%E9%94%81/" target="_self">
-          <img src="/img/database/mysql.png" srcset="/img/loading.gif" lazyload alt="事务和锁">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E4%BA%8B%E5%8A%A1%E5%92%8C%E9%94%81/" target="_self">
-          事务和锁
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt " href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E4%BA%8B%E5%8A%A1%E5%92%8C%E9%94%81/" target="_self">
-        <div>
-          事务和锁是保证数据一致性和并发控制的基石，特别是在像 InnoDB 这样支持事务的存储引擎中。这部分内容对于理解数据库的可靠运行至关重要。  一、事务 (Transactions) 与 ACID 特性 1. 什么是事务？  事务是一个原子性的工作单元 (Atomic Unit of Work)，它包含了一系列数据库操作（如 INSERT, UPDATE, DELETE）。这些操作要么全部成功执行，
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-05-24 00:00" pubdate>
-              2024-05-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Database/" class="category-chain-item">Database</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/" class="category-chain-item">SQL</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/" class="category-chain-item">进阶</a>
-  
-  
-
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/MySQL/">#MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/05/24/Database/SQL/MySQL/%E5%9F%BA%E7%A1%80/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" target="_self">
-          <img src="/img/database/mysql.png" srcset="/img/loading.gif" lazyload alt="核心概念">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/05/24/Database/SQL/MySQL/%E5%9F%BA%E7%A1%80/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" target="_self">
-          核心概念
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt " href="/2024/05/24/Database/SQL/MySQL/%E5%9F%BA%E7%A1%80/%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5/" target="_self">
-        <div>
-          探讨 MySQL 中的这些核心概念：约束（主键、外键、唯一约束、非空约束）和存储引擎（重点是 InnoDB 与 MyISAM 的对比）。这些概念对于理解数据完整性、并发控制以及数据库性能至关重要。  一、约束 (Constraints) 约束是施加在表的数据列上的规则，用于确保数据的准确性、一致性和完整性。当对表进行 DML 操作 (INSERT, UPDATE, DELETE) 时，如果数据违反
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-05-24 00:00" pubdate>
-              2024-05-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Database/" class="category-chain-item">Database</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/" class="category-chain-item">SQL</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/MySQL/%E5%9F%BA%E7%A1%80/" class="category-chain-item">基础</a>
-  
-  
-
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/MySQL/">#MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E7%B4%A2%E5%BC%95/" target="_self">
-          <img src="/img/database/mysql.png" srcset="/img/loading.gif" lazyload alt="索引">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E7%B4%A2%E5%BC%95/" target="_self">
-          索引
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt " href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E7%B4%A2%E5%BC%95/" target="_self">
-        <div>
-          索引是 MySQL 性能优化的核心武器。理解索引的原理、类型和优化原则，对于编写高效的 SQL 查询至关重要。  一、索引的原理与数据结构 (B+Tree 是核心) 1. 什么是索引？  通俗理解： 索引就像一本书的目录。没有目录，你需要逐页翻阅才能找到特定内容；有了目录，你可以快速定位到内容所在的页码。 数据库定义： 索引是一种特殊的数据结构，它存储了表中一个或多个列的值以及这些值对应的数据行在
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-05-24 00:00" pubdate>
-              2024-05-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Database/" class="category-chain-item">Database</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/" class="category-chain-item">SQL</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/" class="category-chain-item">进阶</a>
-  
-  
-
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/MySQL/">#MySQL</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-      <div class="col-12 col-md-4 m-auto index-img">
-        <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E8%A7%86%E5%9B%BE%20(Views)/" target="_self">
-          <img src="/img/database/mysql.png" srcset="/img/loading.gif" lazyload alt="视图 (Views)">
-        </a>
-      </div>
-    
-    <article class="col-12 col-md-8 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E8%A7%86%E5%9B%BE%20(Views)/" target="_self">
-          视图 (Views)
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt " href="/2024/05/24/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/%E8%A7%86%E5%9B%BE%20(Views)/" target="_self">
-        <div>
-          MySQL 中的视图 (Views)。视图是一个非常有用的数据库对象，它可以帮助我们简化复杂的查询、封装业务逻辑，并提供一定程度的数据访问控制。  一、什么是视图 (View)？  定义： 视图是一个虚拟表 (Virtual Table)，其内容由一个 SQL 查询（SELECT 语句）定义。 虚拟性：  视图本身不存储实际的数据（除非是物化视图，但 MySQL 的标准视图不是物化视图）。 视图的
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-05-24 00:00" pubdate>
-              2024-05-24
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Database/" class="category-chain-item">Database</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/" class="category-chain-item">SQL</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/MySQL/" class="category-chain-item">MySQL</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/Database/SQL/MySQL/%E8%BF%9B%E9%98%B6/" class="category-chain-item">进阶</a>
-  
-  
-
   
 
   

@@ -1,0 +1,939 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="剖析 keycloak-js 实例上的每一个重要方法和属性。这不仅仅是一份 API 列表，更是一份实战指南，告诉你“是什么”、“为什么”以及“怎么用”。 我们将把 keycloak 实例上的功能分为几个核心类别来讲解，以便更好地理解它们之间的关系。 123456789import Keycloak from &#x27;keycloak-js&#x27;;const keycloak &#x3D; new">
+<meta property="og:type" content="article">
+<meta property="og:title" content="keycloak-js 实例的方法和属性">
+<meta property="og:url" content="http://example.com/2025/07/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Auth/Keycloak/keycloak%20%E5%AE%9E%E4%BE%8B%E7%9A%84%E6%96%B9%E6%B3%95%E5%92%8C%E5%B1%9E%E6%80%A7/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="剖析 keycloak-js 实例上的每一个重要方法和属性。这不仅仅是一份 API 列表，更是一份实战指南，告诉你“是什么”、“为什么”以及“怎么用”。 我们将把 keycloak 实例上的功能分为几个核心类别来讲解，以便更好地理解它们之间的关系。 123456789import Keycloak from &#x27;keycloak-js&#x27;;const keycloak &#x3D; new">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/keycloak.png">
+<meta property="article:published_time" content="2025-07-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-08-07T13:48:12.059Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="keycloak-js">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/keycloak.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>keycloak-js 实例的方法和属性 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="keycloak-js 实例的方法和属性"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-07-24 00:00" pubdate>
+          2025年7月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">keycloak-js 实例的方法和属性</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年8月7日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>剖析 <code>keycloak-js</code> 实例上的每一个重要方法和属性。这不仅仅是一份 API 列表，更是一份实战指南，告诉你“是什么”、“为什么”以及“怎么用”。</p>
+<p>我们将把 <code>keycloak</code> 实例上的功能分为几个核心类别来讲解，以便更好地理解它们之间的关系。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Keycloak</span> <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;keycloak-js&#x27;</span>;<br><br><span class="hljs-keyword">const</span> keycloak = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Keycloak</span>(&#123;<br>  <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;...&#x27;</span>,<br>  <span class="hljs-attr">realm</span>: <span class="hljs-string">&#x27;...&#x27;</span>,<br>  <span class="hljs-attr">clientId</span>: <span class="hljs-string">&#x27;...&#x27;</span><br>&#125;);<br><br><span class="hljs-comment">// 以下是 keycloak 实例上所有核心方法的详解</span><br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="类别一：初始化与核心生命周期-Initialization-Core-Lifecycle">类别一：初始化与核心生命周期 (Initialization &amp; Core Lifecycle)</h3>
+<p>这是整个库的入口和基石。</p>
+<h4 id="init-options"><code>init(options)</code></h4>
+<p>这是<strong>最重要、必须调用</strong>的方法，它启动了整个认证流程。</p>
+<ul>
+<li><strong>作用</strong>: 初始化适配器，检查当前用户的认证状态（例如，从 URL 回调中解析令牌，或通过 SSO 静默登录）。</li>
+<li><strong>返回值</strong>: <code>Promise&lt;boolean&gt;</code>。一个 Promise，当初始化完成后，会解析出一个布尔值：<code>true</code> 表示用户已认证，<code>false</code> 表示用户未认证。</li>
+<li><strong>核心 <code>options</code> 参数</strong>:
+<ul>
+<li><code>onLoad</code>: <code>'login-required' | 'check-sso'</code>
+<ul>
+<li><code>'login-required'</code>: 如果用户未登录，立即将浏览器重定向到 Keycloak 登录页。</li>
+<li><code>'check-sso'</code>: 检查用户是否已在 Keycloak 上有登录会话（SSO）。如果有，则静默获取令牌并完成登录，用户无感知；如果没有，则什么也不做，保持未登录状态。这是现代 SPA 的首选。</li>
+</ul>
+</li>
+<li><code>promiseType</code>: <code>'native' | 'legacy'</code>
+<ul>
+<li>始终使用 <code>'native'</code>（默认值）。这会返回标准的浏览器 <code>Promise</code>。<code>'legacy'</code> 是为了兼容旧版浏览器的过时选项。</li>
+</ul>
+</li>
+<li><code>silentCheckSsoRedirectUri</code>: <code>string</code>
+<ul>
+<li>一个指向你应用中一个空白 HTML 文件的 URL (例如 <code>https://myapp.com/silent-check-sso.html</code>)。当 <code>onLoad: 'check-sso'</code> 时，<code>keycloak-js</code> 会创建一个隐藏的 iframe 来访问此 URL 以安全地与 Keycloak 通信。<strong>强烈建议配置此项</strong>以获得最佳的静默 SSO 体验。</li>
+</ul>
+</li>
+<li><code>pkceMethod</code>: <code>'S256'</code>
+<ul>
+<li>用于 PKCE 流程的哈希算法。默认且推荐值为 <code>'S256'</code>，通常你不需要更改它。这是现代安全实践的一部分。</li>
+</ul>
+</li>
+<li><code>token</code>, <code>refreshToken</code>, <code>idToken</code>: <code>string</code>
+<ul>
+<li>在非常特殊的场景下，如果你已经从别处（如移动端）获得了令牌，可以用它们来初始化 <code>keycloak-js</code>，跳过重定向流程。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h3 id="类别二：认证与会话管理-Authentication-Session-Management">类别二：认证与会话管理 (Authentication &amp; Session Management)</h3>
+<p>这些方法主动地改变用户的登录状态。</p>
+<h4 id="login-options"><code>login(options)</code></h4>
+<ul>
+<li><strong>作用</strong>: 将用户重定向到 Keycloak 登录页面。通常绑定在“登录”按钮的点击事件上。</li>
+<li><strong><code>options</code> 参数</strong>:
+<ul>
+<li><code>redirectUri</code>: <code>string</code> - 指定登录成功后重定向回的 URL。如果省略，将使用初始化时 Keycloak Client 配置的默认值。</li>
+<li><code>idpHint</code>: <code>string</code> - 直接跳转到指定的身份提供商（IDP）登录页，如 <code>'google'</code>, <code>'facebook'</code>。</li>
+<li><code>scope</code>: <code>string</code> - 请求额外的 OIDC scope，如 <code>'openid profile email'</code>。</li>
+<li><code>prompt</code>: <code>'none' | 'login'</code> - <code>prompt=none</code> 尝试无交互登录，如果不行会报错；<code>prompt=login</code> 强制用户重新输入凭据。</li>
+</ul>
+</li>
+</ul>
+<h4 id="logout-options"><code>logout(options)</code></h4>
+<ul>
+<li><strong>作用</strong>: 将用户从 Keycloak 会话中登出，并重定向。</li>
+<li><strong><code>options</code> 参数</strong>:
+<ul>
+<li><code>redirectUri</code>: <code>string</code> - 登出成功后重定向到的 URL。<strong>此 URL 必须在 Keycloak Client 配置的 “Valid Post Logout Redirect URIs” 列表中</strong>，否则会报错。这是一个常见的配置陷阱！</li>
+</ul>
+</li>
+</ul>
+<h4 id="register-options"><code>register(options)</code></h4>
+<ul>
+<li><strong>作用</strong>: 将用户重定向到 Keycloak 注册页面。参数与 <code>login()</code> 类似。</li>
+</ul>
+<h4 id="accountManagement"><code>accountManagement()</code></h4>
+<ul>
+<li><strong>作用</strong>: 将用户重定向到其在 Keycloak 中的个人账户管理页面，他们可以在那里修改密码、设置 MFA 等。这是一个非常方便的快捷方式。</li>
+</ul>
+<hr>
+<h3 id="类别三：令牌管理-Token-Management">类别三：令牌管理 (Token Management)</h3>
+<p>这是与后端 API 安全通信的核心。</p>
+<h4 id="updateToken-minValidity"><code>updateToken(minValidity)</code></h4>
+<ul>
+<li><strong>作用</strong>: 这是<strong>第二重要</strong>的方法。它检查 Access Token 的有效性。如果令牌即将过期（剩余有效期小于 <code>minValidity</code> 秒），它会使用 Refresh Token 在后台静默地获取一对新的令牌（Access Token 和 Refresh Token）。</li>
+<li><strong><code>minValidity</code> (number)</strong>: 检查令牌有效期的秒数阈值。
+<ul>
+<li><code>5</code> (推荐值): 如果 Access Token 在 5 秒内将过期，则刷新它。</li>
+<li><code>-1</code>: 强制立即刷新令牌，无论它是否过期。</li>
+</ul>
+</li>
+<li><strong>返回值</strong>: <code>Promise&lt;boolean&gt;</code>。解析为 <code>true</code> 表示令牌被成功刷新；<code>false</code> 表示令牌仍然有效，无需刷新。</li>
+<li><strong>最佳实践</strong>: 在每次调用受保护的后端 API 之前，都调用 <code>keycloak.updateToken(30)</code>。使用 <code>axios</code> 或 <code>fetch</code> 的请求拦截器是实现这一点的完美方式。</li>
+</ul>
+<h4 id="clearToken"><code>clearToken()</code></h4>
+<ul>
+<li><strong>作用</strong>: 从内存中清除所有令牌。这会使前端应用认为用户已登出。</li>
+<li><strong>注意</strong>: 这<strong>不会</strong>让用户从 Keycloak 服务器端登出。它只是一个纯客户端操作。如果你想完全登出，请使用 <code>logout()</code>。</li>
+</ul>
+<hr>
+<h3 id="类别四：用户信息与令牌访问-User-Info-Token-Access">类别四：用户信息与令牌访问 (User Info &amp; Token Access)</h3>
+<p>认证成功后，你需要通过这些属性和方法来获取数据。</p>
+<h4 id="属性-Properties">属性 (Properties)</h4>
+<ul>
+<li><code>authenticated</code>: <code>boolean</code> - 一个只读属性，表示用户当前是否已认证。</li>
+<li><code>token</code>: <code>string | undefined</code> - 原始的、未解码的 Base64 编码的 <strong>Access Token</strong>。用于放在 HTTP 请求的 <code>Authorization: Bearer &lt;token&gt;</code> 头中。</li>
+<li><code>tokenParsed</code>: <code>object | undefined</code> - 已解码的 <strong>Access Token</strong> (JWT)。包含用户的权限信息（如角色）、过期时间 (<code>exp</code>)、签发者 (<code>iss</code>) 等。</li>
+<li><code>idToken</code>: <code>string | undefined</code> - 原始的、未解码的 <strong>ID Token</strong>。</li>
+<li><code>idTokenParsed</code>: <code>object | undefined</code> - 已解码的 <strong>ID Token</strong> (JWT)。包含用户的身份信息（如 <code>name</code>, <code>email</code>, <code>preferred_username</code>）。这是 OIDC 的核心。</li>
+<li><code>refreshToken</code>: <code>string | undefined</code> - 原始的 Refresh Token。</li>
+<li><code>refreshTokenParsed</code>: <code>object | undefined</code> - 已解码的 Refresh Token。</li>
+<li><code>realmAccess</code>: <code>object | undefined</code> - 从 <code>tokenParsed</code> 中提取的快捷方式，包含了用户在 Realm 级别的角色列表（<code>realmAccess.roles</code>）。</li>
+<li><code>resourceAccess</code>: <code>object | undefined</code> - 从 <code>tokenParsed</code> 中提取的快捷方式，包含了用户在各个 Client (Resource) 下的角色。</li>
+</ul>
+<h4 id="方法-Methods">方法 (Methods)</h4>
+<h4 id="loadUserProfile"><code>loadUserProfile()</code></h4>
+<ul>
+<li><strong>作用</strong>: 调用 Keycloak 的 <code>/userinfo</code> 端点来获取最新的用户信息。这与 <code>idTokenParsed</code> 的区别在于，后者是登录那一刻的信息快照，而此方法获取的是实时信息。</li>
+<li><strong>返回值</strong>: <code>Promise&lt;KeycloakProfile&gt;</code>。解析为一个包含用户信息的对象。</li>
+</ul>
+<h4 id="loadUserInfo"><code>loadUserInfo()</code></h4>
+<ul>
+<li><strong>作用</strong>: <code>loadUserProfile()</code> 的别名，功能完全相同。</li>
+</ul>
+<hr>
+<h3 id="类别五：权限检查-Authorization-Checks">类别五：权限检查 (Authorization Checks)</h3>
+<p>用于在前端根据用户角色控制 UI 元素的显示/隐藏。</p>
+<h4 id="hasRealmRole-roleName"><code>hasRealmRole(roleName)</code></h4>
+<ul>
+<li><strong>作用</strong>: 检查用户是否拥有指定的 Realm 级别角色。</li>
+<li><strong>返回值</strong>: <code>boolean</code>。</li>
+</ul>
+<h4 id="hasResourceRole-roleName-resource"><code>hasResourceRole(roleName, resource?)</code></h4>
+<ul>
+<li><strong>作用</strong>: 检查用户是否拥有指定 Client (Resource) 的角色。</li>
+<li><strong><code>resource</code> (string, 可选)</strong>: Client ID。如果省略，则默认为当前 <code>keycloak</code> 实例的 <code>clientId</code>。</li>
+<li><strong>返回值</strong>: <code>boolean</code>。</li>
+</ul>
+<blockquote>
+<p><strong>⚠️ 安全警告</strong>: 前端的角色检查仅用于改善用户体验（UI 控制）。<strong>绝对不能</strong>以此作为安全防护的依据。真正的、权威的权限校验<strong>必须</strong>在后端 API 进行，后端需要独立验证每个请求中 Access Token 的签名和内容。</p>
+</blockquote>
+<hr>
+<h3 id="类别六：事件处理-Event-Handling">类别六：事件处理 (Event Handling)</h3>
+<p>通过设置回调函数来响应认证流程中的各种事件。</p>
+<ul>
+<li><code>onReady</code>: <code>(authenticated: boolean) =&gt; void</code> - 当 <code>init()</code> 完成时触发。</li>
+<li><code>onAuthSuccess</code>: <code>() =&gt; void</code> - 当用户成功登录时触发。</li>
+<li><code>onAuthError</code>: <code>(errorData: KeycloakError) =&gt; void</code> - 当登录或 <code>init()</code> 过程中发生错误时触发。</li>
+<li><code>onAuthRefreshSuccess</code>: <code>() =&gt; void</code> - 当 <code>updateToken()</code> 成功刷新令牌后触发。</li>
+<li><code>onAuthRefreshError</code>: <code>() =&gt; void</code> - 当 <code>updateToken()</code> 刷新失败时触发。</li>
+<li><code>onTokenExpired</code>: <code>() =&gt; void</code> - 当 Access Token 过期时触发。你可以在这里调用 <code>updateToken()</code>。</li>
+<li><code>onAuthLogout</code>: <code>() =&gt; void</code> - 当用户登出时（例如在其他标签页登出，通过 SSO 检测到）触发。</li>
+</ul>
+<p><strong>使用示例</strong>：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript">keycloak.<span class="hljs-property">onTokenExpired</span> = <span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Token expired, trying to refresh...&#x27;</span>);<br>  keycloak.<span class="hljs-title function_">updateToken</span>(<span class="hljs-number">30</span>).<span class="hljs-title function_">catch</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&#x27;Failed to refresh token&#x27;</span>);<br>    keycloak.<span class="hljs-title function_">logout</span>();<br>  &#125;);<br>&#125;;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="类别七：URL-生成器-URL-Generators">类别七：URL 生成器 (URL Generators)</h3>
+<p>这些方法不执行重定向，而是返回一个可用于 <code>&lt;a&gt;</code> 标签 <code>href</code> 属性或自定义逻辑的 URL 字符串。</p>
+<ul>
+<li><code>createLoginUrl(options)</code></li>
+<li><code>createLogoutUrl(options)</code></li>
+<li><code>createRegisterUrl(options)</code></li>
+<li><code>createAccountUrl(options)</code></li>
+</ul>
+<p>所有这些方法的 <code>options</code> 参数与它们对应的执行方法（<code>login</code>, <code>logout</code> 等）完全相同。</p>
+<h3 id="总结">总结</h3>
+<p><code>keycloak-js</code> 的方法和属性共同构成了一个完整的认证授权生命周期管理工具：</p>
+<ol>
+<li>用 <code>init()</code> 启动并确定初始状态。</li>
+<li>用 <code>login()</code>, <code>logout()</code>, <code>register()</code> 改变用户会话。</li>
+<li>认证后，通过 <code>token</code>, <code>idTokenParsed</code> 等属性获取用户信息和凭证。</li>
+<li>用 <code>hasRealmRole()</code> / <code>hasResourceRole()</code> 控制前端 UI。</li>
+<li>在调用 API 前，用 <code>updateToken()</code> 确保持续的会话有效性。</li>
+<li>用事件回调来响应认证状态的变化。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/" class="category-chain-item">Framework and Library</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Vue/" class="category-chain-item">Vue</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Vue/Auth/" class="category-chain-item">Auth</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/Framework-and-Library/Vue/Auth/Keycloak/" class="category-chain-item">Keycloak</a>
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/keycloak-js/" class="print-no-link">#keycloak-js</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>keycloak-js 实例的方法和属性</div>
+      <div>http://example.com/2025/07/24/JavaScript、Typescript/Framework and Library/Vue/Auth/Keycloak/keycloak 实例的方法和属性/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年7月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/07/29/Java/Framework/Spring%20Boot/Book%20Social%20Network/KEYCLOAK%20%E9%9B%86%E6%88%90/" title="2.安全与身份验证">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">2.安全与身份验证</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/07/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Auth/Keycloak/Keycloak%20%E4%B8%8E%20Vue%20%E9%9B%86%E6%88%90/" title="Keycloak 与 Vue 集成">
+                        <span class="hidden-mobile">Keycloak 与 Vue 集成</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
