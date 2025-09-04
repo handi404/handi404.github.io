@@ -1,0 +1,881 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="异步编程是现代 JavaScript 开发的基石，而 Promise 和 async&#x2F;await 则是其核心。让我们从问题的根源开始，一步步揭开它们的神秘面纱。  1. Callback (回调函数) &amp; Callback Hell (回调地狱) 核心概念  Callback (回调函数): 在 JavaScript 的异步世界里，由于某些操作（如网络请求、文件读取）需要时间，我们不能一直">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Promise 和 async&#x2F;await">
+<meta property="og:url" content="http://example.com/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/Promise%20%E4%B8%8E%E5%BC%82%E6%AD%A5/Promise%20%E5%92%8C%20async_await/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="异步编程是现代 JavaScript 开发的基石，而 Promise 和 async&#x2F;await 则是其核心。让我们从问题的根源开始，一步步揭开它们的神秘面纱。  1. Callback (回调函数) &amp; Callback Hell (回调地狱) 核心概念  Callback (回调函数): 在 JavaScript 的异步世界里，由于某些操作（如网络请求、文件读取）需要时间，我们不能一直">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/javascript.png">
+<meta property="article:published_time" content="2025-08-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-04T10:10:48.614Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/javascript.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Promise 和 async/await - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Promise 和 async/await"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-24 00:00" pubdate>
+          2025年8月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          18 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Promise 和 async/await</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月4日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>异步编程是现代 JavaScript 开发的基石，而 <code>Promise</code> 和 <code>async/await</code> 则是其核心。让我们从问题的根源开始，一步步揭开它们的神秘面纱。</p>
+<hr>
+<h3 id="1-Callback-回调函数-Callback-Hell-回调地狱">1. Callback (回调函数) &amp; Callback Hell (回调地狱)</h3>
+<h4 id="核心概念">核心概念</h4>
+<ul>
+<li><strong>Callback (回调函数):</strong> 在 JavaScript 的异步世界里，由于某些操作（如网络请求、文件读取）需要时间，我们不能一直“等待”它完成。因此，我们采用的策略是：发起一个异步操作，并传递一个函数（即回调函数）给它。当这个操作完成时，系统会自动调用我们传入的那个函数，并把结果作为参数传给它。</li>
+<li><strong>Callback Hell (回调地狱):</strong> 当多个异步操作相互依赖时（例如，操作 B 依赖操作 A 的结果，操作 C 又依赖操作 B 的结果），我们就需要将回调函数层层嵌套。这会导致代码形成一个向右不断缩进的“金字塔”结构，难以阅读、理解和维护。</li>
+</ul>
+<h4 id="示例：回调地狱">示例：回调地狱</h4>
+<p>想象一下，你需要按顺序执行三个任务：1. 获取用户信息 -&gt; 2. 根据用户信息获取其文章列表 -&gt; 3. 根据文章列表获取第一篇文章的评论。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 模拟 API 调用</span><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">getUser</span>(<span class="hljs-params">callback</span>) &#123;<br>  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;1. Got user info&quot;</span>);<br>    <span class="hljs-title function_">callback</span>(&#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">name</span>: <span class="hljs-string">&quot;Alice&quot;</span> &#125;);<br>  &#125;, <span class="hljs-number">1000</span>);<br>&#125;<br><span class="hljs-comment">// ... 其他模拟 API ...</span><br><br><span class="hljs-comment">// 👎 回调地狱 (Pyramid of Doom)</span><br><span class="hljs-title function_">getUser</span>(<span class="hljs-function"><span class="hljs-params">user</span> =&gt;</span> &#123;<br>  <span class="hljs-title function_">getArticles</span>(user.<span class="hljs-property">id</span>, <span class="hljs-function"><span class="hljs-params">articles</span> =&gt;</span> &#123;<br>    <span class="hljs-title function_">getFirstArticle</span>(articles, <span class="hljs-function"><span class="hljs-params">article</span> =&gt;</span> &#123;<br>      <span class="hljs-title function_">getComments</span>(article.<span class="hljs-property">id</span>, <span class="hljs-function"><span class="hljs-params">comments</span> =&gt;</span> &#123;<br>        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;4. Got comments:&quot;</span>, comments);<br>        <span class="hljs-comment">// 如果还有下一步... 天啊...</span><br>      &#125;);<br>    &#125;);<br>  &#125;);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<p><strong>问题：</strong> 代码横向发展，错误处理分散，逻辑耦合紧密。</p>
+<hr>
+<h3 id="2-Promise">2. <code>Promise</code></h3>
+<h4 id="核心概念-2">核心概念</h4>
+<p><strong><code>Promise</code> 是一个对象，代表一个尚未完成但最终会完成（或失败）的异步操作的结果。</strong></p>
+<p>你可以把它想象成一张“承诺”凭证。你发起一个异步操作，它不会立即给你结果，而是给你一个 <code>Promise</code>（凭证）。这个凭证有三种状态：</p>
+<ol>
+<li><code>pending</code> (进行中): 初始状态，操作既未完成也未失败。</li>
+<li><code>fulfilled</code> (已成功): 操作成功完成。<code>Promise</code> 会携带一个<strong>值 (value)</strong>。</li>
+<li><code>rejected</code> (已失败): 操作失败。<code>Promise</code> 会携带一个<strong>原因 (reason)</strong>，通常是一个 <code>Error</code> 对象。</li>
+</ol>
+<p><code>Promise</code> 的关键在于，它一旦从 <code>pending</code> 变为 <code>fulfilled</code> 或 <code>rejected</code>，状态就<strong>凝固</strong>了，不可再改变。</p>
+<h4 id="语法与示例：创建-Promise">语法与示例：创建 Promise</h4>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchData</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// 返回一个 Promise 对象</span><br>  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve, reject</span>) =&gt;</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Fetching data...&quot;</span>);<br>    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>      <span class="hljs-keyword">const</span> success = <span class="hljs-title class_">Math</span>.<span class="hljs-title function_">random</span>() &gt; <span class="hljs-number">0.3</span>; <span class="hljs-comment">// 模拟成功或失败</span><br>      <span class="hljs-keyword">if</span> (success) &#123;<br>        <span class="hljs-comment">// 操作成功，调用 resolve() 将 Promise 状态变为 fulfilled，并传递结果</span><br>        <span class="hljs-title function_">resolve</span>(&#123; <span class="hljs-attr">data</span>: <span class="hljs-string">&quot;Here is your data!&quot;</span> &#125;);<br>      &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-comment">// 操作失败，调用 reject() 将 Promise 状态变为 rejected，并传递错误原因</span><br>        <span class="hljs-title function_">reject</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;Failed to fetch data.&quot;</span>));<br>      &#125;<br>    &#125;, <span class="hljs-number">1500</span>);<br>  &#125;);<br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-then-catch-finally-消费-Promise">3. <code>.then()</code>, <code>.catch()</code>, <code>.finally()</code> - 消费 Promise</h3>
+<p>这些是 <code>Promise</code> 实例上的方法，用于注册当 <code>Promise</code> 状态改变时要执行的回调函数。</p>
+<h4 id="核心概念-3">核心概念</h4>
+<ul>
+<li><strong><code>.then(onFulfilled, onRejected)</code>:</strong>
+<ul>
+<li><code>onFulfilled</code>: 当 <code>Promise</code> 状态变为 <code>fulfilled</code> 时调用，接收成功的值作为参数。</li>
+<li><code>onRejected</code>: (可选) 当 <code>Promise</code> 状态变为 <code>rejected</code> 时调用，接收失败的原因作为参数。</li>
+</ul>
+</li>
+<li><strong><code>.catch(onRejected)</code>:</strong> 专门用来处理 <code>rejected</code> 状态的语法糖，等同于 <code>.then(null, onRejected)</code>。</li>
+<li><strong><code>.finally(onFinally)</code>:</strong> 无论 <code>Promise</code> 最终是 <code>fulfilled</code> 还是 <code>rejected</code>，<code>onFinally</code> 回调都会被执行。非常适合用于执行清理工作，如隐藏加载动画。</li>
+</ul>
+<p><strong>最关键的特性：链式调用 (Chaining)</strong><br>
+<code>.then()</code> 和 <code>.catch()</code> 方法自身会<strong>返回一个新的 <code>Promise</code></strong>。这使得我们可以将多个异步操作串联起来，形成一个清晰的、纵向的链条，从而解决了回调地狱。</p>
+<h4 id="示例：用-Promise-链解决回调地狱">示例：用 Promise 链解决回调地狱</h4>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title function_">fetchData</span>()<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> &#123;<br>    <span class="hljs-comment">// 第一个 then 处理 fetchData 的成功结果</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Step 1: Success!&quot;</span>, response.<span class="hljs-property">data</span>);<br>    <span class="hljs-comment">// 返回一个新的值或新的 Promise，传递给下一个 then</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;Processed data&quot;</span>; <br>  &#125;)<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">processedData</span> =&gt;</span> &#123;<br>    <span class="hljs-comment">// 第二个 then 处理上一个 then 返回的结果</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Step 2: Handling processed data:&quot;</span>, processedData);<br>  &#125;)<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>    <span class="hljs-comment">// 链中任何一个 Promise 变为 rejected，都会被这个 catch 捕获</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Oops! An error occurred:&quot;</span>, error.<span class="hljs-property">message</span>);<br>  &#125;)<br>  .<span class="hljs-title function_">finally</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-comment">// 无论成功还是失败，这里都会执行</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Operation finished.&quot;</span>);<br>  &#125;);<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="4-async-await-ES-2017">4. <code>async / await</code> (ES 2017)</h3>
+<h4 id="核心概念-4">核心概念</h4>
+<p><code>async / await</code> 是建立在 <code>Promise</code> 之上的<strong>语法糖</strong>。它允许我们用一种更像同步代码的方式来编写异步代码，极大地提高了可读性。</p>
+<ul>
+<li><strong><code>async</code>:</strong> 放在函数声明前，表示这是一个<strong>异步函数</strong>。异步函数会隐式地<strong>返回一个 <code>Promise</code></strong>。如果函数内部 <code>return</code> 了一个值，那么这个 <code>Promise</code> 就会以该值 <code>resolve</code>；如果函数内部抛出了一个错误，<code>Promise</code> 就会以该错误 <code>reject</code>。</li>
+<li><strong><code>await</code>:</strong> 只能在 <code>async</code> 函数内部使用。它会“暂停” <code>async</code> 函数的执行，等待它后面的 <code>Promise</code> 完成。
+<ul>
+<li>如果 <code>Promise</code> 成功 (<code>fulfilled</code>)，<code>await</code> 表达式会返回 <code>Promise</code> 的结果值。</li>
+<li>如果 <code>Promise</code> 失败 (<code>rejected</code>)，<code>await</code> 会抛出这个错误，就像同步代码中的 <code>throw</code> 一样。</li>
+</ul>
+</li>
+</ul>
+<h4 id="示例：用-async-await-重构-Promise-链">示例：用 <code>async/await</code> 重构 Promise 链</h4>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">handleData</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Operation starting...&quot;</span>);<br>    <br>    <span class="hljs-comment">// await &quot;暂停&quot;执行，直到 fetchData() 的 Promise 完成</span><br>    <span class="hljs-comment">// 并将 Promise 的结果赋值给 response</span><br>    <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchData</span>();<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Step 1: Success!&quot;</span>, response.<span class="hljs-property">data</span>);<br><br>    <span class="hljs-keyword">const</span> processedData = <span class="hljs-string">&quot;Processed data from await&quot;</span>;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Step 2: Handling processed data:&quot;</span>, processedData);<br>    <br>    <span class="hljs-comment">// async 函数的返回值会被包装成一个 fulfilled 的 Promise</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-string">&quot;All steps completed successfully!&quot;</span>;<br><br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-comment">// 如果任何一个 await 后面的 Promise 被 reject，代码会跳到 catch 块</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Oops! An error occurred in async function:&quot;</span>, error.<span class="hljs-property">message</span>);<br>    <span class="hljs-comment">// 在 catch 中抛出错误，会让 handleData() 返回的 Promise 变为 rejected</span><br>    <span class="hljs-keyword">throw</span> error;<br>  &#125; <span class="hljs-keyword">finally</span> &#123;<br>    <span class="hljs-comment">// 同样，无论成功失败，finally 都会执行</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Operation finished.&quot;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-comment">// 调用 async 函数</span><br><span class="hljs-title function_">handleData</span>()<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">result</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Final result:&quot;</span>, result))<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">err</span> =&gt;</span> <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Caught error from async function invocation.&quot;</span>));<br></code></pre></td></tr></table></figure>
+<p><strong>优势：</strong> 代码结构清晰，错误处理使用标准的 <code>try...catch</code>，与同步代码逻辑非常相似。</p>
+<hr>
+<h3 id="5-Microtasks-微任务-The-Secret-Sauce">5. Microtasks (微任务) - The Secret Sauce</h3>
+<h4 id="核心概念-5">核心概念</h4>
+<p>要理解为什么 <code>Promise</code> 的响应如此“及时”，你需要了解 JavaScript 的<strong>事件循环 (Event Loop)</strong> 和两种任务队列：</p>
+<ol>
+<li><strong>宏任务 (Macrotask / Task):</strong> 包括 <code>script</code> (整体代码)、<code>setTimeout</code>, <code>setInterval</code>, I/O 操作, UI rendering 等。</li>
+<li><strong>微任务 (Microtask):</strong> 主要包括 <code>Promise</code> 的回调 (<code>.then</code>, <code>.catch</code>, <code>.finally</code>)、<code>queueMicrotask()</code>、<code>MutationObserver</code> 等。</li>
+</ol>
+<p><strong>事件循环规则：</strong></p>
+<ol>
+<li>执行一个宏任务（比如执行完整个 <code>&lt;script&gt;</code> 标签内的同步代码）。</li>
+<li>执行完后，<strong>立即检查微任务队列</strong>。</li>
+<li>如果微任务队列不为空，则<strong>清空整个微任务队列</strong>，逐一执行其中的所有微任务。</li>
+<li>微任务队列清空后，再进行 UI 渲染（如果需要）。</li>
+<li>然后从宏任务队列中取下一个宏任务，重复步骤 1。</li>
+</ol>
+<h4 id="示例：微任务-vs-宏任务">示例：微任务 vs 宏任务</h4>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;1. Script start&#x27;</span>);<br><br><span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;4. setTimeout (Macrotask)&#x27;</span>);<br>&#125;, <span class="hljs-number">0</span>);<br><br><span class="hljs-title class_">Promise</span>.<span class="hljs-title function_">resolve</span>().<span class="hljs-title function_">then</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;3. Promise.then (Microtask)&#x27;</span>);<br>&#125;);<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;2. Script end&#x27;</span>);<br><br><span class="hljs-comment">// 输出顺序:</span><br><span class="hljs-comment">// 1. Script start</span><br><span class="hljs-comment">// 2. Script end</span><br><span class="hljs-comment">// 3. Promise.then (Microtask)</span><br><span class="hljs-comment">// 4. setTimeout (Macrotask)</span><br></code></pre></td></tr></table></figure>
+<p><strong>解释：</strong></p>
+<ol>
+<li>同步代码 <code>1</code> 和 <code>2</code> 首先执行。</li>
+<li><code>setTimeout</code> 的回调被放入<strong>宏任务队列</strong>。</li>
+<li><code>Promise.then</code> 的回调被放入<strong>微任务队列</strong>。</li>
+<li>同步代码执行完毕（当前宏任务结束）。</li>
+<li>事件循环检查<strong>微任务队列</strong>，发现有任务，立即执行，输出 <code>3</code>。</li>
+<li>微任务队列清空后，事件循环才去<strong>宏任务队列</strong>取下一个任务，执行 <code>setTimeout</code> 的回调，输出 <code>4</code>。</li>
+</ol>
+<p><strong>关键点：</strong> 微任务总是在当前宏任务执行完毕后、下一个宏任务开始前被立即执行。这保证了 <code>Promise</code> 的响应具有高优先级。</p>
+<hr>
+<h3 id="总结与对比">总结与对比</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">特性</th>
+<th style="text-align:left">Callback</th>
+<th style="text-align:left"><code>.then()</code> / <code>.catch()</code></th>
+<th style="text-align:left"><code>async / await</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>可读性</strong></td>
+<td style="text-align:left">差 (回调地狱)</td>
+<td style="text-align:left">好 (链式调用)</td>
+<td style="text-align:left"><strong>极佳</strong> (同步风格)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>错误处理</strong></td>
+<td style="text-align:left">困难 (需在每个回调中单独处理)</td>
+<td style="text-align:left">统一 (使用 <code>.catch()</code> 捕获链中所有错误)</td>
+<td style="text-align:left"><strong>最佳</strong> (使用标准 <code>try...catch</code>)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>编码风格</strong></td>
+<td style="text-align:left">嵌套式</td>
+<td style="text-align:left">函数式、链式</td>
+<td style="text-align:left">命令式、结构化</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>底层机制</strong></td>
+<td style="text-align:left">回调函数</td>
+<td style="text-align:left">Promise 对象</td>
+<td style="text-align:left"><strong>Promise 对象的语法糖</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>最终建议：</strong> 在所有现代 JavaScript 项目中，<strong>优先并广泛使用 <code>async/await</code></strong>。它提供了最清晰、最易于维护的异步代码结构。只有在少数特定场景（例如，需要非常函数式的链式调用风格）下，直接使用 <code>.then()</code> 才会更方便。回调模式则应仅限于与不支持 Promise 的老旧 API 交互时使用。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/JavaScript/Promise-%E4%B8%8E%E5%BC%82%E6%AD%A5/" class="category-chain-item">Promise 与异步</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JavaScript/" class="print-no-link">#JavaScript</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Promise 和 async/await</div>
+      <div>http://example.com/2025/08/24/JavaScript、Typescript/JavaScript/Promise 与异步/Promise 和 async_await/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/Arrays%20&amp;&amp;%20%E9%9B%86%E5%90%88/%E6%95%B0%E7%BB%84%20(Array)%20%E5%92%8C%20%E9%9B%86%E5%90%88/" title="数组(Array) 和 集合">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">数组(Array) 和 集合</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/Promise%20%E4%B8%8E%E5%BC%82%E6%AD%A5/Top-Level%20await/" title="Top-Level await">
+                        <span class="hidden-mobile">Top-Level await</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

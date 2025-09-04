@@ -1,0 +1,831 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="ES6（ECMAScript 2015）引入了许多新特性，其中解构（Destructuring） 是一个非常强大的功能，能让你更加简洁和灵活地处理数组和对象。解构语法可以让你从数据结构中提取出值并将它们赋值给变量。 1. 数组解构 基本语法： 123const arr &#x3D; [1, 2, 3];const [a, b, c] &#x3D; arr;console.log(a, b, c); &#x2F;&#x2F; 1 2 3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解构赋值">
+<meta property="og:url" content="http://example.com/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/ES6+%20%E6%96%B0%E7%89%B9%E6%80%A7/%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="ES6（ECMAScript 2015）引入了许多新特性，其中解构（Destructuring） 是一个非常强大的功能，能让你更加简洁和灵活地处理数组和对象。解构语法可以让你从数据结构中提取出值并将它们赋值给变量。 1. 数组解构 基本语法： 123const arr &#x3D; [1, 2, 3];const [a, b, c] &#x3D; arr;console.log(a, b, c); &#x2F;&#x2F; 1 2 3">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/javascript.png">
+<meta property="article:published_time" content="2025-08-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-04T10:21:39.859Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/javascript.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>解构赋值 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="解构赋值"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-24 00:00" pubdate>
+          2025年8月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">解构赋值</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月4日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>ES6（ECMAScript 2015）引入了许多新特性，其中<strong>解构（Destructuring）</strong> 是一个非常强大的功能，能让你更加简洁和灵活地处理数组和对象。解构语法可以让你从数据结构中提取出值并将它们赋值给变量。</p>
+<h3 id="1-数组解构">1. 数组解构</h3>
+<p><strong>基本语法：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br><span class="hljs-keyword">const</span> [a, b, c] = arr;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a, b, c); <span class="hljs-comment">// 1 2 3</span><br></code></pre></td></tr></table></figure>
+<p><strong>跳过元素：</strong> 你可以通过在解构时跳过一些元素，使用逗号（<code>,</code>）来跳过值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br><span class="hljs-keyword">const</span> [, b, ] = arr;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(b); <span class="hljs-comment">// 2</span><br></code></pre></td></tr></table></figure>
+<p><strong>默认值：</strong> 解构时，如果值为 <code>undefined</code>，可以为变量指定默认值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>];<br><span class="hljs-keyword">const</span> [a, b = <span class="hljs-number">3</span>] = arr;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a, b); <span class="hljs-comment">// 1 2</span><br></code></pre></td></tr></table></figure>
+<p><strong>交换变量：</strong> 通过解构，直接交换变量的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">let</span> a = <span class="hljs-number">1</span>, b = <span class="hljs-number">2</span>;<br>[a, b] = [b, a];<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a, b); <span class="hljs-comment">// 2 1</span><br></code></pre></td></tr></table></figure>
+<p><strong>解构嵌套：</strong> 你可以解构嵌套的数组。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, [<span class="hljs-number">2</span>, <span class="hljs-number">3</span>], <span class="hljs-number">4</span>];<br><span class="hljs-keyword">const</span> [a, [b, c], d] = arr;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a, b, c, d); <span class="hljs-comment">// 1 2 3 4</span><br></code></pre></td></tr></table></figure>
+<h3 id="2-对象解构">2. 对象解构</h3>
+<p><strong>基本语法：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> obj = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John&#x27;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">30</span> &#125;;<br><span class="hljs-keyword">const</span> &#123; name, age &#125; = obj;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name, age); <span class="hljs-comment">// John 30</span><br></code></pre></td></tr></table></figure>
+<p><strong>变量重命名：</strong> 如果你想使用不同的变量名，可以通过 <code>:</code> 来给解构的值重命名。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> obj = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John&#x27;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">30</span> &#125;;<br><span class="hljs-keyword">const</span> &#123; <span class="hljs-attr">name</span>: n, <span class="hljs-attr">age</span>: a &#125; = obj;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(n, a); <span class="hljs-comment">// John 30</span><br></code></pre></td></tr></table></figure>
+<p><strong>默认值：</strong> 当对象的属性值为 <code>undefined</code> 时，可以设置默认值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> obj = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John&#x27;</span> &#125;;<br><span class="hljs-keyword">const</span> &#123; name, age = <span class="hljs-number">25</span> &#125; = obj;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name, age); <span class="hljs-comment">// John 25</span><br></code></pre></td></tr></table></figure>
+<p><strong>解构嵌套对象：</strong> 对于嵌套的对象，可以继续解构。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> obj = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John&#x27;</span>, <span class="hljs-attr">address</span>: &#123; <span class="hljs-attr">city</span>: <span class="hljs-string">&#x27;New York&#x27;</span>, <span class="hljs-attr">zip</span>: <span class="hljs-string">&#x27;10001&#x27;</span> &#125; &#125;;<br><span class="hljs-keyword">const</span> &#123; name, <span class="hljs-attr">address</span>: &#123; city, zip &#125; &#125; = obj;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name, city, zip); <span class="hljs-comment">// John New York 10001</span><br></code></pre></td></tr></table></figure>
+<h3 id="3-解构与函数参数">3. 解构与函数参数</h3>
+<p><strong>在函数参数中解构：</strong> 你可以直接在函数参数中使用解构来获取传入对象的值。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">greet</span>(<span class="hljs-params">&#123; name, age &#125;</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, <span class="hljs-subst">$&#123;name&#125;</span>. You are <span class="hljs-subst">$&#123;age&#125;</span> years old.`</span>);<br>&#125;<br><br><span class="hljs-keyword">const</span> person = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John&#x27;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">30</span> &#125;;<br><span class="hljs-title function_">greet</span>(person); <span class="hljs-comment">// Hello, John. You are 30 years old.</span><br></code></pre></td></tr></table></figure>
+<p><strong>带默认值的函数参数：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">greet</span>(<span class="hljs-params">&#123; name, age = <span class="hljs-number">25</span> &#125;</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`Hello, <span class="hljs-subst">$&#123;name&#125;</span>. You are <span class="hljs-subst">$&#123;age&#125;</span> years old.`</span>);<br>&#125;<br><br><span class="hljs-title function_">greet</span>(&#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John&#x27;</span> &#125;); <span class="hljs-comment">// Hello, John. You are 25 years old.</span><br></code></pre></td></tr></table></figure>
+<h3 id="4-高级用法">4. 高级用法</h3>
+<p><strong>剩余参数（Rest）结合解构：</strong></p>
+<p>数组解构中的剩余元素（Rest）会把剩下的项放入一个数组中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>];<br><span class="hljs-keyword">const</span> [a, b, ...rest] = arr;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a, b); <span class="hljs-comment">// 1 2</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(rest); <span class="hljs-comment">// [3, 4, 5]</span><br></code></pre></td></tr></table></figure>
+<p>对象解构中的剩余属性（Rest）会把剩下的属性放入一个新对象中：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> obj = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John&#x27;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">30</span>, <span class="hljs-attr">city</span>: <span class="hljs-string">&#x27;New York&#x27;</span> &#125;;<br><span class="hljs-keyword">const</span> &#123; name, ...rest &#125; = obj;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name); <span class="hljs-comment">// John</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(rest); <span class="hljs-comment">// &#123; age: 30, city: &#x27;New York&#x27; &#125;</span><br></code></pre></td></tr></table></figure>
+<p><strong>解构与函数返回值：</strong> 函数返回一个对象或数组，可以直接在接收返回值时进行解构：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">getUser</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">return</span> &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;John&#x27;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">30</span> &#125;;<br>&#125;<br><span class="hljs-keyword">const</span> &#123; name, age &#125; = <span class="hljs-title function_">getUser</span>();<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name, age); <span class="hljs-comment">// John 30</span><br></code></pre></td></tr></table></figure>
+<p><strong>函数参数的默认值与解构：</strong> 当解构对象作为函数参数时，可以同时设置默认值：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">createPerson</span>(<span class="hljs-params">&#123; name = <span class="hljs-string">&#x27;Unknown&#x27;</span>, age = <span class="hljs-number">18</span> &#125; = &#123;&#125;</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name, age);<br>&#125;<br><br><span class="hljs-title function_">createPerson</span>(); <span class="hljs-comment">// Unknown 18</span><br><span class="hljs-title function_">createPerson</span>(&#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Alice&#x27;</span> &#125;); <span class="hljs-comment">// Alice 18</span><br><span class="hljs-title function_">createPerson</span>(&#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;Bob&#x27;</span>, <span class="hljs-attr">age</span>: <span class="hljs-number">25</span> &#125;); <span class="hljs-comment">// Bob 25</span><br></code></pre></td></tr></table></figure>
+<hr>
+<p>通过这些例子，你可以看到解构是一个非常强大且灵活的功能，它可以帮助你在处理数据时，写出更简洁、更易读的代码。</p>
+<h1>解构赋值的坑</h1>
+<p>JavaScript 的解构赋值是 ES 6 引入的一项非常实用的特性，让我们能够以更简洁的方式从数组或对象中提取值。然而，看似简单的解构赋值其实暗藏着不少&quot;坑&quot;，如果不小心就会踩中。</p>
+<h2 id="1-解构未定义的对象">1. 解构未定义的对象</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 这段代码会报错</span><br><span class="hljs-keyword">const</span> &#123; name, age &#125; = userData;<br></code></pre></td></tr></table></figure>
+<p>当 <code>userData</code> 是 <code>undefined</code> 或 <code>null</code> 时，这段代码会抛出 “Cannot destructure property ‘name’ of ‘userData’ as it is undefined” 的错误。</p>
+<p><strong>避坑方法</strong> ：使用默认值或条件判断</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 方法一：设置默认值为空对象</span><br><span class="hljs-keyword">const</span> &#123; name, age &#125; = userData || &#123;&#125;;<br><br><span class="hljs-comment">// 方法二：使用可选链操作符</span><br><span class="hljs-keyword">const</span> name = userData?.<span class="hljs-property">name</span>;<br><span class="hljs-keyword">const</span> age = userData?.<span class="hljs-property">age</span>;<br></code></pre></td></tr></table></figure>
+<h2 id="2-变量重命名时的混淆">2. 变量重命名时的混淆</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span> &#125;;<br><span class="hljs-keyword">const</span> &#123; <span class="hljs-attr">a</span>: x, b &#125; = obj;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a); <span class="hljs-comment">// ReferenceError: a is not defined</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(x); <span class="hljs-comment">// 1</span><br></code></pre></td></tr></table></figure>
+<p>在解构重命名时，冒号左边是原属性名，右边是新变量名。不少开发者会混淆这个顺序，导致意想不到的问题。</p>
+<h2 id="3-嵌套解构的可读性陷阱">3. 嵌套解构的可读性陷阱</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> &#123;<br>  <span class="hljs-attr">user</span>: &#123;<br>    <span class="hljs-attr">profile</span>: &#123; firstName, lastName &#125;,<br>    <span class="hljs-attr">account</span>: &#123; id &#125;<br>  &#125;<br>&#125; = response;<br></code></pre></td></tr></table></figure>
+<p>过度嵌套的解构赋值虽然简洁，但可读性会大大降低，维护起来也更困难。</p>
+<p><strong>避坑方法</strong> ：适度使用嵌套解构，或者分多步进行</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> &#123; user &#125; = response;<br><span class="hljs-keyword">const</span> &#123; profile, account &#125; = user;<br><span class="hljs-keyword">const</span> &#123; firstName, lastName &#125; = profile;<br><span class="hljs-keyword">const</span> &#123; id &#125; = account;<br></code></pre></td></tr></table></figure>
+<h2 id="4-数组解构时的空位问题">4. 数组解构时的空位问题</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> [a, , b] = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(a, b); <span class="hljs-comment">// 1 3</span><br></code></pre></td></tr></table></figure>
+<p>使用空逗号跳过数组元素可能会导致代码难以阅读，特别是当空位过多时。</p>
+<h2 id="5-解构赋值与函数参数默认值混用">5. 解构赋值与函数参数默认值混用</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">process</span>(<span class="hljs-params">&#123; name = <span class="hljs-string">&quot;Unknown&quot;</span>, age = <span class="hljs-number">0</span> &#125; = &#123;&#125;</span>) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name, age);<br>&#125;<br><br><span class="hljs-comment">// 这两个调用的结果不同</span><br><span class="hljs-title function_">process</span>(<span class="hljs-literal">undefined</span>); <span class="hljs-comment">// &#x27;Unknown&#x27; 0</span><br><span class="hljs-title function_">process</span>(&#123; <span class="hljs-attr">name</span>: <span class="hljs-literal">undefined</span> &#125;); <span class="hljs-comment">// &#x27;Unknown&#x27; 0</span><br><span class="hljs-title function_">process</span>(&#123;&#125;); <span class="hljs-comment">// &#x27;Unknown&#x27; 0</span><br></code></pre></td></tr></table></figure>
+<p>参数默认值与解构默认值的组合可能会让人困惑，特别是当需要区分&quot;未提供参数&quot;和&quot;提供了含有 undefined 值的参数&quot;时。</p>
+<h2 id="6-不小心使用对象字面量作为解构目标">6. 不小心使用对象字面量作为解构目标</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 想要定义一个包含 a 和 b 的对象</span><br>&#123; a, b &#125; = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span> &#125;;<br><span class="hljs-comment">// SyntaxError: Unexpected token &#x27;=&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>正确的做法是：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 使用小括号包裹</span><br>(&#123; a, b &#125; = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span> &#125;);<br><br><span class="hljs-comment">// 或先声明变量</span><br><span class="hljs-keyword">let</span> obj;<br>obj = &#123; a, b &#125; = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span> &#125;;<br></code></pre></td></tr></table></figure>
+<h2 id="7-解构赋值与迭代器中断">7. 解构赋值与迭代器中断</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> [first, ...rest, last] = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>];<br><span class="hljs-comment">// SyntaxError: Rest element must be last element</span><br></code></pre></td></tr></table></figure>
+<p>剩余参数（rest）必须是解构模式中的最后一个元素，否则会抛出语法错误。</p>
+<h2 id="8-解构赋值表达式的返回值">8. 解构赋值表达式的返回值</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> obj = &#123; <span class="hljs-attr">a</span>: <span class="hljs-number">1</span>, <span class="hljs-attr">b</span>: <span class="hljs-number">2</span> &#125;;<br><span class="hljs-keyword">const</span> result = (&#123; a, b &#125; = obj);<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result); <span class="hljs-comment">// &#123; a: 1, b: 2 &#125;, 而非 &#123; a, b &#125;</span><br></code></pre></td></tr></table></figure>
+<p>解构赋值的返回值是等号右侧的值（整个对象），而不是解构出的变量集合，这一点经常被误解。</p>
+<h2 id="9-对象属性与变量名冲突">9. 对象属性与变量名冲突</h2>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> name = <span class="hljs-string">&#x27;global&#x27;</span>;<br><span class="hljs-keyword">const</span> obj = &#123; <span class="hljs-attr">name</span>: <span class="hljs-string">&#x27;local&#x27;</span> &#125;;<br><br><span class="hljs-keyword">const</span> &#123; name &#125; = obj; <span class="hljs-comment">// 这里的 name 会覆盖上面的 name</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(name); <span class="hljs-comment">// &#x27;local&#x27;</span><br></code></pre></td></tr></table></figure>
+<p>当解构属性名与已有变量名冲突时，原变量会被覆盖，这可能导致意料之外的问题。</p>
+<h2 id="10-解构大型对象可能的性能问题">10. 解构大型对象可能的性能问题</h2>
+<p>频繁地解构大型对象或深层嵌套对象可能会带来性能损耗，特别是在关键代码路径上。</p>
+<p><strong>避坑方法</strong> ：只解构需要的属性，避免不必要的操作</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 不要这样</span><br><span class="hljs-keyword">const</span> &#123; a, b, c, ...rest &#125; = hugeObject;<br><br><span class="hljs-comment">// 如果只需要 a，只解构 a</span><br><span class="hljs-keyword">const</span> &#123; a &#125; = hugeObject;<br></code></pre></td></tr></table></figure>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/JavaScript/ES6-%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">ES6+ 新特性</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JavaScript/" class="print-no-link">#JavaScript</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>解构赋值</div>
+      <div>http://example.com/2025/08/24/JavaScript、Typescript/JavaScript/ES6+ 新特性/解构赋值/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/Promise%20%E4%B8%8E%E5%BC%82%E6%AD%A5/Promise%20%E5%AF%B9%E8%B1%A1%E7%9A%84%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95/" title="Promise 对象的静态方法">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Promise 对象的静态方法</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/%E5%87%BD%E6%95%B0%E4%B8%8E%E4%BD%9C%E7%94%A8%E5%9F%9F/%E4%B8%8D%E8%A6%81%E6%BB%A5%E7%94%A8%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0/" title="箭头函数不适合的场景">
+                        <span class="hidden-mobile">箭头函数不适合的场景</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

@@ -1,0 +1,832 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="错误处理是构建健壮、可靠的 JavaScript 应用程序的绝对核心。如果处理不当，一个微小的错误就可能导致整个应用崩溃。  1. try, catch, finally - 错误处理的基石 核心概念 这是一个同步代码块的错误处理结构，它允许你“尝试”执行可能出错的代码，并在错误发生时“捕获”它进行处理，同时还能执行一些“最终”的清理工作。  try &#123; ... &#125;: 包裹你预">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础到高级的错误处理机制">
+<meta property="og:url" content="http://example.com/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/%E5%9F%BA%E7%A1%80%E5%88%B0%E9%AB%98%E7%BA%A7%E7%9A%84%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="错误处理是构建健壮、可靠的 JavaScript 应用程序的绝对核心。如果处理不当，一个微小的错误就可能导致整个应用崩溃。  1. try, catch, finally - 错误处理的基石 核心概念 这是一个同步代码块的错误处理结构，它允许你“尝试”执行可能出错的代码，并在错误发生时“捕获”它进行处理，同时还能执行一些“最终”的清理工作。  try &#123; ... &#125;: 包裹你预">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/javascript.png">
+<meta property="article:published_time" content="2025-08-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-04T10:12:47.831Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/javascript.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>基础到高级的错误处理机制 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="基础到高级的错误处理机制"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-24 00:00" pubdate>
+          2025年8月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">基础到高级的错误处理机制</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月4日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>错误处理是构建健壮、可靠的 JavaScript 应用程序的绝对核心。如果处理不当，一个微小的错误就可能导致整个应用崩溃。</p>
+<hr>
+<h3 id="1-try-catch-finally-错误处理的基石">1. <code>try</code>, <code>catch</code>, <code>finally</code> - 错误处理的基石</h3>
+<h4 id="核心概念">核心概念</h4>
+<p>这是一个同步代码块的错误处理结构，它允许你“尝试”执行可能出错的代码，并在错误发生时“捕获”它进行处理，同时还能执行一些“最终”的清理工作。</p>
+<ul>
+<li><strong><code>try &#123; ... &#125;</code></strong>: 包裹你<strong>预测可能会抛出错误</strong>的代码块。这是“危险区”。</li>
+<li><strong><code>catch (error) &#123; ... &#125;</code></strong>: 如果 <code>try</code> 块中的任何代码抛出了错误，执行将立即跳转到 <code>catch</code> 块。<code>error</code> 参数是一个<strong>错误对象</strong>，包含了错误的详细信息。这是“安全网”。</li>
+<li><strong><code>finally &#123; ... &#125;</code></strong>: 无论 <code>try</code> 块是成功执行完毕还是中途抛出错误被 <code>catch</code> 捕获，<code>finally</code> 块中的代码<strong>永远都会执行</strong>。这是“清理工”。</li>
+</ul>
+<h4 id="语法与示例">语法与示例</h4>
+<p>一个经典的例子是解析可能格式不正确的 JSON 字符串。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">parseJSON</span>(<span class="hljs-params">jsonString</span>) &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Attempting to parse JSON...&quot;</span>);<br>    <span class="hljs-keyword">const</span> data = <span class="hljs-title class_">JSON</span>.<span class="hljs-title function_">parse</span>(jsonString); <span class="hljs-comment">// 这行代码可能会抛出错误</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Parsing successful:&quot;</span>, data);<br>    <span class="hljs-keyword">return</span> data;<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-comment">// 如果 JSON.parse 失败，代码会跳到这里</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Caught an error!&quot;</span>);<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Error Name:&quot;</span>, error.<span class="hljs-property">name</span>);<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Error Message:&quot;</span>, error.<span class="hljs-property">message</span>);<br>    <span class="hljs-comment">// 可以在这里返回一个默认值或进行其他恢复操作</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span>;<br>  &#125; <span class="hljs-keyword">finally</span> &#123;<br>    <span class="hljs-comment">// 无论成功还是失败，这里都会执行</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;Parsing operation finished.&quot;</span>);<br>  &#125;<br>&#125;<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;--- Scenario 1: Valid JSON ---&quot;</span>);<br><span class="hljs-title function_">parseJSON</span>(<span class="hljs-string">&#x27;&#123;&quot;name&quot;: &quot;Alice&quot;&#125;&#x27;</span>);<br><span class="hljs-comment">// 输出:</span><br><span class="hljs-comment">// Attempting to parse JSON...</span><br><span class="hljs-comment">// Parsing successful: &#123; name: &#x27;Alice&#x27; &#125;</span><br><span class="hljs-comment">// Parsing operation finished.</span><br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&quot;\n--- Scenario 2: Invalid JSON ---&quot;</span>);<br><span class="hljs-title function_">parseJSON</span>(<span class="hljs-string">&#x27;&#123;&quot;name&quot;: &quot;Alice&quot;&#x27;</span>); <span class="hljs-comment">// 缺少右花括号</span><br><span class="hljs-comment">// 输出:</span><br><span class="hljs-comment">// Attempting to parse JSON...</span><br><span class="hljs-comment">// Caught an error!</span><br><span class="hljs-comment">// Error Name: SyntaxError</span><br><span class="hljs-comment">// Error Message: Unexpected end of JSON input (或类似信息)</span><br><span class="hljs-comment">// Parsing operation finished.</span><br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="2-throw-手动抛出错误">2. <code>throw</code> - 手动抛出错误</h3>
+<h4 id="核心概念-2">核心概念</h4>
+<p><code>throw</code> 语句允许你主动地、在代码的任何地方<strong>创建一个错误</strong>并将其抛出。当 JavaScript 引擎遇到 <code>throw</code> 时，会立即停止当前代码的执行，并开始在调用栈中向上寻找一个能够处理该错误的 <code>catch</code> 块。</p>
+<p><strong>最佳实践：</strong> 你可以 <code>throw</code> 任何东西（比如一个字符串或数字），但<strong>永远应该抛出一个 <code>Error</code> 对象的实例</strong> (<code>throw new Error(...)</code>)。因为 <code>Error</code> 对象包含了如堆栈跟踪等重要的调试信息。</p>
+<h4 id="语法与示例-2">语法与示例</h4>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">validateAge</span>(<span class="hljs-params">age</span>) &#123;<br>  <span class="hljs-keyword">if</span> (<span class="hljs-keyword">typeof</span> age !== <span class="hljs-string">&#x27;number&#x27;</span>) &#123;<br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">TypeError</span>(<span class="hljs-string">&#x27;Age must be a number.&#x27;</span>);<br>  &#125;<br>  <span class="hljs-keyword">if</span> (age &lt; <span class="hljs-number">0</span>) &#123;<br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">RangeError</span>(<span class="hljs-string">&#x27;Age cannot be negative.&#x27;</span>);<br>  &#125;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;Age is valid.&#x27;</span>);<br>&#125;<br><br><span class="hljs-keyword">try</span> &#123;<br>  <span class="hljs-title function_">validateAge</span>(-<span class="hljs-number">5</span>);<br>&#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">`Validation failed: <span class="hljs-subst">$&#123;error.message&#125;</span>`</span>); <span class="hljs-comment">// Validation failed: Age cannot be negative.</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="3-Error-Object-错误对象-与-Stack-Trace-堆栈跟踪">3. <code>Error</code> Object (错误对象) 与 Stack Trace (堆栈跟踪)</h3>
+<h4 id="核心概念-3">核心概念</h4>
+<p>当错误发生时，<code>catch</code> 块接收到的那个 <code>error</code> 参数，就是一个 <code>Error</code> 对象的实例。它包含了关于错误的关键信息。</p>
+<ul>
+<li><strong>标准属性:</strong>
+<ul>
+<li><code>name</code>: 错误类型（如 <code>SyntaxError</code>, <code>TypeError</code>, <code>ReferenceError</code>）。</li>
+<li><code>message</code>: 一个人类可读的、描述错误的字符串。这是你在 <code>new Error('your message')</code> 中传递的。</li>
+</ul>
+</li>
+<li><strong>非标准但极其有用的属性:</strong>
+<ul>
+<li><code>stack</code>: <strong>堆栈跟踪</strong>。这是一个字符串，详细描述了错误发生时函数的调用路径，从错误点开始，一直回溯到顶层调用。<strong>这是调试时最有价值的信息！</strong></li>
+</ul>
+</li>
+</ul>
+<h4 id="示例：解读-Stack-Trace">示例：解读 Stack Trace</h4>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">function</span> <span class="hljs-title function_">functionA</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-title function_">functionB</span>();<br>&#125;<br><br><span class="hljs-keyword">function</span> <span class="hljs-title function_">functionB</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-comment">// 故意创建一个错误</span><br>  <span class="hljs-keyword">const</span> user = <span class="hljs-literal">null</span>;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(user.<span class="hljs-property">name</span>); <span class="hljs-comment">// TypeError: Cannot read properties of null</span><br>&#125;<br><br><span class="hljs-keyword">try</span> &#123;<br>  <span class="hljs-title function_">functionA</span>();<br>&#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(error.<span class="hljs-property">stack</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>输出的 <code>error.stack</code> 看起来会像这样 (具体格式因环境而异):</p>
+<figure class="highlight livecodeserver"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs livecodeserver">TypeError: Cannot <span class="hljs-built_in">read</span> properties <span class="hljs-keyword">of</span> <span class="hljs-literal">null</span> (reading <span class="hljs-string">&#x27;name&#x27;</span>)<br>    <span class="hljs-keyword">at</span> functionB (c:\path\<span class="hljs-built_in">to</span>\your\<span class="hljs-built_in">file</span>.js:<span class="hljs-number">12</span>:<span class="hljs-number">21</span>)  &lt;<span class="hljs-comment">-- 错误发生的精确位置</span><br>    <span class="hljs-keyword">at</span> functionA (c:\path\<span class="hljs-built_in">to</span>\your\<span class="hljs-built_in">file</span>.js:<span class="hljs-number">7</span>:<span class="hljs-number">3</span>)    &lt;<span class="hljs-comment">-- 调用 functionB 的地方</span><br>    <span class="hljs-keyword">at</span> Object.&lt;anonymous&gt; (c:\path\<span class="hljs-built_in">to</span>\your\<span class="hljs-built_in">file</span>.js:<span class="hljs-number">16</span>:<span class="hljs-number">3</span>) &lt;<span class="hljs-comment">-- 顶层调用</span><br></code></pre></td></tr></table></figure>
+<p><strong>如何阅读：</strong> 从上到下看。第一行是错误类型和信息。下面每一行 <code>at ...</code> 都代表调用栈的一帧，告诉你哪个函数在哪一行调用了下一个函数，直到错误的源头。</p>
+<hr>
+<h3 id="4-Custom-Errors-自定义错误-让错误更具描述性">4. Custom Errors (自定义错误) - 让错误更具描述性</h3>
+<h4 id="核心概念-4">核心概念</h4>
+<p>虽然 JavaScript 内置了多种错误类型（<code>TypeError</code>, <code>RangeError</code> 等），但在复杂的应用中，创建我们自己的错误类型会非常有帮助。这使得我们可以更精确地捕获和处理特定类型的应用级错误。</p>
+<p><strong>现代方式 (ES6 Class):</strong> 通过继承内置的 <code>Error</code> 类来创建自定义错误。</p>
+<h4 id="语法与示例-3">语法与示例</h4>
+<p>假设我们正在开发一个 API 客户端，需要一个特定的 <code>APIError</code>。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 定义自定义错误类</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">APIError</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Error</span> &#123;<br>  <span class="hljs-title function_">constructor</span>(<span class="hljs-params">message, statusCode</span>) &#123;<br>    <span class="hljs-comment">// 1. 调用父类的构造函数</span><br>    <span class="hljs-variable language_">super</span>(message);<br>    <br>    <span class="hljs-comment">// 2. 设置错误名称为类名</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">name</span> = <span class="hljs-string">&#x27;APIError&#x27;</span>;<br>    <br>    <span class="hljs-comment">// 3. 添加自定义属性</span><br>    <span class="hljs-variable language_">this</span>.<span class="hljs-property">statusCode</span> = statusCode;<br>  &#125;<br>&#125;<br><br><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchUserData</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;https://api.example.com/user/123&#x27;</span>);<br>  <br>  <span class="hljs-keyword">if</span> (!response.<span class="hljs-property">ok</span>) &#123;<br>    <span class="hljs-comment">// 抛出自定义错误，携带更多上下文信息</span><br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">APIError</span>(<span class="hljs-string">`Failed to fetch data. Server responded with <span class="hljs-subst">$&#123;response.status&#125;</span>`</span>, response.<span class="hljs-property">status</span>);<br>  &#125;<br>  <br>  <span class="hljs-keyword">return</span> response.<span class="hljs-title function_">json</span>();<br>&#125;<br><br><span class="hljs-comment">// 使用</span><br>(<span class="hljs-title function_">async</span> () =&gt; &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">const</span> userData = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetchUserData</span>();<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(userData);<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-comment">// 我们可以精确地检查错误的类型</span><br>    <span class="hljs-keyword">if</span> (error <span class="hljs-keyword">instanceof</span> <span class="hljs-title class_">APIError</span>) &#123;<br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">`API Error (Status <span class="hljs-subst">$&#123;error.statusCode&#125;</span>): <span class="hljs-subst">$&#123;error.message&#125;</span>`</span>);<br>      <span class="hljs-comment">// 可以根据 statusCode 做不同处理，比如 401 就跳转登录</span><br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>      <span class="hljs-comment">// 处理其他类型的错误 (如网络中断)</span><br>      <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">`An unexpected error occurred: <span class="hljs-subst">$&#123;error.message&#125;</span>`</span>);<br>    &#125;<br>  &#125;<br>&#125;)();<br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="5-异步代码中的错误处理">5. 异步代码中的错误处理</h3>
+<p>这是新手常犯错的地方。<strong><code>try...catch</code> 只能捕获同步代码和 <code>await</code> 后面 Promise 的错误。</strong></p>
+<h4 id="错误的方式-Callbacks">错误的方式 (Callbacks)</h4>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">try</span> &#123;<br>  <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> &#123;<br>    <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Error</span>(<span class="hljs-string">&quot;This error will NOT be caught!&quot;</span>);<br>  &#125;, <span class="hljs-number">100</span>);<br>&#125; <span class="hljs-keyword">catch</span> (e) &#123;<br>  <span class="hljs-comment">// 这里的 catch 永远不会执行</span><br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Caught it!&quot;</span>);<br>&#125;<br><span class="hljs-comment">// 错误会作为一个未捕获的异常直接抛到全局。</span><br></code></pre></td></tr></table></figure>
+<p><strong>原因：</strong> <code>try...catch</code> 块执行完毕时，<code>setTimeout</code> 里的回调函数还远未执行。当回调执行并抛出错误时，它已经在一个全新的调用栈中，脱离了原始 <code>try...catch</code> 的控制范围。</p>
+<h4 id="正确的方式-Promises-async-await">正确的方式 (Promises &amp; <code>async/await</code>)</h4>
+<ul>
+<li>
+<p><strong>使用 Promise 的 <code>.catch()</code> 方法:</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;https://invalid-url&#x27;</span>)<br>  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">response</span> =&gt;</span> response.<span class="hljs-title function_">json</span>())<br>  .<span class="hljs-title function_">catch</span>(<span class="hljs-function"><span class="hljs-params">error</span> =&gt;</span> &#123;<br>    <span class="hljs-comment">// .catch() 会捕获链中任何一个 Promise 的 rejection</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Fetch failed:&quot;</span>, error);<br>  &#125;);<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>使用 <code>async/await</code> (最佳实践):</strong> 这是最直观的方式，让异步错误处理看起来和同步一样。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">async</span> <span class="hljs-keyword">function</span> <span class="hljs-title function_">fetchDataAsync</span>(<span class="hljs-params"></span>) &#123;<br>  <span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-keyword">const</span> response = <span class="hljs-keyword">await</span> <span class="hljs-title function_">fetch</span>(<span class="hljs-string">&#x27;https://invalid-url&#x27;</span>);<br>    <span class="hljs-keyword">const</span> data = <span class="hljs-keyword">await</span> response.<span class="hljs-title function_">json</span>();<br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(data);<br>  &#125; <span class="hljs-keyword">catch</span> (error) &#123;<br>    <span class="hljs-comment">// await 后面 Promise 的 rejection 会被 try...catch 捕获</span><br>    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">error</span>(<span class="hljs-string">&quot;Async fetch failed:&quot;</span>, error);<br>  &#125;<br>&#125;<br><span class="hljs-title function_">fetchDataAsync</span>();<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<hr>
+<h3 id="总结与要点">总结与要点</h3>
+<ol>
+<li><strong>同步用 <code>try/catch/finally</code>:</strong> 它是处理同步代码错误的基础。</li>
+<li><strong>异步用 <code>async/await</code> + <code>try/catch</code>:</strong> 这是现代 JavaScript 中处理异步错误的最清晰、最推荐的方式。对于纯 Promise 链，使用 <code>.catch()</code> 也很有效。</li>
+<li><strong>总是 <code>throw new Error()</code>:</strong> 抛出 <code>Error</code> 实例，而不是裸字符串或数字，以保留宝贵的堆栈跟踪信息。</li>
+<li><strong>创建自定义错误:</strong> 对于特定领域的应用逻辑，通过 <code>class MyError extends Error &#123;&#125;</code> 创建自定义错误，可以让你的错误处理逻辑更清晰、更健壮。</li>
+<li><strong>不要“吞掉”错误:</strong> 避免空的 <code>catch &#123;&#125;</code> 块。如果你捕获了一个错误，要么处理它（例如，向用户显示消息，重试操作），要么记录它，要么重新抛出一个更具体的错误。静默地忽略错误是滋生 bug 的温床。</li>
+<li><strong>利用 <code>finally</code>:</strong> <code>finally</code> 非常适合执行资源清理工作，比如关闭文件句柄、关闭数据库连接或隐藏 loading 指示器，因为无论成功失败它都会运行。</li>
+</ol>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/JavaScript/%E9%94%99%E8%AF%AF%E5%A4%84%E7%90%86/" class="category-chain-item">错误处理</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JavaScript/" class="print-no-link">#JavaScript</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>基础到高级的错误处理机制</div>
+      <div>http://example.com/2025/08/24/JavaScript、Typescript/JavaScript/错误处理/基础到高级的错误处理机制/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/%E8%AF%AD%E6%B3%95%E4%B8%8E%E5%85%B3%E9%94%AE%E5%AD%97/%E5%85%B3%E9%94%AE%E5%AD%97%20(Keywords)/" title="关键字(Keywords)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">关键字(Keywords)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BC%96%E7%A8%8B%20(OOP)/Object/" title="Object">
+                        <span class="hidden-mobile">Object</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

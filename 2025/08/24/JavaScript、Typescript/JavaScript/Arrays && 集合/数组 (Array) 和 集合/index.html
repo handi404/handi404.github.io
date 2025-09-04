@@ -1,0 +1,1037 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="剖析 JavaScript 中两个最基础也是最重要的数据集合：数组 (Array) 和 集合 (Set)。  一、数组 (Array) 1. 核心概念 (Core Concept) 把数组想象成一个带编号的储物柜。  它是一个有序的集合，每个物品（元素）都有自己固定的柜子编号（索引 index），从 0 开始。 你可以存放任何类型的物品（数字、字符串、对象、甚至其他数组）。 它是 JavaScri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数组(Array) 和 集合">
+<meta property="og:url" content="http://example.com/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/Arrays%20&&%20%E9%9B%86%E5%90%88/%E6%95%B0%E7%BB%84%20(Array)%20%E5%92%8C%20%E9%9B%86%E5%90%88/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="剖析 JavaScript 中两个最基础也是最重要的数据集合：数组 (Array) 和 集合 (Set)。  一、数组 (Array) 1. 核心概念 (Core Concept) 把数组想象成一个带编号的储物柜。  它是一个有序的集合，每个物品（元素）都有自己固定的柜子编号（索引 index），从 0 开始。 你可以存放任何类型的物品（数字、字符串、对象、甚至其他数组）。 它是 JavaScri">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/fronted/javascript.png">
+<meta property="article:published_time" content="2025-08-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-04T10:17:12.418Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="JavaScript">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/fronted/javascript.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>数组(Array) 和 集合 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="数组(Array) 和 集合"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-08-24 00:00" pubdate>
+          2025年8月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          3.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          29 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">数组(Array) 和 集合</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月4日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>剖析 JavaScript 中两个最基础也是最重要的数据集合：<strong>数组 (Array)</strong> 和 <strong>集合 (Set)</strong>。</p>
+<hr>
+<h2 id="一、数组-Array">一、数组 (Array)</h2>
+<h3 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h3>
+<p>把数组想象成一个<strong>带编号的储物柜</strong>。</p>
+<ul>
+<li>它是一个<strong>有序</strong>的集合，每个物品（元素）都有自己固定的柜子编号（索引 <code>index</code>），从 0 开始。</li>
+<li>你可以存放<strong>任何类型</strong>的物品（数字、字符串、对象、甚至其他数组）。</li>
+<li>它是 JavaScript 中使用最频繁、功能最丰富的数据结构。</li>
+</ul>
+<h3 id="2-创建方式-Creation-Methods">2. 创建方式 (Creation Methods)</h3>
+<ol>
+<li>
+<p><strong>数组字面量 (Array Literal) - (🔥 最佳实践)</strong></p>
+<ul>
+<li>最简洁、最常用、性能最好的方式。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> fruits = [<span class="hljs-string">&quot;Apple&quot;</span>, <span class="hljs-string">&quot;Banana&quot;</span>, <span class="hljs-string">&quot;Cherry&quot;</span>];<br><span class="hljs-keyword">const</span> emptyArray = [];<br><span class="hljs-keyword">const</span> mixedArray = [<span class="hljs-number">1</span>, <span class="hljs-string">&quot;hello&quot;</span>, &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-literal">true</span>];<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>Array</code> 构造函数 (Array Constructor)</strong></p>
+<ul>
+<li>通常不推荐，因为其行为根据参数数量不同而有歧义。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 传入单个数字：创建一个指定长度的“稀疏数组”（空插槽）</span><br><span class="hljs-keyword">const</span> arr1 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span>(<span class="hljs-number">3</span>); <span class="hljs-comment">// [ &lt;3 empty items&gt; ], length is 3</span><br><br><span class="hljs-comment">// 传入多个参数：创建包含这些元素的数组</span><br><span class="hljs-keyword">const</span> arr2 = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Array</span>(<span class="hljs-string">&quot;Apple&quot;</span>, <span class="hljs-string">&quot;Banana&quot;</span>); <span class="hljs-comment">// [&quot;Apple&quot;, &quot;Banana&quot;]</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>静态方法 <code>Array.from()</code> (非常强大)</strong></p>
+<ul>
+<li>用于将<strong>类数组对象 (Array-like Objects)</strong> 或 <strong>可迭代对象 (Iterables)</strong> 转换为一个真正的数组。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 从字符串创建</span><br><span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(<span class="hljs-string">&quot;hello&quot;</span>); <span class="hljs-comment">// [&quot;h&quot;, &quot;e&quot;, &quot;l&quot;, &quot;l&quot;, &quot;o&quot;]</span><br><br><span class="hljs-comment">// 从 Set 创建</span><br><span class="hljs-keyword">const</span> mySet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>([<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]);<br><span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(mySet); <span class="hljs-comment">// [1, 2, 3]</span><br><br><span class="hljs-comment">// 从 NodeList (DOM 操作) 创建</span><br><span class="hljs-comment">// const elements = document.querySelectorAll(&#x27;div&#x27;);</span><br><span class="hljs-comment">// const divArray = Array.from(elements);</span><br><br><span class="hljs-comment">// 使用映射函数 (map function) - 简洁高效</span><br><span class="hljs-comment">// 创建一个从 1 到 5 的数组</span><br><span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(&#123; <span class="hljs-attr">length</span>: <span class="hljs-number">5</span> &#125;, <span class="hljs-function">(<span class="hljs-params">value, index</span>) =&gt;</span> index + <span class="hljs-number">1</span>); <span class="hljs-comment">// [1, 2, 3, 4, 5]</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>静态方法 <code>Array.of()</code></strong></p>
+<ul>
+<li>解决了 <code>new Array()</code> 的歧义，无论参数是什么，都创建一个包含这些参数的数组。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-title class_">Array</span>.<span class="hljs-title function_">of</span>(<span class="hljs-number">3</span>); <span class="hljs-comment">// [3] (对比 new Array(3))</span><br><span class="hljs-title class_">Array</span>.<span class="hljs-title function_">of</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>); <span class="hljs-comment">// [1, 2, 3]</span><br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="3-实例属性-Instance-Properties">3. 实例属性 (Instance Properties)</h3>
+<ul>
+<li><strong><code>length</code></strong>: 获取或<strong>设置</strong>数组中元素的数量。这是数组唯一的、最重要的属性。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>];<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arr.<span class="hljs-property">length</span>); <span class="hljs-comment">// 3</span><br><br><span class="hljs-comment">// 设置 length 可以截断或扩展数组</span><br>arr.<span class="hljs-property">length</span> = <span class="hljs-number">2</span>;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arr); <span class="hljs-comment">// [1, 2]</span><br>arr.<span class="hljs-property">length</span> = <span class="hljs-number">5</span>;<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(arr); <span class="hljs-comment">// [1, 2, &lt;3 empty items&gt;]</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="4-实例方法-Instance-Methods">4. 实例方法 (Instance Methods)</h3>
+<p>方法众多，我们按功能和<strong>是否改变原数组 (mutability)</strong> 分类，这在现代开发中至关重要。</p>
+<h4 id="🚨-A-改变原数组-Mutator-Methods">🚨 A. 改变原数组 (Mutator Methods)</h4>
+<p>这些方法会直接修改调用它们的数组。在函数式编程或 React/Vue 等状态管理中要<strong>谨慎使用</strong>。</p>
+<ul>
+<li><code>push(item1, ...)</code>: 在数组<strong>末尾</strong>添加一个或多个元素，返回新长度。</li>
+<li><code>pop()</code>: <strong>移除</strong>数组末尾的最后一个元素，返回被移除的元素。</li>
+<li><code>unshift(item1, ...)</code>: 在数组<strong>开头</strong>添加一个或多个元素，返回新长度。</li>
+<li><code>shift()</code>: <strong>移除</strong>数组开头的第一个元素，返回被移除的元素。</li>
+<li><code>splice(start, deleteCount, item1, ...)</code>: <strong>万能方法</strong>。从 <code>start</code> 索引开始，删除 <code>deleteCount</code> 个元素，并可以插入新元素。返回被删除元素的数组。</li>
+<li><code>sort(compareFunction)</code>: 对数组元素进行<strong>排序</strong>。默认按字符串的 Unicode 码位排序，通常需要提供比较函数。</li>
+<li><code>reverse()</code>: <strong>反转</strong>数组中元素的顺序。</li>
+<li><code>fill(value, start, end)</code>: 用一个固定值 <code>value</code> 填充数组中从 <code>start</code> 到 <code>end</code> 的部分。</li>
+<li><code>copyWithin(target, start, end)</code>: 浅拷贝数组的一部分到同一数组的另一个位置。</li>
+</ul>
+<h4 id="✅-B-不改变原数组-Accessor-Iteration-Methods-🔥-最佳实践">✅ B. 不改变原数组 (Accessor/Iteration Methods) - (🔥 最佳实践)</h4>
+<p>这些方法返回新值或新数组，原数组保持不变。</p>
+<p><strong>1. 返回新数组的方法:</strong></p>
+<ul>
+<li><code>map(callback)</code>: <strong>转换</strong>。遍历数组，对每个元素执行 <code>callback</code> 函数，将结果收集到一个<strong>新数组</strong>中返回。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>].<span class="hljs-title function_">map</span>(<span class="hljs-function"><span class="hljs-params">n</span> =&gt;</span> n * <span class="hljs-number">2</span>); <span class="hljs-comment">// [2, 4, 6]</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><code>filter(callback)</code>: <strong>筛选</strong>。返回一个<strong>新数组</strong>，包含所有通过 <code>callback</code> 函数测试（返回 <code>true</code>）的元素。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>].<span class="hljs-title function_">filter</span>(<span class="hljs-function"><span class="hljs-params">n</span> =&gt;</span> n % <span class="hljs-number">2</span> === <span class="hljs-number">0</span>); <span class="hljs-comment">// [2, 4]</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><code>slice(start, end)</code>: <strong>切片</strong>。返回一个从 <code>start</code> 到 <code>end</code>（不包含 <code>end</code>）的新数组。</li>
+<li><code>concat(arr1, ...)</code>: <strong>合并</strong>。连接两个或多个数组，返回一个新数组。</li>
+<li><code>flat(depth)</code>: <strong>扁平化</strong>。按指定深度 <code>depth</code>（默认为 1）展开嵌套数组，返回一个新数组。</li>
+<li><code>flatMap(callback)</code>: 等同于先 <code>map()</code> 再 <code>flat(1)</code>，但效率更高。</li>
+</ul>
+<p><strong>2. 迭代与查找方法:</strong></p>
+<ul>
+<li><code>forEach(callback)</code>: 遍历数组，对每个元素执行 <code>callback</code>，<strong>没有返回值</strong> (<code>undefined</code>)。</li>
+<li><code>reduce(callback, initialValue)</code>: <strong>聚合</strong>。对数组所有元素执行一个 “reducer” 函数，将其减少为单个值（例如求和、求积）。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>].<span class="hljs-title function_">reduce</span>(<span class="hljs-function">(<span class="hljs-params">accumulator, currentValue</span>) =&gt;</span> accumulator + currentValue, <span class="hljs-number">0</span>); <span class="hljs-comment">// 10</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><code>find(callback)</code>: 返回数组中第一个满足 <code>callback</code> 函数的<strong>元素</strong>，否则返回 <code>undefined</code>。</li>
+<li><code>findIndex(callback)</code>: 返回数组中第一个满足 <code>callback</code> 函数的<strong>元素的索引</strong>，否则返回 <code>-1</code>。</li>
+<li><code>includes(value, fromIndex)</code>: 判断数组是否包含某个值，返回 <code>true</code> 或 <code>false</code>。比 <code>indexOf</code> 更直观。</li>
+<li><code>some(callback)</code>: 测试数组中<strong>是否有至少一个</strong>元素通过 <code>callback</code> 测试。返回 <code>true</code> 或 <code>false</code>。</li>
+<li><code>every(callback)</code>: 测试数组中<strong>是否所有</strong>元素都通过 <code>callback</code> 测试。返回 <code>true</code> 或 <code>false</code>。</li>
+<li><code>at(index)</code>: (ES 2022) 获取指定索引的元素，支持<strong>负索引</strong>（从后往前数）。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> arr = [<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>];<br>arr.<span class="hljs-title function_">at</span>(<span class="hljs-number">0</span>);  <span class="hljs-comment">// 10</span><br>arr.<span class="hljs-title function_">at</span>(-<span class="hljs-number">1</span>); <span class="hljs-comment">// 30 (非常方便！)</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><code>join(separator)</code>: 将数组所有元素连接成一个字符串。</li>
+</ul>
+<hr>
+<h2 id="二、集合-Set">二、集合 (Set)</h2>
+<h3 id="1-核心概念-Core-Concept-2">1. 核心概念 (Core Concept)</h3>
+<p>把 Set 想象成一个<strong>无重复的贵宾名单</strong>。</p>
+<ul>
+<li>它是一个<strong>无序</strong>（严格来说是按插入顺序迭代）的集合。</li>
+<li>最重要的特性：<strong>所有成员的值都是唯一的</strong>。</li>
+<li>主要用于<strong>去重</strong>和<strong>快速判断成员是否存在</strong>。</li>
+</ul>
+<h3 id="2-创建方式-Creation-Methods-2">2. 创建方式 (Creation Methods)</h3>
+<ul>
+<li><strong><code>Set</code> 构造函数 (Set Constructor)</strong><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 创建一个空 Set</span><br><span class="hljs-keyword">const</span> mySet = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>();<br><br><span class="hljs-comment">// 从可迭代对象创建 (最常用)</span><br><span class="hljs-keyword">const</span> numbers = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">4</span>];<br><span class="hljs-keyword">const</span> uniqueNumbers = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(numbers); <span class="hljs-comment">// Set(4) &#123; 1, 2, 3, 4 &#125;</span><br></code></pre></td></tr></table></figure>
+<strong>🔥 经典应用：数组去重</strong><figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> uniqueArray = [...<span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(numbers)]; <span class="hljs-comment">// [1, 2, 3, 4]</span><br><span class="hljs-comment">// or</span><br><span class="hljs-keyword">const</span> uniqueArray2 = <span class="hljs-title class_">Array</span>.<span class="hljs-title function_">from</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Set</span>(numbers)); <span class="hljs-comment">// [1, 2, 3, 4]</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3-实例属性-Instance-Properties-2">3. 实例属性 (Instance Properties)</h3>
+<ul>
+<li><strong><code>size</code></strong>: 返回 Set 实例的成员总数（类似于数组的 <code>length</code>）。</li>
+</ul>
+<h3 id="4-实例方法-Instance-Methods-2">4. 实例方法 (Instance Methods)</h3>
+<p>Set 的方法更专注于成员管理，而非顺序操作。</p>
+<ul>
+<li><code>add(value)</code>: 向 Set 中添加一个新元素。如果元素已存在，则什么都不做。返回该 Set 对象本身，<strong>支持链式调用</strong>。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">mySet.<span class="hljs-title function_">add</span>(<span class="hljs-number">1</span>).<span class="hljs-title function_">add</span>(<span class="hljs-number">5</span>).<span class="hljs-title function_">add</span>(<span class="hljs-string">&quot;some text&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><code>has(value)</code>: 判断 Set 中是否存在某个值，返回 <code>true</code> 或 <code>false</code>。<strong>性能极高 (O(1) 复杂度)</strong>。</li>
+<li><code>delete(value)</code>: 从 Set 中删除指定元素。如果删除成功，返回 <code>true</code>；否则返回 <code>false</code>。</li>
+<li><code>clear()</code>: 移除 Set 中所有元素。</li>
+</ul>
+<p><strong>迭代方法 (Set 是可迭代的):</strong></p>
+<ul>
+<li><code>forEach(callback)</code>: 遍历 Set。<code>callback</code> 接收三个参数 <code>(value, key, set)</code>，其中 <code>value</code> 和 <code>key</code> 的值相同，这是为了与 <code>Map</code> 的 API 保持一致。</li>
+<li><code>values()</code>: 返回一个新的迭代器对象，包含 Set 中所有<strong>值</strong>。</li>
+<li><code>keys()</code>: <code>keys()</code> 是 <code>values()</code> 的别名，行为完全相同。</li>
+<li><code>entries()</code>: 返回一个新的迭代器对象，包含 <code>[value, value]</code> 形式的数组，同样是为了与 <code>Map</code> 保持兼容。</li>
+</ul>
+<hr>
+<h3 id="三、横向对比：Array-vs-Set-何时使用？">三、横向对比：Array vs. Set (何时使用？)</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">特性</th>
+<th style="text-align:left">数组 (Array)</th>
+<th style="text-align:left">集合 (Set)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>唯一性</strong></td>
+<td style="text-align:left">允许重复元素</td>
+<td style="text-align:left"><strong>元素唯一</strong></td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>顺序</strong></td>
+<td style="text-align:left"><strong>有序</strong>，按索引 <code>0, 1, 2...</code></td>
+<td style="text-align:left"><strong>有序</strong> (按插入顺序)，但无索引</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>访问</strong></td>
+<td style="text-align:left">通过索引快速访问 <code>arr[i]</code> (O(1))</td>
+<td style="text-align:left">只能通过迭代或 <code>has()</code> 检查</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>查找性能</strong></td>
+<td style="text-align:left"><code>includes()</code> / <code>indexOf()</code> 性能为 O(n)</td>
+<td style="text-align:left"><code>has()</code> 性能极高，为 O(1) 平均</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>主要用途</strong></td>
+<td style="text-align:left">存储有序列表，需要按位置操作数据</td>
+<td style="text-align:left">保证元素唯一性，快速查找成员，数组去重</td>
+</tr>
+</tbody>
+</table>
+<p><strong>一句话决策：</strong></p>
+<ul>
+<li>当你需要一个<strong>有序列表</strong>，并且关心元素的位置（索引）时，使用 <strong>Array</strong>。</li>
+<li>当你需要存储<strong>不重复的值</strong>，并且频繁进行<strong>存在性检查</strong>时，使用 <strong>Set</strong>。它在性能上远超数组的 <code>includes</code>。</li>
+</ul>
+<hr>
+<h2 id="三、映射-Map">三、映射 (Map)</h2>
+<h3 id="1-核心概念-Core-Concept-3">1. 核心概念 (Core Concept)</h3>
+<p>如果说数组是“带编号的储物柜”，那么 Map 就是一个 <strong>“万能钥匙储物柜”</strong>。</p>
+<ul>
+<li>它是一个<strong>键值对 (key-value pairs) 的集合</strong>，类似于我们常用的 <code>Object</code>。</li>
+<li><strong>核心优势：</strong> 它的<strong>键 (key) 可以是任意类型</strong>，包括对象、函数、原始类型等，而不仅仅是字符串或 Symbol。</li>
+<li>它<strong>保持键的插入顺序</strong>，这意味着当你迭代 Map 时，元素的顺序与你插入它们的顺序是一致的。</li>
+</ul>
+<h3 id="2-创建方式-Creation-Methods-3">2. 创建方式 (Creation Methods)</h3>
+<ul>
+<li>
+<p><strong><code>Map</code> 构造函数 (Map Constructor)</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 创建一个空 Map</span><br><span class="hljs-keyword">const</span> myMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();<br><br><span class="hljs-comment">// 从一个可迭代的键值对数组创建 (最常用)</span><br><span class="hljs-keyword">const</span> initialData = [<br>  [<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;Alice&#x27;</span>],<br>  [<span class="hljs-number">30</span>, <span class="hljs-string">&#x27;age&#x27;</span>], <span class="hljs-comment">// key 是数字</span><br>  [<span class="hljs-literal">true</span>, <span class="hljs-string">&#x27;isStudent&#x27;</span>], <span class="hljs-comment">// key 是布尔值</span><br>  [&#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span> &#125;, <span class="hljs-string">&#x27;userObject&#x27;</span>] <span class="hljs-comment">// key 是对象！</span><br>];<br><span class="hljs-keyword">const</span> userMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>(initialData);<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(userMap.<span class="hljs-title function_">get</span>(&#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span> &#125;)); <span class="hljs-comment">// undefined (后面解释为什么)</span><br></code></pre></td></tr></table></figure>
+<p><strong>注意：</strong> 上述代码中 <code>userMap.get(&#123; id: 1 &#125;)</code> 返回 <code>undefined</code> 是因为 <code>&#123; id: 1 &#125; !== &#123; id: 1 &#125;</code>。它们是两个不同的对象引用。你需要用同一个对象引用来操作：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> userKey = &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span> &#125;;<br><span class="hljs-keyword">const</span> userMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>([<br>  [userKey, <span class="hljs-string">&#x27;userObject&#x27;</span>]<br>]);<br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(userMap.<span class="hljs-title function_">get</span>(userKey)); <span class="hljs-comment">// &quot;userObject&quot; (正确！)</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="3-实例属性-Instance-Properties-3">3. 实例属性 (Instance Properties)</h3>
+<ul>
+<li><strong><code>size</code></strong>: 返回 Map 实例中键值对的数量。</li>
+</ul>
+<h3 id="4-实例方法-Instance-Methods-3">4. 实例方法 (Instance Methods)</h3>
+<p>Map 的方法清晰地围绕着“增删改查”和“迭代”展开。</p>
+<ul>
+<li><code>set(key, value)</code>: 向 Map 中<strong>添加或更新</strong>一个键值对。返回该 Map 对象本身，<strong>支持链式调用</strong>。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs javascript">myMap.<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;Bob&#x27;</span>).<span class="hljs-title function_">set</span>(<span class="hljs-string">&#x27;city&#x27;</span>, <span class="hljs-string">&#x27;New York&#x27;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><code>get(key)</code>: 获取指定 <code>key</code> 对应的 <code>value</code>。如果 <code>key</code> 不存在，返回 <code>undefined</code>。</li>
+<li><code>has(key)</code>: 判断 Map 中是否存在指定的 <code>key</code>，返回 <code>true</code> 或 <code>false</code>。<strong>性能极高 (O(1) 复杂度)</strong>。</li>
+<li><code>delete(key)</code>: 从 Map 中删除指定的键值对。如果删除成功，返回 <code>true</code>；否则返回 <code>false</code>。</li>
+<li><code>clear()</code>: 移除 Map 中所有的键值对。</li>
+</ul>
+<p><strong>迭代方法 (Map 是可迭代的):</strong></p>
+<ul>
+<li><code>forEach(callback)</code>: 按插入顺序遍历 Map。<code>callback</code> 接收三个参数 <code>(value, key, map)</code>。注意 <code>value</code> 在前，<code>key</code> 在后。</li>
+<li><code>keys()</code>: 返回一个新的<strong>迭代器对象</strong>，包含 Map 中所有的<strong>键 (keys)</strong>。</li>
+<li><code>values()</code>: 返回一个新的<strong>迭代器对象</strong>，包含 Map 中所有的<strong>值 (values)</strong>。</li>
+<li><code>entries()</code>: 返回一个新的<strong>迭代器对象</strong>，包含 Map 中所有的 <code>[key, value]</code> 数组。<code>for...of</code> 循环默认使用的就是这个迭代器。</li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> userMap = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>([[<span class="hljs-string">&#x27;name&#x27;</span>, <span class="hljs-string">&#x27;Alice&#x27;</span>], [<span class="hljs-string">&#x27;age&#x27;</span>, <span class="hljs-number">30</span>]]);<br><br><span class="hljs-comment">// 遍历 Map (最佳实践)</span><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">const</span> [key, value] <span class="hljs-keyword">of</span> userMap) &#123;<br>  <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">`<span class="hljs-subst">$&#123;key&#125;</span>: <span class="hljs-subst">$&#123;value&#125;</span>`</span>);<br>&#125;<br><span class="hljs-comment">// 输出:</span><br><span class="hljs-comment">// name: Alice</span><br><span class="hljs-comment">// age: 30</span><br><br><span class="hljs-comment">// 获取所有键</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>([...userMap.<span class="hljs-title function_">keys</span>()]); <span class="hljs-comment">// [&#x27;name&#x27;, &#x27;age&#x27;]</span><br><br><span class="hljs-comment">// 获取所有值</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>([...userMap.<span class="hljs-title function_">values</span>()]); <span class="hljs-comment">// [&#x27;Alice&#x27;, 30]</span><br></code></pre></td></tr></table></figure>
+<hr>
+<h3 id="四、横向对比：Map-vs-Object-终极对决">四、横向对比：Map vs. Object (终极对决)</h3>
+<p>在 ES6 之前，我们一直用 <code>Object</code> 来模拟 <code>Map</code> 的功能。但 <code>Map</code> 的出现是专门为了解决 <code>Object</code> 作为键值存储的诸多不足。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">特性</th>
+<th style="text-align:left">Map</th>
+<th style="text-align:left">Object</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>键的类型 (Key Type)</strong></td>
+<td style="text-align:left"><strong>任意类型</strong> (对象, 函数, etc.)</td>
+<td style="text-align:left">只能是 <code>string</code> 或 <code>Symbol</code> (其他类型会被强制转为字符串)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>键的顺序 (Key Order)</strong></td>
+<td style="text-align:left"><strong>保持插入顺序</strong></td>
+<td style="text-align:left">ES 2015+ 后部分有序，但规则复杂且不完全可靠</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>大小 (Size)</strong></td>
+<td style="text-align:left">通过 <code>.size</code> 属性直接获取 (O(1))</td>
+<td style="text-align:left">需通过 <code>Object.keys().length</code> 计算 (O(n))</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>迭代 (Iteration)</strong></td>
+<td style="text-align:left"><strong>直接可迭代</strong> (<code>for...of</code>)</td>
+<td style="text-align:left">默认不可迭代，需用 <code>Object.keys/values/entries</code> 辅助</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>性能 (Performance)</strong></td>
+<td style="text-align:left">在<strong>频繁增删</strong>键值对的场景下，性能通常<strong>更优</strong></td>
+<td style="text-align:left">在少量、固定的属性访问时性能极佳</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>原型继承 (Prototype)</strong></td>
+<td style="text-align:left">纯粹的数据集合，没有原型链上的意外属性</td>
+<td style="text-align:left">继承自 <code>Object.prototype</code>，可能存在原型链污染风险 (<code>hasOwnProperty</code> 等)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>代码对比揭示差异：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-keyword">const</span> obj = &#123;&#125;;<br><span class="hljs-keyword">const</span> map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Map</span>();<br><br><span class="hljs-keyword">const</span> keyObject = &#123; <span class="hljs-attr">id</span>: <span class="hljs-number">1</span> &#125;;<br><span class="hljs-keyword">const</span> <span class="hljs-title function_">keyFunc</span> = (<span class="hljs-params"></span>) =&gt; &#123;&#125;;<br><br><span class="hljs-comment">// Object 的键被强制转为字符串</span><br>obj[keyObject] = <span class="hljs-string">&#x27;value for object key&#x27;</span>; <span class="hljs-comment">// obj[&#x27;[object Object]&#x27;] = &#x27;...&#x27;</span><br>obj[keyFunc] = <span class="hljs-string">&#x27;value for function key&#x27;</span>;   <span class="hljs-comment">// obj[&#x27;() =&gt; &#123;&#125;&#x27;] = &#x27;...&#x27;</span><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-title class_">Object</span>.<span class="hljs-title function_">keys</span>(obj)); <span class="hljs-comment">// [&quot;[object Object]&quot;, &quot;() =&gt; &#123;&#125;&quot;] (键已失真)</span><br><br><span class="hljs-comment">// Map 保持键的原始类型</span><br>map.<span class="hljs-title function_">set</span>(keyObject, <span class="hljs-string">&#x27;value for object key&#x27;</span>);<br>map.<span class="hljs-title function_">set</span>(keyFunc, <span class="hljs-string">&#x27;value for function key&#x27;</span>);<br><br><span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(map.<span class="hljs-title function_">get</span>(keyObject)); <span class="hljs-comment">// &#x27;value for object key&#x27; (完美)</span><br></code></pre></td></tr></table></figure>
+<p><strong>一句话决策：</strong></p>
+<ul>
+<li>当你需要一个<strong>纯粹的、键值类型灵活的数据字典</strong>时，尤其是在键的类型不确定，或者需要频繁增删改查的场景下，<strong>优先使用 <code>Map</code></strong>。</li>
+<li>当你需要创建一个<strong>结构固定、属性名确定</strong>的普通对象，或者需要用到 <code>JSON.stringify()</code> 进行序列化时（<code>JSON</code> 不支持 <code>Map</code>），使用 <strong><code>Object</code></strong>。</li>
+</ul>
+<hr>
+<h3 id="补充：WeakMap-WeakSet">补充：<code>WeakMap</code> &amp; <code>WeakSet</code></h3>
+<p>这两个是 <code>Map</code> 和 <code>Set</code> 的“弱引用”版本，是更高级的特性，主要用于解决特定的内存管理问题。</p>
+<ul>
+<li><strong>核心概念：</strong>
+<ul>
+<li><code>WeakMap</code> 的<strong>键必须是对象</strong>，<code>WeakSet</code> 的成员也必须是对象。</li>
+<li>它们对键/成员的引用是<strong>弱引用 (Weak Reference)</strong>。这意味着，如果一个对象只被 <code>WeakMap</code> 或 <code>WeakSet</code> 引用，而没有被其他任何地方强引用，垃圾回收机制 (GC) 就可以<strong>自动回收这个对象</strong>，<code>WeakMap</code> / <code>WeakSet</code> 中对应的条目也会自动消失。</li>
+</ul>
+</li>
+<li><strong>特性：</strong>
+<ul>
+<li>由于垃圾回收时机不确定，它们是<strong>不可迭代的</strong>（没有 <code>forEach</code>, <code>keys</code>, <code>values</code>, <code>entries</code>, <code>size</code> 等方法）。你无法获知里面到底有多少成员。</li>
+</ul>
+</li>
+<li><strong>实战应用场景：</strong>
+<ul>
+<li><strong>缓存私有数据：</strong> 在一个对象上附加一些额外信息，而又不希望这些信息阻止该对象被垃圾回收。<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs javascript"><span class="hljs-comment">// 场景：为一个 DOM 元素附加一些元数据，当该 DOM 元素被移除时，</span><br><span class="hljs-comment">// 我们不希望元数据还残留在内存中。</span><br><span class="hljs-keyword">const</span> elementMetadata = <span class="hljs-keyword">new</span> <span class="hljs-title class_">WeakMap</span>();<br><br><span class="hljs-keyword">const</span> myButton = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">querySelector</span>(<span class="hljs-string">&#x27;#my-button&#x27;</span>);<br><br>elementMetadata.<span class="hljs-title function_">set</span>(myButton, &#123; <span class="hljs-attr">clickCount</span>: <span class="hljs-number">0</span> &#125;);<br><br><span class="hljs-comment">// 当 myButton 从 DOM 中被移除，且没有其他地方引用它时，</span><br><span class="hljs-comment">// 垃圾回收器会回收 myButton，elementMetadata 中对应的条目也会被自动清除。</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>框架和库中用于存储与对象相关的状态</strong>，而又不影响宿主应用的内存生命周期。Vue 的响应式系统内部就巧妙地运用了 <code>WeakMap</code>。</li>
+</ul>
+</li>
+</ul>
+<p><strong>总结</strong></p>
+<p><code>Array</code>, <code>Set</code>, <code>Map</code> 构成了现代 JavaScript 中处理数据集合的“三驾马车”。理解它们的特性、差异和适用场景，是编写高效、健壮、可读性强的代码的基础。而 <code>WeakMap</code> 和 <code>WeakSet</code> 则是解决特定内存泄漏问题的“银弹”。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/JavaScript-TypeScript/" class="category-chain-item">JavaScript/TypeScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/JavaScript/" class="category-chain-item">JavaScript</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/JavaScript-TypeScript/JavaScript/Arrays-%E9%9B%86%E5%90%88/" class="category-chain-item">Arrays &amp;&amp; 集合</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/JavaScript/" class="print-no-link">#JavaScript</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>数组(Array) 和 集合</div>
+      <div>http://example.com/2025/08/24/JavaScript、Typescript/JavaScript/Arrays &amp;&amp; 集合/数组 (Array) 和 集合/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年8月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/Arrays%20&amp;&amp;%20%E9%9B%86%E5%90%88/map%EF%BC%8Cfilter%EF%BC%8Creduce/" title="map, filter, reduce">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">map, filter, reduce</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/08/24/JavaScript%E3%80%81Typescript/JavaScript/Promise%20%E4%B8%8E%E5%BC%82%E6%AD%A5/Promise%20%E5%92%8C%20async_await/" title="Promise 和 async/await">
+                        <span class="hidden-mobile">Promise 和 async/await</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
