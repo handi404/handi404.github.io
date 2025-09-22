@@ -1,0 +1,875 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 21 中引入的、用于统一集合框架序列操作的接口——序列化集合 (Sequenced Collections)。  序列化集合 (Sequenced Collections) 1. 核心概念 (Core Concept) 在 Java 21 之前，Java 的集合框架中，那些有明确顺序的集合（如 List, Deque, LinkedHashSet）并没有一个统一的接口来定义它们的“序列”">
+<meta property="og:type" content="article">
+<meta property="og:title" content="序列化集合 (Sequenced Collections) - 正式版">
+<meta property="og:url" content="http://example.com/2025/06/26/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2021%20(LTS)/%E5%BA%8F%E5%88%97%E5%8C%96%E9%9B%86%E5%90%88%20(Sequenced%20Collections)%20-%20%E6%AD%A3%E5%BC%8F%E7%89%88/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 21 中引入的、用于统一集合框架序列操作的接口——序列化集合 (Sequenced Collections)。  序列化集合 (Sequenced Collections) 1. 核心概念 (Core Concept) 在 Java 21 之前，Java 的集合框架中，那些有明确顺序的集合（如 List, Deque, LinkedHashSet）并没有一个统一的接口来定义它们的“序列”">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2025-06-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T13:57:50.758Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>序列化集合 (Sequenced Collections) - 正式版 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="序列化集合 (Sequenced Collections) - 正式版"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-26 00:00" pubdate>
+          2025年6月26日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">序列化集合 (Sequenced Collections) - 正式版</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月22日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Java 21 中引入的、用于统一集合框架序列操作的接口——<strong>序列化集合 (Sequenced Collections)</strong>。</p>
+<hr>
+<h3 id="序列化集合-Sequenced-Collections">序列化集合 (Sequenced Collections)</h3>
+<h4 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h4>
+<p>在 Java 21 之前，Java 的集合框架中，那些<strong>有明确顺序</strong>的集合（如 <code>List</code>, <code>Deque</code>, <code>LinkedHashSet</code>）并没有一个统一的接口来定义它们的“序列”行为。</p>
+<ul>
+<li>如果你想获取 <code>List</code> 的第一个元素，你用 <code>list.get(0)</code>。</li>
+<li>如果你想获取 <code>Deque</code> 的第一个元素，你用 <code>deque.getFirst()</code>。</li>
+<li>如果你想获取 <code>LinkedHashSet</code> 的第一个元素，你必须用 <code>set.iterator().next()</code>。</li>
+<li>获取最后一个元素和逆序遍历也存在类似的不一致性。</li>
+</ul>
+<p><strong>序列化集合 (Sequenced Collections)</strong> 通过引入三个新的接口，为所有具有明确、稳定遍历顺序的集合，提供了一套<strong>统一的、易于访问的 API</strong>。</p>
+<p><strong>新引入的三个核心接口：</strong></p>
+<ol>
+<li>
+<p><strong><code>SequencedCollection&lt;E&gt;</code>:</strong></p>
+<ul>
+<li>这是一个<strong>顶层接口</strong>，被 <code>List</code>, <code>Deque</code> 和新的 <code>SequencedSet</code> 继承。</li>
+<li>它定义了所有序列化集合都应具备的核心操作：
+<ul>
+<li><code>addFirst(E e)</code>, <code>addLast(E e)</code>: 在序列的开头/末尾添加元素。</li>
+<li><code>getFirst()</code>, <code>getLast()</code>: 获取序列的第一个/最后一个元素。</li>
+<li><code>removeFirst()</code>, <code>removeLast()</code>: 移除并返回序列的第一个/最后一个元素。</li>
+<li><code>reversed()</code>: <strong>返回一个逆序的集合视图 (View)</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p><strong><code>SequencedSet&lt;E&gt;</code>:</strong></p>
+<ul>
+<li>继承自 <code>SequencedCollection</code> 和 <code>Set</code>。</li>
+<li><code>LinkedHashSet</code> 和 <code>SortedSet</code> 现在都实现了这个接口。</li>
+<li>它代表一个<strong>元素唯一且有序</strong>的集合。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>SequencedMap&lt;K, V&gt;</code>:</strong></p>
+<ul>
+<li>这是一个独立的接口，被 <code>LinkedHashMap</code> 和 <code>SortedMap</code> 继承。</li>
+<li>它为有序 Map 提供了类似的功能：
+<ul>
+<li><code>putFirst(K k, V v)</code>, <code>putLast(K k, V v)</code></li>
+<li><code>firstEntry()</code>, <code>lastEntry()</code></li>
+<li><code>pollFirstEntry()</code>, <code>pollLastEntry()</code></li>
+<li><code>reversed()</code>: <strong>返回一个逆序的 Map 视图</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<p><strong>通俗比喻：</strong></p>
+<ul>
+<li><strong>Java 21 之前：</strong> 想象一个城市里有三个不同的车站：火车站、汽车站和地铁站。它们都提供“去市中心”（获取第一个元素）的服务，但你需要通过不同的方式购票和上车（调用不同的方法）。</li>
+<li><strong>Java 21 之后：</strong> 城市为所有这些车站建立了一个<strong>统一的“交通枢纽”接口</strong>。现在，无论你在哪个车站，都可以通过一个标准流程——“刷交通卡进站”（调用 <code>getFirst()</code>），来搭乘前往市中心的交通工具。</li>
+</ul>
+<h4 id="2-演进与现代化-Evolution-Modernization">2. 演进与现代化 (Evolution &amp; Modernization)</h4>
+<ul>
+<li>
+<p><strong>Java 21 之前 (The Pain Point):</strong></p>
+<ul>
+<li><strong>API 不一致：</strong> 如上所述，处理有序集合的首尾元素和逆序遍历，缺乏统一的抽象，导致代码冗余和学习成本增加。</li>
+<li><strong>逆序遍历困难：</strong> 要逆序遍历一个 <code>List</code>，你需要用 <code>listIterator(list.size())</code> 或者 <code>Collections.reverse()</code>（这个会修改原列表），非常不便。<code>LinkedHashSet</code> 的逆序遍历更是麻烦。</li>
+<li><strong>表达力不足：</strong> 无法在方法签名中直接表达“我需要一个有序的集合，并且要能方便地访问首尾元素”。</li>
+</ul>
+</li>
+<li>
+<p><strong>Java 21 (The Solution):</strong><br>
+JEP 431 (Sequenced Collections) 通过对集合框架进行一次“小而美”的重构，填补了这个存在已久的空白。它没有破坏任何现有代码，而是通过接口的默认方法和对现有集合类的改造，平滑地引入了这套新 API。</p>
+</li>
+<li>
+<p><strong>现代化影响：</strong></p>
+<ul>
+<li><strong>代码更统一、更简洁：</strong> 开发者可以用一套方法处理所有有序集合。</li>
+<li><strong>API 设计更精确：</strong> 方法可以声明接收 <code>SequencedCollection</code> 参数，明确表达其对集合顺序的依赖。</li>
+<li><strong>逆序操作变得轻而易举：</strong> <code>reversed()</code> 方法提供了一个<strong>轻量级的视图</strong>，而不是创建一个新的、反转的集合，性能开销极小。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-代码示例-Code-Example">3. 代码示例 (Code Example)</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.util.*;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SequencedCollectionsExample</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// --- SequencedCollection (using ArrayList) ---</span><br>        System.out.println(<span class="hljs-string">&quot;--- Using ArrayList as SequencedCollection ---&quot;</span>);<br>        SequencedCollection&lt;String&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;(List.of(<span class="hljs-string">&quot;A&quot;</span>, <span class="hljs-string">&quot;B&quot;</span>, <span class="hljs-string">&quot;C&quot;</span>));<br>        <br>        <span class="hljs-comment">// 统一的 API</span><br>        System.out.println(<span class="hljs-string">&quot;First element: &quot;</span> + list.getFirst()); <span class="hljs-comment">// &quot;A&quot;</span><br>        System.out.println(<span class="hljs-string">&quot;Last element: &quot;</span> + list.getLast());   <span class="hljs-comment">// &quot;C&quot;</span><br>        <br>        list.addFirst(<span class="hljs-string">&quot;Z&quot;</span>); <span class="hljs-comment">// [Z, A, B, C]</span><br>        list.addLast(<span class="hljs-string">&quot;D&quot;</span>);  <span class="hljs-comment">// [Z, A, B, C, D]</span><br>        System.out.println(<span class="hljs-string">&quot;After adding: &quot;</span> + list);<br><br>        <span class="hljs-comment">// --- reversed() 视图 ---</span><br>        System.out.println(<span class="hljs-string">&quot;\n--- Reversed View ---&quot;</span>);<br>        SequencedCollection&lt;String&gt; reversedList = list.reversed();<br>        System.out.println(<span class="hljs-string">&quot;Reversed view: &quot;</span> + reversedList); <span class="hljs-comment">// [D, C, B, A, Z]</span><br>        <br>        <span class="hljs-comment">// 修改原始集合会反映在视图上</span><br>        list.removeFirst(); <span class="hljs-comment">// Removes &quot;Z&quot;</span><br>        System.out.println(<span class="hljs-string">&quot;Original list after remove: &quot;</span> + list);<br>        System.out.println(<span class="hljs-string">&quot;Reversed view after remove: &quot;</span> + reversedList);<br><br>        <span class="hljs-comment">// --- SequencedSet (using LinkedHashSet) ---</span><br>        System.out.println(<span class="hljs-string">&quot;\n--- Using LinkedHashSet as SequencedSet ---&quot;</span>);<br>        SequencedSet&lt;Integer&gt; set = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedHashSet</span>&lt;&gt;(Set.of(<span class="hljs-number">10</span>, <span class="hljs-number">20</span>, <span class="hljs-number">30</span>));<br>        System.out.println(<span class="hljs-string">&quot;First in set: &quot;</span> + set.getFirst()); <span class="hljs-comment">// 10 (insertion order)</span><br>        set.addLast(<span class="hljs-number">40</span>);<br>        System.out.println(<span class="hljs-string">&quot;Set after addLast: &quot;</span> + set);<br><br>        <span class="hljs-comment">// --- SequencedMap (using LinkedHashMap) ---</span><br>        System.out.println(<span class="hljs-string">&quot;\n--- Using LinkedHashMap as SequencedMap ---&quot;</span>);<br>        SequencedMap&lt;String, Integer&gt; map = <span class="hljs-keyword">new</span> <span class="hljs-title class_">LinkedHashMap</span>&lt;&gt;();<br>        map.put(<span class="hljs-string">&quot;One&quot;</span>, <span class="hljs-number">1</span>);<br>        map.put(<span class="hljs-string">&quot;Two&quot;</span>, <span class="hljs-number">2</span>);<br>        map.put(<span class="hljs-string">&quot;Three&quot;</span>, <span class="hljs-number">3</span>);<br><br>        System.out.println(<span class="hljs-string">&quot;First entry: &quot;</span> + map.firstEntry());   <span class="hljs-comment">// One=1</span><br>        System.out.println(<span class="hljs-string">&quot;Last entry: &quot;</span> + map.lastEntry());    <span class="hljs-comment">// Three=3</span><br><br>        SequencedMap&lt;String, Integer&gt; reversedMap = map.reversed();<br>        System.out.println(<span class="hljs-string">&quot;Reversed map view: &quot;</span> + reversedMap); <span class="hljs-comment">// &#123;Three=3, Two=2, One=1&#125;</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="4-扩展与应用-Extension-Application">4. 扩展与应用 (Extension &amp; Application)</h4>
+<ul>
+<li><strong>算法实现：</strong> 很多算法（如队列、栈、滑动窗口）需要频繁操作集合的两端，<code>SequencedCollection</code> 提供了完美的抽象。</li>
+<li><strong>代码库和框架：</strong> 库的作者现在可以编写更通用的代码，只要一个集合是有序的，就可以使用这套 API，而无需为 <code>List</code>, <code>Deque</code> 等写不同的实现。</li>
+<li><strong>数据处理流水线：</strong> 在处理有序数据流时，可以方便地获取第一个或最后一个元素用于初始化或收尾操作。</li>
+</ul>
+<h4 id="5-要点与注意事项-Key-Points-Cautions">5. 要点与注意事项 (Key Points &amp; Cautions)</h4>
+<ol>
+<li>
+<p><strong>视图 (View) vs. 拷贝 (Copy):</strong> <code>reversed()</code> 方法返回的是一个<strong>视图</strong>，不是一个新的集合。这意味着：</p>
+<ul>
+<li><strong>性能好：</strong> 创建视图几乎没有成本。</li>
+<li><strong>双向修改：</strong> 对原始集合的修改会立即反映在逆序视图上，反之亦然。这既是优点也是需要注意的地方。</li>
+</ul>
+</li>
+<li>
+<p><strong>哪些集合是 <code>SequencedCollection</code>?</strong></p>
+<ul>
+<li><code>List</code> 的所有实现 (e.g., <code>ArrayList</code>, <code>LinkedList</code>)。</li>
+<li><code>Deque</code> 的所有实现 (e.g., <code>ArrayDeque</code>, <code>LinkedList</code>)。</li>
+<li><code>LinkedHashSet</code>。</li>
+<li><code>SortedSet</code> 的所有实现 (e.g., <code>TreeSet</code>)。</li>
+<li><strong>注意：<code>HashSet</code> 不是</strong>，因为它没有定义的遍历顺序。</li>
+</ul>
+</li>
+<li>
+<p><strong>哪些 Map 是 <code>SequencedMap</code>?</strong></p>
+<ul>
+<li><code>LinkedHashMap</code>。</li>
+<li><code>SortedMap</code> 的所有实现 (e.g., <code>TreeMap</code>)。</li>
+<li><strong>注意：<code>HashMap</code> 不是</strong>。</li>
+</ul>
+</li>
+<li>
+<p><strong>不可修改集合的行为：</strong><br>
+对于 <code>List.of()</code> 创建的不可修改集合，调用 <code>addFirst</code>, <code>removeLast</code> 等修改操作会抛出 <code>UnsupportedOperationException</code>，这和之前的行为保持一致。但你仍然可以安全地调用 <code>getFirst</code>, <code>getLast</code>, <code>reversed</code> 等只读操作。</p>
+</li>
+</ol>
+<p>总结而言，序列化集合是 Java 集合框架的一次重要且优雅的升级。它通过提供一套统一、简洁的 API，解决了长期以来处理有序集合的痛点，提升了代码的可读性、健壮性和框架的互操作性。这是一个典型的“让好的东西变得更好”的改进。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-21-LTS/" class="category-chain-item">Java 21 (LTS)</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>序列化集合 (Sequenced Collections) - 正式版</div>
+      <div>http://example.com/2025/06/26/Java/新特性/Java 21 (LTS)/序列化集合 (Sequenced Collections) - 正式版/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/26/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2022/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%8F%98%E9%87%8F%20(%E6%AD%A3%E5%BC%8F%E7%89%88)/" title="未命名模式和变量">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">未命名模式和变量</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/26/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2021%20(LTS)/Record%20%E6%A8%A1%E5%BC%8F%20(%E6%AD%A3%E5%BC%8F%E7%89%88)/" title="Record 模式 (正式版)">
+                        <span class="hidden-mobile">Record 模式 (正式版)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

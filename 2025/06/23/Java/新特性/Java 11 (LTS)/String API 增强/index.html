@@ -1,0 +1,828 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 11 为 String 类带来的几个极其实用的小工具。这些方法虽然简单，但它们解决了日常字符串处理中一些非常普遍的痛点，让代码变得更简洁、更健壮。  String API 增强 (Java 11) Java 11 主要为 String 类增加了四个实例方法：isBlank(), lines(), strip() 系列, 和 repeat()。 1. 核心概念 (Core Concept)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="String API 增强">
+<meta property="og:url" content="http://example.com/2025/06/23/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2011%20(LTS)/String%20API%20%E5%A2%9E%E5%BC%BA/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 11 为 String 类带来的几个极其实用的小工具。这些方法虽然简单，但它们解决了日常字符串处理中一些非常普遍的痛点，让代码变得更简洁、更健壮。  String API 增强 (Java 11) Java 11 主要为 String 类增加了四个实例方法：isBlank(), lines(), strip() 系列, 和 repeat()。 1. 核心概念 (Core Concept)">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2025-06-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T13:48:51.446Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>String API 增强 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="String API 增强"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-23 00:00" pubdate>
+          2025年6月23日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">String API 增强</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月22日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Java 11 为 <code>String</code> 类带来的几个极其实用的小工具。这些方法虽然简单，但它们解决了日常字符串处理中一些非常普遍的痛点，让代码变得更简洁、更健壮。</p>
+<hr>
+<h3 id="String-API-增强-Java-11">String API 增强 (Java 11)</h3>
+<p>Java 11 主要为 <code>String</code> 类增加了四个实例方法：<code>isBlank()</code>, <code>lines()</code>, <code>strip()</code> 系列, 和 <code>repeat()</code>。</p>
+<h4 id="1-核心概念-Core-Concept-代码示例">1. 核心概念 (Core Concept) &amp; 代码示例</h4>
+<h5 id="isBlank"><strong><code>isBlank()</code></strong></h5>
+<ul>
+<li><strong>核心概念：</strong> 判断一个字符串是否为<strong>空白</strong>。空白的定义是：字符串为 <code>null</code>、长度为 <code>0</code>，或者<strong>只包含空白字符</strong>（如空格、制表符 <code>\t</code>、换行符 <code>\n</code>）。</li>
+<li><strong>解决了什么痛点：</strong> 在 Java 11 之前，<code>isEmpty()</code> 只能判断长度是否为 <code>0</code>，对于 <code>&quot;   &quot;</code> 这样的字符串，<code>isEmpty()</code> 返回 <code>false</code>，不符合业务直觉。我们通常需要自己写 <code>str == null || str.trim().isEmpty()</code> 来判断。<code>isBlank()</code> 一步到位。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// --- isBlank() Example ---</span><br>System.out.println(<span class="hljs-string">&quot;--- isBlank() ---&quot;</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">emptyStr</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;</span>;<br><span class="hljs-type">String</span> <span class="hljs-variable">blankStr</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;   \t\n  &quot;</span>;<br><span class="hljs-type">String</span> <span class="hljs-variable">textStr</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot; Java &quot;</span>;<br><br>System.out.println(<span class="hljs-string">&quot;&#x27;&#x27; is empty? &quot;</span> + emptyStr.isEmpty());       <span class="hljs-comment">// true</span><br>System.out.println(<span class="hljs-string">&quot;&#x27;&#x27; is blank? &quot;</span> + emptyStr.isBlank());       <span class="hljs-comment">// true</span><br><br>System.out.println(<span class="hljs-string">&quot;&#x27;   &#x27; is empty? &quot;</span> + blankStr.isEmpty());     <span class="hljs-comment">// false</span><br>System.out.println(<span class="hljs-string">&quot;&#x27;   &#x27; is blank? &quot;</span> + blankStr.isBlank());     <span class="hljs-comment">// true</span><br><br>System.out.println(<span class="hljs-string">&quot;&#x27; Java &#x27; is blank? &quot;</span> + textStr.isBlank());   <span class="hljs-comment">// false</span><br></code></pre></td></tr></table></figure>
+<hr>
+<h5 id="lines"><strong><code>lines()</code></strong></h5>
+<ul>
+<li><strong>核心概念：</strong> 将一个多行字符串按照<strong>行终止符</strong>（如 <code>\n</code>, <code>\r</code>, <code>\r\n</code>）分割成一个 <code>Stream&lt;String&gt;</code>。</li>
+<li><strong>解决了什么痛点：</strong> 以前分割多行字符串需要用 <code>str.split(&quot;\\r?\\n&quot;)</code>，这个正则表达式有点复杂，而且返回的是一个数组。<code>lines()</code> 返回一个 Stream，可以直接进行后续的流式操作（<code>filter</code>, <code>map</code> 等），代码更具现代感和函数式风格。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// --- lines() Example ---</span><br>System.out.println(<span class="hljs-string">&quot;\n--- lines() ---&quot;</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">multiLineStr</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;First line\nSecond line\r\nThird line&quot;</span>;<br><br>multiLineStr.lines()<br>    .filter(line -&gt; !line.isBlank()) <span class="hljs-comment">// 过滤掉空行</span><br>    .map(line -&gt; <span class="hljs-string">&quot;Line: &quot;</span> + line)<br>    .forEach(System.out::println);<br><span class="hljs-comment">/* Output:</span><br><span class="hljs-comment">   Line: First line</span><br><span class="hljs-comment">   Line: Second line</span><br><span class="hljs-comment">   Line: Third line</span><br><span class="hljs-comment">*/</span><br></code></pre></td></tr></table></figure>
+<hr>
+<h5 id="strip-stripLeading-stripTrailing"><strong><code>strip()</code>, <code>stripLeading()</code>, <code>stripTrailing()</code></strong></h5>
+<ul>
+<li><strong>核心概念：</strong> 去除字符串首尾的<strong>空白字符</strong>。
+<ul>
+<li><code>strip()</code>: 去除首尾空白。</li>
+<li><code>stripLeading()</code>: 只去除首部空白。</li>
+<li><code>stripTrailing()</code>: 只去除尾部空白。</li>
+</ul>
+</li>
+<li><strong><code>strip()</code> vs. <code>trim()</code> 的关键区别：</strong>
+<ul>
+<li><code>trim()</code> 只能去除半角的 ASCII 空格 (<code>&lt;= U+0020</code>)。</li>
+<li><code>strip()</code> 能够去除所有 Unicode 空白字符，例如全角空格 (<code>\u3000</code>)。它更加“与时俱进”。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight pgsql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs pgsql">// <span class="hljs-comment">--- strip() vs trim() Example ---</span><br><span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;\n--- strip() vs trim() ---&quot;);<br>String strWithUnicodeSpace = &quot;\u3000  Hello Java  \u3000&quot;; // \u3000 <span class="hljs-keyword">is</span> a <span class="hljs-keyword">full</span>-width space<br>String strWithAsciiSpace = &quot;  Hello Java  &quot;;<br><br><span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;Original: &#x27;&quot; + strWithUnicodeSpace + &quot;&#x27;&quot;);<br><span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;Using trim(): &#x27;&quot; + strWithUnicodeSpace.trim() + &quot;&#x27;&quot;);   // Fails <span class="hljs-keyword">to</span> remove Unicode space<br><span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;Using strip(): &#x27;&quot; + strWithUnicodeSpace.strip() + &quot;&#x27;&quot;);   // Correctly removes it<br><br>// <span class="hljs-comment">--- stripLeading() and stripTrailing() ---</span><br><span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;Using stripLeading(): &#x27;&quot; + strWithAsciiSpace.stripLeading() + &quot;&#x27;&quot;);<br><span class="hljs-keyword">System</span>.<span class="hljs-keyword">out</span>.println(&quot;Using stripTrailing(): &#x27;&quot; + strWithAsciiSpace.stripTrailing() + &quot;&#x27;&quot;);<br></code></pre></td></tr></table></figure>
+<p><strong>Output:</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java">Original: <span class="hljs-string">&#x27;　  Hello Java  　&#x27;</span><br>Using <span class="hljs-title function_">trim</span><span class="hljs-params">()</span>: <span class="hljs-string">&#x27;　  Hello Java  　&#x27;</span><br>Using <span class="hljs-title function_">strip</span><span class="hljs-params">()</span>: <span class="hljs-string">&#x27;Hello Java&#x27;</span><br>Using <span class="hljs-title function_">stripLeading</span><span class="hljs-params">()</span>: <span class="hljs-string">&#x27;Hello Java  &#x27;</span><br>Using <span class="hljs-title function_">stripTrailing</span><span class="hljs-params">()</span>: <span class="hljs-string">&#x27;  Hello Java&#x27;</span><br></code></pre></td></tr></table></figure>
+<hr>
+<h5 id="repeat-int-count"><strong><code>repeat(int count)</code></strong></h5>
+<ul>
+<li><strong>核心概念：</strong> 将字符串重复指定的次数，并拼接成一个新的字符串。</li>
+<li><strong>解决了什么痛点：</strong> 以前要重复字符串，需要自己写循环，或者使用第三方库（如 Apache Commons Lang 的 <code>StringUtils.repeat()</code>）。现在 JDK 原生支持，非常方便。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// --- repeat() Example ---</span><br>System.out.println(<span class="hljs-string">&quot;\n--- repeat() ---&quot;</span>);<br><span class="hljs-type">String</span> <span class="hljs-variable">separator</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;-&quot;</span>.repeat(<span class="hljs-number">20</span>);<br>System.out.println(separator); <span class="hljs-comment">// Output: --------------------</span><br><br><span class="hljs-type">String</span> <span class="hljs-variable">greeting</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Hi! &quot;</span>.repeat(<span class="hljs-number">3</span>);<br>System.out.println(greeting);    <span class="hljs-comment">// Output: Hi! Hi! Hi! </span><br><br><span class="hljs-comment">// Edge cases</span><br>System.out.println(<span class="hljs-string">&quot;Repeat 0 times: &#x27;&quot;</span> + <span class="hljs-string">&quot;abc&quot;</span>.repeat(<span class="hljs-number">0</span>) + <span class="hljs-string">&quot;&#x27;&quot;</span>); <span class="hljs-comment">// Output: &#x27;&#x27; (empty string)</span><br><span class="hljs-comment">// System.out.println(&quot;Repeat -1 times: &quot; + &quot;abc&quot;.repeat(-1)); // Throws IllegalArgumentException</span><br></code></pre></td></tr></table></figure>
+<h4 id="2-演进与现代化-Evolution-Modernization">2. 演进与现代化 (Evolution &amp; Modernization)</h4>
+<p>这些 API 的出现，是 Java 平台持续关注开发者体验、不断吸收社区优秀实践（很多功能在第三方库中早已存在）的结果。它们让 Java 在处理文本这种基础而常见的任务时，代码更加现代化、简洁、并且能更好地处理国际化（Unicode）场景。</p>
+<ul>
+<li><strong>代码风格的现代化：</strong> <code>lines()</code> 的引入，进一步鼓励了开发者使用 Stream API 来处理集合和序列数据，使得数据处理流水线更加统一和流畅。</li>
+<li><strong>国际化的支持：</strong> <code>strip()</code> 对 Unicode 的支持，是 Java 平台全球化能力的一个小而美的体现。在处理多语言用户输入时，使用 <code>strip()</code> 而不是 <code>trim()</code> 是一个更健壮的选择。</li>
+</ul>
+<h4 id="3-扩展与应用-Extension-Application">3. 扩展与应用 (Extension &amp; Application)</h4>
+<ul>
+<li><strong>用户输入校验：</strong> <code>isBlank()</code> 是校验表单输入（如用户名、评论）是否为空的完美工具。</li>
+<li><strong>文件/文本处理：</strong> <code>lines()</code> 极大地简化了按行读取和处理文本文件内容的代码。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Java 11 Files.readString() + String.lines()</span><br><span class="hljs-comment">// Path path = Paths.get(&quot;myFile.txt&quot;);</span><br><span class="hljs-comment">// String content = Files.readString(path);</span><br><span class="hljs-comment">// long nonEmptyLines = content.lines().filter(l -&gt; !l.isBlank()).count();</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>数据清洗：</strong> <code>strip()</code> 系列方法是数据预处理阶段清洗脏数据（如去除用户输入中不小心多打的空格）的标准操作。</li>
+<li><strong>格式化输出：</strong> <code>repeat()</code> 在生成报告、日志分隔符、或者构建固定格式的文本时非常有用。</li>
+</ul>
+<h4 id="4-要点与注意事项-Key-Points-Cautions">4. 要点与注意事项 (Key Points &amp; Cautions)</h4>
+<ol>
+<li><strong><code>isBlank()</code> vs. <code>isEmpty()</code>:</strong> 务必分清两者的区别。<code>isEmpty()</code> 只关心 <code>length == 0</code>，而 <code>isBlank()</code> 关心的是“内容是否可见”。</li>
+<li><strong><code>strip()</code> 优于 <code>trim()</code>:</strong> 在所有新代码中，除非有特殊理由需要 <code>trim()</code> 的旧行为，否则都应该优先使用 <code>strip()</code> 系列方法。这是一个好习惯。</li>
+<li><strong><code>lines()</code> 返回的是 Stream:</strong> 这意味着你可以链式调用各种 Stream 操作，但也意味着它是一个一次性的流。如果你需要多次遍历这些行，需要先将其收集到一个 <code>List</code> 中 (<code>.collect(Collectors.toList())</code>)。</li>
+<li><strong><code>repeat()</code> 的参数:</strong>
+<ul>
+<li><code>count</code> 必须是<strong>非负数</strong> (<code>&gt;= 0</code>)。如果传入负数，会抛出 <code>IllegalArgumentException</code>。</li>
+<li><code>count</code> 为 <code>0</code> 时，返回空字符串。</li>
+<li><code>count</code> 为 <code>1</code> 时，返回原字符串。</li>
+</ul>
+</li>
+</ol>
+<p>这些 <code>String</code> API 的增强，是 Java 11 中“小而美”的典范，它们虽然不像模块化或 ZGC 那样宏大，却实实在在地提升了每一位 Java 程序员的日常开发效率和代码质量。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-11-LTS/" class="category-chain-item">Java 11 (LTS)</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>String API 增强</div>
+      <div>http://example.com/2025/06/23/Java/新特性/Java 11 (LTS)/String API 增强/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/23/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2011%20(LTS)/%E5%8D%95%E6%96%87%E4%BB%B6%E6%BA%90%E7%A0%81%E7%A8%8B%E5%BA%8F%E5%90%AF%E5%8A%A8/" title="但文件源码程序启动">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">但文件源码程序启动</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/23/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2011%20(LTS)/%E6%A0%87%E5%87%86%E5%8C%96%20HTTP%20Client%20API/" title="标准化的 HTTP Client API">
+                        <span class="hidden-mobile">标准化的 HTTP Client API</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

@@ -1,0 +1,836 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 15 中正式发布的、极大改善多行字符串编写体验的特性——文本块 (Text Blocks)。  文本块 (Text Blocks) 1. 核心概念 (Core Concept) 文本块是一个多行的字符串字面量，它允许你在代码中以“所见即所得”的方式编写包含换行和缩进的字符串，而无需使用大量的转义字符（如 \n）和字符串拼接符（+）。 核心语法：  以三个双引号 &quot;&quot;&amp;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="文本块 (Test Blok) - 正式版">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2015/%E6%96%87%E6%9C%AC%E5%9D%97%20(Text%20Blocks)%20-%20%E6%AD%A3%E5%BC%8F%E7%89%88/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 15 中正式发布的、极大改善多行字符串编写体验的特性——文本块 (Text Blocks)。  文本块 (Text Blocks) 1. 核心概念 (Core Concept) 文本块是一个多行的字符串字面量，它允许你在代码中以“所见即所得”的方式编写包含换行和缩进的字符串，而无需使用大量的转义字符（如 \n）和字符串拼接符（+）。 核心语法：  以三个双引号 &quot;&quot;&amp;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2025-06-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T13:53:02.576Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>文本块 (Test Blok) - 正式版 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="文本块 (Test Blok) - 正式版"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 00:00" pubdate>
+          2025年6月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">文本块 (Test Blok) - 正式版</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月22日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Java 15 中正式发布的、极大改善多行字符串编写体验的特性——<strong>文本块 (Text Blocks)</strong>。</p>
+<hr>
+<h3 id="文本块-Text-Blocks">文本块 (Text Blocks)</h3>
+<h4 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h4>
+<p>文本块是一个<strong>多行的字符串字面量</strong>，它允许你在代码中以“所见即所得”的方式编写包含换行和缩进的字符串，而无需使用大量的转义字符（如 <code>\n</code>）和字符串拼接符（<code>+</code>）。</p>
+<p><strong>核心语法：</strong></p>
+<ul>
+<li>以<strong>三个双引号 <code>&quot;&quot;&quot;</code></strong> 开始，后面必须跟一个<strong>换行符</strong>。</li>
+<li>中间是字符串的内容，可以包含多行。</li>
+<li>以<strong>三个双引号 <code>&quot;&quot;&quot;</code></strong> 结束。</li>
+</ul>
+<p><strong>通俗比喻：</strong></p>
+<ul>
+<li><strong>传统字符串：</strong> 就像用<strong>一根很长的面条</strong>来写一首诗。每写完一行，你都得手动把面条折一下（<code>\n</code>），如果诗里有引号，你还得特殊处理一下（<code>\&quot;</code>）。整首诗写完，面条已经扭曲不堪。</li>
+<li><strong>文本块：</strong> 就像给你一张<strong>稿纸</strong>。你可以直接在上面写诗，换行、缩进都自然保留，诗写完是什么样，稿纸上就是什么样。清爽、直观。</li>
+</ul>
+<h4 id="2-演进与现代化-Evolution-Modernization">2. 演进与现代化 (Evolution &amp; Modernization)</h4>
+<ul>
+<li>
+<p><strong>Java 15 之前 (The Pain Point):</strong><br>
+在 Java 中编写多行字符串是一件非常痛苦的事情，尤其是在嵌入代码片段（如 SQL, JSON, HTML, XML）时。代码会变得难以阅读和维护。</p>
+<p><strong>示例：编写一段 JSON</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 旧写法：丑陋且易错</span><br><span class="hljs-type">String</span> <span class="hljs-variable">json</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&#123;\n&quot;</span> +<br>              <span class="hljs-string">&quot;  \&quot;name\&quot;: \&quot;Java\&quot;,\n&quot;</span> +<br>              <span class="hljs-string">&quot;  \&quot;version\&quot;: 15,\n&quot;</span> +<br>              <span class="hljs-string">&quot;  \&quot;features\&quot;: [\n&quot;</span> +<br>              <span class="hljs-string">&quot;    \&quot;Text Blocks\&quot;,\n&quot;</span> +<br>              <span class="hljs-string">&quot;    \&quot;Records\&quot;\n&quot;</span> +<br>              <span class="hljs-string">&quot;  ]\n&quot;</span> +<br>              <span class="hljs-string">&quot;&#125;&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>这段代码充满了 <code>\n</code>、<code>+</code> 和手动的缩进，如果从别处复制粘贴一段 JSON 过来，需要花费大量时间进行格式化。</p>
+</li>
+<li>
+<p><strong>预览阶段 (Java 13 &amp; 14):</strong><br>
+文本块经过了两个预览版本，根据社区的反馈进行了多次微调，主要集中在如何处理<strong>缩进</strong>和<strong>尾部空格</strong>上。</p>
+</li>
+<li>
+<p><strong>Java 15 (The Solution - 正式版):</strong><br>
+文本块正式成为 Java 语言的一部分，提供了优雅的解决方案。</p>
+<p><strong>示例：用文本块编写 JSON</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 新写法：所见即所得</span><br><span class="hljs-type">String</span> <span class="hljs-variable">json</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">              &#123;</span><br><span class="hljs-string">                &quot;name&quot;: &quot;Java&quot;,</span><br><span class="hljs-string">                &quot;version&quot;: 15,</span><br><span class="hljs-string">                &quot;features&quot;: [</span><br><span class="hljs-string">                  &quot;Text Blocks&quot;,</span><br><span class="hljs-string">                  &quot;Records&quot;</span><br><span class="hljs-string">                ]</span><br><span class="hljs-string">              &#125;</span><br><span class="hljs-string">              &quot;&quot;&quot;</span>;<br></code></pre></td></tr></table></figure>
+<p>这段代码不仅清晰易读，而且可以直接从 JSON 文件或 API 文档中复制粘贴，无需任何修改。</p>
+</li>
+</ul>
+<h4 id="3-核心规则：缩进处理">3. 核心规则：缩进处理</h4>
+<p>文本块最精妙的地方在于它对<strong>缩进</strong>的智能处理。编译器会遵循以下两个步骤：</p>
+<ol>
+<li><strong>处理行终止符：</strong> 将不同操作系统下的行终止符（<code>\r\n</code>, <code>\n</code>, <code>\r</code>）统一规范化为 <code>\n</code>。</li>
+<li><strong>去除附带的缩进 (Incidental White Space)：</strong>
+<ul>
+<li>找到所有<strong>非空内容行</strong>中<strong>最左边</strong>的那条线（即最小缩进）。</li>
+<li>将每一行的这条公共缩进都<strong>剥离</strong>掉。</li>
+<li>结束的 <code>&quot;&quot;&quot;</code> 标记的位置决定了这条线在哪里。如果把它向左移动，就会保留更多的缩进。</li>
+</ul>
+</li>
+</ol>
+<p><strong>代码示例：理解缩进</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">TextBlockExample</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 示例 1: 基本用法</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">html</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">                      &lt;html&gt;</span><br><span class="hljs-string">                          &lt;body&gt;</span><br><span class="hljs-string">                              &lt;p&gt;Hello, World!&lt;/p&gt;</span><br><span class="hljs-string">                          &lt;/body&gt;</span><br><span class="hljs-string">                      &lt;/html&gt;</span><br><span class="hljs-string">                      &quot;&quot;&quot;</span>;<br>        <span class="hljs-comment">// 结束的 &quot;&quot;&quot; 在第 22 列。</span><br>        <span class="hljs-comment">// 内容行的最小缩进在第 22 列 (&lt;html&gt;)。</span><br>        <span class="hljs-comment">// 所以所有行都向左移动 22 个空格。</span><br>        <span class="hljs-comment">// 结果:</span><br>        <span class="hljs-comment">// &lt;html&gt;</span><br>        <span class="hljs-comment">//     &lt;body&gt;</span><br>        <span class="hljs-comment">//         &lt;p&gt;Hello, World!&lt;/p&gt;</span><br>        <span class="hljs-comment">//     &lt;/body&gt;</span><br>        <span class="hljs-comment">// &lt;/html&gt;</span><br>        System.out.println(html);<br><br>        <span class="hljs-comment">// 示例 2: 通过移动结束符 &quot;&quot;&quot; 来控制整体缩进</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">indentedHtml</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">                              &lt;html&gt;</span><br><span class="hljs-string">                                  &lt;body&gt;</span><br><span class="hljs-string">                                      &lt;p&gt;Hello, World!&lt;/p&gt;</span><br><span class="hljs-string">                                  &lt;/body&gt;</span><br><span class="hljs-string">                              &lt;/html&gt;</span><br><span class="hljs-string">                          &quot;&quot;&quot;</span>; <span class="hljs-comment">// 结束的 &quot;&quot;&quot; 在第 26 列</span><br>        <span class="hljs-comment">// 内容行的最小缩进还是第 22 列。</span><br>        <span class="hljs-comment">// 但由于结束符在第 26 列，所以整体向左移动 22 个空格，</span><br>        <span class="hljs-comment">// 使得 &lt;html&gt; 没有任何前导空格。</span><br>        <span class="hljs-comment">// 效果同上。</span><br><br>        <span class="hljs-type">String</span> <span class="hljs-variable">moreIndentedHtml</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">                                  &lt;html&gt;</span><br><span class="hljs-string">                                      &lt;body&gt;</span><br><span class="hljs-string">                                          &lt;p&gt;Hello, World!&lt;/p&gt;</span><br><span class="hljs-string">                                      &lt;/body&gt;</span><br><span class="hljs-string">                                  &lt;/html&gt;</span><br><span class="hljs-string">                                &quot;&quot;&quot;</span>; <span class="hljs-comment">// 结束的 &quot;&quot;&quot; 向左移动到第 16 列</span><br>        <span class="hljs-comment">// 最小缩进是第 16 列 (结束符的位置)。</span><br>        <span class="hljs-comment">// 所有内容行都向左移动 16 个空格。</span><br>        <span class="hljs-comment">// 结果会保留 4 个空格的额外缩进。</span><br>        <span class="hljs-comment">//    &lt;html&gt;</span><br>        <span class="hljs-comment">//        &lt;body&gt;</span><br>        <span class="hljs-comment">//            &lt;p&gt;Hello, World!&lt;/p&gt;</span><br>        <span class="hljs-comment">//        &lt;/body&gt;</span><br>        <span class="hljs-comment">//    &lt;/html&gt;</span><br>        System.out.println(<span class="hljs-string">&quot;--- More Indented ---&quot;</span>);<br>        System.out.println(moreIndentedHtml);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="4-新的转义序列">4. 新的转义序列</h4>
+<p>文本块引入了两个新的转义序列：</p>
+<ul>
+<li>
+<p><strong><code>\</code> (反斜杠在行尾):</strong> <strong>取消换行</strong>。这在你有一行非常长的文本，但为了代码可读性想把它分成多行书写时非常有用。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">longText</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">                  This is a very long line of text that I want to \</span><br><span class="hljs-string">                  write on multiple lines in my source code, but \</span><br><span class="hljs-string">                  it should be treated as a single line in the final string.</span><br><span class="hljs-string">                  &quot;&quot;&quot;</span>;<br><span class="hljs-comment">// 结果: &quot;This is a very long line of text that I want to write on multiple lines in my source code, but it should be treated as a single line in the final string.&quot;</span><br>System.out.println(longText);<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>\s</code>:</strong> 表示一个<strong>单个的普通空格</strong> (<code>U+0020</code>)。这主要用来<strong>保留行尾的空格</strong>，因为文本块默认会去除行尾的附带空格。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">colors</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">                red  \s</span><br><span class="hljs-string">                green\s</span><br><span class="hljs-string">                blue \s</span><br><span class="hljs-string">                &quot;&quot;&quot;</span>;<br><span class="hljs-comment">// 结果: &quot;red  \ngreen\nblue &quot; (保留了行尾的空格)</span><br><span class="hljs-comment">// 如果没有 \s，结果会是 &quot;red\ngreen\nblue&quot;</span><br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="5-扩展与应用-Extension-Application">5. 扩展与应用 (Extension &amp; Application)</h4>
+<p>文本块的用武之地非常广泛：</p>
+<ul>
+<li><strong>SQL 查询语句：</strong> 在代码中嵌入格式化的 SQL 语句，可读性大大提升。</li>
+<li><strong>JSON / XML / HTML 片段：</strong> 单元测试中的 Mock 数据，或者在代码中构建这些格式的字符串。</li>
+<li><strong>Shell 脚本或任何配置文本：</strong> 在 Java 程序中生成或包含其他语言的脚本代码。</li>
+<li><strong>代码生成器：</strong> 在生成代码的模板中使用文本块。</li>
+</ul>
+<h4 id="6-要点与注意事项-Key-Points-Cautions">6. 要点与注意事项 (Key Points &amp; Cautions)</h4>
+<ol>
+<li><strong>起始的 <code>&quot;&quot;&quot;</code> 后面必须是换行符：</strong> <code>String s = &quot;&quot;&quot;Hello&quot;&quot;&quot;;</code> 是非法的。必须是 <code>String s = &quot;&quot;&quot;\nHello&quot;&quot;&quot;;</code>。</li>
+<li><strong>结束的 <code>&quot;&quot;&quot;</code> 可以和内容在同一行：</strong> <code>String s = &quot;&quot;&quot;Hello&quot;&quot;&quot;</code> 是合法的，但通常为了可读性，会把它放在新的一行。</li>
+<li><strong>智能的缩进管理是关键：</strong> 理解“公共缩进剥离”的规则是掌握文本块的核心。通常，将结束的 <code>&quot;&quot;&quot;</code> 与你希望的最外层内容的缩进对齐，就能得到你想要的结果。</li>
+<li><strong>变量插值：</strong> 文本块本身<strong>不直接支持</strong>变量插值（像 Groovy 或 Kotlin 那样）。你仍然需要使用 <code>String.format()</code> 或新的 <code>String::formatted</code> 方法。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Java&quot;</span>;<br><span class="hljs-type">int</span> <span class="hljs-variable">version</span> <span class="hljs-operator">=</span> <span class="hljs-number">15</span>;<br><span class="hljs-type">String</span> <span class="hljs-variable">formattedJson</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">                     &#123;</span><br><span class="hljs-string">                       &quot;name&quot;: &quot;%s&quot;,</span><br><span class="hljs-string">                       &quot;version&quot;: %d</span><br><span class="hljs-string">                     &#125;</span><br><span class="hljs-string">                     &quot;&quot;&quot;</span>.formatted(name, version);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>Windows 用户注意：</strong> 你无需担心 <code>\r\n</code> 的问题，文本块会自动将其处理为 <code>\n</code>。</li>
+</ol>
+<p>总结来说，文本块是 Java 语言在提升开发者“生活质量”方面迈出的坚实一步。它彻底解决了多行字符串的编写难题，让代码更干净、更直观、更易于维护。对于任何需要处理嵌入式文本的场景，它都是不二之选。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-15/" class="category-chain-item">Java 15</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>文本块 (Test Blok) - 正式版</div>
+      <div>http://example.com/2025/06/24/Java/新特性/Java 15/文本块 (Text Blocks) - 正式版/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2014/Switch%20%E8%A1%A8%E8%BE%BE%E5%BC%8F%20(%E6%AD%A3%E5%BC%8F%E7%89%88)/" title="Switch 表达式 (正式版)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Switch 表达式 (正式版)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2014/%E6%9C%89%E7%94%A8%E7%9A%84%20NullPointerExceptions/" title="有用的 NullPointerExceptio">
+                        <span class="hidden-mobile">有用的 NullPointerExceptio</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

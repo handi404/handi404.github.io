@@ -1,0 +1,839 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 14 中正式发布的、极大提升代码表达力和安全性的重要特性——Switch 表达式 (Switch Expressions)。  Switch 表达式 (Switch Expressions) 1. 核心概念 (Core Concept) 在 Java 14 之前，switch 只是一个语句 (Statement)，它控制程序的执行流程，但不直接产生一个值。 Java 14 引入了 swi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Switch 表达式 (正式版)">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2014/Switch%20%E8%A1%A8%E8%BE%BE%E5%BC%8F%20(%E6%AD%A3%E5%BC%8F%E7%89%88)/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 14 中正式发布的、极大提升代码表达力和安全性的重要特性——Switch 表达式 (Switch Expressions)。  Switch 表达式 (Switch Expressions) 1. 核心概念 (Core Concept) 在 Java 14 之前，switch 只是一个语句 (Statement)，它控制程序的执行流程，但不直接产生一个值。 Java 14 引入了 swi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2025-06-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T13:50:46.925Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Switch 表达式 (正式版) - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Switch 表达式 (正式版)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 00:00" pubdate>
+          2025年6月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Switch 表达式 (正式版)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月22日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Java 14 中正式发布的、极大提升代码表达力和安全性的重要特性——<strong>Switch 表达式 (Switch Expressions)</strong>。</p>
+<hr>
+<h3 id="Switch-表达式-Switch-Expressions">Switch 表达式 (Switch Expressions)</h3>
+<h4 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h4>
+<p>在 Java 14 之前，<code>switch</code> 只是一个<strong>语句 (Statement)</strong>，它控制程序的执行流程，但不直接产生一个值。</p>
+<p>Java 14 引入了 <code>switch</code> <strong>表达式 (Expression)</strong>。表达式和语句最大的区别是：<strong>表达式会计算并返回一个值</strong>。</p>
+<p><code>switch</code> 表达式带来了两大核心改进：</p>
+<ol>
+<li><strong>返回值能力：</strong> <code>switch</code> 可以像三元运算符 <code>(a ? b : c)</code> 一样，根据条件计算并返回一个结果，你可以直接将其赋值给一个变量。</li>
+<li><strong>新的 <code>case</code> 语法：</strong> 引入了 <code>case L -&gt; ...</code> 的箭头语法，它有以下特点：
+<ul>
+<li><strong>无需 <code>break</code>：</strong> 箭头右边的代码执行完毕后，<code>switch</code> 会自动结束，彻底解决了传统 <code>switch</code> 语句中因忘记写 <code>break</code> 而导致的“穿透 (fall-through)”问题。</li>
+<li><strong>作用域更清晰：</strong> 箭头右边只能是一个表达式、一个代码块或一个 <code>throw</code> 语句。</li>
+</ul>
+</li>
+</ol>
+<p><strong>通俗比喻：</strong></p>
+<ul>
+<li><strong>传统 <code>switch</code> 语句：</strong> 就像一个<strong>老式电话接线员</strong>。接到一个请求 (<code>case</code>)，他手动把线插到一个插孔里，然后<strong>必须手动拔出来 (<code>break</code>)</strong>，再去接下一个。如果忘了拔，电话就会串线（<strong>穿透</strong>）。他只负责接线（控制流程），不产出任何东西。</li>
+<li><strong><code>switch</code> 表达式：</strong> 就像一个<strong>自动问答机器人</strong>。你问它一个问题（<code>switch</code> 的输入值），它根据内部知识库（<code>case</code> 分支），直接<strong>给出一个答案（返回值）</strong>。每个答案都是独立的，不会混淆。</li>
+</ul>
+<h4 id="2-演进与现代化-Evolution-Modernization">2. 演进与现代化 (Evolution &amp; Modernization)</h4>
+<ul>
+<li>
+<p><strong>Java 14 之前 (The Pain Point):</strong><br>
+传统 <code>switch</code> 语句存在几个臭名昭著的问题：</p>
+<ul>
+<li><strong>易错的 <code>break</code>：</strong> 忘记 <code>break</code> 是一个非常常见且难以发现的 bug 来源。</li>
+<li><strong>代码冗余：</strong> 为了给同一个变量在不同 <code>case</code> 中赋值，你需要写很多重复的 <code>variable = ...; break;</code>。</li>
+<li><strong>作用域混乱：</strong> 在 <code>case</code> 块中定义的变量，其作用域会延伸到整个 <code>switch</code> 块，容易引发冲突。</li>
+<li><strong>啰嗦：</strong> 整体结构显得非常笨重和模板化。</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 旧写法：计算一个月份有多少天</span><br><span class="hljs-type">int</span> <span class="hljs-variable">month</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br><span class="hljs-type">int</span> days;<br><span class="hljs-keyword">switch</span> (month) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>:<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">3</span>:<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">5</span>:<br>    <span class="hljs-comment">// ...</span><br>        days = <span class="hljs-number">31</span>;<br>        <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>:<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">6</span>:<br>    <span class="hljs-comment">// ...</span><br>        days = <span class="hljs-number">30</span>;<br>        <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">2</span>:<br>        days = <span class="hljs-number">28</span>; <span class="hljs-comment">// 不考虑闰年</span><br>        <span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">default</span>:<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Invalid month&quot;</span>);<br>&#125;<br><span class="hljs-comment">// `days` 在这里使用</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>预览阶段 (Java 12 &amp; 13):</strong><br>
+<code>switch</code> 表达式经过了两个版本的预览，社区反馈非常好。在预览期间，用于从 <code>case</code> 块返回值的是 <code>break value;</code> 语法。</p>
+</li>
+<li>
+<p><strong>Java 14 (The Solution - 正式版):</strong><br>
+Java 14 正式确定了最终的语法，并引入了 <code>yield</code> 关键字来替代预览版中的 <code>break value;</code>，以避免歧义。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 新写法：使用 switch 表达式</span><br><span class="hljs-type">int</span> <span class="hljs-variable">month</span> <span class="hljs-operator">=</span> <span class="hljs-number">2</span>;<br><span class="hljs-type">int</span> <span class="hljs-variable">days</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">switch</span> (month) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">1</span>, <span class="hljs-number">3</span>, <span class="hljs-number">5</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">10</span>, <span class="hljs-number">12</span> -&gt; <span class="hljs-number">31</span>; <span class="hljs-comment">// 多 case 合并</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">9</span>, <span class="hljs-number">11</span> -&gt; <span class="hljs-number">30</span>;<br>    <span class="hljs-keyword">case</span> <span class="hljs-number">2</span> -&gt; <span class="hljs-number">28</span>;<br>    <span class="hljs-keyword">default</span> -&gt; <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Invalid month&quot;</span>);<br>&#125;;<br><span class="hljs-comment">// `days` 在这里直接被赋值</span><br></code></pre></td></tr></table></figure>
+<p>代码量减少了，逻辑更清晰，并且 <code>default</code> 分支保证了 <code>switch</code> 表达式的<strong>穷尽性</strong>，即必须覆盖所有可能的情况。</p>
+</li>
+</ul>
+<h4 id="3-代码示例-Code-Example">3. 代码示例 (Code Example)</h4>
+<p><code>switch</code> 表达式有两种主要的语法形式：</p>
+<h5 id="1-箭头语法-case-最常用"><strong>1. 箭头语法 (<code>case ... -&gt; ...</code>) - 最常用</strong></h5>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">enum</span> <span class="hljs-title class_">Day</span> &#123; SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY &#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SwitchExpressionExample</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">Day</span> <span class="hljs-variable">day</span> <span class="hljs-operator">=</span> Day.MONDAY;<br><br>        <span class="hljs-comment">// 示例 1: 直接返回一个值</span><br>        <span class="hljs-type">int</span> <span class="hljs-variable">numLetters</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">switch</span> (day) &#123;<br>            <span class="hljs-keyword">case</span> MONDAY, FRIDAY, SUNDAY -&gt; <span class="hljs-number">6</span>;<br>            <span class="hljs-keyword">case</span> TUESDAY -&gt; <span class="hljs-number">7</span>;<br>            <span class="hljs-keyword">case</span> THURSDAY, SATURDAY -&gt; <span class="hljs-number">8</span>;<br>            <span class="hljs-keyword">case</span> WEDNESDAY -&gt; <span class="hljs-number">9</span>;<br>            <span class="hljs-comment">// 对于 enum，如果覆盖了所有情况，可以省略 default</span><br>        &#125;;<br>        System.out.println(<span class="hljs-string">&quot;Number of letters: &quot;</span> + numLetters);<br><br>        <span class="hljs-comment">// 示例 2: 箭头右边是一个代码块，使用 `yield` 返回值</span><br>        <span class="hljs-type">boolean</span> <span class="hljs-variable">isWeekend</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">switch</span> (day) &#123;<br>            <span class="hljs-keyword">case</span> SATURDAY, SUNDAY -&gt; <span class="hljs-literal">true</span>;<br>            <span class="hljs-keyword">case</span> MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -&gt; &#123;<br>                System.out.println(<span class="hljs-string">&quot;It&#x27;s a weekday.&quot;</span>);<br>                <span class="hljs-comment">// yield 用于从块中返回一个值</span><br>                <span class="hljs-keyword">yield</span> <span class="hljs-literal">false</span>;<br>            &#125;<br>        &#125;;<br>        System.out.println(<span class="hljs-string">&quot;Is it weekend? &quot;</span> + isWeekend);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="2-传统冒号语法-case-yield"><strong>2. 传统冒号语法 (<code>case ...: yield ...</code>)</strong></h5>
+<p>你依然可以在 <code>switch</code> 表达式中使用传统的冒号语法，但这时你需要使用 <code>yield</code> 语句来返回值。<strong>这种写法不常用</strong>，主要用于需要“穿透”逻辑的罕见场景。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 不太推荐的写法，仅作演示</span><br><span class="hljs-type">String</span> <span class="hljs-variable">text</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">switch</span> (day) &#123;<br>    <span class="hljs-keyword">case</span> MONDAY:<br>        System.out.println(<span class="hljs-string">&quot;Start of the week.&quot;</span>);<br>        <span class="hljs-keyword">yield</span> <span class="hljs-string">&quot;Work day&quot;</span>;<br>    <span class="hljs-keyword">case</span> SATURDAY:<br>    <span class="hljs-keyword">case</span> SUNDAY:<br>        <span class="hljs-keyword">yield</span> <span class="hljs-string">&quot;Weekend&quot;</span>;<br>    <span class="hljs-keyword">default</span>:<br>        <span class="hljs-keyword">yield</span> <span class="hljs-string">&quot;Midweek day&quot;</span>;<br>&#125;;<br></code></pre></td></tr></table></figure>
+<h4 id="4-扩展与应用-Extension-Application">4. 扩展与应用 (Extension &amp; Application)</h4>
+<ul>
+<li><strong>取代复杂的 <code>if-else if-else</code> 链：</strong> 当你需要根据一个变量的多个可能值来赋给另一个变量时，<code>switch</code> 表达式是 <code>if-else</code> 链的完美替代品。</li>
+<li><strong>函数式编程：</strong> <code>switch</code> 表达式本身就是一个值，可以很自然地用在函数式编程的流式调用中，或者作为方法的返回值。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> String <span class="hljs-title function_">getDayType</span><span class="hljs-params">(Day day)</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">switch</span> (day) &#123;<br>        <span class="hljs-keyword">case</span> SATURDAY, SUNDAY -&gt; <span class="hljs-string">&quot;Weekend&quot;</span>;<br>        <span class="hljs-keyword">default</span> -&gt; <span class="hljs-string">&quot;Weekday&quot;</span>;<br>    &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>Java 17+ 模式匹配：</strong> <code>switch</code> 表达式是未来 <code>switch</code> 模式匹配（Pattern Matching）的基础。在 Java 21 中，<code>switch</code> 表达式已经可以根据对象的类型和属性进行匹配，其能力得到了极大的增强。</li>
+</ul>
+<h4 id="5-要点与注意事项-Key-Points-Cautions">5. 要点与注意事项 (Key Points &amp; Cautions)</h4>
+<ol>
+<li>
+<p><strong>穷尽性 (Exhaustiveness):</strong> 这是 <code>switch</code> 表达式的一个<strong>编译时</strong>安全保障。编译器会检查你是否覆盖了输入值的所有可能性。</p>
+<ul>
+<li>对于 <code>enum</code> 类型，你必须覆盖所有枚举常量，或者提供一个 <code>default</code> 分支。</li>
+<li>对于 <code>String</code>, <code>int</code> 等类型，你<strong>必须</strong>提供 <code>default</code> 分支。</li>
+<li>这消除了“忘记处理某个情况”的运行时 bug。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>yield</code> 关键字：</strong> <code>yield</code> <strong>不是</strong>一个新的通用关键字，它是一个<strong>上下文关键字</strong>，只在 <code>switch</code> 表达式的 <code>case</code> 块中有特殊含义。它用于从一个代码块中“产出”一个值作为 <code>switch</code> 表达式的结果。</p>
+</li>
+<li>
+<p><strong>不能混合使用两种语法：</strong> 在同一个 <code>switch</code> 块中，你不能混合使用 <code>-&gt;</code> 和 <code>:</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// switch (day) &#123;</span><br><span class="hljs-comment">//     case MONDAY -&gt; 6;</span><br><span class="hljs-comment">//     case TUESDAY: yield 7; // COMPILE ERROR!</span><br><span class="hljs-comment">// &#125;</span><br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>case</code> 分支的返回值类型必须一致：</strong> <code>switch</code> 表达式的所有可能 <code>case</code> 分支（包括 <code>throw</code> 语句）必须能产生兼容的类型，否则编译器会报错。</p>
+</li>
+<li>
+<p><strong><code>switch</code> 语句依然存在：</strong> <code>switch</code> 表达式并没有取代传统的 <code>switch</code> 语句。当你不需要返回值，只是想根据条件执行不同的代码块（并且可能需要利用“穿透”特性）时，传统 <code>switch</code> 语句仍然是合法的选择。</p>
+</li>
+</ol>
+<p>总结而言，<code>switch</code> 表达式是 Java 语言现代化进程中的一大步。它让 <code>switch</code> 结构从一个笨拙、易错的控制流语句，蜕变成了一个简洁、安全、表达力强的函数式工具。在任何需要根据条件返回值的新代码中，都应优先使用 <code>switch</code> 表达式。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-14/" class="category-chain-item">Java 14</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Switch 表达式 (正式版)</div>
+      <div>http://example.com/2025/06/24/Java/新特性/Java 14/Switch 表达式 (正式版)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/JavaScript%E3%80%81Typescript/Framework%20and%20Library/Vue/Vue%203/%E6%8F%92%E4%BB%B6%EF%BC%88Plugin%EF%BC%89/" title="插件（Plugin）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">插件（Plugin）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2015/%E6%96%87%E6%9C%AC%E5%9D%97%20(Text%20Blocks)%20-%20%E6%AD%A3%E5%BC%8F%E7%89%88/" title="文本块 (Test Blok) - 正式版">
+                        <span class="hidden-mobile">文本块 (Test Blok) - 正式版</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

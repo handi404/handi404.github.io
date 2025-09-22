@@ -1,0 +1,858 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 14 中这个虽小但极大提升开发者幸福感的“幕后”英雄——有用的 NullPointerExceptions (Helpful NullPointerExceptions)。  有用的 NullPointerExceptions 1. 核心概念 (Core Concept) 在 Java 14 之前，当你遇到一个 NullPointerException (NPE) 时，JVM 抛出的异常">
+<meta property="og:type" content="article">
+<meta property="og:title" content="有用的 NullPointerExceptio">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2014/%E6%9C%89%E7%94%A8%E7%9A%84%20NullPointerExceptions/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 14 中这个虽小但极大提升开发者幸福感的“幕后”英雄——有用的 NullPointerExceptions (Helpful NullPointerExceptions)。  有用的 NullPointerExceptions 1. 核心概念 (Core Concept) 在 Java 14 之前，当你遇到一个 NullPointerException (NPE) 时，JVM 抛出的异常">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2025-06-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T13:51:19.534Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>有用的 NullPointerExceptio - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="有用的 NullPointerExceptio"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 00:00" pubdate>
+          2025年6月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">有用的 NullPointerExceptio</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月22日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Java 14 中这个虽小但极大提升开发者幸福感的“幕后”英雄——<strong>有用的 NullPointerExceptions (Helpful NullPointerExceptions)</strong>。</p>
+<hr>
+<h3 id="有用的-NullPointerExceptions">有用的 NullPointerExceptions</h3>
+<h4 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h4>
+<p>在 Java 14 之前，当你遇到一个 <code>NullPointerException</code> (NPE) 时，JVM 抛出的异常信息通常只会告诉你<strong>哪一行代码</strong>出了问题，但<strong>不会告诉你这一行中的哪个变量是 <code>null</code></strong>。</p>
+<p>Java 14 通过 JEP 358 增强了 NPE 的异常信息。现在，JVM 能够<strong>精确地分析</strong>出是哪个变量或表达式求值结果为 <code>null</code>，并将这个信息<strong>附加到异常消息中</strong>，从而大大缩短了调试时间。</p>
+<p><strong>通俗比喻：</strong></p>
+<ul>
+<li><strong>Java 14 之前：</strong><br>
+你的朋友发给你一张合影，说：“照片里有个人闭眼了。” 你拿到照片（一行代码），看到里面站着五个人（五个变量/调用），你必须一个个仔细看，才能找出到底是谁闭眼了（哪个变量是 <code>null</code>）。</li>
+<li><strong>Java 14 之后：</strong><br>
+你的朋友直接在照片上用红圈把那个闭眼的人圈了出来，并告诉你：“就是<strong>张三</strong>闭眼了。” 你一眼就能定位问题。</li>
+</ul>
+<p><strong>核心变化：</strong> NPE 的 <code>getMessage()</code> 方法现在可以返回更详细的描述性信息。</p>
+<h4 id="2-演进与现代化-Evolution-Modernization">2. 演进与现代化 (Evolution &amp; Modernization)</h4>
+<ul>
+<li>
+<p><strong>Java 14 之前 (The Pain Point):</strong><br>
+这是所有 Java 开发者都经历过的噩梦。假设有这样一行代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java">a.b.c.d = <span class="hljs-number">10</span>;<br></code></pre></td></tr></table></figure>
+<p>如果这行代码抛出了 NPE，异常堆栈只会指向这一行。那么问题来了：</p>
+<ul>
+<li>是 <code>a</code> 为 <code>null</code>？</li>
+<li>还是 <code>a.b</code> 为 <code>null</code>？</li>
+<li>或者是 <code>a.b.c</code> 为 <code>null</code>？<br>
+为了找到根源，你必须启动调试器，或者在这行代码前加上一堆 <code>System.out.println</code> 或日志来逐个检查变量，非常浪费时间。</li>
+</ul>
+</li>
+<li>
+<p><strong>Java 14 (The Solution):</strong><br>
+JVM 现在具备了在运行时进行轻量级字节码分析的能力。当 NPE 即将发生时，它会回溯指令，找出导致 <code>null</code> 的确切“元凶”。</p>
+<p><strong>注意：</strong> 这个功能默认是<strong>开启</strong>的。它可以通过 JVM 参数 <code>-XX:-ShowCodeDetailsInExceptionMessages</code> 来<strong>关闭</strong>。</p>
+</li>
+<li>
+<p><strong>现代化影响：</strong></p>
+<ul>
+<li><strong>极大地提升了调试效率：</strong> 开发者可以仅凭异常日志就快速定位 NPE 的根源，尤其是在生产环境或日志分析系统中，这是一个巨大的福音。</li>
+<li><strong>促进了更好的代码风格：</strong> 虽然这个功能很强大，但它也反向提醒我们，过长的链式调用 (<code>a.b.c.d</code>) 可能不是一个好的代码风格（违反了迪米特法则）。使用 <code>Optional</code> 或进行适当的空值检查仍然是更健壮的编程实践。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-代码示例-Code-Example">3. 代码示例 (Code Example)</h4>
+<p>让我们创建一个会触发 NPE 的场景，并分别在旧版 JDK 和 Java 14+ 环境下运行它。</p>
+<p><strong>代码 (<code>NpeExample.java</code>):</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">NpeExample</span> &#123;<br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">A</span> &#123;<br>        B b;<br>    &#125;<br><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">B</span> &#123;<br>        C c;<br>    &#125;<br><br>    <span class="hljs-keyword">static</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">C</span> &#123;<br>        String value;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">A</span> <span class="hljs-variable">a</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">A</span>();<br>        <span class="hljs-comment">// a.b is null here</span><br>        System.out.println(a.b.c.value.length()); <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>运行结果对比：</strong></p>
+<ul>
+<li>
+<p><strong>在 JDK 8 / 11 下运行：</strong></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs stylus">Exception <span class="hljs-keyword">in</span> thread <span class="hljs-string">&quot;main&quot;</span> java<span class="hljs-selector-class">.lang</span><span class="hljs-selector-class">.NullPointerException</span><br>    at NpeExample<span class="hljs-selector-class">.main</span>(NpeExample<span class="hljs-selector-class">.java</span>:<span class="hljs-number">18</span>)<br></code></pre></td></tr></table></figure>
+<p>信息非常有限，只告诉你第 18 行有问题。</p>
+</li>
+<li>
+<p><strong>在 JDK 14+ 下运行：</strong></p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs stylus">Exception <span class="hljs-keyword">in</span> thread <span class="hljs-string">&quot;main&quot;</span> java<span class="hljs-selector-class">.lang</span><span class="hljs-selector-class">.NullPointerException</span>: <br>    Cannot read field <span class="hljs-string">&quot;c&quot;</span> because <span class="hljs-string">&quot;a.b&quot;</span> is null<br>    at NpeExample<span class="hljs-selector-class">.main</span>(NpeExample<span class="hljs-selector-class">.java</span>:<span class="hljs-number">18</span>)<br></code></pre></td></tr></table></figure>
+<p>看！异常信息一目了然：<strong>因为 “a.b” 是 null，所以无法读取字段 “c”</strong>。问题瞬间定位！</p>
+</li>
+</ul>
+<p><strong>更多场景的示例：</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">触发 NPE 的代码</th>
+<th style="text-align:left">Java 14+ 的异常信息</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><code>obj.field = 1;</code></td>
+<td style="text-align:left"><code>Cannot assign field &quot;field&quot; because &quot;obj&quot; is null</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>arr[0] = 1;</code></td>
+<td style="text-align:left"><code>Cannot store to object array because &quot;arr&quot; is null</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>int len = arr.length;</code></td>
+<td style="text-align:left"><code>Cannot read the length of array because &quot;arr&quot; is null</code></td>
+</tr>
+<tr>
+<td style="text-align:left"><code>foo().bar = 1;</code></td>
+<td style="text-align:left"><code>Cannot assign field &quot;bar&quot; because the return value of &quot;foo()&quot; is null</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="4-扩展与应用-Extension-Application-什么时候它不起作用？">4. 扩展与应用 (Extension &amp; Application) - <strong>什么时候它不起作用？</strong></h4>
+<p>这个功能虽好，但并非万能。在某些情况下，JVM 无法提供详细信息，NPE 消息会回退到传统模式（即只显示 <code>null</code> 或不显示消息）。这些情况包括：</p>
+<ol>
+<li><strong>变量名无法确定：</strong> 如果 <code>null</code> 是由一个没有名字的变量（比如另一个方法调用的返回值）产生的，JVM 可能无法给出变量名。<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// someMethod() 返回 null</span><br>someMethod().doSomething();<br><span class="hljs-comment">// 消息可能是: Cannot invoke &quot;doSomething()&quot; because the return value of &quot;someMethod()&quot; is null</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong><code>null</code> 被直接传递给方法：</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">String</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>System.out.println(s.length()); <span class="hljs-comment">// 这里 JVM 知道是 s</span><br><br>takesString(<span class="hljs-literal">null</span>); <span class="hljs-comment">// 如果 takesString 内部触发 NPE，JVM 不知道这个 null 来自哪里</span><br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>JVM 认为“显而易见”：</strong><br>
+<code>throw new NullPointerException();</code> 这种由程序员手动抛出的 NPE，JVM 不会去分析，因为它认为这是程序员的“有意为之”。</li>
+</ol>
+<h4 id="5-要点与注意事项-Key-Points-Cautions">5. 要点与注意事项 (Key Points &amp; Cautions)</h4>
+<ol>
+<li><strong>这是一个 JVM 特性：</strong> 它不需要你修改任何代码，只要升级你的 JDK 到 14 或更高版本，就能自动享受到这个好处。</li>
+<li><strong>对性能的影响微乎其微：</strong> 根据 OpenJDK 团队的说法，这个增强只在<strong>异常实际发生时</strong>才会进行额外的计算，对正常运行的代码没有性能影响。因此，可以放心地在生产环境中开启。</li>
+<li><strong>不要依赖它来写烂代码：</strong> 这个功能是用来<strong>帮助调试</strong>的，而不是鼓励你写出容易产生 NPE 的代码。良好的编程习惯，如使用 <code>Optional</code>、进行空值检查、遵循良好的设计原则，仍然是避免 NPE 的根本方法。</li>
+<li><strong>安全考虑：</strong> 详细的异常信息可能会<strong>泄露源代码的结构</strong>（如变量名）。在一些对安全要求极高的场景下，管理员可能会考虑使用 <code>-XX:-ShowCodeDetailsInExceptionMessages</code> 来关闭这个特性。但在绝大多数开发和生产环境中，其带来的调试便利性远大于潜在的风险。</li>
+</ol>
+<p>总而言之，“有用的 NullPointerExceptions” 是 Java 平台在提升开发者体验方面做出的一个非常贴心和实用的改进。它不能帮你消灭 NPE，但能在 NPE 出现时，帮你以最快的速度抓住它。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-14/" class="category-chain-item">Java 14</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>有用的 NullPointerExceptio</div>
+      <div>http://example.com/2025/06/24/Java/新特性/Java 14/有用的 NullPointerExceptions/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2015/%E6%96%87%E6%9C%AC%E5%9D%97%20(Text%20Blocks)%20-%20%E6%AD%A3%E5%BC%8F%E7%89%88/" title="文本块 (Test Blok) - 正式版">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">文本块 (Test Blok) - 正式版</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2016/instanceof%20%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%20(%E6%AD%A3%E5%BC%8F%E7%89%88)/" title="instanceof 的匹配模式(正式版)">
+                        <span class="hidden-mobile">instanceof 的匹配模式(正式版)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

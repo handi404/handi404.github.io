@@ -1,0 +1,842 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 10 中引入的那个让无数 Java 开发者“喜大普奔”的特性——局部变量类型推断（var）。这是一个纯粹的“语法糖”，但它极大地改善了 Java 代码的编写体验。  局部变量类型推断 (var) 1. 核心概念 (Core Concept) var 关键字允许你在声明局部变量时，让编译器根据变量初始化时的表达式来自动推断其类型，从而省略掉冗长的类型声明。 简单来说： 编译器能从等号右边看">
+<meta property="og:type" content="article">
+<meta property="og:title" content="局部变量类型推断 (var)">
+<meta property="og:url" content="http://example.com/2025/06/23/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2010/%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B%E6%8E%A8%E6%96%AD%EF%BC%88var%EF%BC%89/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 10 中引入的那个让无数 Java 开发者“喜大普奔”的特性——局部变量类型推断（var）。这是一个纯粹的“语法糖”，但它极大地改善了 Java 代码的编写体验。  局部变量类型推断 (var) 1. 核心概念 (Core Concept) var 关键字允许你在声明局部变量时，让编译器根据变量初始化时的表达式来自动推断其类型，从而省略掉冗长的类型声明。 简单来说： 编译器能从等号右边看">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2025-06-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T13:45:00.720Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>局部变量类型推断 (var) - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="局部变量类型推断 (var)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-23 00:00" pubdate>
+          2025年6月23日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">局部变量类型推断 (var)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月22日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Java 10 中引入的那个让无数 Java 开发者“喜大普奔”的特性——<strong>局部变量类型推断（<code>var</code>）</strong>。这是一个纯粹的“语法糖”，但它极大地改善了 Java 代码的编写体验。</p>
+<hr>
+<h3 id="局部变量类型推断-var">局部变量类型推断 (<code>var</code>)</h3>
+<h4 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h4>
+<p><code>var</code> 关键字允许你在声明<strong>局部变量</strong>时，让编译器根据变量初始化时的表达式来<strong>自动推断</strong>其类型，从而省略掉冗长的类型声明。</p>
+<p><strong>简单来说：</strong> 编译器能从等号右边看明白是什么类型，你就不用在左边再写一遍了。</p>
+<p><strong>通俗比喻：</strong></p>
+<ul>
+<li><strong>没有 <code>var</code> 的世界：</strong><br>
+你去咖啡店点单，需要对服务员说：“请给我一杯<strong>中杯、热的、拿铁咖啡</strong>。” 服务员听到后，就在单子上写下：“一杯<strong>中杯、热的、拿铁咖啡</strong>。” 这里存在很多重复信息。</li>
+<li><strong>有了 <code>var</code> 的世界：</strong><br>
+你直接指着菜单上的“中杯热拿铁”对服务员说：“给我来一个<strong>这个</strong>。” 服务员一看就知道你想要什么，直接下单。这里的“<strong>这个</strong>”就相当于 <code>var</code>。</li>
+</ul>
+<p><strong>核心要点：</strong></p>
+<ol>
+<li><strong>它不是 JavaScript 的 <code>var</code>：</strong> Java 仍然是<strong>静态类型语言</strong>。<code>var</code> 只是一个语法糖，变量的类型在<strong>编译时</strong>就已经被确定下来了，并且之后不能再改变。</li>
+<li><strong>类型推断，而非动态类型：</strong> 编译器在背后帮你“写”上了具体的类型。<code>var name = &quot;Java&quot;;</code> 在编译后，和 <code>String name = &quot;Java&quot;;</code> 的字节码是完全一样的。</li>
+</ol>
+<h4 id="2-演进与现代化-Evolution-Modernization">2. 演进与现代化 (Evolution &amp; Modernization)</h4>
+<ul>
+<li>
+<p><strong>Java 10 之前 (The Pain Point):</strong><br>
+Java 代码常常因为类型声明而显得冗长和啰嗦，尤其是在处理泛型、工厂方法或复杂的表达式时。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 冗长的声明</span><br>Map&lt;String, List&lt;User&gt;&gt; usersByDepartment = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;String, List&lt;User&gt;&gt;();<br><br><span class="hljs-comment">// 即使有菱形操作符，依然不简洁</span><br>Map&lt;String, List&lt;User&gt;&gt; usersByDepartment = <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;(); <br><br><span class="hljs-comment">// 读取文件</span><br><span class="hljs-type">BufferedReader</span> <span class="hljs-variable">reader</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedReader</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">FileReader</span>(<span class="hljs-string">&quot;file.txt&quot;</span>));<br></code></pre></td></tr></table></figure>
+<p>这种重复信息降低了代码的信噪比，关键的变量名和业务逻辑反而被淹没在类型声明的海洋中。</p>
+</li>
+<li>
+<p><strong>Java 10 (The Solution):</strong><br>
+<code>var</code> 的出现，让代码变得更加简洁、紧凑，可读性也得到了提升（在正确使用的情况下）。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 使用 var</span><br><span class="hljs-type">var</span> <span class="hljs-variable">usersByDepartment</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;String, List&lt;User&gt;&gt;();<br><br><span class="hljs-type">var</span> <span class="hljs-variable">reader</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">BufferedReader</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">FileReader</span>(<span class="hljs-string">&quot;file.txt&quot;</span>));<br><br><span class="hljs-comment">// 尤其适合 for-each 循环</span><br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> user : users) &#123;<br>    System.out.println(user.getName());<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>现代化 (Java 11+):</strong></p>
+<ul>
+<li><strong>Java 11 扩展：</strong> <code>var</code> 可以在 Lambda 表达式的参数上使用，这允许你为 Lambda 参数添加注解。</li>
+</ul>
+  <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Java 11</span><br>Consumer&lt;String&gt; consumer = (<span class="hljs-meta">@Nonnull</span> <span class="hljs-keyword">var</span> s) -&gt; System.out.println(s);<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-代码示例-Code-Example">3. 代码示例 (Code Example)</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.util.ArrayList;<br><span class="hljs-keyword">import</span> java.util.HashMap;<br><span class="hljs-keyword">import</span> java.io.ByteArrayInputStream;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">VarExample</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// 1. 基础用法</span><br>        <span class="hljs-type">var</span> <span class="hljs-variable">message</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Hello, Java 10!&quot;</span>; <span class="hljs-comment">// 推断为 String</span><br>        <span class="hljs-type">var</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">100</span>;                 <span class="hljs-comment">// 推断为 int</span><br>        <span class="hljs-type">var</span> <span class="hljs-variable">prices</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;Double&gt;(); <span class="hljs-comment">// 推断为 ArrayList&lt;Double&gt;</span><br><br>        System.out.println(message.getClass().getName()); <span class="hljs-comment">// java.lang.String</span><br>        System.out.println(prices.getClass().getName());  <span class="hljs-comment">// java.util.ArrayList</span><br><br>        <span class="hljs-comment">// 2. 提升可读性的场景</span><br>        <span class="hljs-comment">// 旧写法</span><br>        <span class="hljs-comment">// HashMap&lt;String, HashMap&lt;String, Integer&gt;&gt; complexMap = new HashMap&lt;&gt;();</span><br>        <span class="hljs-comment">// 新写法</span><br>        <span class="hljs-type">var</span> <span class="hljs-variable">complexMap</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;String, HashMap&lt;String, Integer&gt;&gt;();<br>        complexMap.put(<span class="hljs-string">&quot;category&quot;</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">HashMap</span>&lt;&gt;());<br>        <br>        <span class="hljs-comment">// 3. 在循环中使用</span><br>        <span class="hljs-type">var</span> <span class="hljs-variable">list</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;String&gt;();<br>        list.add(<span class="hljs-string">&quot;Apple&quot;</span>);<br>        list.add(<span class="hljs-string">&quot;Banana&quot;</span>);<br><br>        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> fruit : list) &#123;<br>            System.out.println(fruit.toUpperCase());<br>        &#125;<br>        <br>        <span class="hljs-comment">// 4. try-with-resources</span><br>        <span class="hljs-keyword">try</span> (<span class="hljs-type">var</span> <span class="hljs-variable">inputStream</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ByteArrayInputStream</span>(<span class="hljs-string">&quot;data&quot;</span>.getBytes())) &#123;<br>            <span class="hljs-comment">// ... 使用 inputStream</span><br>            System.out.println(<span class="hljs-string">&quot;Stream available: &quot;</span> + inputStream.available());<br>        &#125; <span class="hljs-keyword">catch</span> (Exception e) &#123;<br>            e.printStackTrace();<br>        &#125;<br><br>        <span class="hljs-comment">// 5. var 不是动态类型，类型一旦确定不可更改</span><br>        <span class="hljs-type">var</span> <span class="hljs-variable">number</span> <span class="hljs-operator">=</span> <span class="hljs-number">10</span>;<br>        <span class="hljs-comment">// number = &quot;ten&quot;; // COMPILE ERROR! Type mismatch: cannot convert from String to int</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="4-扩展与应用-Extension-Application-何时用，何时不用？">4. 扩展与应用 (Extension &amp; Application) - <strong>何时用，何时不用？</strong></h4>
+<p><code>var</code> 虽好，但不应滥用。过度使用会降低代码的可读性。</p>
+<ul>
+<li>
+<p><strong>推荐使用 <code>var</code> 的场景 (提升可读性):</strong></p>
+<ol>
+<li><strong>当初始化表达式已清晰表明类型时：</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">var</span> <span class="hljs-variable">user</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">User</span>(<span class="hljs-string">&quot;admin&quot;</span>);<br><span class="hljs-type">var</span> <span class="hljs-variable">users</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;User&gt;();<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>当类型非常冗长，<code>var</code> 可以让代码更整洁时：</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">var</span> <span class="hljs-variable">userRepo</span> <span class="hljs-operator">=</span> (UserRepository&lt;User, Long&gt;) context.getBean(<span class="hljs-string">&quot;userRepository&quot;</span>);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>在 <code>try-with-resources</code> 和 <code>for-each</code> 循环中：</strong> 这些场景下类型通常很明确。</li>
+</ol>
+</li>
+<li>
+<p><strong>不推荐或禁止使用 <code>var</code> 的场景 (降低可读性):</strong></p>
+<ol>
+<li><strong>当初始化表达式不清晰时：</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-type">var</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> service.processData(); <span class="hljs-comment">// 不好！processData() 返回什么类型？需要IDE或看源码才知。</span><br><span class="hljs-comment">// 更好的写法：</span><br><span class="hljs-type">UserData</span> <span class="hljs-variable">result</span> <span class="hljs-operator">=</span> service.processData();<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>使用菱形操作符时，如果希望接口类型而非实现类型：</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// var list = new ArrayList&lt;String&gt;(); // 推断类型是 ArrayList&lt;String&gt;</span><br><span class="hljs-comment">// 如果你的意图是使用 List 接口，应该这样写：</span><br>List&lt;String&gt; list = <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;&gt;();<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>当初始化依赖于泛型，但右侧未提供足够信息时 (Java 10 会推断为 <code>Object</code>)：</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// var list = new ArrayList&lt;&gt;(); // 不好！推断为 ArrayList&lt;Object&gt;</span><br><span class="hljs-comment">// 应该明确写出：</span><br><span class="hljs-type">var</span> <span class="hljs-variable">list</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ArrayList</span>&lt;String&gt;(); <br></code></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+<li>
+<p><strong><code>var</code> 不能使用的地方 (编译错误):</strong></p>
+<ol>
+<li><strong>成员变量 (Fields):</strong> <code>private var name = &quot;test&quot;;</code> (X)</li>
+<li><strong>方法参数 (Method parameters):</strong> <code>public void myMethod(var input)</code> (X)</li>
+<li><strong>方法返回类型 (Method return types):</strong> <code>public var myMethod()</code> (X)</li>
+<li><strong>没有初始化的声明：</strong> <code>var name;</code> (X)</li>
+<li><strong>初始化为 <code>null</code>:</strong> <code>var name = null;</code> (X) (编译器不知道该推断成什么类型)</li>
+<li><strong>Lambda 表达式的声明:</strong> <code>var lambda = () -&gt; &#123;&#125;;</code> (X) (Lambda 需要明确的目标类型)</li>
+<li><strong>数组初始化:</strong> <code>var arr = &#123;1, 2, 3&#125;;</code> (X)</li>
+</ol>
+</li>
+</ul>
+<h4 id="5-要点与注意事项-Key-Points-Cautions">5. 要点与注意事项 (Key Points &amp; Cautions)</h4>
+<ol>
+<li><strong><code>var</code> 不是关键字，是保留类型名：</strong> 这意味着你仍然可以定义一个名为 <code>var</code> 的变量（<code>int var = 1;</code>），虽然极不推荐这样做。这保证了向后兼容性。</li>
+<li><strong>可读性是第一原则：</strong> 使用 <code>var</code> 的黄金法则是：“代码是否在移除显式类型后依然清晰易懂？”如果答案是否定的，就不要用 <code>var</code>。</li>
+<li><strong>依赖 IDE：</strong> 在大量使用 <code>var</code> 的代码库中，一个能显示推断类型的 IDE (如 IntelliJ IDEA, Eclipse, VS Code) 变得至关重要。</li>
+<li><strong>接口与实现：</strong> 当你希望变量是接口类型（<code>List</code>）而不是具体的实现类型（<code>ArrayList</code>）时，<code>var</code> 可能会破坏这种编程到接口的良好实践。需要特别注意。</li>
+<li><strong>对代码审查 (Code Review) 的影响：</strong> 在没有 IDE 的环境（如网页 Code Review 工具）中，过度使用 <code>var</code> 可能会让审查者难以理解代码。</li>
+</ol>
+<p>总而言之，<code>var</code> 是一个强大的工具，它能让 Java 代码更接近现代脚本语言的简洁性，但它要求开发者有更强的“可读性意识”，明智地在提升简洁性和保持清晰度之间做出权衡。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-10/" class="category-chain-item">Java 10</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>局部变量类型推断 (var)</div>
+      <div>http://example.com/2025/06/23/Java/新特性/Java 10/局部变量类型推断（var）/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2016/Records%20(%E8%AE%B0%E5%BD%95%E7%B1%BB)%20-%20%E6%AD%A3%E5%BC%8F%E7%89%88/" title="Records(纪录类) - 正式版">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Records(纪录类) - 正式版</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/23/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2011%20(LTS)/Files%20API%20%E5%A2%9E%E5%BC%BA%20(readString,%20writeString)/" title="局部变量类型推断 (var)">
+                        <span class="hidden-mobile">局部变量类型推断 (var)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

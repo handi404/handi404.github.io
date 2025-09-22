@@ -1,0 +1,844 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 21 中正式发布的、将 switch 语句和表达式的威力推向新高度的特性——switch 的模式匹配 (Pattern Matching for switch)。  switch 的模式匹配 1. 核心概念 (Core Concept) switch 的模式匹配是 Java 14 中 switch 表达式和 Java 16 中 instanceof 模式匹配的自然演进和融合。它允许你在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="switch 的模式匹配 (正式版)">
+<meta property="og:url" content="http://example.com/2025/06/26/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2021%20(LTS)/switch%20%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%20(%E6%AD%A3%E5%BC%8F%E7%89%88)/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 21 中正式发布的、将 switch 语句和表达式的威力推向新高度的特性——switch 的模式匹配 (Pattern Matching for switch)。  switch 的模式匹配 1. 核心概念 (Core Concept) switch 的模式匹配是 Java 14 中 switch 表达式和 Java 16 中 instanceof 模式匹配的自然演进和融合。它允许你在">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2025-06-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T13:57:11.251Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>switch 的模式匹配 (正式版) - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="switch 的模式匹配 (正式版)"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-26 00:00" pubdate>
+          2025年6月26日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          17 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">switch 的模式匹配 (正式版)</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月22日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Java 21 中正式发布的、将 <code>switch</code> 语句和表达式的威力推向新高度的特性——<strong><code>switch</code> 的模式匹配 (Pattern Matching for <code>switch</code>)</strong>。</p>
+<hr>
+<h3 id="switch-的模式匹配"><code>switch</code> 的模式匹配</h3>
+<h4 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h4>
+<p><code>switch</code> 的模式匹配是 Java 14 中 <code>switch</code> 表达式和 Java 16 中 <code>instanceof</code> 模式匹配的<strong>自然演进和融合</strong>。它允许你在 <code>switch</code> 块中，不仅可以基于确切的值（<code>int</code>, <code>String</code>, <code>enum</code>），还可以基于<strong>类型 (Type Pattern)</strong> 和<strong>类型守卫 (Guarded Pattern)</strong> 进行匹配，并直接解构匹配到的对象。</p>
+<p><strong>核心能力：</strong></p>
+<ol>
+<li><strong>类型模式 (Type Patterns):</strong> <code>case TypePattern variable -&gt; ...</code>
+<ul>
+<li>直接在 <code>case</code> 标签中使用类型。如果 <code>switch</code> 的输入值是该类型或其子类型，则匹配成功。</li>
+<li>匹配成功后，自动将输入值转换为该类型，并赋值给模式变量。</li>
+<li>彻底消除了 <code>if (obj instanceof Type)</code> 和手动强制转换的冗余代码。</li>
+</ul>
+</li>
+<li><strong>类型守卫 (Guarded Patterns):</strong> <code>case TypePattern variable when condition -&gt; ...</code>
+<ul>
+<li>在类型模式的基础上，增加一个 <code>when</code> 子句来定义额外的布尔条件。只有类型匹配且条件为真时，才执行该 <code>case</code> 分支。</li>
+</ul>
+</li>
+<li><strong>模式变量作用域：</strong> 模式变量 (<code>variable</code>) 只在匹配成功的 <code>case</code> 分支内可见和可用。</li>
+<li><strong>穷尽性检查 (Exhaustiveness Checking):</strong> 编译器能够更智能地检查 <code>switch</code> 表达式是否覆盖了所有可能的输入，从而减少 <code>default</code> 分支的需求（尤其对于密封类）。</li>
+</ol>
+<p><strong>通俗比喻：</strong></p>
+<ul>
+<li><strong>传统 <code>switch</code>：</strong> 就像一个<strong>智能分拣机</strong>。你给它一个<strong>箱子上的标签（确切的值）</strong>，它会准确地把箱子扔到对应的通道里。</li>
+<li><strong><code>switch</code> 的模式匹配：</strong> 就像一个<strong>超级智能分拣机</strong>。
+<ul>
+<li>你给它一个<strong>包裹 (Object)</strong>。</li>
+<li>它可以根据包裹的<strong>种类 (Type Pattern)</strong>——“这是一个易碎品（<code>case GlassWare g -&gt; ...</code>）”——来分拣。</li>
+<li>它还可以根据包裹的<strong>种类和附加条件 (Guarded Pattern)</strong>——“这是一个易碎品，并且它的尺寸大于 1 米（<code>case GlassWare g when g.size() &gt; 1 -&gt; ...</code>）”——来更精确地分拣。</li>
+<li>分拣完成后，包裹里的东西（模式变量 <code>g</code>）可以直接拿出来使用。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-演进与现代化-Evolution-Modernization">2. 演进与现代化 (Evolution &amp; Modernization)</h4>
+<ul>
+<li>
+<p><strong>Java 21 之前 (The Pain Point):</strong><br>
+在处理多态类型时，传统的 <code>switch</code> 毫无用武之地。你不得不使用冗长、嵌套的 <code>if-else if</code> 链，充斥着 <code>instanceof</code> 检查和强制类型转换：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 旧写法：处理一个 Shape 对象</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">calculatePerimeter</span><span class="hljs-params">(Object shape)</span> &#123;<br>    <span class="hljs-keyword">if</span> (shape <span class="hljs-keyword">instanceof</span> Circle) &#123;<br>        <span class="hljs-type">Circle</span> <span class="hljs-variable">c</span> <span class="hljs-operator">=</span> (Circle) shape;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * Math.PI * c.radius();<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (shape <span class="hljs-keyword">instanceof</span> Rectangle) &#123;<br>        <span class="hljs-type">Rectangle</span> <span class="hljs-variable">r</span> <span class="hljs-operator">=</span> (Rectangle) shape;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">2</span> * (r.width() + r.height());<br>    &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (shape <span class="hljs-keyword">instanceof</span> Square) &#123;<br>        <span class="hljs-type">Square</span> <span class="hljs-variable">s</span> <span class="hljs-operator">=</span> (Square) shape;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">4</span> * s.side();<br>    &#125; <span class="hljs-keyword">else</span> &#123;<br>        <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Unknown shape: &quot;</span> + shape.getClass().getName());<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>这段代码冗长、重复且容易出错。</p>
+</li>
+<li>
+<p><strong>预览阶段 (Java 17 &amp; 18 &amp; 19 &amp; 20):</strong><br>
+<code>switch</code> 的模式匹配经历了四个预览版本，是 OpenJDK 历史上预览时间最长的特性之一，这体现了其复杂性和重要性，以及社区对其设计细节的深思熟虑。</p>
+</li>
+<li>
+<p><strong>Java 21 (The Solution - 正式版):</strong><br>
+<code>switch</code> 模式匹配的正式发布，极大地改变了处理多态数据的代码风格，使其变得简洁、安全、富有表现力，并且是 Java 实现<strong>代数数据类型 (Algebraic Data Types, ADT)</strong> 的关键一步。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 新写法：使用 switch 模式匹配</span><br><span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">calculatePerimeter</span><span class="hljs-params">(Object shape)</span> &#123;<br>    <span class="hljs-keyword">return</span> <span class="hljs-keyword">switch</span> (shape) &#123; <span class="hljs-comment">// switch 表达式</span><br>        <span class="hljs-keyword">case</span> Circle c -&gt; <span class="hljs-number">2</span> * Math.PI * c.radius(); <span class="hljs-comment">// 类型模式</span><br>        <span class="hljs-keyword">case</span> Rectangle r -&gt; <span class="hljs-number">2</span> * (r.width() + r.height());<br>        <span class="hljs-keyword">case</span> Square s -&gt; <span class="hljs-number">4</span> * s.side();<br>        <span class="hljs-keyword">case</span> <span class="hljs-literal">null</span> -&gt; <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">NullPointerException</span>(<span class="hljs-string">&quot;Shape cannot be null&quot;</span>); <span class="hljs-comment">// null 模式</span><br>        <span class="hljs-keyword">default</span> -&gt; <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Unknown shape: &quot;</span> + shape.getClass().getName());<br>    &#125;;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-代码示例-Code-Example">3. 代码示例 (Code Example)</h4>
+<p>首先，定义一些用于演示的 Record 和类（最好是密封的）：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 使用密封接口和 Record 来演示效果最佳</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">sealed</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Shape</span> <span class="hljs-keyword">permits</span> Circle, Rectangle, Square &#123;&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Circle</span><span class="hljs-params">(<span class="hljs-type">double</span> radius)</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Shape</span> &#123;&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Rectangle</span><span class="hljs-params">(<span class="hljs-type">double</span> width, <span class="hljs-type">double</span> height)</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Shape</span> &#123;&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Square</span><span class="hljs-params">(<span class="hljs-type">double</span> side)</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Shape</span> &#123;&#125; <span class="hljs-comment">// 假设 Square 也是一个独立的类</span><br><br><span class="hljs-comment">// 另一个非密封的类</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Message</span> &#123;<br>    <span class="hljs-keyword">private</span> String content;<br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Message</span><span class="hljs-params">(String content)</span> &#123; <span class="hljs-built_in">this</span>.content = content; &#125;<br>    <span class="hljs-keyword">public</span> String <span class="hljs-title function_">getContent</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> content; &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<p>现在，来看 <code>switch</code> 的模式匹配：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">PatternMatchingSwitchExample</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">describeObject</span><span class="hljs-params">(Object obj)</span> &#123;<br>        <span class="hljs-comment">// 作为 switch 表达式，必须覆盖所有可能情况</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">switch</span> (obj) &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-literal">null</span> -&gt; <span class="hljs-string">&quot;It&#x27;s null&quot;</span>; <span class="hljs-comment">// null 模式</span><br>            <span class="hljs-keyword">case</span> String s &amp;&amp; s.length() &gt; <span class="hljs-number">5</span> -&gt; <span class="hljs-string">&quot;Long String: &quot;</span> + s; <span class="hljs-comment">// 带守卫的模式</span><br>            <span class="hljs-keyword">case</span> String s -&gt; <span class="hljs-string">&quot;Short String: &quot;</span> + s; <span class="hljs-comment">// 类型模式</span><br>            <span class="hljs-keyword">case</span> Integer i -&gt; <span class="hljs-string">&quot;Integer: &quot;</span> + i;<br>            <span class="hljs-keyword">case</span> Circle c -&gt; <span class="hljs-string">&quot;Circle with radius: &quot;</span> + c.radius();<br>            <span class="hljs-keyword">case</span> Rectangle r -&gt; <span class="hljs-string">&quot;Rectangle with dimensions: &quot;</span> + r.width() + <span class="hljs-string">&quot;x&quot;</span> + r.height();<br>            <span class="hljs-comment">// 注意：Square 在 Rectangle 之后，如果 obj 是 Square，也会匹配到 Rectangle。</span><br>            <span class="hljs-comment">// 顺序很重要！更精确的模式应该放在前面。</span><br>            <span class="hljs-keyword">case</span> Square s -&gt; <span class="hljs-string">&quot;Square with side: &quot;</span> + s.side(); <span class="hljs-comment">// 这个分支永远不会被匹配到 (在当前顺序下)</span><br>            <span class="hljs-keyword">case</span> Message msg <span class="hljs-keyword">when</span> msg.getContent().contains(<span class="hljs-string">&quot;error&quot;</span>) -&gt; <span class="hljs-string">&quot;Error Message: &quot;</span> + msg.getContent(); <span class="hljs-comment">// 模式守卫</span><br>            <span class="hljs-keyword">case</span> Message msg -&gt; <span class="hljs-string">&quot;Generic Message: &quot;</span> + msg.getContent();<br>            <span class="hljs-keyword">default</span> -&gt; <span class="hljs-string">&quot;Unknown type: &quot;</span> + obj.getClass().getName();<br>        &#125;;<br>    &#125;<br><br>    <span class="hljs-comment">// 更好的顺序：更具体的模式在前</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> String <span class="hljs-title function_">describeShapeBetter</span><span class="hljs-params">(Shape shape)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">switch</span> (shape) &#123;<br>            <span class="hljs-keyword">case</span> Circle c -&gt; <span class="hljs-string">&quot;Circle with radius: &quot;</span> + c.radius();<br>            <span class="hljs-keyword">case</span> Square s -&gt; <span class="hljs-string">&quot;Square with side: &quot;</span> + s.side(); <span class="hljs-comment">// 放在 Rectangle 前面</span><br>            <span class="hljs-keyword">case</span> Rectangle r -&gt; <span class="hljs-string">&quot;Rectangle with dimensions: &quot;</span> + r.width() + <span class="hljs-string">&quot;x&quot;</span> + r.height();<br>            <span class="hljs-comment">// 由于 Shape 是密封接口，并且我们已经覆盖了所有 permits 的子类</span><br>            <span class="hljs-comment">// 编译器会进行穷尽性检查，这里不需要 default 分支 (如果 switch 的输入是 Shape 类型)</span><br>            <span class="hljs-comment">// 但是如果输入是 Object，或者其他非密封类型，还是需要 default 或 null</span><br>            <span class="hljs-comment">// case null -&gt; &quot;Shape cannot be null&quot;; // 如果输入是 Shape，则不会有 null</span><br>        &#125;;<br>    &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        System.out.println(describeObject(<span class="hljs-string">&quot;Hello World&quot;</span>)); <span class="hljs-comment">// Long String</span><br>        System.out.println(describeObject(<span class="hljs-string">&quot;Hi&quot;</span>));         <span class="hljs-comment">// Short String</span><br>        System.out.println(describeObject(<span class="hljs-number">123</span>));          <span class="hljs-comment">// Integer</span><br>        System.out.println(describeObject(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Circle</span>(<span class="hljs-number">5</span>))); <span class="hljs-comment">// Circle</span><br>        System.out.println(describeObject(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Square</span>(<span class="hljs-number">4</span>))); <span class="hljs-comment">// Rectangle (因为 Square 继承 Rectangle)</span><br>        System.out.println(describeObject(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Message</span>(<span class="hljs-string">&quot;This is an error.&quot;</span>))); <span class="hljs-comment">// Error Message</span><br>        System.out.println(describeObject(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Message</span>(<span class="hljs-string">&quot;Just a message.&quot;</span>))); <span class="hljs-comment">// Generic Message</span><br>        System.out.println(describeObject(<span class="hljs-literal">null</span>));         <span class="hljs-comment">// It&#x27;s null</span><br><br>        System.out.println(<span class="hljs-string">&quot;\n--- Better Shape Description ---&quot;</span>);<br>        System.out.println(describeShapeBetter(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Circle</span>(<span class="hljs-number">3</span>)));<br>        System.out.println(describeShapeBetter(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Square</span>(<span class="hljs-number">5</span>))); <span class="hljs-comment">// 现在能正确匹配 Square</span><br>        System.out.println(describeShapeBetter(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Rectangle</span>(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>)));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="4-关键特性与注意事项">4. 关键特性与注意事项</h4>
+<ol>
+<li><strong><code>null</code> 模式：</strong> <code>case null -&gt; ...</code> 是一个特殊的模式，用于处理 <code>switch</code> 表达式或语句中传入 <code>null</code> 的情况。这解决了之前 <code>switch</code> 无法直接处理 <code>null</code> 而会抛出 <code>NullPointerException</code> 的问题。</li>
+<li><strong>模式顺序很重要：</strong> <code>case</code> 分支是从上到下按顺序匹配的。更具体的模式（如 <code>Square</code>）应该放在更通用的模式（如 <code>Rectangle</code> 或 <code>Object</code>）之前，否则可能永远无法匹配到。编译器在某些情况下会给出警告甚至错误。</li>
+<li><strong>穷尽性检查：</strong>
+<ul>
+<li>对于<strong>密封类 (Sealed Classes)</strong> 或 <strong>枚举 (Enum)</strong> 作为 <code>switch</code> 的输入，并且你覆盖了所有可能的子类型/枚举常量，编译器可以保证 <code>switch</code> 是穷尽的，从而<strong>不再需要 <code>default</code> 分支</strong>，除非你显式地处理了 <code>null</code> 值。</li>
+<li>对于非密封类或 <code>Object</code> 作为输入，<code>default</code> 分支或覆盖所有可能类型仍然是必需的。</li>
+</ul>
+</li>
+<li><strong>模式变量的作用域：</strong> 模式变量 (<code>c</code>, <code>r</code>, <code>s</code> 等) 只在其对应的 <code>case</code> 块中可见。</li>
+<li><strong><code>when</code> 子句 (模式守卫)：</strong> 允许你在类型匹配后添加额外的布尔条件。</li>
+</ol>
+<h4 id="5-扩展与应用-Extension-Application">5. 扩展与应用 (Extension &amp; Application)</h4>
+<ul>
+<li><strong>消除 <code>if-else if</code> 链：</strong> 这是最直接、最普遍的用例，代码变得极其干净和易读。</li>
+<li><strong>代数数据类型 (ADT)：</strong> 结合密封类和 <code>record</code>，<code>switch</code> 的模式匹配是实现 ADT 的强大工具，让你可以用类型安全的方式处理数据变体。</li>
+<li><strong>命令处理/事件分发：</strong> 根据传入的命令或事件的类型，分发到不同的处理逻辑。</li>
+<li><strong>解析器和解释器：</strong> 在构建语法树或处理不同类型的节点时，模式匹配提供了优雅的解决方案。</li>
+</ul>
+<h4 id="6-要点与注意事项-Key-Points-Cautions">6. 要点与注意事项 (Key Points &amp; Cautions)</h4>
+<ol>
+<li><strong>可读性优先：</strong> 虽然强大，但不要滥用。如果 <code>switch</code> 分支过多，代码仍可能变得复杂。考虑拆分方法或使用多态。</li>
+<li><strong>避免 <code>default</code> 隐藏错误：</strong> 对于密封类，尽量利用穷尽性检查，不要随意添加 <code>default</code>，以免未来新增子类时，编译器无法警告你。</li>
+<li><strong>与 <code>instanceof</code> 模式匹配的区别：</strong>
+<ul>
+<li><code>instanceof</code> 模式匹配：用于<strong>单个</strong>类型检查和转换。</li>
+<li><code>switch</code> 模式匹配：用于处理<strong>多个</strong>不同类型，并在一个地方集中分派逻辑。</li>
+</ul>
+</li>
+</ol>
+<p><code>switch</code> 的模式匹配是 Java 语言走向更现代、更函数式编程范式的关键里程碑。它不仅解决了长期以来的样板代码问题，更通过编译时的安全性保障，帮助开发者编写出更健壮、更易维护的多态处理代码。这是 Java 21 最值得学习和掌握的特性之一。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-21-LTS/" class="category-chain-item">Java 21 (LTS)</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>switch 的模式匹配 (正式版)</div>
+      <div>http://example.com/2025/06/26/Java/新特性/Java 21 (LTS)/switch 的模式匹配 (正式版)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/26/Java/%E5%9F%BA%E7%A1%80/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/Map%E7%9A%84%E5%80%BC/" title="">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile"></span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/26/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2022/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%8F%98%E9%87%8F%20(%E6%AD%A3%E5%BC%8F%E7%89%88)/" title="未命名模式和变量">
+                        <span class="hidden-mobile">未命名模式和变量</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

@@ -1,0 +1,834 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 17 中正式发布的、用于增强面向对象建模能力的强大特性——Sealed Classes (密封类)。  Sealed Classes (密封类) 1. 核心概念 (Core Concept) 密封类（或接口）允许你精确地控制一个类可以被哪些其他的类（或接口）继承或实现。 在 Java 17 之前，对于一个类（非 final），任何在同一个包或不同包中的类都可以继承它。你只有两个极端的选择">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Sealed Classes (密封类) - 正式版">
+<meta property="og:url" content="http://example.com/2025/06/25/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2017%20(LTS)/Sealed%20Classes%20(%E5%AF%86%E5%B0%81%E7%B1%BB)%20-%20%E6%AD%A3%E5%BC%8F%E7%89%88/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 17 中正式发布的、用于增强面向对象建模能力的强大特性——Sealed Classes (密封类)。  Sealed Classes (密封类) 1. 核心概念 (Core Concept) 密封类（或接口）允许你精确地控制一个类可以被哪些其他的类（或接口）继承或实现。 在 Java 17 之前，对于一个类（非 final），任何在同一个包或不同包中的类都可以继承它。你只有两个极端的选择">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2025-06-24T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T13:55:34.877Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Sealed Classes (密封类) - 正式版 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Sealed Classes (密封类) - 正式版"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-25 00:00" pubdate>
+          2025年6月25日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Sealed Classes (密封类) - 正式版</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月22日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Java 17 中正式发布的、用于增强面向对象建模能力的强大特性——<strong>Sealed Classes (密封类)</strong>。</p>
+<hr>
+<h3 id="Sealed-Classes-密封类">Sealed Classes (密封类)</h3>
+<h4 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h4>
+<p><strong>密封类（或接口）允许你精确地控制一个类可以被哪些其他的类（或接口）继承或实现。</strong></p>
+<p>在 Java 17 之前，对于一个类（非 <code>final</code>），任何在同一个包或不同包中的类都可以继承它。你只有两个极端的选择：</p>
+<ol>
+<li><strong><code>public class MyClass &#123;...&#125;</code>:</strong> 允许<strong>任何类</strong>继承它（过于开放）。</li>
+<li><strong><code>public final class MyClass &#123;...&#125;</code>:</strong> <strong>禁止任何类</strong>继承它（过于封闭）。</li>
+</ol>
+<p><code>sealed</code> 关键字提供了一个介于两者之间的“中间地带”。它让你能像列清单一样，明确声明：“我的这个类，<strong>只允许</strong>清单上的这几个指定的类来继承。”</p>
+<p><strong>核心语法：</strong></p>
+<ul>
+<li><strong>父类（密封类）：</strong> 使用 <code>sealed</code> 关键字，并通过 <code>permits</code> 关键字列出所有允许的直接子类。</li>
+<li><strong>子类：</strong> 每个被 <code>permits</code> 列出的子类，必须满足以下三个条件之一：
+<ol>
+<li>声明为 <strong><code>final</code></strong>：表示这个继承分支到此为止，不能再被继承。</li>
+<li>声明为 <strong><code>sealed</code></strong>：表示它将继承体系的限制继续向下传递，它自己也必须有一个 <code>permits</code> 列表。</li>
+<li>声明为 <strong><code>non-sealed</code></strong>：表示这个继承分支“开封”，回归到传统的开放继承模式，任何类都可以继承它。</li>
+</ol>
+</li>
+</ul>
+<p><strong>通俗比喻：</strong></p>
+<ul>
+<li><strong>传统继承：</strong> 就像一个<strong>公共俱乐部</strong>。任何人都可以申请成为会员（继承）。</li>
+<li><strong><code>final</code> 类：</strong> 就像一个<strong>私人住宅</strong>。谢绝访客，谁也不能进来。</li>
+<li><strong><code>sealed</code> 类：</strong> 就像一个<strong>有邀请名单的派对</strong>。你在派对门口（<code>sealed class</code>）贴了一张<strong>邀请函名单 (<code>permits list</code>)</strong>。只有名单上的人（指定的子类）才能进入。进来之后，这个人可以选择：
+<ul>
+<li>自己玩，不再邀请别人（<code>final</code>）。</li>
+<li>自己也办一个更小范围的派对，并列出他自己的邀请名单（<code>sealed</code>）。</li>
+<li>把门打开，让他的所有朋友都能进来（<code>non-sealed</code>）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-演进与现代化-Evolution-Modernization">2. 演进与现代化 (Evolution &amp; Modernization)</h4>
+<ul>
+<li>
+<p><strong>Java 17 之前 (The Pain Point):</strong></p>
+<ul>
+<li><strong>无法对继承体系建模：</strong> 当你想表达“一个图形要么是圆形，要么是矩形，要么是三角形，再无其他可能”这样的业务约束时，Java 语言层面无法提供支持。任何人都可能创建出一个 <code>Pentagon</code> (五边形) 类来继承 <code>Shape</code>，破坏了你设计的封闭世界。</li>
+<li><strong>对 <code>switch</code> 不友好：</strong> 在 <code>switch</code> 中处理一个父类型时，你必须写一个 <code>default</code> 分支，因为编译器不知道未来是否会出现新的子类。</li>
+</ul>
+</li>
+<li>
+<p><strong>预览阶段 (Java 15 &amp; 16):</strong><br>
+密封类经过了两个版本的预览，社区对其在领域驱动设计 (DDD) 和代数数据类型 (ADT) 建模方面的潜力给予了高度评价。</p>
+</li>
+<li>
+<p><strong>Java 17 (The Solution - 正式版):</strong><br>
+密封类正式成为 Java 的一部分，为 Java 的类型系统带来了更强的表达力和安全性。</p>
+</li>
+<li>
+<p><strong>现代化应用：</strong></p>
+<ul>
+<li><strong>精确的领域建模：</strong> 非常适合用于定义一组固定的、已知的子类型。例如，支付方式（信用卡、支付宝、微信）、API 响应（成功、失败、加载中）等。</li>
+<li><strong>模式匹配的完美搭档：</strong> 密封类与 <code>switch</code> 模式匹配（Java 21 中正式发布）结合使用时，威力巨大。因为编译器知道所有可能的子类型，所以<strong>当你在 <code>switch</code> 中覆盖了所有 <code>permits</code> 的子类时，就不再需要 <code>default</code> 分支</strong>。这提供了一种编译时的完备性检查，是密封类最强大的应用场景。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-代码示例-Code-Example">3. 代码示例 (Code Example)</h4>
+<p>让我们用经典的“图形”例子来演示。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 1. 定义一个密封接口 Shape</span><br><span class="hljs-comment">// 它只允许 Circle, Rectangle, 和 Square 实现</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">sealed</span> <span class="hljs-keyword">interface</span> <span class="hljs-title class_">Shape</span> <span class="hljs-keyword">permits</span> Circle, Rectangle, Square &#123;<br>    <span class="hljs-type">double</span> <span class="hljs-title function_">area</span><span class="hljs-params">()</span>;<br>&#125;<br><br><span class="hljs-comment">// 2. 定义子类，每个子类必须是 final, sealed 或 non-sealed</span><br><span class="hljs-comment">//    Circle 是 final 的，继承分支结束</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Circle</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Shape</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">double</span> radius;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Circle</span><span class="hljs-params">(<span class="hljs-type">double</span> radius)</span> &#123; <span class="hljs-built_in">this</span>.radius = radius; &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">area</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> Math.PI * radius * radius; &#125;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">radius</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> radius; &#125; <span class="hljs-comment">// 使用 record 风格的访问器</span><br>&#125;<br><br><span class="hljs-comment">// Rectangle 是 non-sealed 的，回归开放继承</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">non-sealed</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">Rectangle</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Shape</span> &#123;<br>    <span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> <span class="hljs-type">double</span> width, height;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Rectangle</span><span class="hljs-params">(<span class="hljs-type">double</span> width, <span class="hljs-type">double</span> height)</span> &#123;<br>        <span class="hljs-built_in">this</span>.width = width;<br>        <span class="hljs-built_in">this</span>.height = height;<br>    &#125;<br><br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">area</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> width * height; &#125;<br>&#125;<br><br><span class="hljs-comment">// Square 是 final 的，继承分支也结束</span><br><span class="hljs-comment">// 注意：Square 是一个 Record，Record 默认是 final 的，所以满足条件</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Square</span><span class="hljs-params">(<span class="hljs-type">double</span> side)</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Shape</span> &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">area</span><span class="hljs-params">()</span> &#123; <span class="hljs-keyword">return</span> side * side; &#125;<br>&#125;<br><br><span class="hljs-comment">// (可选) 任何类都可以继承 non-sealed 的 Rectangle</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">BorderedRectangle</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_">Rectangle</span> &#123;<br>    <span class="hljs-comment">// ...</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">BorderedRectangle</span><span class="hljs-params">(<span class="hljs-type">double</span> w, <span class="hljs-type">double</span> h)</span> &#123; <span class="hljs-built_in">super</span>(w, h); &#125;<br>&#125;<br><br><span class="hljs-comment">// (编译错误) Triangle 不在 Shape 的 permits 列表中，不能实现它</span><br><span class="hljs-comment">// public final class Triangle implements Shape &#123; ... &#125; // COMPILE ERROR!</span><br></code></pre></td></tr></table></figure>
+<p><strong>与 <code>switch</code> 模式匹配结合 (Java 21 语法):</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">SealedClassExample</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-type">double</span> <span class="hljs-title function_">calculateArea</span><span class="hljs-params">(Shape shape)</span> &#123;<br>        <span class="hljs-comment">// 因为 Shape 是密封的，并且我们覆盖了所有允许的子类型，</span><br>        <span class="hljs-comment">// 所以编译器知道没有其他可能性，不需要 default 分支。</span><br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">switch</span> (shape) &#123;<br>            <span class="hljs-keyword">case</span> Circle c -&gt; c.area();<br>            <span class="hljs-keyword">case</span> Rectangle r -&gt; r.area();<br>            <span class="hljs-keyword">case</span> Square s -&gt; s.area();<br>            <span class="hljs-comment">// NO default NEEDED!</span><br>        &#125;;<br>    &#125;<br>    <br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">Shape</span> <span class="hljs-variable">circle</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Circle</span>(<span class="hljs-number">10</span>);<br>        System.out.println(<span class="hljs-string">&quot;Area: &quot;</span> + calculateArea(circle));<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="4-语法要点">4. 语法要点</h4>
+<ul>
+<li><strong>文件位置：</strong> 如果 <code>permits</code> 列出的子类文件很小，你可以把它们定义在同一个源文件中。在这种情况下，父类可以<strong>省略 <code>permits</code> 子句</strong>，编译器会自动推断。</li>
+<li><strong>包关系：</strong> 密封类和它的直接子类必须在<strong>同一个包</strong>内。如果子类在不同的 <code>.java</code> 文件中，它们必须在同一个模块的同一个包里。</li>
+<li><strong>接口也可以密封：</strong> 如示例所示，<code>sealed</code> 关键字同样适用于 <code>interface</code>。</li>
+</ul>
+<h4 id="5-要点与注意事项-Key-Points-Cautions">5. 要点与注意事项 (Key Points &amp; Cautions)</h4>
+<ol>
+<li><strong>目的不是访问控制：</strong> <code>sealed</code> 与 <code>public</code>, <code>protected</code>, <code>private</code> 无关。它控制的是<strong>可继承性 (inheritability)</strong>，而不是<strong>可访问性 (accessibility)</strong>。</li>
+<li><strong><code>final</code>, <code>sealed</code>, <code>non-sealed</code> 是强制性的：</strong> 每一个直接子类都必须明确选择这三个关键字之一。</li>
+<li><strong>Record 是隐式 <code>final</code> 的：</strong> <code>record</code> 类天然满足密封类的子类要求，因为它们不能被继承。</li>
+<li><strong><code>non-sealed</code> 的权衡：</strong> 使用 <code>non-sealed</code> 会失去密封性带来的好处，比如在 <code>switch</code> 中免除 <code>default</code>。只有当你确实希望一个继承分支是开放的时，才应该使用它。</li>
+<li><strong>密封类是现代 Java 设计模式的基石：</strong> 它们是实现<strong>代数数据类型 (ADT)</strong> 的一种方式，这在函数式编程中是一个核心概念。通过将 <code>sealed</code> 类/接口与 <code>record</code> 结合，你可以用非常简洁和安全的方式来建模复杂的数据结构。</li>
+</ol>
+<p>总而言之，密封类是一个面向架构师和库设计者的强大工具。它通过在语言层面提供对继承体系的精确控制，使得代码模型更贴近业务领域，更健壮，也为强大的模式匹配功能提供了坚实的基础。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-17-LTS/" class="category-chain-item">Java 17 (LTS)</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Sealed Classes (密封类) - 正式版</div>
+      <div>http://example.com/2025/06/25/Java/新特性/Java 17 (LTS)/Sealed Classes (密封类) - 正式版/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月25日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/25/Java/Framework/Spring%20Boot/Data/Redis/Spring%20Boot%20using%20Redis/" title="using Redis">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">using Redis</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F%EF%BC%88Design%20Patterns%EF%BC%89/%E5%BB%BA%E9%80%A0%E8%80%85%E6%A8%A1%E5%BC%8F%EF%BC%88Builder%20Pattern%EF%BC%89/" title="建造者模式（Builder Pattern）">
+                        <span class="hidden-mobile">建造者模式（Builder Pattern）</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

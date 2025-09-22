@@ -1,0 +1,858 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 22 中正式发布的、用于提升代码清晰度和减少冗余的精巧特性——未命名模式和变量 (Unnamed Patterns and Variables)。  未命名模式和变量 1. 核心概念 (Core Concept) 这个特性允许你在某些必须声明变量或模式，但又完全不需要使用它们的场景下，使用下划线 _ 作为一个特殊的占位符来替代变量名。 核心目的：  明确代码意图： _ 明确地告诉阅读代码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="未命名模式和变量">
+<meta property="og:url" content="http://example.com/2025/06/26/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2022/%E6%9C%AA%E5%91%BD%E5%90%8D%E6%A8%A1%E5%BC%8F%E5%92%8C%E5%8F%98%E9%87%8F%20(%E6%AD%A3%E5%BC%8F%E7%89%88)/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 22 中正式发布的、用于提升代码清晰度和减少冗余的精巧特性——未命名模式和变量 (Unnamed Patterns and Variables)。  未命名模式和变量 1. 核心概念 (Core Concept) 这个特性允许你在某些必须声明变量或模式，但又完全不需要使用它们的场景下，使用下划线 _ 作为一个特殊的占位符来替代变量名。 核心目的：  明确代码意图： _ 明确地告诉阅读代码">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2025-06-25T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T13:58:52.231Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>未命名模式和变量 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="未命名模式和变量"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-26 00:00" pubdate>
+          2025年6月26日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          12 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">未命名模式和变量</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月22日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Java 22 中正式发布的、用于提升代码清晰度和减少冗余的精巧特性——<strong>未命名模式和变量 (Unnamed Patterns and Variables)</strong>。</p>
+<hr>
+<h3 id="未命名模式和变量">未命名模式和变量</h3>
+<h4 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h4>
+<p>这个特性允许你在某些必须声明变量或模式，但又<strong>完全不需要使用它们</strong>的场景下，使用<strong>下划线 <code>_</code></strong> 作为一个特殊的占位符来替代变量名。</p>
+<p><strong>核心目的：</strong></p>
+<ol>
+<li><strong>明确代码意图：</strong> <code>_</code> 明确地告诉阅读代码的人（以及编译器）：“这个变量在这里是必需的，但它的值是被<strong>有意忽略</strong>的。”</li>
+<li><strong>减少认知负担：</strong> 避免为了应付语法而起一些无意义的变量名，如 <code>ignored</code>、<code>unused</code>、<code>dummy</code>。</li>
+<li><strong>消除编译器警告：</strong> 避免因声明了未使用变量而产生的编译器警告。</li>
+<li><strong>未来扩展：</strong> 为未来更复杂的模式匹配特性铺路。</li>
+</ol>
+<p><strong>通俗比喻：</strong><br>
+想象你在填写一张表格，其中有些栏目是<strong>必填项</strong>，但对你来说<strong>毫无意义</strong>。</p>
+<ul>
+<li><strong>Java 22 之前：</strong> 你不得不在这些栏目里随便写点东西，比如“无”、“N/A”或者“随便填的”。这既浪费时间，又可能让看表格的人感到困惑。</li>
+<li><strong>Java 22 之后：</strong> 表格提供了一个“<strong>忽略此项</strong>”的打勾选项 <code>_</code>。你直接勾选它，就清晰地表明了“我知道这里要填，但我不需要它”。</li>
+</ul>
+<h4 id="2-演进与现代化-Evolution-Modernization">2. 演进与现代化 (Evolution &amp; Modernization)</h4>
+<ul>
+<li>
+<p><strong>Java 22 之前 (The Pain Point):</strong><br>
+在很多常见场景中，我们被迫声明一些永远不会被使用的变量。</p>
+<ul>
+<li><strong><code>try-catch</code> 块：</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-comment">// ... some code that might throw an exception</span><br>&#125; <span class="hljs-keyword">catch</span> (NumberFormatException ex) &#123; <span class="hljs-comment">// `ex` 只是为了捕获类型，从未使用</span><br>    System.err.println(<span class="hljs-string">&quot;Invalid number format.&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong><code>for</code> 循环：</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><br><span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br><span class="hljs-keyword">for</span> (Order order : orders) &#123; <span class="hljs-comment">// `order` 变量从未使用</span><br>    count++;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>Lambda 表达式：</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">map.forEach((key, value) -&gt; &#123; <span class="hljs-comment">// `value` 从未使用</span><br>    System.out.println(<span class="hljs-string">&quot;Processing key: &quot;</span> + key);<br>&#125;);<br></code></pre></td></tr></table></figure>
+</li>
+<li><strong>模式匹配：</strong><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">switch</span> (shape) &#123;<br>    <span class="hljs-keyword">case</span> <span class="hljs-title function_">Circle</span><span class="hljs-params">(Point center, <span class="hljs-type">int</span> radius)</span> -&gt; ... <span class="hljs-comment">// `center` 从未使用</span><br>    ...<br>&#125;<br></code></pre></td></tr></table></figure>
+这些“幽灵变量”虽然功能上无害，但它们是代码中的噪音，降低了可读性。</li>
+</ul>
+</li>
+<li>
+<p><strong>预览阶段 (Java 21):</strong><br>
+这个特性在 Java 21 中作为预览特性引入，受到了社区的普遍欢迎，因为它解决了多个长期存在的小痛点。</p>
+</li>
+<li>
+<p><strong>Java 22 (The Solution - 正式版):</strong><br>
+未命名模式和变量正式成为 Java 语言的一部分，为上述所有场景提供了统一、优雅的解决方案。</p>
+</li>
+</ul>
+<h4 id="3-应用场景与代码示例">3. 应用场景与代码示例</h4>
+<h5 id="1-未命名变量-Unnamed-Variables"><strong>1. 未命名变量 (Unnamed Variables)</strong></h5>
+<ul>
+<li>
+<p><strong><code>catch</code> 子句：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 新写法</span><br><span class="hljs-keyword">try</span> &#123;<br>    <span class="hljs-type">int</span> <span class="hljs-variable">number</span> <span class="hljs-operator">=</span> Integer.parseInt(someString);<br>&#125; <span class="hljs-keyword">catch</span> (NumberFormatException _) &#123; <span class="hljs-comment">// 明确忽略异常对象</span><br>    System.err.println(<span class="hljs-string">&quot;Invalid number format. Please enter a valid integer.&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>try-with-resources</code> 语句：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 新写法</span><br><span class="hljs-keyword">try</span> (<span class="hljs-type">var</span> <span class="hljs-variable">_</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ScopedContext</span>()) &#123; <span class="hljs-comment">// 资源变量本身不重要，重要的是它的生命周期</span><br>    <span class="hljs-comment">// ... a block of code that uses the context</span><br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>增强型 <code>for</code> 循环：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 新写法</span><br><span class="hljs-type">int</span> <span class="hljs-variable">count</span> <span class="hljs-operator">=</span> <span class="hljs-number">0</span>;<br><span class="hljs-keyword">for</span> (<span class="hljs-keyword">var</span> _ : orders) &#123; <span class="hljs-comment">// 明确忽略循环中的每个元素</span><br>    count++;<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>Lambda 表达式：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 新写法</span><br>map.forEach((key, _) -&gt; &#123; <span class="hljs-comment">// 明确忽略 value</span><br>    System.out.println(<span class="hljs-string">&quot;Processing key: &quot;</span> + key);<br>&#125;);<br></code></pre></td></tr></table></figure>
+<p>特别注意：在 Lambda 中，如果只有一个参数且是未命名变量，括号不能省略。 <code>_ -&gt; ...</code> 是非法的，必须写成 <code>(_) -&gt; ...</code>。</p>
+</li>
+</ul>
+<h5 id="2-未命名模式-Unnamed-Patterns"><strong>2. 未命名模式 (Unnamed Patterns)</strong></h5>
+<ul>
+<li>
+<p><strong><code>instanceof</code> 模式匹配：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 新写法</span><br><span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> <span class="hljs-title function_">Point</span><span class="hljs-params">(_, _)</span>) &#123; <span class="hljs-comment">// 只关心类型是 Point，不关心其组件</span><br>    System.out.println(<span class="hljs-string">&quot;The object is a Point.&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>switch</code> 模式匹配：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 新写法</span><br><span class="hljs-keyword">switch</span> (shape) &#123;<br>    <span class="hljs-comment">// 只关心半径，忽略中心点</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-title function_">Circle</span><span class="hljs-params">(Point _, <span class="hljs-type">int</span> radius)</span> -&gt;<br>        System.out.println(<span class="hljs-string">&quot;A circle with radius: &quot;</span> + radius);<br>        <br>    <span class="hljs-comment">// 只关心这是一个 Rectangle，不关心其任何组件</span><br>    <span class="hljs-keyword">case</span> <span class="hljs-title function_">Rectangle</span><span class="hljs-params">(_, _)</span> -&gt;<br>        System.out.println(<span class="hljs-string">&quot;It&#x27;s a Rectangle.&quot;</span>);<br>        <br>    <span class="hljs-keyword">default</span> -&gt; System.out.println(<span class="hljs-string">&quot;Other shape.&quot;</span>);<br>&#125;<br></code></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="4-语法要点">4. 语法要点</h4>
+<ul>
+<li><strong><code>_</code> 是上下文关键字：</strong> <code>_</code> 并不是一个通用的新关键字。它只在可以出现局部变量或模式的地方有特殊含义。你仍然可以有一个名为 <code>_</code> 的字段或方法。</li>
+<li><strong><code>_</code> 不能被读取：</strong> <code>_</code> 的核心就是“不可用”。任何尝试读取 <code>_</code> 值的操作都会导致编译错误。例如 <code>System.out.println(_)</code> 是非法的。</li>
+<li><strong>多次使用 <code>_</code>：</strong> 在同一个声明中，你可以多次使用 <code>_</code>。每个 <code>_</code> 都是独立的，表示一个被忽略的组件。<br>
+<code>case Point(_, _) -&gt; ...</code> 是合法的。</li>
+<li><strong>与 <code>var</code> 的关系：</strong> 你可以把 <code>_</code> 看作 <code>var</code> 的一个特例，<code>var _</code> 也是合法的，并且和单独的 <code>_</code> 效果一样。</li>
+</ul>
+<h4 id="5-要点与注意事项-Key-Points-Cautions">5. 要点与注意事项 (Key Points &amp; Cautions)</h4>
+<ol>
+<li><strong>目的在于清晰性，而非偷懒：</strong> 使用 <code>_</code> 的首要原则是为了让代码意图更清晰。如果一个变量虽然当前未使用，但在未来的代码迭代中很可能会被用到，那么给它一个有意义的名字仍然是更好的选择。</li>
+<li><strong>Lambda 参数的特殊规则：</strong>
+<ul>
+<li><code>(key, _)</code>: 忽略第二个参数。</li>
+<li><code>(_, value)</code>: 忽略第一个参数。</li>
+<li><code>(_, _)</code>: 忽略所有参数。</li>
+<li><code>(_) -&gt; ...</code>: 忽略<strong>唯一</strong>的那个参数。</li>
+<li><code>_ -&gt; ...</code>: <strong>非法语法</strong>，必须有括号。</li>
+</ul>
+</li>
+<li><strong>顶级 <code>_</code> vs. 嵌套 <code>_</code>：</strong>
+<ul>
+<li><code>if (obj instanceof _)</code>: <strong>非法</strong>。未命名模式必须嵌套在另一个模式中，不能作为顶级模式。这是为了避免歧义。</li>
+<li><code>if (obj instanceof Point(_, _))</code>: <strong>合法</strong>。</li>
+</ul>
+</li>
+</ol>
+<p>总结来说，未命名模式和变量是一个小而精的语言改进。它通过引入一个简单直观的符号 <code>_</code>，解决了多个场景下声明“无用”变量的普遍问题，让代码更干净、意图更明确，是 Java 语言在追求代码简洁性和表现力道路上持续努力的又一体现。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-22/" class="category-chain-item">Java 22</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>未命名模式和变量</div>
+      <div>http://example.com/2025/06/26/Java/新特性/Java 22/未命名模式和变量 (正式版)/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月26日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/26/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2021%20(LTS)/switch%20%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%20(%E6%AD%A3%E5%BC%8F%E7%89%88)/" title="switch 的模式匹配 (正式版)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">switch 的模式匹配 (正式版)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/26/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2021%20(LTS)/%E5%BA%8F%E5%88%97%E5%8C%96%E9%9B%86%E5%90%88%20(Sequenced%20Collections)%20-%20%E6%AD%A3%E5%BC%8F%E7%89%88/" title="序列化集合 (Sequenced Collections) - 正式版">
+                        <span class="hidden-mobile">序列化集合 (Sequenced Collections) - 正式版</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

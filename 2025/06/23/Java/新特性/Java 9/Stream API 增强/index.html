@@ -1,0 +1,866 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="这次增强虽然不像 Java 8 的 Stream API 那样是革命性的，但它提供了几个非常实用和强大的新方法，弥补了原有 API 的一些不足，让流式处理在特定场景下更加简洁和高效。  Stream API 增强 (Java 9) Java 9 主要为 java.util.stream.Stream 接口添加了四个重要的新方法：takeWhile, dropWhile, ofNullable, 以">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stream API 增强">
+<meta property="og:url" content="http://example.com/2025/06/23/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%209/Stream%20API%20%E5%A2%9E%E5%BC%BA/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="这次增强虽然不像 Java 8 的 Stream API 那样是革命性的，但它提供了几个非常实用和强大的新方法，弥补了原有 API 的一些不足，让流式处理在特定场景下更加简洁和高效。  Stream API 增强 (Java 9) Java 9 主要为 java.util.stream.Stream 接口添加了四个重要的新方法：takeWhile, dropWhile, ofNullable, 以">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2025-06-22T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T13:42:16.113Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Stream API 增强 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Stream API 增强"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-23 00:00" pubdate>
+          2025年6月23日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.9k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          16 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Stream API 增强</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月22日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>这次增强虽然不像 Java 8 的 Stream API 那样是革命性的，但它提供了几个非常实用和强大的新方法，弥补了原有 API 的一些不足，让流式处理在特定场景下更加简洁和高效。</p>
+<hr>
+<h3 id="Stream-API-增强-Java-9">Stream API 增强 (Java 9)</h3>
+<p>Java 9 主要为 <code>java.util.stream.Stream</code> 接口添加了四个重要的新方法：<code>takeWhile</code>, <code>dropWhile</code>, <code>ofNullable</code>, 以及 <code>iterate</code> 的一个重载版本。</p>
+<h4 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h4>
+<ul>
+<li>
+<p><strong><code>takeWhile(Predicate&lt;? super T&gt; predicate)</code>:</strong></p>
+<ul>
+<li><strong>作用：</strong> 从流的开头开始，<strong>获取</strong>满足谓词（Predicate）条件的元素，一旦遇到<strong>第一个不满足</strong>条件的元素，立即停止，并返回一个包含前面所有满足条件元素的新流。</li>
+<li><strong>通俗比喻：</strong> 想象你在排队领糖果，规则是“只给穿红色衣服的小朋友”。<code>takeWhile</code> 就像发糖果的人，他从队首开始，一个个看，只要是穿红衣服的就给糖（放入新流）。当他看到第一个不是穿红衣服的小朋友时，他就立刻停止发糖，不管后面还有没有穿红衣服的。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>dropWhile(Predicate&lt;? super T&gt; predicate)</code>:</strong></p>
+<ul>
+<li><strong>作用：</strong> 从流的开头开始，<strong>丢弃</strong>满足谓词（Predicate）条件的元素，一旦遇到<strong>第一个不满足</strong>条件的元素，立即停止丢弃，并返回一个包含<strong>该元素及之后所有元素</strong>的新流。</li>
+<li><strong>通俗比喻：</strong> 还是排队领糖果的例子。<code>dropWhile</code> 就像一个检查员，他从队首开始，把所有穿红衣服的小朋友都请出队伍（丢弃）。当他看到第一个不是穿红衣服的小朋友时，他就停止检查，这个小朋友和他后面的所有人，无论穿什么衣服，都可以留下来。</li>
+</ul>
+</li>
+</ul>
+<p><strong><code>takeWhile</code> 和 <code>dropWhile</code> 的共同点：</strong></p>
+<ul>
+<li>它们都是<strong>短路 (short-circuiting)</strong> 操作。</li>
+<li>它们对于<strong>有序流 (ordered stream)</strong> 的效果最直观、最有用。对于无序流，结果可能是不确定的。</li>
+</ul>
+<hr>
+<ul>
+<li><strong><code>ofNullable(T t)</code>:</strong>
+<ul>
+<li><strong>作用：</strong> 这是一个静态工厂方法，用于创建一个只包含单个元素的流，或者在元素为 <code>null</code> 时创建一个空流。</li>
+<li><strong>通俗比喻：</strong> 这是一个安全的“包装工”。你给他一个物品，如果物品存在（非 <code>null</code>），他就用一个盒子（Stream）把它包起来；如果是个空盒子（<code>null</code>），他就直接给你一个空的盒子（空 Stream）。这避免了你因为一个 <code>null</code> 值而引发 <code>NullPointerException</code>。</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li><strong><code>iterate(T seed, Predicate&lt;? super T&gt; hasNext, UnaryOperator&lt;T&gt; next)</code>:</strong>
+<ul>
+<li><strong>作用：</strong> <code>iterate</code> 方法的一个重载版本，它允许你创建一个具有明确终止条件的无限流。这类似于传统的 <code>for</code> 循环结构。</li>
+<li><strong>通俗比喻：</strong> Java 8 的 <code>iterate(seed, operator)</code> 就像一个永动机，你给它一个起点和规则，它就无限地跑下去，你必须用 <code>limit()</code> 这样的外部刹车来停住它。Java 9 的这个重载版本，给这个永动机内置了一个“自动刹车”系统 (<code>hasNext</code> Predicate)。你告诉它：“从这里开始跑，按照这个规则跑，跑到这个条件不满足时就自动停下来。”</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-演进与现代化-Evolution-Modernization">2. 演进与现代化 (Evolution &amp; Modernization)</h4>
+<ul>
+<li>
+<p><strong>Java 8 之前 (The Pain Point):</strong></p>
+<ul>
+<li><strong>如何处理“直到某个条件不满足”的流？</strong> 比如，处理一个已排序的日志文件，我们想读取所有时间戳在“今天”的日志。使用 Java 8 的 <code>filter()</code> 会扫描整个文件，即使“今天”的日志早已结束。<code>takeWhile</code> 完美解决了这个问题。</li>
+<li><strong>如何安全地将可能为 null 的对象转换为 Stream？</strong> 在 Java 8 中，如果一个对象 <code>obj</code> 可能为 <code>null</code>，你不能直接 <code>Stream.of(obj)</code>，因为 <code>of</code> 方法不接受 <code>null</code> 参数。你需要写 <code>obj == null ? Stream.empty() : Stream.of(obj)</code> 这样的防御性代码。<code>ofNullable</code> 让这变得极其简洁。</li>
+<li><strong>如何创建有限的迭代流？</strong> Java 8 的 <code>iterate</code> 必须配合 <code>limit()</code> 使用，代码意图不够清晰。<code>for (int i = 0; i &lt; 10; i++)</code> 这样的逻辑很难直接用 <code>iterate</code> 表达。</li>
+</ul>
+</li>
+<li>
+<p><strong>Java 9 之后 (The Solution):</strong><br>
+Java 9 的这些增强，让 Stream API 在处理有序数据、可空对象和有限迭代时，代码表达力更强，性能也可能更高（因为 <code>takeWhile</code> 和 <code>dropWhile</code> 的短路特性）。</p>
+</li>
+</ul>
+<h4 id="3-代码示例-Code-Example">3. 代码示例 (Code Example)</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">import</span> java.util.stream.Stream;<br><span class="hljs-keyword">import</span> java.util.stream.Collectors;<br><span class="hljs-keyword">import</span> java.util.List;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">StreamApiEnhancements</span> &#123;<br><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-comment">// --- 1. takeWhile ---</span><br>        System.out.println(<span class="hljs-string">&quot;--- takeWhile Example ---&quot;</span>);<br>        List&lt;Integer&gt; numbers = List.of(<span class="hljs-number">2</span>, <span class="hljs-number">4</span>, <span class="hljs-number">6</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>, <span class="hljs-number">10</span>, <span class="hljs-number">12</span>);<br>        List&lt;Integer&gt; takeResult = numbers.stream()<br>            .takeWhile(n -&gt; n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) <span class="hljs-comment">// 取偶数，直到遇到第一个非偶数 (9)</span><br>            .collect(Collectors.toList());<br>        System.out.println(takeResult); <span class="hljs-comment">// Output: [2, 4, 6, 8]</span><br><br>        <span class="hljs-comment">// --- 2. dropWhile ---</span><br>        System.out.println(<span class="hljs-string">&quot;\n--- dropWhile Example ---&quot;</span>);<br>        List&lt;Integer&gt; dropResult = numbers.stream()<br>            .dropWhile(n -&gt; n % <span class="hljs-number">2</span> == <span class="hljs-number">0</span>) <span class="hljs-comment">// 丢弃偶数，直到遇到第一个非偶数 (9)</span><br>            .collect(Collectors.toList());<br>        System.out.println(dropResult); <span class="hljs-comment">// Output: [9, 10, 12]</span><br><br>        <span class="hljs-comment">// --- 3. ofNullable ---</span><br>        System.out.println(<span class="hljs-string">&quot;\n--- ofNullable Example ---&quot;</span>);<br>        <span class="hljs-comment">// Case 1: Non-null value</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">name</span> <span class="hljs-operator">=</span> <span class="hljs-string">&quot;Java&quot;</span>;<br>        Stream&lt;String&gt; nameStream = Stream.ofNullable(name);<br>        nameStream.forEach(System.out::println); <span class="hljs-comment">// Output: Java</span><br><br>        <span class="hljs-comment">// Case 2: Null value</span><br>        <span class="hljs-type">String</span> <span class="hljs-variable">nullName</span> <span class="hljs-operator">=</span> <span class="hljs-literal">null</span>;<br>        Stream&lt;String&gt; nullNameStream = Stream.ofNullable(nullName);<br>        System.out.println(<span class="hljs-string">&quot;Count of nullNameStream: &quot;</span> + nullNameStream.count()); <span class="hljs-comment">// Output: Count of nullNameStream: 0</span><br><br>        <span class="hljs-comment">// Practical use case: filtering a list of objects and getting a specific property</span><br>        <span class="hljs-comment">// List&lt;User&gt; users = ...;</span><br>        <span class="hljs-comment">// String username = users.stream()</span><br>        <span class="hljs-comment">//     .map(User::getAddress) // Address might be null</span><br>        <span class="hljs-comment">//     .flatMap(Stream::ofNullable) // Safely convert Address to Stream</span><br>        <span class="hljs-comment">//     .map(Address::getStreet) // Street might be null</span><br>        <span class="hljs-comment">//     .findFirst()</span><br>        <span class="hljs-comment">//     .orElse(&quot;Not Found&quot;);</span><br><br>        <span class="hljs-comment">// --- 4. iterate (with hasNext) ---</span><br>        System.out.println(<span class="hljs-string">&quot;\n--- iterate with hasNext Example ---&quot;</span>);<br>        <span class="hljs-comment">// Similar to a for loop: for (int i = 1; i &lt; 10; i += 2)</span><br>        Stream.iterate(<span class="hljs-number">1</span>, i -&gt; i &lt; <span class="hljs-number">10</span>, i -&gt; i + <span class="hljs-number">2</span>)<br>              .forEach(System.out::println); <span class="hljs-comment">// Output: 1, 3, 5, 7, 9</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="4-扩展与应用-Extension-Application">4. 扩展与应用 (Extension &amp; Application)</h4>
+<ul>
+<li>
+<p><strong><code>takeWhile</code> / <code>dropWhile</code>:</strong></p>
+<ul>
+<li><strong>处理有序数据：</strong> 在已排序的数字、日期或字符串流中，截取满足特定范围的前缀或后缀。</li>
+<li><strong>日志/事件流处理：</strong> 从一个按时间排序的事件流中，获取所有在某个时间窗口内发生的事件。</li>
+<li><strong>滑动窗口：</strong> 结合 <code>dropWhile</code> 和 <code>takeWhile</code> 可以实现一些复杂的流切片操作。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>ofNullable</code>:</strong></p>
+<ul>
+<li><strong>函数式编程中的空值处理：</strong> 在链式调用中，优雅地处理可能为 <code>null</code> 的中间结果，避免 <code>if (obj != null)</code> 的判断，保持代码流畅。特别是在 <code>flatMap</code> 操作中，当 <code>map</code> 的结果可能为 <code>null</code> 时，<code>flatMap(o -&gt; Stream.ofNullable(o.getProperty()))</code> 是一种非常简洁和安全的模式。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>iterate</code> (new version):</strong></p>
+<ul>
+<li><strong>生成有限序列：</strong> 生成斐波那契数列的前 N 项、生成一系列日期等。</li>
+<li><strong>替代 for 循环：</strong> 将传统的 <code>for</code> 循环逻辑用更函数化的方式表达出来。</li>
+</ul>
+</li>
+</ul>
+<h4 id="5-要点与注意事项-Key-Points-Cautions">5. 要点与注意事项 (Key Points &amp; Cautions)</h4>
+<ol>
+<li>
+<p><strong>有序性至关重要：</strong> <code>takeWhile</code> 和 <code>dropWhile</code> 的行为高度依赖于流的顺序。对一个无序流（例如从 <code>HashSet</code> 创建的流）使用它们，结果可能是不可预测的，因为每次运行遇到的第一个“不满足”条件的元素可能都不同。</p>
+</li>
+<li>
+<p><strong><code>filter</code> vs. <code>takeWhile</code>:</strong></p>
+<ul>
+<li><code>filter(predicate)</code>: 会遍历<strong>整个流</strong>，返回所有满足条件的元素。</li>
+<li><code>takeWhile(predicate)</code>: 只要遇到<strong>第一个不满足</strong>条件的元素就<strong>停止</strong>，性能上可能更优，但逻辑不同。请根据业务需求准确选择。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>ofNullable</code> vs. <code>Stream.of()</code>:</strong></p>
+<ul>
+<li><code>Stream.of(T... values)</code>: 如果传入 <code>null</code>，会创建一个包含单个 <code>null</code> 元素的流，而不是空流。<code>Stream.of(null)</code> 的结果是 <code>[null]</code>。</li>
+<li><code>Stream.ofNullable(T t)</code>: 如果传入 <code>null</code>，会创建一个<strong>空流</strong>。<code>Stream.ofNullable(null)</code> 的结果是 <code>[]</code>。</li>
+<li>在 <code>flatMap</code> 中，通常我们期望 <code>null</code> 映射为空流，所以 <code>ofNullable</code> 是更合适的选择。</li>
+</ul>
+</li>
+<li>
+<p><strong><code>iterate</code> 的 <code>hasNext</code> 谓词：</strong><br>
+<code>hasNext</code> 判断的是<strong>当前元素</strong>是否应该被包含在流中，而不是下一个元素。这和 <code>for</code> 循环的判断条件 <code>i &lt; limit</code> 是一致的。</p>
+</li>
+</ol>
+<p>Java 9 的这些增强虽然看似微小，却像瑞士军刀上的新工具，为 Stream API 这把强大的武器增添了更多的精确性和便利性。在合适的场景下使用它们，能让你的代码质量再上一个台阶。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-9/" class="category-chain-item">Java 9</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Stream API 增强</div>
+      <div>http://example.com/2025/06/23/Java/新特性/Java 9/Stream API 增强/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月23日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/23/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2011%20(LTS)/%E6%A0%87%E5%87%86%E5%8C%96%20HTTP%20Client%20API/" title="标准化的 HTTP Client API">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">标准化的 HTTP Client API</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/23/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%209/%E7%A7%81%E6%9C%89%E6%8E%A5%E5%8F%A3%E6%96%B9%E6%B3%95%20(Private%20Interface%20Methods)/" title="私有接口方法 (Private Interface Methods)">
+                        <span class="hidden-mobile">私有接口方法 (Private Interface Methods)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

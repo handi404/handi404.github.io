@@ -1,0 +1,845 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Han Di">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Java 16 中正式发布的、堪称“Java 语法糖之王”的革命性特性——Records (记录类)。  Records (记录类) 1. 核心概念 (Core Concept) Record 是一种特殊的、简洁的类，专门用于作为“不可变的数据载体 (immutable data carrier)”。 在 Java 16 之前，如果你想创建一个简单的类来封装几个字段（比如，一个 Point 类包含">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Records(纪录类) - 正式版">
+<meta property="og:url" content="http://example.com/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2016/Records%20(%E8%AE%B0%E5%BD%95%E7%B1%BB)%20-%20%E6%AD%A3%E5%BC%8F%E7%89%88/index.html">
+<meta property="og:site_name" content="繁星的蓝">
+<meta property="og:description" content="Java 16 中正式发布的、堪称“Java 语法糖之王”的革命性特性——Records (记录类)。  Records (记录类) 1. 核心概念 (Core Concept) Record 是一种特殊的、简洁的类，专门用于作为“不可变的数据载体 (immutable data carrier)”。 在 Java 16 之前，如果你想创建一个简单的类来封装几个字段（比如，一个 Point 类包含">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/img/java/java.png">
+<meta property="article:published_time" content="2025-06-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-09-22T13:54:16.113Z">
+<meta property="article:author" content="Han Di">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://example.com/img/java/java.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Records(纪录类) - 正式版 - 繁星的蓝</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/macpanel.css">
+<link rel="stylesheet" href="/css/scrollAnimation.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"example.com","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>HAN&#39;S BLOG</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/post.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Records(纪录类) - 正式版"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 00:00" pubdate>
+          2025年6月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.7k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Records(纪录类) - 正式版</h1>
+            
+              <p id="updated-time" class="note note-info" style="">
+                
+                  
+                    本文最后更新于 2025年9月22日 晚上
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <p>Java 16 中正式发布的、堪称“Java 语法糖之王”的革命性特性——<strong>Records (记录类)</strong>。</p>
+<hr>
+<h3 id="Records-记录类">Records (记录类)</h3>
+<h4 id="1-核心概念-Core-Concept">1. 核心概念 (Core Concept)</h4>
+<p><strong>Record 是一种特殊的、简洁的类，专门用于作为“不可变的数据载体 (immutable data carrier)”</strong>。</p>
+<p>在 Java 16 之前，如果你想创建一个简单的类来封装几个字段（比如，一个 <code>Point</code> 类包含 <code>x</code> 和 <code>y</code>），你需要手动编写：</p>
+<ul>
+<li>私有 <code>final</code> 字段</li>
+<li>一个接受所有字段的构造函数</li>
+<li>所有字段的 <code>getter</code> 方法 (e.g., <code>getX()</code>)</li>
+<li><code>equals()</code> 方法</li>
+<li><code>hashCode()</code> 方法</li>
+<li><code>toString()</code> 方法</li>
+</ul>
+<p>这一套下来，一个只有两个字段的简单类可能就需要 50 多行样板代码。</p>
+<p><strong>Record 用一行代码就搞定了这一切！</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// Java 16 Record - 仅此一行</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Point</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> &#123;&#125;<br></code></pre></td></tr></table></figure>
+<p><strong>编译器会自动为你生成以上所有内容：</strong></p>
+<ol>
+<li><strong><code>public final</code> 字段：</strong> <code>x</code> 和 <code>y</code>。</li>
+<li><strong>全参构造函数 (Canonical Constructor)：</strong> <code>public Point(int x, int y)</code>。</li>
+<li><strong>公共 <code>getter</code> 方法：</strong> 方法名就是字段名，<code>public int x()</code> 和 <code>public int y()</code> (注意：不是 <code>getX()</code>)。</li>
+<li><strong><code>equals()</code>:</strong> 比较所有字段的值。</li>
+<li><strong><code>hashCode()</code>:</strong> 基于所有字段的值计算哈希码。</li>
+<li><strong><code>toString()</code>:</strong> 生成类似 <code>Point[x=1, y=2]</code> 的字符串。</li>
+</ol>
+<p><strong>通俗比喻：</strong></p>
+<ul>
+<li><strong>传统类 (POJO/JavaBean)：</strong> 就像去宜家买了一套需要<strong>自己动手组装</strong>的家具。你需要对着说明书，把螺丝、木板（字段、构造函数、<code>equals</code> 等）一个个手动拼装起来。</li>
+<li><strong>Record 类：</strong> 就像买了一件<strong>一体成型的艺术品</strong>。它开箱即用，所有部分都已完美地设计和集成在一起，你无需关心其内部构造，直接使用即可。</li>
+</ul>
+<h4 id="2-演进与现代化-Evolution-Modernization">2. 演进与现代化 (Evolution &amp; Modernization)</h4>
+<ul>
+<li>
+<p><strong>Java 16 之前 (The Pain Point):</strong></p>
+<ul>
+<li><strong>大量的样板代码 (Boilerplate Code)：</strong> 创建 DTOs (Data Transfer Objects), 值对象 (Value Objects) 等数据载体类非常繁琐。</li>
+<li><strong>维护困难：</strong> 增加或删除一个字段，需要同步修改构造函数、<code>equals</code>, <code>hashCode</code>, <code>toString</code>，极易出错。</li>
+<li><strong>IDE 依赖：</strong> 开发者严重依赖 IDE 的代码生成功能来减轻痛苦，但这并不能减少代码库中的代码行数。</li>
+<li><strong>Lombok 的流行：</strong> 正是因为这个痛点，像 Lombok 这样的第三方库（通过 <code>@Data</code>, <code>@Value</code> 注解）才变得如此流行。</li>
+</ul>
+</li>
+<li>
+<p><strong>预览阶段 (Java 14 &amp; 15):</strong><br>
+Record 经过了两个版本的预览，社区对其反响极其热烈。在预览期间，社区主要讨论了其构造函数的定制、注解的放置等细节问题，最终在 Java 16 中定型。</p>
+</li>
+<li>
+<p><strong>Java 16 (The Solution - 正式版):</strong><br>
+Record 作为语言的原生特性，提供了比 Lombok 更标准、更安全、更简洁的解决方案。它将“数据载体”这一普遍模式提升为 Java 语言的一等公民。</p>
+</li>
+<li>
+<p><strong>现代化应用：</strong></p>
+<ul>
+<li><strong>取代 DTOs/VOs：</strong> 在 API 响应、数据库查询结果映射、方法间数据传递等场景，Record 是定义数据结构的完美选择。<br>
+.</li>
+<li><strong>函数式编程：</strong> Record 的不可变性使其在函数式编程和多线程环境中非常安全和受欢迎。</li>
+<li><strong>模式匹配 (Pattern Matching):</strong> Record 是 Java 后续版本中模式匹配特性的核心组件。在 Java 21 中，你可以直接在 <code>switch</code> 或 <code>instanceof</code> 中解构一个 Record 对象。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-深入特性与自定义">3. 深入特性与自定义</h4>
+<p>虽然 Record 看起来很简单，但它也提供了一定的灵活性。</p>
+<h5 id="1-紧凑构造函数-Compact-Constructor"><strong>1. 紧凑构造函数 (Compact Constructor)</strong></h5>
+<p>如果你想在构造函数中添加验证逻辑，但不想重写整个构造函数，可以使用紧凑构造函数。它没有参数列表，专门用于<strong>校验和规范化</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Range</span><span class="hljs-params">(<span class="hljs-type">int</span> start, <span class="hljs-type">int</span> end)</span> &#123;<br>    <span class="hljs-comment">// 紧凑构造函数</span><br>    <span class="hljs-keyword">public</span> Range &#123;<br>        <span class="hljs-keyword">if</span> (start &gt; end) &#123;<br>            <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">IllegalArgumentException</span>(<span class="hljs-string">&quot;Start cannot be after end&quot;</span>);<br>        &#125;<br>        <span class="hljs-comment">// 在这里，你不需要写 this.start = start; 字段的赋值会自动在最后进行。</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="2-添加额外的方法和构造函数"><strong>2. 添加额外的方法和构造函数</strong></h5>
+<p>你可以像普通类一样，在 Record 中添加静态方法、实例方法或额外的构造函数。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Circle</span><span class="hljs-params">(<span class="hljs-type">double</span> radius)</span> &#123;<br>    <span class="hljs-comment">// 静态工厂方法</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> Circle <span class="hljs-title function_">fromDiameter</span><span class="hljs-params">(<span class="hljs-type">double</span> diameter)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Circle</span>(diameter / <span class="hljs-number">2</span>);<br>    &#125;<br><br>    <span class="hljs-comment">// 实例方法</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">double</span> <span class="hljs-title function_">area</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-keyword">return</span> Math.PI * radius * radius;<br>    &#125;<br>    <br>    <span class="hljs-comment">// 额外的构造函数必须委托给主构造函数</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-title function_">Circle</span><span class="hljs-params">()</span> &#123;<br>        <span class="hljs-built_in">this</span>(<span class="hljs-number">1.0</span>); <span class="hljs-comment">// 委托调用主构造函数</span><br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h5 id="3-实现接口"><strong>3. 实现接口</strong></h5>
+<p>Record 可以实现接口。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">User</span><span class="hljs-params">(String name, <span class="hljs-type">int</span> age)</span> <span class="hljs-keyword">implements</span> <span class="hljs-title class_">Serializable</span>, Comparable&lt;User&gt; &#123;<br>    <span class="hljs-meta">@Override</span><br>    <span class="hljs-keyword">public</span> <span class="hljs-type">int</span> <span class="hljs-title function_">compareTo</span><span class="hljs-params">(User other)</span> &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-built_in">this</span>.name.compareTo(other.name);<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="4-限制-Restrictions">4. 限制 (Restrictions)</h4>
+<p>Record 的设计目标是“数据载体”，因此它有一些严格的限制：</p>
+<ol>
+<li><strong>不能继承其他类：</strong> Record 隐式地继承了 <code>java.lang.Record</code>，由于 Java 不支持多重继承，所以它不能再 <code>extends</code> 其他类。</li>
+<li><strong>不能被继承：</strong> Record 是隐式 <code>final</code> 的，你不能创建一个类来 <code>extends</code> 一个 Record。</li>
+<li><strong>所有字段都是隐式 <code>final</code> 的：</strong> 这保证了 Record 实例的<strong>不可变性</strong>。</li>
+<li><strong>不能声明实例字段：</strong> 除了在 Record 头中声明的组件外，不能在内部再添加其他的实例字段。但可以添加<strong>静态字段</strong>。</li>
+</ol>
+<h4 id="5-代码示例与模式匹配-Java-21">5. 代码示例与模式匹配 (Java 21)</h4>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs java"><span class="hljs-comment">// 定义 Record</span><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">Point</span><span class="hljs-params">(<span class="hljs-type">int</span> x, <span class="hljs-type">int</span> y)</span> &#123;&#125;<br><span class="hljs-keyword">public</span> <span class="hljs-keyword">record</span> <span class="hljs-title class_">ColoredPoint</span><span class="hljs-params">(Point point, String color)</span> &#123;&#125;<br><br><span class="hljs-keyword">public</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">RecordExample</span> &#123;<br>    <span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">void</span> <span class="hljs-title function_">main</span><span class="hljs-params">(String[] args)</span> &#123;<br>        <span class="hljs-type">Point</span> <span class="hljs-variable">p1</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);<br>        System.out.println(p1.x()); <span class="hljs-comment">// 访问器方法</span><br>        System.out.println(p1);     <span class="hljs-comment">// toString()</span><br><br>        <span class="hljs-type">Point</span> <span class="hljs-variable">p2</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>);<br>        System.out.println(<span class="hljs-string">&quot;p1 equals p2: &quot;</span> + p1.equals(p2)); <span class="hljs-comment">// true</span><br><br>        <span class="hljs-comment">// --- Java 21 模式匹配 ---</span><br>        <span class="hljs-type">Object</span> <span class="hljs-variable">obj</span> <span class="hljs-operator">=</span> <span class="hljs-keyword">new</span> <span class="hljs-title class_">ColoredPoint</span>(<span class="hljs-keyword">new</span> <span class="hljs-title class_">Point</span>(<span class="hljs-number">5</span>, <span class="hljs-number">10</span>), <span class="hljs-string">&quot;RED&quot;</span>);<br><br>        <span class="hljs-comment">// 使用 instanceof 进行解构</span><br>        <span class="hljs-keyword">if</span> (obj <span class="hljs-keyword">instanceof</span> <span class="hljs-title function_">ColoredPoint</span><span class="hljs-params">(Point(<span class="hljs-keyword">var</span> x, <span class="hljs-keyword">var</span> y)</span>, <span class="hljs-keyword">var</span> color)) &#123;<br>            System.out.printf(<span class="hljs-string">&quot;It&#x27;s a %s point at x=%d, y=%d%n&quot;</span>, color, x, y);<br>        &#125;<br><br>        <span class="hljs-comment">// 在 switch 中使用</span><br>        <span class="hljs-keyword">switch</span> (obj) &#123;<br>            <span class="hljs-keyword">case</span> <span class="hljs-title function_">ColoredPoint</span><span class="hljs-params">(Point(<span class="hljs-keyword">var</span> x, <span class="hljs-keyword">var</span> y)</span>, <span class="hljs-string">&quot;RED&quot;</span>) -&gt; System.out.printf(<span class="hljs-string">&quot;It&#x27;s a RED point at (%d, %d)%n&quot;</span>, x, y);<br>            <span class="hljs-keyword">case</span> <span class="hljs-title function_">ColoredPoint</span><span class="hljs-params">(<span class="hljs-keyword">var</span> p, <span class="hljs-keyword">var</span> c)</span> -&gt; System.out.printf(<span class="hljs-string">&quot;It&#x27;s a %s point at %s%n&quot;</span>, c, p);<br>            <span class="hljs-keyword">default</span> -&gt; System.out.println(<span class="hljs-string">&quot;Unknown object&quot;</span>);<br>        &#125;<br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+<h4 id="6-要点与注意事项-Key-Points-Cautions">6. 要点与注意事项 (Key Points &amp; Cautions)</h4>
+<ol>
+<li><strong>何时使用 Record:</strong> 当你的类的主要目的是<strong>传递不可变数据</strong>时，Record 是最佳选择。</li>
+<li><strong>何时不用 Record:</strong> 如果你的类需要可变状态、需要继承其他类、或者其行为远比数据更重要（例如，Service, Repository 等），那么应该使用传统的 <code>class</code>。</li>
+<li><strong>不可变性是浅层的 (Shallow Immutability):</strong> Record 保证了其字段是 <code>final</code> 的，但如果字段本身是一个可变对象（如 <code>ArrayList</code>），那么这个对象内部的状态是可以改变的。要实现深度不可变，你需要确保所有字段也都是不可变类型。</li>
+<li><strong>与序列化兼容：</strong> Record 默认是可序列化的 (<code>Serializable</code>)。</li>
+<li><strong>反思你的 JavaBean:</strong> Record 的出现，促使我们重新思考是否真的需要为每个字段都创建 <code>get/set</code> 方法。对于纯数据对象，Record 提供的“名义元组 (nominal tuple)”模型往往更简洁、更安全。</li>
+</ol>
+<p>总而言之，Record 是 Java 近年来最重要的语言特性之一。它以一种极其优雅的方式解决了长期困扰开发者的样板代码问题，让 Java 代码在数据处理场景下变得前所未有的简洁和富有表现力。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Java/" class="category-chain-item">Java</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/" class="category-chain-item">新特性</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java-16/" class="category-chain-item">Java 16</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/java/" class="print-no-link">#java</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Records(纪录类) - 正式版</div>
+      <div>http://example.com/2025/06/24/Java/新特性/Java 16/Records (记录类) - 正式版/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Han Di</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/24/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2016/instanceof%20%E7%9A%84%E6%A8%A1%E5%BC%8F%E5%8C%B9%E9%85%8D%20(%E6%AD%A3%E5%BC%8F%E7%89%88)/" title="instanceof 的匹配模式(正式版)">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">instanceof 的匹配模式(正式版)</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/23/Java/%E6%96%B0%E7%89%B9%E6%80%A7/Java%2010/%E5%B1%80%E9%83%A8%E5%8F%98%E9%87%8F%E7%B1%BB%E5%9E%8B%E6%8E%A8%E6%96%AD%EF%BC%88var%EF%BC%89/" title="局部变量类型推断 (var)">
+                        <span class="hidden-mobile">局部变量类型推断 (var)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  <div>
+    <span id="timeDate">正在载入天数...</span>
+    <span id="times">载入时分秒...</span>
+    <script>
+    var now = new Date();
+    function createtime(){
+      var grt= new Date("08/17/2020 00:00:00");
+      now.setTime(now.getTime()+250);
+      days = (now - grt ) / 1000 / 60 / 60 / 24;
+      dnum = Math.floor(days);
+      hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum);
+      hnum = Math.floor(hours);
+      if(String(hnum).length ==1 ){
+          hnum = "0" + hnum;
+      }
+      minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum);
+      mnum = Math.floor(minutes);
+      if(String(mnum).length ==1 ){
+                mnum = "0" + mnum;
+      }
+      seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum);
+      snum = Math.round(seconds);
+      if(String(snum).length ==1 ){
+                snum = "0" + snum;
+      }
+      document.getElementById("timeDate").innerHTML = "已持续航行&nbsp"+dnum+"&nbsp天";  
+      document.getElementById("times").innerHTML = hnum + "&nbsp时&nbsp" + mnum + "&nbsp分&nbsp" + snum + "&nbsp秒";
+    }
+    setInterval("createtime()",250);
+    </script>
+  </div>
+
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      京ICP证123456号
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=12345678"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/img/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>京公网安备12345678号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/scrollAnimation.js"></script>
+<script src="/js/DynamicLine.min.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
